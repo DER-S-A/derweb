@@ -1,0 +1,45 @@
+/**
+* Contiene las hojas de estilo principal de la aplicación
+*/
+@import url("../node_modules/@fortawesome/fontawesome-free/css/all.min.css");
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+@import url("../components/header/header.css");
+@import url("../components/footer/footer.css");
+@import url("../components/tabs/tabs.css");
+@import url("../modulos/seguridad/seguridad.css");
+
+@font-face {
+    font-family: "futura";
+    src: url("../assets/fuentes/fl.ttf");
+}
+
+/*Es para organizar el ViewPort asi el footer queda abajo del contenido, cuando lo haya*/
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 180px;
+}
+
+/* Armo los media query para cuando cambia la resolución de pantalla se adapte. 
+    Esto soluciona el problema de que en modo celu el footer tapaba el formulario.
+*/
+@media screen and (max-width: 1100px) {
+    .app-container {
+        min-height: 100vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .app-container {
+        min-height: 100vh;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .app-container {
+        min-height: 100vh;
+    }
+}

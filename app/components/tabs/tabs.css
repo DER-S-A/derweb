@@ -1,0 +1,40 @@
+/**
+ * Estilo del tabulador
+*/
+
+.tab-container {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.nav-tabs {
+    border-bottom: solid 1px #003d7c;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+   
+.nav-tabs .nav-link {
+    font-family: "futura";
+    font-weight: bold;
+    color: gray;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    text-align:center;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    font-family: "futura";
+    font-weight: bold;
+    color: #003d7c;
+    border-top: solid 2px #003d7c;
+    border-left: solid 2px #003d7c;
+    border-right: solid 2px #003d7c;
+    border-top-right-radius: 15px;
+    text-align:center;    
+}

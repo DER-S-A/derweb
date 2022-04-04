@@ -1,0 +1,30 @@
+/**
+ * Estilo de la cabecera de aplicación
+*/
+
+app-header {
+    background-color: white;
+}
+
+.logo {
+    width: 150px;
+}
+
+.back-button {
+    position: relative;
+    float: left;
+    width: 120px;
+    top: 45px;
+}
+
+.back-button a {
+    font-family: "futura";
+    font-weight: bold;
+    text-decoration: none;
+    color: #003d7c;
+}
+@media screen and (max-width: 768px){
+    .back-button {
+        top: 0px;
+    }
+}

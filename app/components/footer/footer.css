@@ -1,0 +1,79 @@
+/**
+ * Contiene el estilo del componente footer.
+*/
+
+app-footer {
+    position: absolute;
+    bottom: 0;
+    background-color: #003d7c;
+    color:white;
+    width: 100%;
+    padding: 5px;
+    height: 180px;
+}
+
+.footer-container {
+    width: 700px;
+}
+
+.titulo-footer {
+    font-family: "futura";
+    font-size: 14px;
+    font-weight: bold;
+    color: #009ada;
+}
+
+.texto-footer {
+    font-family: "futura";
+    font-size: 12px;
+    text-align: justify;
+}
+
+.footer-icon {
+    width: 45px;
+}
+
+.footer-row {
+    flex: 0 0 auto;
+    width: 25%;
+    display: inline-block;
+}
+
+@media screen and (max-width: 1100px) {
+    .col-md-3{
+        flex: 0 0 auto;
+        width: 25%;
+        margin-top: 10px;
+        display: inline-block;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #footer{
+        height: 390px;
+    }
+
+    #content-wrap {
+        padding-bottom: 390px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .footer-container {
+        width: 100%;
+    }
+
+    .border-end{
+        border-right:0px solid #dee2e6!important;
+    }
+
+    .col-6{
+        width: 330px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .col-6 .containter {
+        width: 330px;
+    }
+}

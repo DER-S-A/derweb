@@ -1,0 +1,78 @@
+
+.selectedanchor
+{ /*CSS class that gets added to the currently selected anchor link (assuming it's a text link)*/
+	background: #f0e68c;
+}
+
+
+/* ######### Default class for drop down menus ######### */
+
+.anylinkcss{
+	position: absolute;
+	left: 0;
+	top: 0;
+	visibility: hidden;
+	border: 1px solid gray;
+	border-bottom-width: 0;
+	line-height: 18px;
+	z-index: 100;
+	background: #616161;
+	box-shadow: 3px 3px 5px rgba(0,0,0,.4);
+	width: 200px; /* default width for menu */
+}
+
+.anylinkcss ul{
+	margin: 0;
+	padding: 3px;
+	list-style-type: none;
+}
+
+.anylinkcss ul li
+{
+	width: 98%;
+	border-bottom: 1px solid #dcdcdc;
+	padding: 5px;
+	text-indent: 5px;
+	color: white;
+}
+
+.anylinkcss ul li a
+{
+	display: block;
+	text-decoration: none;
+}
+
+.anylinkcss a:hover{ /*hover background color*/
+	background: gray;
+	color: white;
+}
+
+/* ######### Alternate multi-column class for drop down menus ######### */
+
+
+.anylinkcsscols{
+	position: absolute;
+	left: 0;
+	top: 0;
+	visibility: hidden;
+	border: 1px solid black;
+	padding: 10px;
+	z-index: 100;
+	background: #DEFFCA;
+	box-shadow: 3px 3px 5px rgba(0,0,0,.4);
+}
+
+.anylinkcsscols .column{
+	width: 130px;
+	float: left;
+}
+
+.anylinkcsscols .column ul{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.anylinkcsscols li{
+	padding-bottom: 3px;
+}

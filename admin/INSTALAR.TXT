@@ -1,0 +1,72 @@
+-- SC3 CORE
+-- Una herramienta para desarrolladores --
+
+Autor: Ing. Marcos Casamayor
+Sugerencias / mejoras / recuerdos familiares: marcos.casamayor@gmail.com
+Fecha: mayo-2020 / enero-2022
+Version: 202201
+
+Descargar: https://www.sc3.com.ar/sc3core/sc3-core-202201.zip
+
+¿ Qué es ?
+
+SC3 Core es una herramienta para desarrollar aplicaciones WEB en PHP + MySQL + Javascript. 
+Incluye ABMs, gestion de usuarios y perfiles, Controles diversos, estrategias de Caché, funciones DOM, 
+caché de tablas en Session/Local Storage, funciones para hacer APIs JSON y mas...
+
+Mejoras
+
+	2022-ene: nuevo buscador de menú, definir comportamieto de campos y grupos con Drag&Drop
+		Root / Adminer, un phpMyAdmin pero mas rápido y fácil en un sólo archivo
+		Baja libreria terceros/phpids 
+	2021-dic: Mejoras en Favoritos, importar datos, velocidad, mejoras buscador,
+		definir campos y grupos con Drag&Drop y un nuevo Calendar
+
+
+1 - ¿ Cómo instalar ?
+
+a) En MySql crear base de datos nueva y ejecutar db/BD-VACIA-SC3.sql 
+	(o ejecutarla sobre una Base existente)
+b) Configurar config-demo.php con datos de conexion y guardarlo como config.php
+	Cambiar variables $DESARROLLADOR_*
+c) Copiar /install a una carpeta del apache/htdocs (ej: miaplicacion) o subir al FTP del sitio web
+d) En Firefox/Chrome ejecutar carpeta creada, ej http://localhost/miaplicacion/sc-homero.php
+e) En Firefox/Chrome ejecutar carpeta creada, ej http://localhost/miaplicacion/
+f) Loguearse con usuario: root clave: sc3sc3
+
+
+2 - Actualizacion
+
+a) Armar zip de tu código
+b) Copiar /install a una carpeta del apache/htdocs (ej: miaplicacion) o subir al FTP del sitio web
+	OJO que pisa include-head-app.php
+c) En Firefox/Chrome ejecutar http://localhost/miaplicacion/sc-updversion-core.php (También disponible 
+	en el menu "Root / Actualizar SC3 Core"
+
+
+3 - Instalar tablas para hacer ABMs
+
+a) en "Administrador / Perfiles" crear un perfil
+b) Asignar perfil al usuario actual "Administrador / Usuarios del sistema", solapa Perfiles
+b) En "Root / Menu del sistema" crear un menú
+c) En "Root / Instalar tabla", seleccionar la tabla de la base y luego configurarla.
+	Icono disponbiles en /images
+	Menu, uno de los existentes del punto b)
+	Perfil, uno creado en el punto a)
+
+
+--- Problemas mas frecuentes ---
+
+a) No se conecta a la base de datos, revisar config.php
+b) Se ve sin estilos: dar permisos de escritura a las carpetas: 
+
+	./ufiles
+	./tmp
+	./backups
+	./errores
+	./tmpcache
+	./css/tmpcache
+	./scripts/tmpcache
+	./scripts/autosuggest/tmpcache
+
+o ejecutar sc-permisos-carpetas.sh

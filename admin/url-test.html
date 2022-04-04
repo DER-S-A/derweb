@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<script>
+
+		function callPHP() {
+			let datos = new Object();
+			datos["url"] = document.forms["formPrueba"]["url"].value;
+			datos["usuario"] = document.forms["formPrueba"]["usuario"].value;
+			datos["clave"] = document.forms["formPrueba"]["clave"].value
+			let params = btoa(JSON.stringify(datos));
+
+			let src = "url.php";
+			src += "?fn=getShort&p=" + params;
+
+			var win = window.open(src, '_blank');
+			win.focus();
+		}
+
+	</script>
+</head>
+
+<body>
+	<form action="" name="formPrueba" onsubmit="callPHP()" method="post">
+		<label style="display: block;" for="url">URL</label>
+		<input style="display: block;" name="url" type="text">
+		<label style="display: block;" for="usuario">USUARIO</label>
+		<input style="display: block;" name="usuario" type="text">
+		<label style="display: block;" for="clave">CLAVE</label>
+		<input style="display: block;" name="clave" type="text">
+		<input type="submit" value="ACEPTAR">
+	</form> 
+</body>
+
+</html>

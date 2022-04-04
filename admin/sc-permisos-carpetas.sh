@@ -1,0 +1,9 @@
+sudo chmod -R 777 ./ufiles
+sudo chmod -R 777 ./tmp
+sudo chmod -R 777 ./backups
+sudo chmod -R 777 ./errores
+sudo chmod -R 777 ./tmpcache
+sudo chmod -R 777 ./ico
+sudo chmod -R 777 ./css/tmpcache
+sudo chmod -R 777 ./scripts/tmpcache
+sudo chmod -R 777 ./scripts/autosuggest/tmpcache

@@ -1,0 +1,81 @@
+@CHARSET "ISO-8859-1";
+
+.tbl_statusbar
+{
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;  
+	border-radius: 10px; 
+	
+	border: 1px solid #000000; 
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	background-image: url(images/corcho.jpg);
+}
+
+.td_statusbar
+{
+	background-color: #ffffff;
+	vertical-align: text-top;
+	width: 200px;
+	opacity: 0.8;
+	text-align: left;
+	text-align: center;
+	font-size: large;
+	color: olive;
+}
+
+.td_statusbar_arriba
+{
+	background-color: #cfcfcf;
+	vertical-align: middle;
+	width: 450px;
+	height: 25px;
+	opacity: 0.8;
+	text-align: left;
+	font-size: large;
+	color: olive;
+}
+
+.tabla_arriba_status
+{
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;  
+	border-radius: 5px; 
+	border: 1px solid #a6c51f; 
+	background-color: #ffffff;
+	padding: 3px;
+	
+}
+
+.tabla_pedidos
+{
+	border:1px solid #A2D246; /*black;*/
+	border-collapse:collapse;
+}
+
+table.tabla_pedidos thead th {
+	background-color: #EBF8A4; /* by ANA: #c9b255;*/
+	height: 20px;
+	vertical-align: bottom;
+}
+
+table.tabla_pedidos td 
+{
+	border: 1px solid #c9b255;
+	padding: 0px;
+	border-spacing: 0px;
+}
+
+.td_nro_pedido
+{
+	text-align: center;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+input 
+{
+    /* background: #FFFF99; */ 
+}

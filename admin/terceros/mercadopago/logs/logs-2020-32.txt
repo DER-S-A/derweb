@@ -1,0 +1,20 @@
+
+----------------------------------------------------------------
+2020-08-08 21:18:31
+ID: 
+exception 'MercadoPagoException' with message 'Payment not found - :  - P: P - : ' in /home/z6000128/public_html/app/gestion/mercadopago/lib/mercadopago.php:535
+Stack trace:
+#0 /home/z6000128/public_html/app/gestion/mercadopago/lib/mercadopago.php(558): MPRestClient::exec(Array)
+#1 /home/z6000128/public_html/app/gestion/mercadopago/lib/mercadopago.php(331): MPRestClient::get(Array)
+#2 /home/z6000128/public_html/app/gestion/mercadopago/mercadopago_listener.php(48): MP->get('/v1/payments/10...')
+#3 {main}
+
+----------------------------------------------------------------
+2020-08-08 21:18:39
+ID: 
+exception 'MercadoPagoException' with message 'Payment not found - :  - P: P - : ' in /home/z6000128/public_html/app/gestion/mercadopago/lib/mercadopago.php:535
+Stack trace:
+#0 /home/z6000128/public_html/app/gestion/mercadopago/lib/mercadopago.php(558): MPRestClient::exec(Array)
+#1 /home/z6000128/public_html/app/gestion/mercadopago/lib/mercadopago.php(331): MPRestClient::get(Array)
+#2 /home/z6000128/public_html/app/gestion/mercadopago/mercadopago_listener.php(48): MP->get('/v1/payments/10...')
+#3 {main}

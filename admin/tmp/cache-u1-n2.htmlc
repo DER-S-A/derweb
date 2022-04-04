@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- w3 css v4 -->
+<link rel="stylesheet" href="css/tmpcache/w3-202201-20085738.css">
+<link rel="stylesheet" href="css/tmpcache/w3-colors-2017-202201-20085738.css">
+
+<!-- LA hoja de estilos -->
+<link rel="stylesheet" href="css/tmpcache/sc-core-202201-20085738.css">
+
+<script type="text/javascript">
+
+//Prefijo de cache de los objetos guardados en SessionStorage
+var gCacheName = '253f2-';
+
+</script>
+
+<script type="text/javascript" src="scripts/tmpcache/sc3-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/ajax-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-dom-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-cola-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-localstorage-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-sessionstorage-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-metadata-202201-20085739.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="scripts/tmpcache/sc-accordeon-202201-20085739.js" charset="UTF-8"></script>
+<link rel="stylesheet" href="css/tmpcache/sc-accordeon-202201-20085738.css" type="text/css" media="screen" />
+
+<script type="text/javascript" src="scripts/tmpcache/sc-html-cbu-202201-20085739.js" charset="UTF-8"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-cuit-202201-20085739.js" charset="UTF-8"></script>
+
+<script type="text/javascript" src="scripts/tmpcache/sc-html-tabs-202201-20085739.js" charset="UTF-8"></script>
+<link rel="stylesheet" href="css/tmpcache/sc-html-tabs-202201-20085738.css" type="text/css" media="screen" />
+
+<script type="text/javascript" src="scripts/tmpcache/sc-html-input-file-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-input-text-email-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-date-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-color-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-factura-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-boolean2-202201-20085739.js"></script>
+<script type="text/javascript" src="scripts/tmpcache/sc-html-input-text-202201-20085739.js"></script>
+
+<script type="text/javascript" src="scripts/tmpcache/sc-html-grid-202201-20085739.js"></script>
+
+<script type='text/javascript' src="scripts/tmpcache/sc-html-buscador-202201-20085739.js"></script>
+
+<!-- QuillJS Editor HTML -->
+<link rel="stylesheet" href="scripts/quill/github.min.css"/>
+<script src="scripts/quill/highlight.min.js"></script>
+<script charset="UTF-8" src="scripts/quill/xml.min.js" ></script>
+
+<script type="text/javascript" src="scripts/quill/quill.min.js"></script>
+<link rel="stylesheet" href="scripts/quill/quill.snow.css" />
+<script src="scripts/quill/quill.htmlEditButton.js"></script>
+<link rel="stylesheet" href="scripts/quill/quill.htmlEditButton.css" />
+
+<!-- ChartJS -->
+<script type="text/javascript" src="scripts/chartjs/Chart.min.js"></script>
+
+<!-- http://fontawesome.io/ -->
+<link rel="stylesheet" href="terceros/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<script type="text/javascript" src="scripts/AnchorPosition.js"></script>
+
+<script type="text/javascript" src="scripts/autosuggest/bsn.AutoSuggest_2.1.3.js"></script>
+<link rel="stylesheet" href="scripts/autosuggest/tmpcache/autosuggest_inquisitor-202201-20085739.css" type="text/css" />
+
+<script type="text/javascript" src="scripts/PopupWindow.js"></script>
+<script type="text/javascript" src="scripts/date.js"></script>
+<script type="text/javascript" src="scripts/CalendarPopup.js"></script>
+
+<script type="text/javascript" src="scripts/jstoolbox-table.js"></script>
+<script type="text/javascript" src="scripts/hilitor.js"></script>
+
+<!-- Tabber -->
+<script type="text/javascript" src="scripts/tabber.js"></script>
+<link rel="stylesheet" href="css/tmpcache/tabber-202201-20085738.css" type="text/css" media="screen" />
+
+<!-- selector con caché -->
+
+<script type="text/javascript" src="scripts/tmpcache/sc-autocomplete-202201-20085739.js"></script>
+<link rel="stylesheet" href="css/tmpcache/sc-autocomplete-202201-20085738.css" type="text/css">
+
+<!-- Menu desplegable basado en w3schools https://www.w3schools.com/howto/howto_js_dropdown.asp -->
+<script type="text/javascript" src="scripts/tmpcache/w3dropdown-202201-20085739.js"></script>
+<link rel="stylesheet" href="scripts/tmpcache/w3dropdown-202201-20085739.css" type="text/css" media="screen">
+<!-- FIN Menu desplegable basado en w3schools                                                   -->
+
+<!-- Menu contextual (boton derecho) -->
+<script type="text/javascript" src="scripts/tmpcache/ctxmenu-202201-20085739.js"></script>
+<link rel="stylesheet" href="css/tmpcache/ctxmenu-202201-20085738.css" type="text/css">
+
+<link rel="shortcut icon" href="ico/table.ico" type="image/x-icon" />
+
+<script type="text/javascript">
+	
+</script>
+
+
+<!-- INCLUYE AQUI TUS SCRIPTS -->
+
+<!-- EJ:  <script type="text/javascript" src="noexiste-scripts/app-TUSCRIPT.js" charset="UTF-8"></script> -->
+
+<link rel="stylesheet" href="app/style.css">
+
+
+
+<script type="text/javascript">
+	document.write('<style type="text/css">.tabber{display:none;}<\/style>');
+</script>
+
+<style type="text/css">
+
+.menu-item 
+{
+	height: 30px;
+	text-align: left;
+}
+
+.menuEditar
+{  
+    float:left; 
+    width: 230px; 
+    margin: 1px;
+
+	font-size: 13px;
+	font-style: normal;
+	line-height: normal;
+	
+	text-decoration: none;
+	padding: 5px;
+	background-color: #ffffff;
+
+	color:#607d8b;
+}
+
+.boton
+{
+	display: block;
+	padding: 3px;
+}
+
+.boton:HOVER
+{
+	background-color: #cdcdcd;
+	border-radius: 6px;
+}
+
+</style>
+
+<script language="javascript">
+
+	function dardebaja(xrecid)
+	{
+		if (confirm("Esta seguro que desea borrar este dato ?"))
+		{
+			pleaseWait2();
+			document.location.href = "sc-delitem.php?query=entidades" + "&registrovalor=" + xrecid
+		}
+	}
+	
+	//expande un atributo con el nombre dado
+	function expand(x_strExpand, x_strExpansor, xlin, xnombre) 
+	{
+		styleObj = document.getElementById(x_strExpand).style;
+		styleLin = document.getElementById(xlin).style;
+		if (styleObj.display == 'none') 
+		{
+			styleObj.display = '';
+			styleLin.display = 'none';
+			document.getElementById(x_strExpansor).innerHTML = '- ' + xnombre;
+		}
+		else 
+		{
+			styleObj.display = 'none';
+			styleLin.display = '';
+			document.getElementById(x_strExpansor).innerHTML = '+ ' + xnombre;
+		}
+	}
+	
+	
+	function expandMaster(x_strExpand, x_strExpansor, xnombre) 
+	{
+		styleObj = document.getElementById(x_strExpand).style;
+		if (styleObj.display == 'none') 
+		{
+			styleObj.display = '';
+		}
+		else 
+		{
+			styleObj.display = 'none';
+		}
+	}
+	
+</script>
+		
+<title>Entidades</title>
+
+</head>
+<body>
+
+<div class="historial-horizontal">
+<a href="sc-selitems.php?query=sc_referencias&fstack=1" class=" boton" id=""  title="Ref. entre tablas " ><img id="" src="images/table.png" class="" border="0" alt="Ref. entre tablas" title="Ref. entre tablas" width="" > Ref. entre tablas</a>
+<a href="sc-selitems.php?query=qscfilters&fstack=1" class=" boton" id=""  title="Filtros de querys " ><img id="" src="images/filter.gif" class="" border="0" alt="Filtros de querys" title="Filtros de querys" width="" > Filtros de querys</a>
+<a href="sc-selitems.php?query=entidades&fstack=1" class=" boton boton-activo" id=""  title="Entidades " ><img id="" src="images/table.png" class="" border="0" alt="Entidades" title="Entidades" width="" > Entidades</a></div>
+<header class="w3-container headerTitulo">
+	<table class="tabla_stack" align="left"><tr><td class="td_stack"><a href="hole.php?fstack=1"><i class="fa fa-desktop fa-lg"></i></a></td><td class="td_stack" width="5"><img id="" src="images/separador.gif" class="" border="0" alt="" title="" width="" ></td><td class=" w3-hide-small "><a href="/aplicaciones/derweb/admin/sc-selitems.php?query=entidades&fstack=1&todesktop=1&fmerge=1" id="" class=""  ><img id="" src="images/table.png" class="" border="0" alt="Entidades" title="Entidades" width="" > </a></td><td class="td_stack" width="5"><img id="" src="images/separador.gif" class="" border="0" alt="" title="" width="" ></td><td class="td_stack"><img id="" src="images/table.png" class="" border="0" alt="Entidades (Hook VP)" title="Entidades (Hook VP)" width="" > Entidades (Hook VP)</td></tr></table><a id="linkcerrar" class="w3-button w3-text-white w3-right boton-fa-sup" href="hole.php?anterior=1&stackname=" title="ESC">
+				<i class="fa fa-times fa-lg"></i>
+			</a><a href="sc-viewitem.php?query=entidades&registrovalor=NAV&navlast=20&navseq=1" id="linksiguiente" class="w3-right w3-text-white w3-button boton-fa-sup"  ><i class="fa fa-arrow-right fa-lg"></i></a><a class="w3-button w3-text-white w3-right boton-fa-sup" title="Imprimir" href="sc-printitempdf.php?query=entidades&sql=_sql67&mid=20" target="_blank">
+				<i class="fa fa-print fa-lg " ></i>
+			</a></header>
+
+<div class="w3-responsive">
+
+<table class="dlg" id="tbldlg" style="background-color:#f1f1f1;">
+
+	
+<!--           Fin de barra superior, comienzo del body de datos            -->
+
+	<tr>
+		<td>
+        
+<div class="solapainterior">
+<div class="tabber" id="e35e0">
+<div class="tabbertab"><h2>Entidades</h2>
+
+<table width="100%" border="0" cellspacing="1" cellpadding="0">
+<tr>
+	<td valign="top">
+
+	<table width="99%">
+	<tr>
+		<td valign="top">
+		
+				
+		<tr>
+			<td colspan="2">
+				<div class="divContainer" id="divContainer1">
+
+					
+<!-- INICIO HtmlDivDatos -->
+<div class="divFlotante" id="divDatos" >
+<div width="99%" class="expandingtable"><div class="expandingcell">
+<a onclick="sc3expand2('drDatos','mrDatos', 'Datos');" id="mrDatos" style="cursor: pointer">Datos <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drDatos" >
+				<div class="expandingtableinner ">
+
+						<div><div class="informacion" ><div class="info-etiqueta">Entidad:</div>
+ <div class="info-dato ">20</div></div><div class="informacion" ><div class="info-etiqueta">Tipo Entidad:</div>
+ <div class="info-dato "><a href="sc-viewitem.php?query=tipos_entidades&registrovalor=1&stackname=" id="" class=""  >Cliente</a></div></div><div class="informacion" ><div class="info-etiqueta">C&oacute;digo en SAP:</div>
+ <div class="info-dato ">V50000</div></div><div class="informacion" ><div class="info-etiqueta">CUIT:</div>
+ <div class="info-dato ">30661590188</div></div><div class="informacion" ><div class="info-etiqueta">Nombre:</div>
+ <div class="info-dato ">Hook VP</div></div><div class="informacion" ><div class="info-etiqueta">Direccion:</div>
+ <div class="info-dato ">Martin Rodriquez 823</div></div><div class="informacion" ><div class="info-etiqueta">Email:</div>
+ <div class="info-dato "><a href="mailto:info@hook.sap.com" id="" class=""  >info@hook.sap.com</a></div></div><div class="informacion" ><div class="info-etiqueta">Telefono:</div>
+ <div class="info-dato ">(54) 11 5290-3655</div></div><div class="informacion" ><div class="info-etiqueta">Usuario:</div>
+ <div class="info-dato ">V50000</div></div><div class="informacion" ><div class="info-etiqueta">Habilitado:</div>
+ <div class="info-dato "><span class="booleano si">Si</span></div></div></div></div></div></div>
+
+<!-- FIN HtmlDivDatos -->
+<!-- INICIO HtmlDivDatos -->
+<div class="divFlotante" id="divAuditoria" >
+<div width="99%" class="expandingtable"><div class="expandingcell">
+<a onclick="sc3expand2('drAuditoria','mrAuditoria', 'Auditoría');" id="mrAuditoria" style="cursor: pointer">Auditoría <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drAuditoria" >
+				<div class="expandingtableinner ">
+
+						<div><div class="informacion" ><div class="info-etiqueta">Fecha alta:</div>
+ <div class="info-dato "><div title="Miercoles (hace 15 dias)">2/3/2022 10:52:00</div></div></div><div class="informacion" ><div class="info-etiqueta">Fecha modificado:</div>
+ <div class="info-dato "><div title="Jueves (hace minutos)">17/3/2022 16:45:00</div></div></div><div class="informacion" ><div class="info-etiqueta">Fecha baja:</div>
+ <div class="info-dato "><div title="Jueves (hace minutos)">17/3/2022 16:45:00</div></div></div></div></div></div></div>
+
+<!-- FIN HtmlDivDatos -->
+<!-- INICIO HtmlDivDatos -->
+<div class="divFlotante" id="divDatoscomerciales" >
+<div width="99%" class="expandingtable"><div class="expandingcell">
+<a onclick="sc3expand2('drDatoscomerciales','mrDatoscomerciales', 'Datos comerciales');" id="mrDatoscomerciales" style="cursor: pointer">Datos comerciales <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drDatoscomerciales" >
+				<div class="expandingtableinner ">
+
+						<div><div class="informacion" ><div class="info-etiqueta">Vendedor:</div>
+ <div class="info-dato "><a href="sc-viewitem.php?query=entidades&registrovalor=19&stackname=" id="" class=""  >OSRAM S.A.</a></div></div><div class="informacion" ><div class="info-etiqueta">Descuento 1:</div>
+ <div class="info-dato ">0.00</div></div><div class="informacion" ><div class="info-etiqueta">Descuento 2:</div>
+ <div class="info-dato ">0.00</div></div><div class="informacion" ><div class="info-etiqueta">Rentabilidad 1:</div>
+ <div class="info-dato ">0.00</div></div><div class="informacion" ><div class="info-etiqueta">Rentabilidad 2:</div>
+ <div class="info-dato ">0.00</div></div><div class="informacion" ><div class="info-etiqueta">Lista de Precio:</div>
+ <div class="info-dato "><a href="sc-viewitem.php?query=listas_precios&registrovalor=1&stackname=" id="" class=""  >Lista predeterminada</a></div></div></div></div></div></div>
+
+<!-- FIN HtmlDivDatos -->    
+    			</div>
+			</td>
+	</tr>
+		
+	<tr>
+		<td class="td_dato" align="center">
+			<input type="button" value="Salir" name="bcancelar" class="btn" accesskey="0" onclick="javascript:document.location = 'hole.php?anterior=1&stackname='" />
+		</td>
+	</tr>              
+    </table>
+    
+    </td>
+    
+    <td align="right" valign="top" width="20%">
+		<table class="menuEditar"><tr>
+			 <td>
+<td width="25%" align="center"><a href="sc-edititem.php?query=entidades&registrovalor=20" class="boton" id="linkeditar" title="Editar [F2]">
+						<i class="fa fa-pencil-square-o fa-2x " ></i>
+						<br><span class="w3-tiny">Editar</span>
+					</a></td>
+<td width="25%" align="center"><a  class="boton"  title="Copiar" href="sc-edititem.php?query=entidades&stackname=&registrovalor=20&insert=1">
+				<i class="fa fa-copy fa-2x naranja" ></i>
+				<br><span class="w3-tiny">Copiar</span>
+			</a></td>
+<td width="25%" align="center"><a class="boton" href="javascript:dardebaja(20)" id="linkborrar" title="Borrar este registro [Supr]">
+				<i class="fa fa-trash-o fa-2x naranja" ></i>
+				<br><span class="w3-tiny">Borrar</span>
+		    </a></td>
+<td width="25%" align="center"><a class="boton"  title="Editar notas o color [F4]"  id="linknotas" href="sc-extrainfo2.php?mquery=entidades&mid=20&stackname=">
+				<i class="fa fa-sticky-note fa-2x " ></i>
+				<br><span class="w3-tiny">Nota</span>
+			</a></td></tr>
+		</table><div><button id='0' class="sc3-accordion menuDerecho " style="" onclick="javascript: accordionToggle(this, 'm87a8f1');  return false; "><i title="" id="" class="fa  fa fa-sitemap fa-2x fa-fw iconoMenu fa-2x  fa-fw"></i> Detalles <span id="m87a8f1" class="sc3-accordion-flecha"><i class="fa fa-angle-double-down fa-lg"></i></span> </button>
+<div class="sc3-accordion-panel"><div class="menu-item">
+<a href="sc-selitems.php?query=entidades&stackname=&mquery=entidades&mid=20" class=" td_toolbar_flat" id=""  title="Entidades de Hook VP " ><img id="" src="images/table.png" class="" border="0" alt="Entidades de Hook VP" title="Entidades de Hook VP" width="" > Entidades</a></div>
+</div></div><div><button id='0' class="sc3-accordion menuDerecho " style="" onclick="javascript: accordionToggle(this, 'm8c42df');  return false; "><i title="" id="" class="fa  fa fa-cog fa-2x fa-fw iconoMenu fa-2x  fa-fw"></i> Mas herramientas <span id="m8c42df" class="sc3-accordion-flecha"><i class="fa fa-angle-double-down fa-lg"></i></span> </button>
+<div class="sc3-accordion-panel"><div class="menu-item"><a href="sc-infoquery.php?mquery=entidades&mid=20" title='Info Nautilus' target=\'infonautilus\' class="td_toolbar_flat"><img src='./images/scinfo.gif' border=0> Info Nautilus</a></div>
+<div class="menu-item"><a href="sc-viewitem.php?query=sc_querysall&registrovalor=727&stackname=sc3_config" title='Configurar tabla' target=\configurartabla\' class="td_toolbar_flat"><img src='./images/scinfo.gif' border=0> Config tabla</a></div>
+<div class="menu-item">
+<a href="sc-log-item.php?query=entidades&registrovalor=20" title='Auditar los cambios realizados' class="td_toolbar_flat"><img src='./images/scauditar.gif' border=0> Auditar</a></div>
+</div></div>	</td>
+	
+  </tr>
+</table>
+
+
+</div>
+
+</div>
+</div></td>
+</tr>
+</table>
+
+
+</div>
+
+<script type="text/javascript">
+
+	/* Since we specified manualStartup=true, tabber will not run after
+	   the onload event. Instead let's run it now, to prevent any delay
+	   while images load.
+	*/
+	tabberAutomatic(tabberOptions);
+
+	var cantGrupos = 3;
+</script>
+
+
+<!-- por marcos c. (info@sc3.com.ar) -->
+
+
+<script type="text/javascript">
+
+var t = 0.17;
+var hrMin = ' (10)';
+hrMin = '';
+
+divPer = document.getElementById("divperformance");
+if (divPer != null && t >= 0)
+{
+	divPer.innerHTML = htmlImgFa('fa-server fa-lg fa-fw', 'velocidad del servidor') + ' ' + t + ' seg' + hrMin;
+}
+  
+</script>
+
+<div class="boxejecutando" id="divejecutando" style="visibility: hidden;">
+	
+	<div class="w3-center">
+    	<i class="fa fa-cog fa-spin fa-4x fa-fw w3-text-blue"></i>
+    	procesando...
+	</div>
+	
+</div>
+
+</body>
+</html>

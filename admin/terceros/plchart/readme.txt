@@ -1,0 +1,1 @@
+Please visit plchart.net to get more information about PLChart (English manual, tutorial of custom chart, etc).

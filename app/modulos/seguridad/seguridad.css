@@ -1,0 +1,69 @@
+/**
+ * Estilos de los formularios correspondiente al módulo de seguridad.
+ * En este archivo se encuentran las clases de estilo tanto para el formulario
+ * de login y registrarse.
+*/
+
+/* Este estilo tengo que ver si me conviene dejarlo así o subirlo
+un nivel más para arriba para que sea más genérico.
+ */
+.login-form-container {
+    max-width: 400px;
+}
+
+.login-form-container label {
+    font-family: futura;
+    font-size: 10pt;
+    width: 380px;
+    text-align: left;
+}
+
+.login-form-container input {
+    font-family: futura;
+    font-size: 9pt;    
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-color: gray;
+}
+
+.login-form-container button {
+    font-family: futura;
+    font-size: 10pt;
+    font-weight: bold;
+    width: 380px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    background-color: #009ada;
+    color: #fff;
+}
+
+.login-form-container a {
+    font-family: futura;
+    font-size: 10pt;
+    font-weight: bold;
+    color: #003d7c;
+    text-decoration: none;
+}
+
+.login-form-container select {
+    font-family: futura;
+    font-size: 9pt;    
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border: thin solid gray;
+    width: 380px;    
+}
+
+#btnRegistrarse {
+    width: 185px;
+    margin-top: 30px;
+}

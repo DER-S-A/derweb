@@ -1,0 +1,27 @@
+.Subtitulo { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-style: 
+italic; font-weight: bold; color: #336699} .Parrafo {
+	font-family: Verdana, Arial, 
+Helvetica, sans-serif;
+	font-size: 10px;
+} body {SCROLLBAR-FACE-COLOR:#003063; SCROLLBAR-HIGHLIGHT-COLOR: 
+#003063; SCROLLBAR-SHADOW-COLOR: #003063; SCROLLBAR-3DLIGHT-COLOR: #FFFFFF;SCROLLBAR-ARROW-COLOR: 
+#FFFFFF; SCROLLBAR-TRACK-COLOR: #E3E3E3; SCROLLBAR-DARKSHADOW-COLOR: #000000;} 
+.linkbotonera {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 
+10px;
+	color: #FFFFFF;
+} .TextoTabla {  font-family: Arial, Helvetica, sans-serif; font-size: 10px}
+a: {  text-decoration: none}
+a:hover {  text-decoration: underline}
+a {  font-style: normal; text-decoration: none}
+.recuadros {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px}
+.linkBotoneraChico {  font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #FFFFFF}
+.Subtitulo2 {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-style: italic; font-weight: bold; color: #003366}
+.imput {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	border: 1px #003366 solid;
+}
+.Boton {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: normal; color: #FFFFFF; background-color: #336699; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px}
+.Contador {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9px; font-style: normal; background-color: #EEEEEE; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px}
