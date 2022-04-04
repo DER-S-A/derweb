@@ -1,0 +1,8 @@
+Para enviar los cambios al servidor y que todos lo podamos desacargar,
+el comando es:
+
+git push server_origin_web master
+
+Para recibir los cambios de mis compañeros, el comando es:
+
+git pull server_origin_web master

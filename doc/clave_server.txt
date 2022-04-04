@@ -1,0 +1,4 @@
+Clave para hacer push y pull en respositorio remoto:
+
+clave: uBVOHihb1YUN
+
