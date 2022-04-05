@@ -1,4 +1,4 @@
 /admin/tmp/
-/scripts/tmpcache/
-/scripts/autosuggest/tmpcache/
-/css/tmpcache/
+/admin/scripts/tmpcache/
+/admin/scripts/autosuggest/tmpcache/
+/admin/css/tmpcache/
