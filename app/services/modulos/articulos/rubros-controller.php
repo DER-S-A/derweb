@@ -36,5 +36,42 @@ class RubrosController extends APIController {
         else
             $this->sendOutput(json_encode(array('error' => $strErrorDesc)), array('Content-Type: application/json', $strErrorHeader));
     }
+    
+    /**
+     * listarPorId
+     * Recupera un rubro por ID.
+     * @return void
+     */
+    public function listarPorId() {
+        $strErrorDesc = '';
+        $metodoRequest = $_SERVER["REQUEST_METHOD"];
+        $arrQueryStringParams = $this->getQueryStringParams();
+        
+        if (strcmp(strtoupper($metodoRequest), "GET") == 0) {
+            try {
+                $id = 0;
+                if (isset($arrQueryStringParams["id"]) && $arrQueryStringParams["id"]) {
+                    $id = intval($arrQueryStringParams["id"]);
+                }
+
+                $rubrosModel = new RubrosModel();
+                $arrRubros = $rubrosModel->getById($id);
+                $responseData = json_encode($arrRubros);
+
+            } catch (Exception $ex) {
+                $strErrorDesc = $ex->getMessage() . 'Contactese con soporte.';
+                $strErrorHeader = 'HTTP/1.1 500 Error Interno de Servidor';
+            }
+        } else {
+            $strErrorDesc = 'Método no soportado';
+            $strErrorHeader = 'HTTP/1.1 422 Entidad no procesable';
+        }
+
+        // Envío la salida
+        if (!$strErrorDesc)
+            $this->sendOutput($responseData, array('Content-Type: application/json', 'HTTP/1.1 200 OK'));
+        else
+            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), array('Content-Type: application/json', $strErrorHeader));
+    }
 }
 ?>
