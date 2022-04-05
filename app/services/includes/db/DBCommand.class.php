@@ -24,7 +24,7 @@ class DBCommand {
 
     public static function fetch_assoc($result) {
         return mysqli_fetch_assoc($result);
-}
+    }
 
     public static function row_count($result) {
         return mysqli_num_rows($result);
