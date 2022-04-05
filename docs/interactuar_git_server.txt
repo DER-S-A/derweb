@@ -1,8 +1,24 @@
 Para enviar los cambios al servidor y que todos lo podamos desacargar,
 el comando es:
 
-git push server_origin_web master
+git push server_origin_derweb master
 
 Para recibir los cambios de mis compañeros, el comando es:
 
-git pull server_origin_web master
+git pull server_origin_derweb master
+
+Para fusionar el develop en la rama master (actualizar rama master):
+-------------------------------------------------------------------------
+
+1. Pararte en master (git checkout master)
+2. Fusionar con la develop (git merge develop): develop => master
+3. git pull server_origin_derweb master: master => servidor
+
+Para fusionar master en develop
+--------------------------------------
+
+1. Pararte en develop
+2. Chequear si no tenes commits pendientes de hacer. En caso de tenerlo, hacer commit.
+3. ejecutar git merge master (master => develop)
+
+
