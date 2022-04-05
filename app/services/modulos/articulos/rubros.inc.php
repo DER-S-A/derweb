@@ -5,28 +5,30 @@
  */
 
 class RubrosModel extends Model {
-
     /**
-     * Obtiene todos los registros de la tabla rubros.
-     */
-    public function getAll() {
-        $sql = "SELECT
-                    *
-                FROM
-                    rubros
-                ORDER BY
-                    rubros.descripcion ASC";
-        return $this->ejecutar_comando($sql);
-    }
-
-    /**
-     * getById
-     * Devuelve un rubro filtrando por id.
-     * @param  int $id
+     * get
+     * Devuelve los registros de la tabla rubros.
+     * @param  string $xfilter Permite establecer el condicional del WHERE para filtrar datos.
      * @return array $result
      */
-    public function getById($id) {
-        $sql = "SELECT * FROM rubros WHERE id = $id";
+    public function get($xfilter) {
+        if (strcmp($xfilter, "") == 0)
+            // Si el filtro viene vacío entonces muestro todos los registros.
+            $sql = "SELECT 
+                        * 
+                    FROM 
+                        rubros 
+                    ORDER BY descripcion ASC";
+        else {
+            // Si viene algún filtro en la petición, entonces,
+            // lo concateno al WHERE de la sentencia SQL.
+            $xfilter = str_replace("\"", "", $xfilter);
+            $sql = "SELECT 
+                        * 
+                    FROM 
+                        rubros 
+                    WHERE " . $xfilter;    
+        }
         return $this->ejecutar_comando($sql);
     }
 }
