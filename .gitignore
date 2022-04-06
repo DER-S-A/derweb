@@ -2,3 +2,4 @@
 /admin/scripts/tmpcache/
 /admin/scripts/autosuggest/tmpcache/
 /admin/css/tmpcache/
+/app/services/configuracion.php
