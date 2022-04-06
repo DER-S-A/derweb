@@ -20,7 +20,12 @@
 
         <div class="mb-3">
             <label for="cboRubro" class="form-label">Rubro de venta</label>
-            <select id="cboRubro" name="cboRubro" class="form-input"></select>
+            <div id="cboRubros_Multiselect" class="multiselect">
+                <div class="selectBox" onclick="showOptions()">
+                    <select id="cboRubro" class="form-select" name="cboRubro"></select>
+                    <div class="overSelect"></div>
+                </div>
+            </div>
         </div>
 
         <div class="mb-3">

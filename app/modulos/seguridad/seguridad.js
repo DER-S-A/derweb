@@ -30,4 +30,35 @@ class Seguridad {
         tabs = new HTMLTabsV2("tab-login", titulos, contenidos);
         tabs.toHtml();        
     }
+
+    llenarSelectRubros() {
+        getAPI("services/rubros.php/get", (xresponse) => {
+            var objSelect = document.getElementById("cboRubro");
+            var objCheckBoxes = document.createElement("div");
+            var objOption = document.createElement("option");
+            var aRubros = JSON.parse(xresponse);
+
+            objOption.value = -1;
+            objOption.innerText = "Hace un click para mostrar opciones y/o ocultar";
+            objSelect.appendChild(objOption);
+
+            aRubros.forEach((xElement) => {
+                let objSpan = document.createElement("span");
+                let objLabel = document.createElement("label");
+                let objInput = document.createElement("input");
+
+                objSpan.innerHTML = xElement.descripcion;
+                objInput.type = "checkbox";
+                objInput.id = xElement.id;
+                objInput.name = xElement.id;
+                objInput.classList.add("form-check-input");
+                
+                objLabel.appendChild(objInput);
+                objLabel.appendChild(objSpan);
+                objCheckBoxes.id = "checkboxes";
+                objCheckBoxes.appendChild(objLabel);
+            });
+            document.getElementById("cboRubros_Multiselect").appendChild(objCheckBoxes);
+        });
+    }
 }

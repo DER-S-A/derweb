@@ -51,7 +51,22 @@ un nivel más para arriba para que sea más genérico.
     text-decoration: none;
 }
 
-.login-form-container select {
+#btnRegistrarse {
+    width: 185px;
+    margin-top: 30px;
+}
+
+/* Combo con checkbox (Pasar a componente select multiple */
+.multiselect {
+    width: 380px;
+}
+
+.selectBox {
+    position: relative;
+}
+
+.selectBox select {
+    font-weight: bold;
     font-family: futura;
     font-size: 9pt;    
     border-radius: 10px;
@@ -63,7 +78,32 @@ un nivel más para arriba para que sea más genérico.
     width: 380px;    
 }
 
-#btnRegistrarse {
-    width: 185px;
-    margin-top: 30px;
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#checkboxes {
+    display: none;
+    border: 1px #dadada solid;
+    width: 360px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+#checkboxes label {
+    display: block;
+}
+
+#checkboxes label:hover {
+    background-color: #1e90ff;
+}
+
+#checkboxes label span {
+    padding: 5px;
+    font-family: futura;
+    font-size: 9pt;    
 }
