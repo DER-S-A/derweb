@@ -8,7 +8,7 @@
 un nivel más para arriba para que sea más genérico.
  */
 .login-form-container {
-    max-width: 400px;
+    width: 400px;
 }
 
 .login-form-container label {
@@ -29,6 +29,13 @@ un nivel más para arriba para que sea más genérico.
     border-color: gray;
 }
 
+/*@media (max-width: 640px) {
+    .login-form-container {
+        width: 500px;
+        max-height: 300px;
+    }  
+}
+*/
 .login-form-container button {
     font-family: futura;
     font-size: 10pt;
@@ -67,3 +74,4 @@ un nivel más para arriba para que sea más genérico.
     width: 185px;
     margin-top: 30px;
 }
+
