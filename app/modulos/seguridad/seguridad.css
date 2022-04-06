@@ -85,13 +85,11 @@ un nivel más para arriba para que sea más genérico.
     width: 380px;    
 }
 
-<<<<<<< HEAD
 #btnRegistrarse {
     width: 185px;
     margin-top: 30px;
 }
 
-=======
 .overSelect {
     position: absolute;
     left: 0;
@@ -121,4 +119,3 @@ un nivel más para arriba para que sea más genérico.
     font-family: futura;
     font-size: 9pt;    
 }
->>>>>>> master
