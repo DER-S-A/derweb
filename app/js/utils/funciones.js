@@ -18,3 +18,20 @@ function getTemplate(xFileName, xcallback, xasync = false) {
     xmlRequest.open("GET", xFileName, xasync);
     xmlRequest.send();      
 }
+
+/**
+ * Permite obtener datos a partir de un endpoint
+ * @param {string} xurl 
+ * @param {function} xcallback 
+ * @param {boolean} xasync 
+ */
+function getAPI(xurl, xcallback, xasync = false) {
+    let xmlRequest = new XMLHttpRequest();
+    xmlRequest.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            xcallback(this.responseText);
+        }
+    };
+    xmlRequest.open("GET", xurl, xasync);
+    xmlRequest.send();
+}
