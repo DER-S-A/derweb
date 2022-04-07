@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * EntidadesController
+ * Contiene el controlador del end point de la tabla entidades.
+ */
 class EntidadesController extends APIController {
    
     /**
