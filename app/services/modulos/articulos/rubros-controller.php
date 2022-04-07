@@ -10,16 +10,15 @@ class RubrosController extends APIController {
     /**
      * listarPorId
      * Recupera registros de rubros.
-     * Usar método: GET
+     * Usar método: GET o POST
      * Usar ?filter para filtrar por algún campo. Ej. ?filter="id = 1"
      * @return void
      */
     public function get() {
-        $strErrorDesc = '';
-        $metodoRequest = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
         
-        if (strcmp(strtoupper($metodoRequest), "GET") == 0) {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
             try {
                 $filter = "";
                 if (isset($arrQueryStringParams["filter"]) && $arrQueryStringParams["filter"]) {
@@ -31,19 +30,17 @@ class RubrosController extends APIController {
                 $responseData = json_encode($arrRubros);
 
             } catch (Exception $ex) {
-                $strErrorDesc = $ex->getMessage() . 'Contactese con soporte.';
-                $strErrorHeader = 'HTTP/1.1 500 Error Interno de Servidor';
+                $this->setErrorFromException($ex);
             }
         } else {
-            $strErrorDesc = 'Método no soportado';
-            $strErrorHeader = 'HTTP/1.1 422 Entidad no procesable';
+            $this->setErrorMetodoNoSoportado();
         }
 
         // Envío la salida
-        if (!$strErrorDesc)
-            $this->sendOutput($responseData, array('Content-Type: application/json', 'HTTP/1.1 200 OK'));
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
         else
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), array('Content-Type: application/json', $strErrorHeader));
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
 }
 ?>
