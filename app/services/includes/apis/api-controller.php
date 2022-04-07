@@ -176,11 +176,28 @@ class APIController {
     }
 
     /**
-     * Verifica si
+     * Verifica si se está usando el método POST
      */
     public function usePostMethod() {
         $metodoRequest = $_SERVER["REQUEST_METHOD"];
         return strcmp(strtoupper($metodoRequest), "POST") == 0;
+    }
+    
+    /**
+     * getURIParameters
+     * Verifica si vino algún parámetro en la URL y en lo devuelve
+     * @param string $xparamName Nombre del parámetro de URL a obtener.
+     * @return string
+     */
+    protected function getURIParameters($xparamName) {
+        $arrQueryStringParams = $this->getQueryStringParams();
+        $filter = "";
+
+        // Verifico si el parámetro filter viene seteado en la URL.
+        if (isset($arrQueryStringParams["filter"]) && $arrQueryStringParams["filter"])
+            $filter = $arrQueryStringParams["filter"];
+            
+        return $filter;
     }
 }
 

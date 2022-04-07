@@ -3,6 +3,8 @@
  * Esta clase controla la API Rest para la tabla rubros.
  * Acá se desarrollarán todos los métodos que se requieran para procesar los
  * datos de la tabla rubros.
+ * 
+ * Esta clase es una herencia de APIController.
  */
 
 class RubrosController extends APIController {
@@ -14,21 +16,12 @@ class RubrosController extends APIController {
      * Usar ?filter para filtrar por algún campo. Ej. ?filter="id = 1"
      * @return void
      */
-    public function get() {
-        $arrQueryStringParams = $this->getQueryStringParams();
-        
+    public function get() {        
         // Valido que la llamada venga por método GET o POST.
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {
-                $filter = "";
-                if (isset($arrQueryStringParams["filter"]) && $arrQueryStringParams["filter"]) {
-                    $filter = $arrQueryStringParams["filter"];
-                }
-
-                $rubrosModel = new RubrosModel();
-                $arrRubros = $rubrosModel->get($filter);
-                $responseData = json_encode($arrRubros);
-
+                $filter = $this->getURIParameters("filter");
+                $responseData = $this->ejecutarMetodoGet($filter);
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
@@ -41,6 +34,18 @@ class RubrosController extends APIController {
             $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+    
+    /**
+     * ejecutarMetodoGet
+     * Ejecuta el método get de la clase modelo.
+     * @param  string $xfilter
+     * @return void
+     */
+    private function ejecutarMetodoGet($xfilter = "") {
+        $rubrosModel = new RubrosModel();
+        $arrRubros = $rubrosModel->get($xfilter);
+        return json_encode($arrRubros);
     }
 }
 ?>
