@@ -11,7 +11,7 @@ include("includes/db/DBCommand.class.php");
 include("includes/apis/api-controller.php");
 include("includes/model.inc.php");
 
-include("modulos/articulos/rubros.inc.php");
+include("modulos/articulos/rubros-model.inc.php");
 include("modulos/articulos/rubros-controller.php");
 
 ?>
