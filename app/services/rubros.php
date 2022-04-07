@@ -3,24 +3,27 @@
  * Endpoint que permite obtener los registros de la tabla rubros.
  */
 
- include ("autoload.php");
+include ("autoload.php");
 
-// Obtengo la URL y la convierto en array para poder obtener
-// el módulo y el método que debo llamar de la clase RubrosController.
-$uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+// Pongo los encabezados por si me conecto desde javascript de otro servidor,
+// me autorice la política CORS.
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 
-$uri = explode('/', $uri);
+$objRubrosController = new RubrosController();
+
+// Recupero el nombre del método en base a la URL.
+$strMethodName = $objRubrosController->getMethdoName();
 
 // Verifico si el módulo y la clase se encuentra implementada. En caso de que no
 // se encuentre devuelvo el error 404 not found.
-if (isset($uri[5]) && $uri[5] != 'rubros.php' || !isset($uri[6])) {
+if (!isset($strMethodName)) {
     header("HTTP/1.1 404 No encontrado");
     exit();
 }
 
-// Invoco a la clase que controla la API Rest.
-$objRubrosController = new RubrosController();
-$strMethodName = $uri[6];
 $objRubrosController->{$strMethodName}();
 
 ?>

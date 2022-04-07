@@ -25,9 +25,8 @@ class RubrosController extends APIController {
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
-        } else {
+        } else
             $this->setErrorMetodoNoSoportado();
-        }
 
         // Envío la salida
         if ($this->isOK())
