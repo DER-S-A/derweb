@@ -29,13 +29,19 @@ un nivel más para arriba para que sea más genérico.
     border-color: gray;
 }
 
-/*@media (max-width: 640px) {
+@media (max-width: 640px) {
     .login-form-container {
-        width: 500px;
-        max-height: 300px;
+        width: 200px;
+        max-height: 200px;
     }  
+    #cboRubro {
+        width: 175px;
+        max-height: 200px;
+    }
 }
-*/
+
+
+
 .login-form-container button {
     font-family: futura;
     font-size: 10pt;

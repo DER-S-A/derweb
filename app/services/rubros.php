@@ -13,14 +13,14 @@ $uri = explode('/', $uri);
 
 // Verifico si el módulo y la clase se encuentra implementada. En caso de que no
 // se encuentre devuelvo el error 404 not found.
-if (isset($uri[5]) && $uri[5] != 'rubros.php' || !isset($uri[6])) {
+if (isset($uri[4]) && $uri[4] != 'rubros.php' || !isset($uri[5])) {
     header("HTTP/1.1 404 No encontrado");
     exit();
 }
 
 // Invoco a la clase que controla la API Rest.
 $objRubrosController = new RubrosController();
-$strMethodName = $uri[6];
+$strMethodName = $uri[5];
 $objRubrosController->{$strMethodName}();
 
 ?>

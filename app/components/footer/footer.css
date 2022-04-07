@@ -77,3 +77,9 @@ app-footer {
         width: 330px;
     }
 }
+
+@media (max-width: 640px) {
+    body {
+        padding-bottom: 10%;
+    }
+}
