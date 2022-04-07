@@ -1,0 +1,87 @@
+ESTRUCTURA CLASE CONTROLLER
+---------------------------------------
+
+Para desarrollar los próximos endpoint, copiar y pegar el siguiente código.
+Pasos:
+    1. Crear el archivo dentro del subdirectorio del módulo correspondiente llamado nombretabla-controller
+    2. Reemplazar en el nombre de la clase [NombreTabla] por el nombre de la tabla sacando los corchetes.
+    3. Programar en el método ejecutarMetodoGet() la funcionalidad de recuperación.
+    3. En caso de agregar más endpoints dentro de esta clase programarla al final.
+
+
+class [NombreTabla]Controller extends APIController {
+   
+    /**
+     * listarPorId
+     * Recupera registros de rubros.
+     * Usar método: GET o POST
+     * Usar ?filter para filtrar por algún campo. Ej. ?filter="id = 1"
+     * @return void
+     */
+    public function get() {        
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $filter = $this->getURIParameters("filter");
+                $responseData = $this->ejecutarMetodoGet($filter);
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+    
+    /**
+     * ejecutarMetodoGet
+     * Ejecuta el método get de la clase modelo.
+     * @param  string $xfilter
+     * @return void
+     */
+    private function ejecutarMetodoGet($xfilter = "") {
+        // TODO: Crear la instancia del modelo a a invocar el método get.
+    }
+}
+
+ESTRUCTURA DEL ENDPOINT
+-------------------------
+
+La siguiente estructura corresponde al archivo endpoint propiamente dicho.
+Pasos:
+    1. Crear archivo en service que contiene el endpoint con la nomenclatura nombreTabla.php
+    2. Reemplazar NombreClaseController() por el nombre de la clase controller de la tabla.
+
+<?php
+
+include ("autoload.php");
+
+// Pongo los encabezados por si me conecto desde javascript de otro servidor,
+// me autorice la política CORS.
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+
+$objController = new NombreClaseController();
+
+// Recupero el nombre del método en base a la URL.
+$strMethodName = $objController->getMethdoName();
+
+// Verifico si el módulo y la clase se encuentra implementada. En caso de que no
+// se encuentre devuelvo el error 404 not found.
+if (!isset($strMethodName)) {
+    header("HTTP/1.1 404 No encontrado");
+    exit();
+}
+
+$objController->{$strMethodName}();
+
+?>
+
+
+
