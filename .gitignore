@@ -2,5 +2,9 @@
 /admin/scripts/tmpcache/
 /admin/scripts/autosuggest/tmpcache/
 /admin/css/tmpcache/
+<<<<<<< HEAD
 /app/services/configuracion.php
 
+=======
+/app/services/configuracion.php
+>>>>>>> b19a99a03f7ce4f3324222b32da8e741d264549b

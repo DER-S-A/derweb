@@ -47,7 +47,22 @@ class Model {
         $result = $db->fetch_all($rs);
         $this->close();
         return $result;
-    }    
+    }
+    
+    /**
+     * setWhere
+     * Establece la cláusula WHERE en base al criterio definiro en la URL.
+     * @param  string $xsql Establece la sentencia SQL a incluir el WHERE.
+     * @param  string $xfilter Contiene el filtro a aplicar.
+     * @return string
+     */
+    protected function getWhere(&$xsql, $xfilter) {
+        if (strcmp($xfilter, "") != 0) {
+            $xfilter = str_replace("\"", "", $xfilter);
+            $xsql .= "WHERE " . $xfilter; 
+        }
+        return $xsql;
+    }
 
 }
 ?>

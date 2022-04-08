@@ -1,13 +1,10 @@
 <?php
-/**
- * Esta clase controla la API Rest para la tabla rubros.
- * Acá se desarrollarán todos los métodos que se requieran para procesar los
- * datos de la tabla rubros.
- * 
- * Esta clase es una herencia de APIController.
- */
 
-class RubrosController extends APIController {
+/**
+ * EntidadesController
+ * Contiene el controlador del end point de la tabla entidades.
+ */
+class EntidadesController extends APIController {
    
     /**
      * listarPorId
@@ -42,9 +39,10 @@ class RubrosController extends APIController {
      * @return void
      */
     private function ejecutarMetodoGet($xfilter = "") {
-        $rubrosModel = new RubrosModel();
-        $arrRubros = $rubrosModel->get($xfilter);
-        return json_encode($arrRubros);
+        $objEntidadesModel = new EntidadesModel();
+        $arrEntidades = $objEntidadesModel->get($xfilter);
+        return json_encode($arrEntidades);
     }
 }
+
 ?>

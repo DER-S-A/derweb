@@ -11,7 +11,12 @@ include("includes/db/DBCommand.class.php");
 include("includes/apis/api-controller.php");
 include("includes/model.inc.php");
 
-include("modulos/articulos/rubros.inc.php");
+// Referencia al endpoint rubros
+include("modulos/articulos/rubros-model.inc.php");
 include("modulos/articulos/rubros-controller.php");
+
+// Referencia al end point entidades.
+include("modulos/entidades/entidades-model.inc.php");
+include("modulos/entidades/entidades-controller.php");
 
 ?>
