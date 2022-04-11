@@ -194,8 +194,8 @@ class APIController {
         $filter = "";
 
         // Verifico si el parámetro filter viene seteado en la URL.
-        if (isset($arrQueryStringParams["filter"]) && $arrQueryStringParams["filter"])
-            $filter = $arrQueryStringParams["filter"];
+        if (isset($arrQueryStringParams[$xparamName]) && $arrQueryStringParams[$xparamName])
+            $filter = $arrQueryStringParams[$xparamName];
             
         return $filter;
     }
