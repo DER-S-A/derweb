@@ -48,11 +48,11 @@ class EntidadesModel extends Model {
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
             } else {
                 $aResult["result"] = "ERR_CLAVE";
-                $aResult["Mensaje"] = "Contraseña inválida.";
+                $aResult["mensaje"] = "Contraseña inválida.";
             }
         } else {
             $aResult["result"] = "ERR_USUARIO";
-            $aResult["Mensaje"] = "Usuario inválido.";
+            $aResult["mensaje"] = "Usuario inválido.";
         }
         return $aResult;
     }

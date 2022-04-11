@@ -72,8 +72,8 @@ class EntidadesController extends APIController {
     /**
      * clienteVerificarUsuarioYClave
      * Ejecuta la verificación de login de cliente del modelo.
-     * @param  mixed $xusuario
-     * @param  mixed $xclave
+     * @param  string $xusuario
+     * @param  string $xclave
      * @return void
      */
     private function clienteVerificarUsuarioYClave($xusuario, $xclave) {

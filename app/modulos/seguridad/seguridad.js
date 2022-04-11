@@ -61,4 +61,26 @@ class Seguridad {
             document.getElementById("cboRubros_Multiselect").appendChild(objCheckBoxes);
         });
     }
+
+    loginCliente() {
+        var usuario = document.getElementById("txtNroCliente").value;
+        var clave = document.getElementById("txtPassword").value;
+        var aResultado;
+        getAPI("services/entidades/loginCliente?usuario=" + usuario + "&clave=" + clave, 
+            (xresponse) => {
+                let form = document.getElementById("frmLogin");
+                aResultado = JSON.parse(xresponse);
+                if (aResultado.result == "OK") {
+                    sessionStorage.setItem("derweb_sesion", JSON.stringify(aResultado));
+                    form.action = "main-clientes.php";
+                    form.method = "POST";
+                    form.submit();
+                    // Redireccionar a página principal.
+                }
+                else {
+                    console.log(aResultado);
+                    alert(aResultado.mensaje);
+                }
+            });
+    }
 }

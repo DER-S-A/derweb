@@ -23,3 +23,8 @@ function showOptions() {
     expanded = false;
   }
 }
+
+// Agrego el evento para loguearse
+document.getElementById("btnIniciarSesion").addEventListener("click", () => {
+    login.loginCliente();
+});
