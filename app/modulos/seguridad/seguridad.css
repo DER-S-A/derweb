@@ -88,7 +88,6 @@ un nivel más para arriba para que sea más genérico.
     -ms-border-radius: 10px;
     -o-border-radius: 10px;
     border: thin solid gray;
-    width: 380px;    
 }
 
 #btnRegistrarse {
@@ -110,6 +109,9 @@ un nivel más para arriba para que sea más genérico.
     width: 360px;
     margin-left: 10px;
     padding: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100px;
 }
 
 #checkboxes label {
@@ -124,4 +126,35 @@ un nivel más para arriba para que sea más genérico.
     padding: 5px;
     font-family: futura;
     font-size: 9pt;    
+}
+
+
+@media screen and (max-width: 1100px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 580px) {
+    .login-form-container {
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 100%;
+        max-height: 400px;
+        padding-bottom: 30px;
+    }
+
+    .form-select {
+        max-width: 300px;
+    }
+
+    #checkboxes {
+        width: 200px;
+    }    
+
+}
+
+@media (max-width: 640px) {
+
 }
