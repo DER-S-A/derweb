@@ -12,17 +12,81 @@
     <body id="page-container">
         <div id="content-wrap">
             <main class="container-fluid">
-                <!--<app-header 
-                    template="components/header/header.html" 
-                    back-button
-                    back-button-url="http://derdistribuciones.com.ar"></app-header>-->
-                <header class="app-header">
-                    <div class="row">                    
+                <header>         
+                    <div class="row app-header">
                         <div class="col-md-1">
                             <img src="assets/imagenes/logo.png" class="app-header-logo" alt="" />
                         </div>
-                        <div class="col-md-11" style="background-color: gray;">
-                            <p>Hola</p>
+                        <div class="col-md-11">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="app-header-buscar">
+                                        <input type="text" id="txtValorBuscado" name="txtValorBuscado" class="app-input-buscar" placeholder="Buscar">
+                                        <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-10">
+                                    <div id="barra_busqueda" class="app-home-barra-opciones">
+                                        <ul>
+                                            <li>
+                                                <label for="select_marca_repuesto">MARCA DE REPUESTO</label>
+                                                <select id="select_marca_repuesto" name="select_marca_repuesto">
+                                                    <option>Seleccionar</option>
+                                                </select>
+                                            </li>
+
+                                            <li>
+                                                <label for="select_marca_vehiculo">MARCA DE VEHICULO</label>
+                                                <select id="select_marca_vehiculo" name="select_marca_vehiculo">
+                                                    <option>Seleccionar</option>
+                                                </select>
+                                            </li>
+
+                                            <li>
+                                                <label for="select_repuesto">REPUESTO</label>
+                                                <select id="select_repuesto" name="select_repuesto">
+                                                    <option>Seleccionar</option>
+                                                </select>
+                                            </li>
+
+                                            <li>
+                                                <label for="select_modelo">MODELO</label>
+                                                <select id="select_modelo" name="select_modelo">
+                                                    <option>Seleccionar</option>
+                                                </select>
+                                            </li>
+
+                                            <li>
+                                                <label for="select_motor">MOTOR</label>
+                                                <select id="select_motor" name="select_motor">
+                                                    <option>Seleccionar</option>
+                                                </select>
+                                            </li>
+
+                                            <li>
+                                                <label for="select_anio">AÑO</label>
+                                                <select id="select_anio" name="select_anio">
+                                                    <option>Seleccionar</option>
+                                                </select>
+                                            </li>
+
+                                            <li>
+                                                <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
+                                                    <i class="fa-solid fa-magnifying-glass"></i> BUSCAR
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="menu-perfil-container">
+                                        <button type="button" id="btn_perfil" name="btn_perfil" class="boton-perfil">
+                                            <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
+                                        </button>
+
+                                    </div>
+                                </div>                                
+                            </div>
                         </div>
                     </div>
                     
@@ -39,7 +103,6 @@
             <footer>
                 <!-- Armar footer -->
             </footer>
-            <!--<app-footer id="footer" template="components/footer/footer.html"></app-footer>-->
         </div>
 
         <script src="components/tabs/tabs.js" type="text/javascript"></script>

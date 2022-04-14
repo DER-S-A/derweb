@@ -5,8 +5,112 @@
 
 .app-header {
     background-color: #003d7c;
+    padding: 5px;
 }
 
 .app-header-logo {
     width: 100px;
+}
+
+.app-header-buscar {
+    width: 100%;
+    margin-top: 15px;
+    background-color: white;
+    padding: 3px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+.app-input-buscar {
+    font-family: "futura";
+    font-size: 10pt;
+    font-weight: bold;
+    width: 80%;
+    border: none;
+    margin-left: 5px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+
+}
+
+.app-input-buscar:focus {
+    outline: none;
+}
+
+.app-home-barra-opciones {
+    width: 90%;
+    position: relative;
+    margin-left: -20px;
+}
+
+.app-home-barra-opciones ul {
+    list-style: none;
+}
+
+.app-home-barra-opciones ul li {
+    display: inline-block;
+    width: 120px;
+    padding: 3px;
+}
+
+.app-home-barra-opciones label {
+    font-family: "futura";
+    font-size: 10px;    
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+.app-home-barra-opciones select {
+    width: 100%;
+    font-size: 10px;
+    border: thin white solid;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;    
+}
+
+.app-home-barra-opciones .app-header-btnbuscar {
+    background-color: #009ada;
+    border: none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    font-family: "futura";
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.app-header .menu-perfil-container {
+    position: relative;
+    float: right;
+    margin-top: -60px;
+    width: 60px;
+    padding:5px;
+    align-content: center;
+}
+
+.app-header .menu-perfil-container .boton-perfil {
+    background-color: #009ada;
+    border: none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    font-family: "futura";
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    padding: 5px;
+    
+    /* Le agrego 2px de resplandor exterior*/
+    -moz-box-shadow: 0px 0px 2px #ffffff;
+    -webkit-box-shadow: 0px 0px 2px #ffffff;
+    box-shadow: 0px 0px 2px #ffffff;     
 }
