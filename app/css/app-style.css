@@ -3,10 +3,11 @@
 */
 @import url("../node_modules/@fortawesome/fontawesome-free/css/all.min.css");
 @import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
-@import url("../components/header/header.css");
-@import url("../components/footer/footer.css");
 @import url("../components/tabs/tabs.css");
 @import url("../modulos/seguridad/seguridad.css");
+@import url("../css/header-home.css");
+@import url("../css/header-app.css");
+@import url("../css/footer-home.css");
 
 @font-face {
     font-family: "futura";

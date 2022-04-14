@@ -1,8 +1,12 @@
 /**
+ * Contiene el estilo del footer de la portada
+*/
+
+/**
  * Contiene el estilo del componente footer.
 */
 
-app-footer {
+.home-footer {
     position: absolute;
     bottom: 0;
     background-color: #003d7c;
@@ -12,28 +16,28 @@ app-footer {
     height: 180px;
 }
 
-.footer-container {
+.home-footer-container {
     width: 700px;
 }
 
-.titulo-footer {
+.home-titulo-footer {
     font-family: "futura";
     font-size: 14px;
     font-weight: bold;
     color: #009ada;
 }
 
-.texto-footer {
+.home-texto-footer {
     font-family: "futura";
     font-size: 12px;
     text-align: justify;
 }
 
-.footer-icon {
+.home-footer-icon {
     width: 45px;
 }
 
-.footer-row {
+.home-footer-row {
     flex: 0 0 auto;
     width: 25%;
     display: inline-block;
@@ -59,11 +63,11 @@ app-footer {
 }
 
 @media screen and (max-width: 580px) {
-    .footer-container {
+    .home-footer-container {
         width: 100%;
     }
 
-    .border-end{
+    .home-border-end{
         border-right:0px solid #dee2e6!important;
     }
 

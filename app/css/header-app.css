@@ -1,0 +1,12 @@
+/**
+ * Este script contiene los estilos para el header de la página
+ * principal del App correspondiente al main.
+*/
+
+.app-header {
+    background-color: #003d7c;
+}
+
+.app-header-logo {
+    width: 100px;
+}

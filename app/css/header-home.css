@@ -1,30 +1,31 @@
 /**
- * Estilo de la cabecera de aplicación
+ * Estilo de la cabecera de portada
 */
 
-app-header {
+home-header {
     background-color: white;
 }
 
-.logo {
+.home-logo {
     width: 150px;
 }
 
-.back-button {
+.home-back-button {
     position: relative;
     float: left;
-    width: 120px;
+    width: 125px;
     top: 45px;
 }
 
-.back-button a {
+.home-back-button a {
     font-family: "futura";
     font-weight: bold;
     text-decoration: none;
     color: #003d7c;
 }
+
 @media screen and (max-width: 768px){
-    .back-button {
+    .home-back-button {
         top: 0px;
     }
 }
