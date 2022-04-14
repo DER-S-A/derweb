@@ -1,3 +1,53 @@
 /**
  * Armo el estilo para el footer del APP después de loguearse.
 */
+
+.app-footer {
+    position: absolute;
+    bottom: 0;
+    background-color: #003d7c;
+    color:white;
+    width: 100%;
+    padding: 3px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+}
+
+.app-footer-container {
+    position: relative;
+    float: left;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.app-footer .app-social-bar {
+    list-style-type: none;
+    margin-top: 5px;
+}
+
+.app-footer .app-social-bar li {
+    display: inline-block;
+    padding: 3px;
+    text-align: center;
+}
+
+.app-footer .app-social-bar li img {
+    width: 30px;
+}
+
+.app-footer-info {
+    list-style-type: none;
+}
+
+.app-footer-info li {
+    display: inline-block;
+    padding: 0px;
+    text-align: center;
+}
+
+.home-texto-footer {
+    margin-top: -10px;
+}

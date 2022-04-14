@@ -88,21 +88,58 @@
                                 </div>                                
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-12">
+                    </div>                    
 
+                    <!-- Acá armar el menú principal -->
+                    <nav class="row" style="background-color: lightgray;">
+                        <div class="col-md-12">
+                            <P>Menu</P>
                         </div>
-                    </div>
+                    </nav>                    
                 </header>
 
-                <section id="app-container" class="app-container"><p>Diseñar página principal</p></section>
+                <section id="app-container" class="app-container"><p>Contenedor de aplicación</p></section>
             </main>
 
-            <footer>
-                <!-- Armar footer -->
-            </footer>
+            <footer class="app-footer">
+                <div class="app-footer-container container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="app-social-bar">
+                                <li>
+                                    <a href="https://www.facebook.com/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a>
+                                </li>
+
+                                <li>
+                                    <a href="https://www.instagram.com/der.distribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a>
+                                </li>
+
+                                <li>
+                                    <a href="https://www.youtube.com/user/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-9">
+                            <ul class="app-footer-info">
+                                <li>
+                                    <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span><br>
+                                        <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h</small>
+                                </li>
+
+                                <li>
+                                    <small class="home-texto-footer"><i class="fa-solid fa-phone"></i> (+5411) 4846 7500</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>    
+
+
         </div>
 
         <script src="components/tabs/tabs.js" type="text/javascript"></script>

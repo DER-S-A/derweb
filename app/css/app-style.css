@@ -8,10 +8,18 @@
 @import url("../css/header-home.css");
 @import url("../css/header-app.css");
 @import url("../css/footer-home.css");
+@import url("../css/footer-app.css");
 
 @font-face {
     font-family: "futura";
     src: url("../assets/fuentes/fl.ttf");
+}
+
+.app-container {
+    background-color: #f5f5f5;
+    overflow-y: auto;
+    overflow-x: none;
+    padding: 3px;
 }
 
 /*Es para organizar el ViewPort asi el footer queda abajo del contenido, cuando lo haya*/
