@@ -18,7 +18,7 @@
                 <header>         
                     <div class="row app-header">
                         <div class="col-md-1">
-                            <img src="assets/imagenes/logo.png" class="app-header-logo" alt="" />
+                            <img src="assets/imagenes/logo_app.png" class="app-header-logo" alt="" />
                         </div>
                         <div class="col-md-11">
                             <div class="row">

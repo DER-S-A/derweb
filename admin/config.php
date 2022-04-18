@@ -1,9 +1,9 @@
 <?php
 $SITIO = "DERWEB - Administrador";
 
-$BD_SERVER = "localhost";
+$BD_SERVER = "192.168.1.250";
 $BD_USER = "root";
-$BD_PASSWORD = "";
+$BD_PASSWORD = "imprimir";
 $BD_DATABASE = "db_derweb";
 
 $FTP_SERVER = "localhost";
