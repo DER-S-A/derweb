@@ -20,6 +20,11 @@
     width: 700px;
 }
 
+.row align-middle {
+    margin-top: 10px !important;
+    margin-left: 0 !important;
+}
+
 .home-titulo-footer {
     font-family: "futura";
     font-size: 14px;
@@ -67,8 +72,9 @@
         width: 100%;
     }
 
-    .home-border-end{
-        border-right:0px solid #dee2e6!important;
+    #borde {
+        border:none!important;
+        /*border-right:0px solid #dee2e6!important;*/
     }
 
     .col-6{
@@ -80,10 +86,20 @@
     .col-6 .containter {
         width: 330px;
     }
-}
 
-@media (max-width: 640px) {
-    body {
-        padding-bottom: 10%;
+    #redSocial div { 
+        width:45px;
+        margin-top: 1px;
+        margin-left: 6px;
+        padding: 5% 9%;
     }
+
+    #cboRubro {
+        width: 100%;
+    }
+
+    #checkboxes {
+        width: 95%;
+    }
+    
 }
