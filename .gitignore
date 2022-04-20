@@ -1,10 +1,7 @@
-config.php
-configuracion.php
+admin/config.php
 
 /admin/tmp/
 /admin/scripts/tmpcache/
 /admin/scripts/autosuggest/tmpcache/
 /admin/css/tmpcache/
-
-
-
+app/services/configuracion.php
