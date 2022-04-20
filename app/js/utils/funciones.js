@@ -35,3 +35,16 @@ function getAPI(xurl, xcallback, xasync = false) {
     xmlRequest.open("GET", xurl, xasync);
     xmlRequest.send();
 }
+
+/**
+ * Permite agregar una opción a un componente <select></select>
+ * @param {DOM} xobjSelectComponent Objeto select que se obtiene mediante getElementById().
+ * @param {mixed} xvalue Valor que identifica una opción.
+ * @param {string} xtext Texto a mostrar en el select.
+ */
+function addSelectOption(xobjSelectComponent, xvalue, xtext) {
+    let objOpcion = document.createElement("option");
+    objOpcion.value = xvalue;
+    objOpcion.innerText = xtext;
+    xobjSelectComponent.appendChild(objOpcion);
+}
