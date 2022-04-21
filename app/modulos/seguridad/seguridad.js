@@ -39,7 +39,7 @@ class Seguridad {
             var aRubros = JSON.parse(xresponse);
 
             objOption.value = -1;
-            objOption.innerText = "Hace un click para mostrar opciones y/o ocultar";
+            objOption.innerText = "Click para mostrar";
             objSelect.appendChild(objOption);
 
             aRubros.forEach((xElement) => {

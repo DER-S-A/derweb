@@ -70,9 +70,9 @@ un nivel más para arriba para que sea más genérico.
 }
 
 /* Combo con checkbox (Pasar a componente select multiple */
-.multiselect {
+/*.multiselect {
     width: 380px;
-}
+}*/
 
 .selectBox {
     position: relative;
@@ -106,8 +106,7 @@ un nivel más para arriba para que sea más genérico.
 #checkboxes {
     display: none;
     border: 1px #dadada solid;
-    width: 360px;
-    margin-left: 10px;
+    width: 100%;
     padding: 5px;
     overflow-y: auto;
     overflow-x: hidden;
