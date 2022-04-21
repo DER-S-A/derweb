@@ -8,9 +8,9 @@
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
-        <script src="components/tabs/tabs.js" type="text/javascript"></script>
-        <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
-        <script src="js/main-clientes.js" type="text/javascript"></script>        
+        <script src="js/utils/apis.js" type="text/javascript"></script>
+        <script src="js/utils/cache-utils.js" type="text/javascript"></script>
+        <script src="modulos/catalogo/catalogo.js" type="text/javascript"></script>
     </head>
     <body id="page-container">
         <div id="content-wrap">
@@ -25,7 +25,7 @@
                                 <div class="col-md-2">
                                     <div class="app-header-buscar">
                                         <input type="text" id="txtValorBuscado" name="txtValorBuscado" class="app-input-buscar" placeholder="Buscar">
-                                        <a href="javascript:buscar();"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                        <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
                                     </div>
                                 </div>
 
@@ -144,5 +144,9 @@
 
 
         </div>
+
+        <script src="components/tabs/tabs.js" type="text/javascript"></script>
+        <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
+        <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>
 </html>

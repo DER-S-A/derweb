@@ -18,5 +18,9 @@ include("modulos/articulos/rubros-controller.php");
 // Referencia al end point entidades.
 include("modulos/entidades/entidades-model.inc.php");
 include("modulos/entidades/entidades-controller.php");
+include("modulos/articulos/marcas-model.inc.php");
+include("modulos/articulos/marcas-controller.php");
+include("modulos/articulos/subrubros-model.inc.php");
+include("modulos/articulos/subrubros-controller.php");
 
 ?>

@@ -8,6 +8,8 @@
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
+        <script src="js/utils/apis.js" type="text/javascript"></script>
+        <script src="modulos/catalogo/catalogo.js" type="text/javascript"></script>
     </head>
     <body id="page-container">
         <div id="content-wrap">

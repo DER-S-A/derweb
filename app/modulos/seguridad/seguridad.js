@@ -10,6 +10,9 @@ class Seguridad {
      * Dependencia: components/tabs/tabs-v2.js
      */
 
+    /**
+     * Permite generar el tab con los formularios para loguearse o registrarse.
+     */
     generateFormLogin() {
         var tabs = null;
         
@@ -31,37 +34,43 @@ class Seguridad {
         tabs.toHtml();        
     }
 
+    /**
+     * Permite llenar el selector de rubros de venta con la posibilidad de tildar varios
+     */
     llenarSelectRubros() {
-        getAPI("services/rubros.php/get", (xresponse) => {
-            var objSelect = document.getElementById("cboRubro");
-            var objCheckBoxes = document.createElement("div");
-            var objOption = document.createElement("option");
-            var aRubros = JSON.parse(xresponse);
+        var objSelect = document.getElementById("cboRubro");
+        var objCheckBoxes = document.createElement("div");
+        var objOption = document.createElement("option");
+        var objCatalogo = new Catalogo();
+        var aRubros = objCatalogo.getRubros();
+    
+        objOption.value = -1;
+        objOption.innerText = "Hace un click para mostrar opciones y/o ocultar";
+        objSelect.appendChild(objOption);
 
-            objOption.value = -1;
-            objOption.innerText = "Click para mostrar";
-            objSelect.appendChild(objOption);
+        aRubros.forEach((xElement) => {
+            let objSpan = document.createElement("span");
+            let objLabel = document.createElement("label");
+            let objInput = document.createElement("input");
 
-            aRubros.forEach((xElement) => {
-                let objSpan = document.createElement("span");
-                let objLabel = document.createElement("label");
-                let objInput = document.createElement("input");
-
-                objSpan.innerHTML = xElement.descripcion;
-                objInput.type = "checkbox";
-                objInput.id = xElement.id;
-                objInput.name = xElement.id;
-                objInput.classList.add("form-check-input");
-                
-                objLabel.appendChild(objInput);
-                objLabel.appendChild(objSpan);
-                objCheckBoxes.id = "checkboxes";
-                objCheckBoxes.appendChild(objLabel);
-            });
-            document.getElementById("cboRubros_Multiselect").appendChild(objCheckBoxes);
+            objSpan.innerHTML = xElement.descripcion;
+            objInput.type = "checkbox";
+            objInput.id = xElement.id;
+            objInput.name = xElement.id;
+            objInput.classList.add("form-check-input");
+            
+            objLabel.appendChild(objInput);
+            objLabel.appendChild(objSpan);
+            objCheckBoxes.id = "checkboxes";
+            objCheckBoxes.appendChild(objLabel);
         });
+
+        document.getElementById("cboRubros_Multiselect").appendChild(objCheckBoxes);        
     }
 
+    /**
+     * Permite verificar usuario y contraseña.
+     */
     loginCliente() {
         var usuario = document.getElementById("txtNroCliente").value;
         var clave = document.getElementById("txtPassword").value;
