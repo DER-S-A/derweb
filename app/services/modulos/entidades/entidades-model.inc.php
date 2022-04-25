@@ -14,8 +14,8 @@ class EntidadesModel extends Model {
      */
     public function get($filter) {
         $sql = "SELECT * FROM entidades ";
-        $this->getWhere($sql, $filter);
-        return $this->ejecutar_comando($sql);
+        $this->setWhere($sql, $filter);
+        return $this->getQuery($sql);
     }
     
     /**
@@ -37,7 +37,7 @@ class EntidadesModel extends Model {
                 WHERE 
                     usuario = '$xusuario' AND
                     id_tipoentidad = 1";
-        $aDatos = $this->ejecutar_comando($sql);
+        $aDatos = $this->getQuery($sql);
         
         if ($aDatos != null) {
             if (strcmp($aDatos[0]["clave"], $xclave) == 0) {

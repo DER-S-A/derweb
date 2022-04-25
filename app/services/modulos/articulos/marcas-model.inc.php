@@ -14,8 +14,8 @@ class MarcasModel extends Model {
     public function get($xfilter) {
         // Armado de la sentencia SQL.
         $sql = "SELECT * FROM marcas ";
-        $this->getWhere($sql, $xfilter);
-        return $this->ejecutar_comando($sql);
+        $this->setWhere($sql, $xfilter);
+        return $this->getQuery($sql);
     }
 }
 ?>
