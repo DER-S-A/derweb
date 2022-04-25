@@ -89,9 +89,12 @@ class ClientesPotencialesModel extends Model
             }
 
             $bd->commitT();
+
+            $aResult["result_code"] = "OK";
+            $aResult["result_message"] = "Cliente registrado satisfactoriamente";            
         } catch (Exception $e) {
             $bd->rollbackT();
-            $aResult["result_code"] = "ERROR";
+            $aResult["result_code"] = "BD_ERROR";
             $aResult["result_message"] = $e->getMessage();
         } finally {
             $bd->close();
@@ -102,7 +105,6 @@ class ClientesPotencialesModel extends Model
 
         return $aResult;
     }
-
 }
 
 ?>

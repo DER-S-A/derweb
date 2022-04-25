@@ -172,7 +172,7 @@ class APIController {
      */
     public function useGetMethod() {
         $metodoRequest = $_SERVER["REQUEST_METHOD"];
-        return strcmp(strtoupper($metodoRequest), "GET") == 0;
+        return sonIguales(strtoupper($metodoRequest), "GET");
     }
 
     /**
@@ -180,7 +180,17 @@ class APIController {
      */
     public function usePostMethod() {
         $metodoRequest = $_SERVER["REQUEST_METHOD"];
-        return strcmp(strtoupper($metodoRequest), "POST") == 0;
+        return sonIguales(strtoupper($metodoRequest), "POST");
+    }
+    
+    /**
+     * usePutMethod
+     * Verifica si se debe usar el método PUT.
+     * @return bool
+     */
+    public function usePutMethod() {
+        $metodoRequest = $_SERVER["REQUEST_METHOD"];
+        return sonIguales(strtoupper($metodoRequest), "PUT");
     }
     
     /**
