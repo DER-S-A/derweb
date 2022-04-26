@@ -8,7 +8,13 @@ home-header {
 
 .home-logo {
     width: 150px;
+    align-self: center;
 }
+
+#home-logo {
+    align-self: center;
+}
+
 
 .home-back-button {
     position: relative;
@@ -24,8 +30,14 @@ home-header {
     color: #003d7c;
 }
 
+
 @media screen and (max-width: 768px){
     .home-back-button {
         top: 0px;
     }
 }
+@media screen and (min-width: 768px){
+    home-header{
+        line-height:70px;
+    }
+}    

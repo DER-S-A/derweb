@@ -17,19 +17,28 @@
 
 .app-container {
     background-color: #f5f5f5;
-    overflow-y: auto;
-    overflow-x: none;
+    /*overflow-y: auto;
+    overflow-x: hidden;*/
     padding: 3px;
 }
 
 /*Es para organizar el ViewPort asi el footer queda abajo del contenido, cuando lo haya*/
 #page-container {
     position: relative;
-    min-height: 100vh;
+    /*min-height: 100vh;*/
 }
 
 #content-wrap {
-    padding-bottom: 180px;
+    /*padding-bottom: 180px;*/
+}
+
+#boton_volver {
+    margin-left: 200px !important;
+}
+
+#app-header-content{
+    margin-left: 75%;
+
 }
 
 /* Armo los media query para cuando cambia la resolución de pantalla se adapte. 
@@ -37,18 +46,27 @@
 */
 @media screen and (max-width: 1100px) {
     .app-container {
-        min-height: 100vh;
+        /*min-height: 100vh;*/
     }
 }
 
 @media screen and (max-width: 768px) {
     .app-container {
-        min-height: 100vh;
+        /*min-height: 100vh;*/
     }
 }
 
 @media screen and (max-width: 580px) {
     .app-container {
-        min-height: 100vh;
+        /*min-height: 100vh;*/
+    }
+    #app-header-content {
+        margin-left: 35%;
+        align-self: center;
+    }
+
+    #nav-quiero-ser-cliente {
+        margin-bottom: 12.5em;
     }
 }
+

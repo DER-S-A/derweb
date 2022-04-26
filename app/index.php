@@ -13,23 +13,21 @@
     </head>
     <body id="page-container">
         <div id="content-wrap">
-            <main class="container-fluid">
-                <header class="home-header">
-                    <div class="row">
-                        <div id="home-logo" class="col-2">
-                            <img src="assets/imagenes/logo.png" alt="" class="home-logo" />
-                        </div>
-                        <div id="app-header-content" class="col-md-10">
-                            <div class="home-back-button">
-                                <a href="https://derdistribuciones.com.ar/"><i class="fa-solid fa-angle-left"></i> Volver a la web</a>
+            <header class="home-header">
+                        <div class="row">
+                            <div id="home-logo" class="col col-md-2">
+                                <img src="assets/imagenes/logo.png" alt="" class="home-logo" />
+                            </div>
+                            <div id="app-header-content" class= "col col-md-1">
+                                <a href="javascript:history.back()"><img src="assets/imagenes/volver.png" class="img-fluid" alt="Volver"/></a>
                             </div>
                         </div>
-                    </div>                    
+            </header>
+            <main class="container-fluid">          
+                <section id="app-container" class="app-container">
 
-                    <section id="app-container" class="app-container">
+                </section>
 
-                    </section>
-                </header>
             </main>
             
             <footer id="footer" class="home-footer">
@@ -50,16 +48,6 @@
                                         </small>            
                                     </div>
                                 </div>
-
-                                <!--<div class="row">
-                                    <div class="col-md-12">
-                                        <small class="home-texto-footer">
-                                            Ofrecemos día a día a cada uno de
-                                            nuestros clientes un eficiente servicio de
-                                            abastecimiento a nivel nacional e internacionaal.
-                                        </small>            
-                                    </div>
-                                </div>-->
                             </div>
                         </div>
                         <div class="col-6">
@@ -70,16 +58,6 @@
                                         <small class="home-texto-footer"><i class="fa-solid fa-phone"></i> (+5411) 4846 7500 <br/>
                                         <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h</small>                                        
                                     </div>
-                                </div>
-                                <!--<div class="row">
-                                    <div class="col-md-12">
-                                        <small class="home-texto-footer"><i class="fa-solid fa-phone"></i> (+5411) 4846 7500</small>
-                                    </div>
-                                </div>-->
-                                <!--<div class="row">
-                                    <div class="col-md-12">
-                                        <small class="home-texto-footer"><strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h</small>
-                                    </div>-->
                                 </div>
                                 <div class="row align-middle" id="redSocial" style="align-items: center; margin-left: 0; margin-top: 10px">
                                     <div class="col-md-2">
