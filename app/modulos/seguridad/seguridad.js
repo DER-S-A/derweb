@@ -45,7 +45,7 @@ class Seguridad {
         var aRubros = objCatalogo.getRubros();
     
         objOption.value = -1;
-        objOption.innerText = "Click para mostrar";
+        objOption.innerText = "Hace un click para mostrar opciones y/o ocultar";
         objSelect.appendChild(objOption);
 
         aRubros.forEach((xElement) => {
