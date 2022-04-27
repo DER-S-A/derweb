@@ -87,6 +87,7 @@
 
         <script src="components/tabs/tabs.js" type="text/javascript"></script>
         <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
+        <script src="modulos/seguridad/registrar-cliente-potencial.js"></script>
         <script src="js/index.js" type="text/javascript"></script>
     </body>
 </html>

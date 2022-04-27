@@ -22,4 +22,15 @@ class APIs {
 
         return aResult;
     }
+
+    put(xURL, xcallback, xasync = false) {
+        let xmlRequest = new XMLHttpRequest();
+        xmlRequest.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                xcallback(this.responseText);
+            }
+        };
+        xmlRequest.open("PUT", xURL, xasync);
+        xmlRequest.send();        
+    }
 }

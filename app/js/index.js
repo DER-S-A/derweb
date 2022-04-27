@@ -3,10 +3,12 @@ var app = new App();
 app.init();
 
 var login = new Seguridad();
+var objRegistro = new RegistrarClientePotencial()
 var expanded = false;
 
 login.generateFormLogin();
-login.llenarSelectRubros();
+objRegistro.llenarSelectRubros();
+
 
 /**
  * La siguiente función se ejecuta al hacer click sobre
@@ -28,3 +30,52 @@ function showOptions() {
 document.getElementById("btnIniciarSesion").addEventListener("click", () => {
     login.loginCliente();
 });
+
+// Agrego el evento para registrar un cliente potencial.
+document.getElementById("btnRegistrarse").addEventListener("click", () => {
+    var objRegistro = new RegistrarClientePotencial()
+    objRegistro.eMail = document.getElementById("txtMail").value;
+    objRegistro.razonSocial = document.getElementById("txtRazSoc").value;
+    objRegistro.telefono = document.getElementById("txtTelefono").value;
+    objRegistro.ubicacion = document.getElementById("txtUbicacion").value;
+    var rubrosSeleccionados = new Array();
+    
+    objCheckBoxes = getCheckBoxes();
+    // Uso el for normal porque no toma el método forEach
+    for (let i = 0; i < objCheckBoxes.length; i++)
+        if (objCheckBoxes[i].checked)
+            rubrosSeleccionados.push(objCheckBoxes[i].id);
+
+    objRegistro.aIdsRubrosSeleccioandos = rubrosSeleccionados;
+    var repuesta = objRegistro.registrarClientePotencial();
+    if (repuesta["result_code"] === "OK") {
+        alert(repuesta["result_message"]);
+        blanquearFormRegistro();
+    }
+});
+
+/**
+ * Obtiene un array con los inputs checkboxes del combo.
+ * @returns Array
+ */
+function getCheckBoxes() {
+    var objCheckBoxesDiv = document.getElementById("checkboxes");
+    var objCheckBoxes = objCheckBoxesDiv.getElementsByTagName("input");
+    return objCheckBoxes;
+}
+
+/**
+ * Permite blanquear el formulario de registro.
+ */
+function blanquearFormRegistro() {
+    document.getElementById("txtMail").value = "";
+    document.getElementById("txtRazSoc").value = "";
+    document.getElementById("txtTelefono").value = "";
+    document.getElementById("txtUbicacion").value = "";
+
+    // Desmarco los checkboxes.
+    aCheckBoxes = getCheckBoxes();
+    for (let i = 0; i < aCheckBoxes.length; i++)
+        if (aCheckBoxes[i].checked)
+            aCheckBoxes[i].checked = false;
+}

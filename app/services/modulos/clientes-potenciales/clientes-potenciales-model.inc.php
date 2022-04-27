@@ -88,6 +88,10 @@ class ClientesPotencialesModel extends Model
                 $bd->execInsert($sql);
             }
 
+            // Actualizo el checksum de la tabla.
+            sc3UpdateTableChecksum("clipot_registros", $bd);
+            sc3UpdateTableChecksum("clipot_rubros", $bd);
+
             $bd->commitT();
 
             $aResult["result_code"] = "OK";
@@ -98,9 +102,6 @@ class ClientesPotencialesModel extends Model
             $aResult["result_message"] = $e->getMessage();
         } finally {
             $bd->close();
-            // Actualizo el checksum de la tabla.
-            sc3UpdateTableChecksum("clipot_registros");
-            sc3UpdateTableChecksum("clipot_rubros");
         }
 
         return $aResult;
