@@ -31,12 +31,12 @@ class EntidadesModel extends Model {
                     id, 
                     cliente_cardcode, 
                     usuario, 
-                    clave 
+                    clave,
+                    id_tipoentidad
                 FROM 
                     entidades 
                 WHERE 
-                    usuario = '$xusuario' AND
-                    id_tipoentidad = 1";
+                    usuario = '$xusuario'";
         $aDatos = $this->getQuery($sql);
         
         if ($aDatos != null) {
@@ -44,8 +44,9 @@ class EntidadesModel extends Model {
                 $aResult["result"] = "OK";
                 $aResult["usuario"] = $aDatos[0]["usuario"];
                 $aResult["clave"] = $aDatos[0]["clave"];
-                $aResult["id_cliente"] = $aDatos[0]["id"];
+                $aResult["id_cliente"] = intval($aDatos[0]["id"]);
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
+                $aResult["id_tipoentidad"] = intval($aDatos[0]["id_tipoentidad"]);
             } else {
                 $aResult["result"] = "ERR_CLAVE";
                 $aResult["mensaje"] = "Contraseña inválida.";

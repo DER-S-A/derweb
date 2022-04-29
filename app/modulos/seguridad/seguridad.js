@@ -50,10 +50,8 @@ class Seguridad {
                     form.action = "main-clientes.php";
                     form.method = "POST";
                     form.submit();
-                    // Redireccionar a página principal.
                 }
                 else {
-                    console.log(aResultado);
                     alert(aResultado.mensaje);
                 }
             });
