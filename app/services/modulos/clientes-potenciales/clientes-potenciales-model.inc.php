@@ -17,7 +17,7 @@ class ClientesPotencialesModel extends Model
     public function get($xfilter) 
     {
         // Armado de la sentencia SQL.
-        $sql = "SELECT * FROM clientes_potenciales ";
+        $sql = "SELECT * FROM clipot_registros";
         $this->setWhere($sql, $xfilter);
         return $this->getQuery($sql);
 

@@ -26,4 +26,6 @@ include("modulos/articulos/subrubros-model.inc.php");
 include("modulos/articulos/subrubros-controller.php");
 include("modulos/clientes-potenciales/clientes-potenciales-model.inc.php");
 include("modulos/clientes-potenciales/clientes-potenciales-controller.php");
+include("modulos/banner_portada/banner-portada-model.inc.php");
+include("modulos/banner_portada/banner-portada-controller.php");
 ?>
