@@ -13,6 +13,7 @@ window.onload = () => {
     llenarModelos();
     llenarMotor();
     llenarAnio();
+    generarMenuOperaciones();
 }
 
 /**
@@ -75,4 +76,9 @@ function llenarAnio() {
     var objSelectAnio = document.getElementById("select_anio");
     addSelectOption(objSelectAnio, 0, "En Construcción");
     // TODO: Darle funcionalidad cuando se cargue la base de aplicaciones.
+}
+
+function generarMenuOperaciones() {
+    var objMenu = new MenuComponent();
+    objMenu.generarMenu();
 }

@@ -33,7 +33,9 @@ class Lfw_operacionesModel extends Model {
                     lfw_operaciones t1
                         INNER JOIN lfw_accesos t2 ON t1.id = t2.id_operacion 
                 WHERE
-                    t2.id_tipoentidad = $xidTipoEntidad";
+                    t2.id_tipoentidad = $xidTipoEntidad
+                ORDER BY
+                    t1.orden ASC";
         return $this->getQuery($sql);        
     }
 }

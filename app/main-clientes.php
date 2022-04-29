@@ -4,7 +4,10 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
         <link href="css/app-style.css" rel="stylesheet">
+        <link href="components/menus/menus.css" rel="stylesheet">
+
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
@@ -94,17 +97,16 @@
                     </div>                    
 
                     <!-- Acá armar el menú principal -->
-                    <nav class="row" style="background-color: lightgray;">
-                        <div class="col-md-12">
-                            <P>Menu</P>
-                        </div>
-                    </nav>                    
+                    <div id="toolbar" class="toolbar-container">
+                        <div id="menu-container" class="menu-container"></div>
+                        <div id="lista-articulos-container" class="menu-container"></div>
+                    </div>
                 </header>
 
                 <section id="app-container" class="app-container"><p>Contenedor de aplicación</p></section>
             </main>
 
-            <footer class="app-footer">
+            <footer class="app-footer" style="bottom: 0; position:relative;">
                 <div class="app-footer-container container">
                     <div class="row">
                         <div class="col-md-3">
@@ -146,6 +148,7 @@
         </div>
 
         <script src="components/tabs/tabs.js" type="text/javascript"></script>
+        <script src="components/menus/menus.js" type="text/javascript"></script>
         <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>

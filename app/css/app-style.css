@@ -16,6 +16,7 @@
 }
 
 .app-container {
+    position: relative;
     background-color: #f5f5f5;
     /*overflow-y: auto;
     overflow-x: hidden;*/
@@ -38,7 +39,21 @@
 
 #app-header-content{
     margin-left: 75%;
+}
 
+/* Estilos básicos para portada de clientes */
+
+.toolbar-container {
+    position: relative;
+    width: 100%;
+    max-height: 50px;
+}
+
+.menu-container {
+    width: 200px;
+    height: 50px;
+    margin-right: 5px;
+    padding: 5px;
 }
 
 /* Armo los media query para cuando cambia la resolución de pantalla se adapte. 
