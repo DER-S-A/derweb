@@ -2,7 +2,6 @@
 /**
  * Clase para controlar API nombre_tabla
  */
-
 class nombre_claseController extends APIController {
     /**
      * listarPorId

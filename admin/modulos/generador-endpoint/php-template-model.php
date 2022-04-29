@@ -4,8 +4,6 @@
  * Esta clase permite manejar la tabla de nombre_tabla
  * 
  */
-
-
 class nombre_claseModel extends Model {
     /**
      * get

@@ -4,8 +4,6 @@
  * Esta clase permite manejar la tabla de lfw_operaciones
  * 
  */
-
-
 class Lfw_operacionesModel extends Model {
     /**
      * get

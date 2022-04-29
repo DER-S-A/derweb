@@ -5,7 +5,6 @@
 
 include ("autoload.php");
 
-
 // Pongo los encabezados por si me conecto desde javascript de otro servidor,
 // me autorice la política CORS.
 
