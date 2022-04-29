@@ -23,7 +23,6 @@ class Lfw_operacionesController extends APIController {
         } else
             $this->setErrorMetodoNoSoportado();
 
-
         // Envío la salida
         if ($this->isOK())
             $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
@@ -41,8 +40,31 @@ class Lfw_operacionesController extends APIController {
         $objModel = new Lfw_operacionesModel();
         return json_encode($objModel->get($xfilter));
     }
+    
+    /**
+     * getByTipoEntidad
+     * Obtiene las operaciones por tipo de entidad.
+     * @return void
+     */
+    public function getByTipoEntidad() {        
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $idTipoEntidad = $this->getURIParameters("idTipoEntidad");
+                $objModel = new Lfw_operacionesModel();
+                $responseData = json_encode($objModel->getByTipoEntidad($idTipoEntidad));                
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
 
-    // TODO: Desarrollar métodos extras acá abajo.
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 }
 
 ?>
