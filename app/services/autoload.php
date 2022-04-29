@@ -28,4 +28,6 @@ include("modulos/clientes-potenciales/clientes-potenciales-model.inc.php");
 include("modulos/clientes-potenciales/clientes-potenciales-controller.php");
 include("modulos/banner_portada/banner-portada-model.inc.php");
 include("modulos/banner_portada/banner-portada-controller.php");
+include("modulos/derweb_operaciones/lfw-operacionesModel.inc.php");
+include("modulos/derweb_operaciones/lfw-operacionesController.php");
 ?>
