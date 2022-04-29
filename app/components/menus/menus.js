@@ -3,10 +3,16 @@
  */
 
 class MenuComponent {
+    /**
+     * Constructor de clase
+     */
     constructor() {
         this.menuContainer = document.getElementById("menu-container");
     }
 
+    /**
+     * Genera el menú hamburguesa principal.
+     */
     generarMenu() {
         getTemplate("components/menus/menus.html", (xhtml) => {
             this.menuContainer.innerHTML = xhtml;
@@ -22,13 +28,20 @@ class MenuComponent {
         });
     }
 
+    /**
+     * Permite leer las opciones de menú desde la API de DERWEB Operaciones.
+     */
     __leerOpciones() {
         var objMenuOptions = document.getElementById("menu-options");
         var objAPIs = new APIs();
         var objCache = new CacheUtils("derweb", false);
         var sesion = objCache.get("sesion");
         var idTipoEntidad = sesion.id_tipoentidad;
+
+        // Recupero las opciones de menú según el tipo de entidad para mostrar solo
+        // a lo que puede acceder.
         var aOperaciones = objAPIs.getFromAPI("services/lfw-operaciones/getByTipoEntidad?idTipoEntidad=" + idTipoEntidad);
+
         aOperaciones.forEach(xElement => {
             let objLink = document.createElement("a");
             objLink.href = xElement.url;

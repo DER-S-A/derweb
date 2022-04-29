@@ -78,6 +78,9 @@ function llenarAnio() {
     // TODO: Darle funcionalidad cuando se cargue la base de aplicaciones.
 }
 
+/**
+ * Genera el menú principal a partir del componente Menus.
+ */
 function generarMenuOperaciones() {
     var objMenu = new MenuComponent();
     objMenu.generarMenu();
