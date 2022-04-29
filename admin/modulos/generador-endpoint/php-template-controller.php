@@ -23,7 +23,6 @@ class nombre_claseController extends APIController {
         } else
             $this->setErrorMetodoNoSoportado();
 
-
         // Envío la salida
         if ($this->isOK())
             $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
