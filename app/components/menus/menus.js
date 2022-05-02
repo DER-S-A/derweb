@@ -5,9 +5,10 @@
 class MenuComponent {
     /**
      * Constructor de clase
+     * @param {string} xidContainer Id. del contenedor en donde se debe crear el componente.
      */
-    constructor() {
-        this.menuContainer = document.getElementById("menu-container");
+    constructor(xidContainer) {
+        this.menuContainer = document.getElementById(xidContainer);
     }
 
     /**

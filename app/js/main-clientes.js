@@ -82,6 +82,6 @@ function llenarAnio() {
  * Genera el menú principal a partir del componente Menus.
  */
 function generarMenuOperaciones() {
-    var objMenu = new MenuComponent();
+    var objMenu = new MenuComponent("menu-container");
     objMenu.generarMenu();
 }
