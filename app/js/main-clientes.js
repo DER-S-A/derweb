@@ -14,6 +14,7 @@ window.onload = () => {
     llenarMotor();
     llenarAnio();
     generarMenuOperaciones();
+    generarBotonListaArticulos();
 }
 
 /**
@@ -84,4 +85,13 @@ function llenarAnio() {
 function generarMenuOperaciones() {
     var objMenu = new MenuComponent("menu-container");
     objMenu.generarMenu();
+}
+
+
+/**
+ * Crea el componente Lista de Artículos.
+ */
+function generarBotonListaArticulos() {
+    var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
+    objListaArticulo.generateComponent();
 }

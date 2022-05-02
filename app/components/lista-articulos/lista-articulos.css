@@ -1,0 +1,87 @@
+/**
+ * CSS para el componente Lista Articulos
+*/
+
+.lista-articulos-container {
+    position: relative;
+    float: left;
+    width: 250px;
+    height: 50px;
+    margin-right: 5px;
+    padding: 5px;
+}
+
+.lista-articulos-container .lista-articulos-button {
+    margin-top: 1px;
+    background-color: #009ada;
+    color: #f5f5f5;
+    font-family: "futura";
+    font-weight: bold;
+    font-size: 15px;
+    height: 38px;
+}
+
+.lista-articulos-opciones-rubros {
+    position: absolute;
+    z-index: 9999;
+    top: 0px;
+    width: 250px;
+    float: left;
+    background-color: #f5f5f5;
+    display: none;
+    border-right: 2px solid lightgray;
+}
+
+.lista-articulos-opciones-rubros ul {
+    list-style: none;
+    width: 100%;
+}
+
+.lista-articulos-opciones-rubros ul li a {
+    font-family: "futura";
+    font-size: 12px;
+    font-weight: bold;
+    color: #003d7c;
+    padding: 5px;
+}
+
+.lista-articulos-logo-container {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 5px;
+}
+
+.lista-articulos-logo-container img {
+    width: 80%;
+}
+
+.lista-articulo-boton-cerrar {
+    border: none;
+    background-color: #f5f5f5;
+    color: #009ada;
+    font-size: 32px;
+}
+
+/* Diseño opción rubro */
+
+.opcion-rubro-container {
+    position: relative;
+    float: left;
+    width: 100%;
+    padding: 5px;
+}
+
+.opcion-rubro-texto-container {
+    position: relative;
+    float: left;
+    width: 80%;
+
+}
+
+.opcion-rubro-icono-container {
+    position: relative;
+    float: right;
+    width: 16px;
+    color: gray;
+}
