@@ -17,5 +17,24 @@ class SubrubrosModel extends Model {
         $this->setWhere($sql, $xfilter);
         return $this->getQuery($sql);
     }
+    
+    /**
+     * getSubrubrosByRubro
+     * Permite obtener los subrubros filtrando por un rubro.
+     * @param  int $xid_rubro
+     * @return array Conjunto de resultados.
+     */
+    public function getSubrubrosByRubro($xid_rubro) {
+        $sql = "SELECT
+                    t1.*
+                FROM
+                    subrubros t1
+                        INNER JOIN articulos t2 ON t2.id_subrubro = t1.id
+                WHERE
+                    t2.id_rubro = $xid_rubro
+                GROUP BY
+                    t1.id";
+        return $this->getQuery($sql);
+    }
 }
 ?>

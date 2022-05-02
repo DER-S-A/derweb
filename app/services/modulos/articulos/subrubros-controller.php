@@ -38,5 +38,26 @@ class SubrubrosController extends APIController {
         $a = $objModel->get($xfilter);
         return json_encode($a);
     }
+
+    public function getSubrubrosPorRubro() {        
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                // Invoco al método getSubrubrosByRubros de la clase SubrubrosModel.
+                $id_rubro = intval($this->getURIParameters("id_rubro"));
+                $objModel = new SubrubrosModel();
+                $responseData = json_encode($objModel->getSubrubrosByRubro($id_rubro));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }    
 }
 ?>
