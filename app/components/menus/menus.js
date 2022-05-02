@@ -20,10 +20,14 @@ class MenuComponent {
 
             document.getElementById("btnPushMenu").addEventListener("click", () => {
             if (document.getElementById("menu-options").style.display === "none" 
-                    || document.getElementById("menu-options").style.display === "")
+                    || document.getElementById("menu-options").style.display === "") {
                 document.getElementById("menu-options").style.display = "block";
-            else
+                document.getElementById("btnPushMenu").innerHTML = "<i class='fa-solid fa-xmark'></i>";
+            }
+            else {
                 document.getElementById("menu-options").style.display = "none";
+                document.getElementById("btnPushMenu").innerHTML = "<i class='fas fa-bars'></i>";
+            }
             });
         });
     }
