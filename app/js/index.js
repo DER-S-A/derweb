@@ -85,21 +85,23 @@ function blanquearFormRegistro() {
 
 // Validar formulario register
 function validarForm() {
-    let valid;
-    if(document.formRegister.txtMail.value==""){
+    if (document.formRegister.txtMail.value == "") {
         alert("Campo Mail Obligatorio");
         document.formRegister.txtMail.focus();
         return false;
     }
-    if(document.formRegister.txtRazSoc.value==""){
+
+    if (document.formRegister.txtRazSoc.value == "" ) {
         alert("Campo Razon Social Obligatorio");
         document.formRegister.txtRazSoc.focus();
         return false;
     }
-    if(document.formRegister.txtTelefono.value.length!=10){
+
+    if (document.formRegister.txtTelefono.value.length != 10) {
         alert("Campo telefono Error, debe tener 10 digitos");
         document.formRegister.txtTelefono.focus();
         return false;
-    }    
+    }
+
     return true;
 }
