@@ -33,24 +33,27 @@ document.getElementById("btnIniciarSesion").addEventListener("click", () => {
 
 // Agrego el evento para registrar un cliente potencial.
 document.getElementById("btnRegistrarse").addEventListener("click", () => {
-    var objRegistro = new RegistrarClientePotencial()
-    objRegistro.eMail = document.getElementById("txtMail").value;
-    objRegistro.razonSocial = document.getElementById("txtRazSoc").value;
-    objRegistro.telefono = document.getElementById("txtTelefono").value;
-    objRegistro.ubicacion = document.getElementById("txtUbicacion").value;
-    var rubrosSeleccionados = new Array();
-    
-    objCheckBoxes = getCheckBoxes();
-    // Uso el for normal porque no toma el método forEach
-    for (let i = 0; i < objCheckBoxes.length; i++)
-        if (objCheckBoxes[i].checked)
-            rubrosSeleccionados.push(objCheckBoxes[i].id);
+    //console.log(validarForm());
+    if(validarForm()){
+        var objRegistro = new RegistrarClientePotencial()
+        objRegistro.eMail = document.getElementById("txtMail").value;
+        objRegistro.razonSocial = document.getElementById("txtRazSoc").value;
+        objRegistro.telefono = document.getElementById("txtTelefono").value;
+        objRegistro.ubicacion = document.getElementById("txtUbicacion").value;
+        var rubrosSeleccionados = new Array();
+        
+        objCheckBoxes = getCheckBoxes();
+        // Uso el for normal porque no toma el método forEach
+        for (let i = 0; i < objCheckBoxes.length; i++)
+            if (objCheckBoxes[i].checked)
+                rubrosSeleccionados.push(objCheckBoxes[i].id);
 
-    objRegistro.aIdsRubrosSeleccioandos = rubrosSeleccionados;
-    var repuesta = objRegistro.registrarClientePotencial();
-    if (repuesta["result_code"] === "OK") {
-        alert(repuesta["result_message"]);
-        blanquearFormRegistro();
+        objRegistro.aIdsRubrosSeleccioandos = rubrosSeleccionados;
+        var repuesta = objRegistro.registrarClientePotencial();
+        if (repuesta["result_code"] === "OK") {
+            alert(repuesta["result_message"]);
+            blanquearFormRegistro();
+        }
     }
 });
 
@@ -78,4 +81,25 @@ function blanquearFormRegistro() {
     for (let i = 0; i < aCheckBoxes.length; i++)
         if (aCheckBoxes[i].checked)
             aCheckBoxes[i].checked = false;
+}
+
+// Validar formulario register
+function validarForm() {
+    let valid;
+    if(document.formRegister.txtMail.value==""){
+        alert("Campo Mail Obligatorio");
+        document.formRegister.txtMail.focus();
+        return false;
+    }
+    if(document.formRegister.txtRazSoc.value==""){
+        alert("Campo Razon Social Obligatorio");
+        document.formRegister.txtRazSoc.focus();
+        return false;
+    }
+    if(document.formRegister.txtTelefono.value.length!=10){
+        alert("Campo telefono Error, debe tener 10 digitos");
+        document.formRegister.txtTelefono.focus();
+        return false;
+    }    
+    return true;
 }
