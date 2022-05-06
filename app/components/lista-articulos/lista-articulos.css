@@ -23,7 +23,7 @@
 
 .lista-articulos-opciones-rubros {
     position: absolute;
-    z-index: 9999;
+    z-index: 99999;
     top: 0px;
     width: 250px;
     float: left;
@@ -32,12 +32,12 @@
     border-right: 2px solid lightgray;
 }
 
-.lista-articulos-opciones-rubros ul {
+.lista-articulos-ul {
     list-style: none;
     width: 100%;
 }
 
-.lista-articulos-opciones-rubros ul li a {
+.lista-articulos-ul li a {
     font-family: "futura";
     font-size: 12px;
     font-weight: bold;
@@ -84,4 +84,27 @@
     float: right;
     width: 16px;
     color: gray;
+}
+
+.lista-articulos-subrubros-container {
+    position: absolute;
+    z-index: 999999;
+    top: 0px;
+    width: 250px;
+    float: left;
+    margin-left: 250px;
+    background-color: #f5f5f5;
+    border-right: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.titulo-rubro-seleccionado {
+    font-family: "futura";
+    font-weight: bold;
+    font-size: 12pt;
+    color: #003d7c;
+    text-align: center;
 }

@@ -39,7 +39,12 @@ class SubrubrosController extends APIController {
         return json_encode($a);
     }
 
-    public function getSubrubrosPorRubro() {        
+    /**
+     * getSubrubrosPorRubro
+     * Permite obtener los subrubros en base a un rubro.
+     * @return void
+     */
+    public function getSubrubrosPorRubro() {
         // Valido que la llamada venga por método GET o POST.
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {

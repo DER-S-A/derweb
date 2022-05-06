@@ -32,7 +32,19 @@ class Catalogo {
      */
     getSubrubros(xfilter = "") {
         var objApi = new APIs();
-        var aSubrubros = objApi.getFromAPI("services/subrubros/get", xfilter);;
+        var aSubrubros = objApi.getFromAPI("services/subrubros/get", xfilter);
+        return aSubrubros;
+    }
+
+    /**
+     * Obtiene los subrubros a partir de un rubro
+     * @param {int} xid_rubro
+     * @returns {array}
+     */
+    getSubrubrosByRubro(xid_rubro) {
+        var objApi = new APIs();
+        var filter = "id_rubro=" + xid_rubro;
+        var aSubrubros = objApi.getFromAPI("services/subrubros/getSubrubrosPorRubro?" + filter);
         return aSubrubros;
     }
 

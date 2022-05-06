@@ -38,8 +38,13 @@ class ListaArticuloComponent {
         let objRubrosContainer = document.getElementById("rubros-container");
         if (xcommand === "open")
             objRubrosContainer.style.display = "block";
-        else
-            objRubrosContainer.style.display = "none";
+        else {
+            let objListaSubrubroAbierta = document.getElementById("lista-subrubros-container");
+            if (objListaSubrubroAbierta !== null)
+                document.body.removeChild(objListaSubrubroAbierta);
+
+            objRubrosContainer.style.display = "none";            
+        }
     }
 
     /**
@@ -64,6 +69,7 @@ class ListaArticuloComponent {
     __crearOpcionesRubros() {
         var objCatalogo = new Catalogo();
         var aRubros = new Array();
+        var objUl;
         var objDivRubros = document.createElement("div");
         objDivRubros.id = "rubros-container";
         objDivRubros.classList.add("lista-articulos-opciones-rubros");
@@ -72,31 +78,7 @@ class ListaArticuloComponent {
         objDivRubros.appendChild(objLogo);
 
         aRubros = objCatalogo.getRubros();
-
-        // Armo la lista de rubros
-        var objUl = document.createElement("ul");
-        aRubros.forEach((xrubro) => {
-            let objLi = document.createElement("li");
-            let objDivContainerOption = document.createElement("div");
-            let objDivTexto = document.createElement("div");
-            let objDivIcono = document.createElement("div");
-            let objLink = document.createElement("a");
-
-            objLink.href = "javascript: desplegar_subrubros(" + xrubro.id + ");";
-
-            objDivContainerOption.classList.add("opcion-rubro-container");
-            objDivTexto.classList.add("opcion-rubro-texto-container");
-            objDivIcono.classList.add("opcion-rubro-icono-container");
-
-            objDivTexto.innerHTML = "<span>" + xrubro.descripcion + "</span>";
-            objDivIcono.innerHTML = "<i class=\"fa-solid fa-angle-right\"></i>";
-
-            objDivContainerOption.appendChild(objDivTexto);
-            objDivContainerOption.appendChild(objDivIcono);
-            objLink.appendChild(objDivContainerOption);
-            objLi.appendChild(objLink);
-            objUl.appendChild(objLi);
-        });
+        objUl = this.crearLista(aRubros, true);
 
         // Enlazo las etiquetas
         objDivRubros.appendChild(objUl);
@@ -127,4 +109,102 @@ class ListaArticuloComponent {
         objLogoContainer.appendChild(objBotonCerrar);
         return objLogoContainer;
     }
+
+    /**
+     * Permite crear la lista UL.
+     * @param {array} aDatos Datos a mostrar en la lista
+     * @param {boolean} xesRubro Indica si la lista de rubros.
+     * @returns 
+     */
+    crearLista(aDatos, xesRubro) {
+        var objUl = document.createElement("ul");
+        objUl.classList.add("lista-articulos-ul");
+        aDatos.forEach((xrow) => {
+            let objLi = document.createElement("li");
+            let objDivContainerOption = document.createElement("div");
+            let objDivTexto = document.createElement("div");
+            let objDivIcono = document.createElement("div");
+            let objLink = document.createElement("a");
+
+            // Si es la lista de rubros, entonces hago el llamado a la función para desplegar
+            // los subrubros del rubro seleccionado, en caso contrario, hago el llamado a la
+            // función para redireccionar a la lista de artículos.
+            if (xesRubro)
+                objLink.href = "javascript:desplegar_subrubros(" + xrow.id + ");";
+            else
+                objLink.href = "javascript:mostrar_articulos(" + xrow.id + ");";
+
+            objDivContainerOption.classList.add("opcion-rubro-container");
+            objDivTexto.classList.add("opcion-rubro-texto-container");
+            objDivIcono.classList.add("opcion-rubro-icono-container");
+
+            objDivTexto.innerHTML = "<span>" + xrow.descripcion + "</span>";
+            objDivIcono.innerHTML = "<i class=\"fa-solid fa-angle-right\"></i>";
+
+            objDivContainerOption.appendChild(objDivTexto);
+
+            // Si es la lista de rubros, entonces agrego el ícono flechita.
+            if (xesRubro)
+                objDivContainerOption.appendChild(objDivIcono);
+
+            objLink.appendChild(objDivContainerOption);
+            objLi.appendChild(objLink);
+            objUl.appendChild(objLi);
+        });
+        
+        return objUl;
+    }
+}
+
+/**
+ * Esta función se ejecuta al hacer click sobre un rubro.
+ * @param {int} xid_subrubro 
+ */
+function desplegar_subrubros(xid_rubro) {
+    var objCatalogo = new Catalogo();
+    var objListaArticulo = new ListaArticuloComponent();
+    var objUl;
+    var aSubrubros = objCatalogo.getSubrubrosByRubro(xid_rubro);
+    var objDivSubrubrosContainer = document.createElement("div");
+    var objTitulo = document.createElement("h5");
+    var rubroSeleccionado = objCatalogo.getRubros("id = " + xid_rubro);
+    var objListaSubrubroAbierta = document.getElementById("lista-subrubros-container");
+
+    // Verifico si se abrió otra lista de subrubro anteriormente para eliminarla
+    if (objListaSubrubroAbierta !== null)
+        document.body.removeChild(objListaSubrubroAbierta);
+
+    objTitulo.classList.add("titulo-rubro-seleccionado");
+    objTitulo.innerHTML = rubroSeleccionado[0].descripcion;
+    
+    objDivSubrubrosContainer.id = "lista-subrubros-container";
+    objDivSubrubrosContainer.classList.add("lista-articulos-subrubros-container");
+    objDivSubrubrosContainer.style.display = "block";
+
+    // Armo la lista de subrubros
+    /*var objUl = document.createElement("ul");
+    objUl.classList.add("lista-articulos-ul");
+    aSubrubros.forEach(xsubrubro => {
+        let objLi = document.createElement("li");
+        let objDivContainerOption = document.createElement("div");
+        let objDivTexto = document.createElement("div");
+        let objLink = document.createElement("a");
+
+        objLink.href = "javascript:mostrar_articulos(" + xsubrubro.id + ");";
+
+        objDivContainerOption.classList.add("opcion-rubro-container");
+        objDivTexto.classList.add("opcion-rubro-texto-container");
+        objDivTexto.innerHTML = xsubrubro.descripcion;
+
+        objDivContainerOption.appendChild(objDivTexto);
+        objLink.appendChild(objDivContainerOption);
+        objLi.appendChild(objLink);
+        objUl.appendChild(objLi);
+    });*/
+    objUl = objListaArticulo.crearLista(aSubrubros, false);
+
+    objDivSubrubrosContainer.appendChild(objTitulo);
+    objDivSubrubrosContainer.appendChild(objUl);
+    document.body.appendChild(objDivSubrubrosContainer);
+    window.scrollTo(0, 0);
 }
