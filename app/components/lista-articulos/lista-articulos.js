@@ -181,26 +181,6 @@ function desplegar_subrubros(xid_rubro) {
     objDivSubrubrosContainer.classList.add("lista-articulos-subrubros-container");
     objDivSubrubrosContainer.style.display = "block";
 
-    // Armo la lista de subrubros
-    /*var objUl = document.createElement("ul");
-    objUl.classList.add("lista-articulos-ul");
-    aSubrubros.forEach(xsubrubro => {
-        let objLi = document.createElement("li");
-        let objDivContainerOption = document.createElement("div");
-        let objDivTexto = document.createElement("div");
-        let objLink = document.createElement("a");
-
-        objLink.href = "javascript:mostrar_articulos(" + xsubrubro.id + ");";
-
-        objDivContainerOption.classList.add("opcion-rubro-container");
-        objDivTexto.classList.add("opcion-rubro-texto-container");
-        objDivTexto.innerHTML = xsubrubro.descripcion;
-
-        objDivContainerOption.appendChild(objDivTexto);
-        objLink.appendChild(objDivContainerOption);
-        objLi.appendChild(objLink);
-        objUl.appendChild(objLi);
-    });*/
     objUl = objListaArticulo.crearLista(aSubrubros, false);
 
     objDivSubrubrosContainer.appendChild(objTitulo);
