@@ -51,7 +51,7 @@ document.getElementById("btnRegistrarse").addEventListener("click", () => {
         objRegistro.aIdsRubrosSeleccioandos = rubrosSeleccionados;
         var repuesta = objRegistro.registrarClientePotencial();
         if (repuesta["result_code"] === "OK") {
-            alert(repuesta["result_message"]);
+            swal("WOW!", repuesta["result_message"],"success")
             blanquearFormRegistro();
         }
     }
@@ -86,19 +86,19 @@ function blanquearFormRegistro() {
 // Validar formulario register
 function validarForm() {
     if (document.formRegister.txtMail.value == "") {
-        alert("Campo Mail Obligatorio");
+        swal("Oops!", "Campo de email obligatorio", "error");
         document.formRegister.txtMail.focus();
         return false;
     }
 
     if (document.formRegister.txtRazSoc.value == "" ) {
-        alert("Campo Razon Social Obligatorio");
+        swal("Oops!", "Campo Razon Social Obligatorio", "error");
         document.formRegister.txtRazSoc.focus();
         return false;
     }
 
     if (document.formRegister.txtTelefono.value.length != 10) {
-        alert("Campo telefono Error, debe tener 10 digitos");
+        swal("Oops!", "Campo telefono Error, debe tener 10 digitos", "error");
         document.formRegister.txtTelefono.focus();
         return false;
     }
