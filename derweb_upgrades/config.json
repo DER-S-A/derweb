@@ -1,0 +1,27 @@
+{
+    "body": {
+        "CompanyDB": "SBODEMOAR",
+        "Password": "1234",
+        "UserName": "manager"
+    },
+    "urls": {
+        "login": "https://181.119.123.148:50000/b1s/v1/Login",
+        "logout": "https://181.119.123.148:50000/b1s/v1/Logout",
+        "clientes": "https://181.119.123.148:50000/b1s/v1/BusinessPartners",
+        "formas_envios": "https://181.119.123.148:50000/b1s/v1/ShippingTypes",
+        "empleados": "https://181.119.123.148:50000/b1s/v1/SalesPersons",
+        "articulos": "https://181.119.123.148:50000/b1s/v1/Items",
+        "rubros": "https://181.119.123.148:50000/b1s/v1/U_ONESL_PROD_RUBRO",
+        "subrubros": "https://181.119.123.148:50000/b1s/v1/U_ONESL_PROD_SUBRUBRO",
+        "marcas": "https://181.119.123.148:50000/b1s/v1/U_ONESL_PROD_MARCA",
+        "provincias": "https://181.119.123.148:50000/b1s/v1/States",
+        "paises": "https://181.119.123.148:50000/b1s/v1/Countries",
+        "tasas_IVA": "https://181.119.123.148:50000/b1s/v1/SalesTaxCodes"
+    },
+    "mysql": {
+        "host": "192.168.1.250",
+        "username": "root",
+        "password": "imprimir",
+        "database": "db_derweb"
+    }
+}
