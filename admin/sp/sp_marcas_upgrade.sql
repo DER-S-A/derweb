@@ -1,6 +1,4 @@
-DELIMITER $$
-drop procedure if exists marcas_upgrade $$
-create procedure marcas_upgrade(
+create procedure sp_marcas_upgrade(
 	xcodigo int,
     xdescripcion varchar(60))
 begin
@@ -40,4 +38,4 @@ begin
 			marcas.codigo=xcodigo;
 	end if;
     commit;
-end $$
+end

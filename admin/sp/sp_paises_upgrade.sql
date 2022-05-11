@@ -1,6 +1,4 @@
-DELIMITER $$
-DROP PROCEDURE IF EXISTS paises_upgrade $$
-CREATE PROCEDURE paises_upgrade (
+CREATE PROCEDURE sp_paises_upgrade (
 	xcodigo varchar(10),
     xnombre varchar(100))
 BEGIN
@@ -37,4 +35,4 @@ BEGIN
     
 	COMMIT;
 		
-END $$
+END

@@ -1,6 +1,4 @@
-DELIMITER $$
-drop procedure if exists rubros_upgrade $$
-create procedure rubros_upgrade(
+create procedure sp_rubros_upgrade(
 	xcodigo int,
     xdescripcion varchar(60))
 begin
@@ -40,4 +38,4 @@ begin
 			rubros.codigo=xcodigo;
 	end if;
     commit;
-end $$
+end
