@@ -5,7 +5,9 @@ CREATE PROCEDURE `sp_entidades_upgrade`(
     xnombre varchar(100),
     xdireccion varchar(200),
     xemail varchar(200),
-    xtelefono varchar(20)
+    xtelefono varchar(20),
+    xdescuento_1 decimal(5, 2),
+    xdescuento_2 decimal(5, 2)
 )
 BEGIN
 	DECLARE vCantReg INT;
@@ -20,7 +22,8 @@ BEGIN
     END;
     START TRANSACTION;
     
-    
+    -- Verifico si el cliente está cargado en la base, si lo está
+    -- entonces actualizo datos en caso contrario lo doy de alta.
     SELECT
 		COUNT(*)
 	INTO
@@ -41,7 +44,9 @@ BEGIN
 			telefono,
             usuario,
             clave,
-            id_listaprecio
+            id_listaprecio,
+            descuento_1,
+            descuento_2
             )
 		VALUES (
             xid_tipoentidad,
@@ -53,10 +58,11 @@ BEGIN
 			xtelefono,
             xcliente_cardcode,
             '',
-            1
+            1,
+            xdescuento_1,
+            xdescuento_2
 			);
 	ELSE
-		
 		SELECT
 			id
 		INTO
@@ -66,7 +72,6 @@ BEGIN
 		WHERE
 			cliente_cardcode = xcliente_cardcode;
             
-		
 		UPDATE
 			entidades
 		SET 
@@ -74,7 +79,9 @@ BEGIN
 			entidades.nombre = xnombre,
 			entidades.direccion = xdireccion,
 			entidades.email = xemail,
-			entidades.telefono = xtelefono			
+			entidades.telefono = xtelefono,
+            entidades.descuento_1 = xdescuento_1,
+            entidades.descuento_2 = xdescuento_2		
         WHERE
 			entidades.id = vIdEncontrado AND
             entidades.id_tipoentidad = xid_tipoentidad;

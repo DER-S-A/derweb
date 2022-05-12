@@ -119,13 +119,15 @@ class Catalogo:
         sap.logout()
 
         for entidad in entidades["value"]:
-            sql = "CALL sp_entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}')".format(
+            sql = "CALL sp_entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}', {6}, {7})".format(
                 entidad["CardCode"], 
                 entidad["LicTradNum"], 
                 entidad["CardName"], 
                 "", # Dirección 
                 entidad["E_Mail"],
-                entidad["Phone1"])
+                entidad["Phone1"],
+                entidad["U_ONESL_DescuentoP1"],
+                entidad["U_ONESL_DescuentoP2"])
             db.execute(sql)
 
         db.closeDB()
