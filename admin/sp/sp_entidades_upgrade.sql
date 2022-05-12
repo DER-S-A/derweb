@@ -9,7 +9,6 @@ CREATE PROCEDURE `sp_entidades_upgrade`(
 )
 BEGIN
 	DECLARE vCantReg INT;
-    DECLARE vProximoID INT;
     DECLARE vIdEncontrado INT;
 	DECLARE vMensaje TEXT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -31,21 +30,8 @@ BEGIN
 	WHERE
 		cliente_cardcode = xcliente_cardcode;
 	
-    
-    
 	IF vCantReg = 0 THEN
-		
-        SELECT
-			CASE WHEN MAX(id) IS NULL THEN 1 ELSE MAX(id) + 1 END
-		INTO
-			vProximoID
-		FROM
-			entidades
-		WHERE
-			entidades.id_tipoentidad = xid_tipoentidad;
-        
 		INSERT INTO entidades (
-			id,
             id_tipoentidad,
 			cliente_cardcode,
             nro_cuit,
@@ -58,7 +44,6 @@ BEGIN
             id_listaprecio
             )
 		VALUES (
-			vProximoID,
             xid_tipoentidad,
 			xcliente_cardcode,
 			xnro_cuit,
