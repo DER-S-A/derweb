@@ -1,6 +1,4 @@
-DELIMITER $$
-DROP PROCEDURE IF EXISTS articulos_upgrade $$
-CREATE PROCEDURE articulos_upgrade (
+CREATE PROCEDURE sp_articulos_upgrade (
 	xrubro_cod varchar(20),
     xsubrubro_cod varchar(20),
     xmarca_cod varchar(20),
@@ -23,7 +21,7 @@ BEGIN
 		ROLLBACK;
         GET DIAGNOSTICS CONDITION 1 vMensaje = MESSAGE_TEXT;
         INSERT INTO log_sp (
-			nombre,
+			nombre_sp,
             mensaje_error)
 		VALUES (
 			'articulos_upgrade',
@@ -109,4 +107,4 @@ BEGIN
     END IF;
     
     COMMIT;
-END $$
+END

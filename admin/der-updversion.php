@@ -16,6 +16,14 @@ agregarOperGenerarEndPoint();
 agregarOperCliPot_CambiarEstado();
 agregarOperCliPot_AgregarNotas();
 
+// Actualización de SPs.
+ejecutarSps("sp/");
+echo("<br>");
+Sc3FileUtils::borrarArchivos("tmp/");
+Sc3FileUtils::borrarArchivos("tmpcache/");
+Sc3FileUtils::borrarArchivos("scripts/tmpcache/");
+Sc3FileUtils::borrarArchivos("css/tmpcache/");
+
 
 /**
  * agregarOperGenerarEndPoint

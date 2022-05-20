@@ -1,6 +1,4 @@
-DELIMITER $$
-DROP PROCEDURE IF EXISTS formas_envios_upgrade $$
-CREATE PROCEDURE formas_envios_upgrade (
+CREATE PROCEDURE sp_formas_envios_upgrade (
 	xcodigo int,
     xdescripcion varchar(100))
 BEGIN
@@ -44,4 +42,4 @@ BEGIN
 			formas_envios.codigo = xcodigo;
     END IF;
     COMMIT;
-END $$
+END

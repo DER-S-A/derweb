@@ -22,7 +22,7 @@ class Catalogo:
         sap.logout() # Me desconecto de SAP
 
         for pais in paises["value"]:
-            sql = "CALL paises_upgrade('{0}', '{1}')".format(pais["Code"], pais["Name"])
+            sql = "CALL sp_paises_upgrade('{0}', '{1}')".format(pais["PaisCode"], pais["PaisName"])
             db.execute(sql)
         db.closeDB()
             
@@ -37,10 +37,10 @@ class Catalogo:
         sap.logout()
 
         for pcia in provincias["value"]:
-            sql = "CALL provincias_upgrade ('{0}', '{1}', '{2}')".format(
-                                                            pcia["Code"],
-                                                            pcia["Country"],
-                                                            pcia["Name"])
+            sql = "CALL sp_provincias_upgrade ('{0}', '{1}', '{2}')".format(
+                                                            pcia["EstadoCode"],
+                                                            pcia["PaisCode"],
+                                                            pcia["EstadoName"])
             db.execute(sql)
         db.closeDB()
 
@@ -55,7 +55,7 @@ class Catalogo:
         sap.logout()
 
         for formaEnvio in formas_envios["value"]:
-            sql = "CALL formas_envios_upgrade({0}, '{1}')".format(formaEnvio["Code"], formaEnvio["Name"])
+            sql = "CALL sp_formas_envios_upgrade({0}, '{1}')".format(formaEnvio["Code"], formaEnvio["Name"])
             
             db.execute(sql)
         db.closeDB()
@@ -71,7 +71,7 @@ class Catalogo:
         sap.logout()
 
         for rubro in rubros["value"]:
-            sql = "CALL rubros_upgrade({0}, '{1}')".format(rubro["Code"], rubro["Name"])
+            sql = "CALL sp_rubros_upgrade({0}, '{1}')".format(rubro["RubroCode"], rubro["RubroName"])
             db.execute(sql)
 
         db.closeDB()   
@@ -87,7 +87,7 @@ class Catalogo:
         sap.logout()
 
         for subrubro in subrubros["value"]:
-            sql = "CALL subrubros_upgrade({0}, '{1}')".format(subrubro["Code"], subrubro["Name"])
+            sql = "CALL sp_subrubros_upgrade({0}, '{1}')".format(subrubro["SubRubroCode"], subrubro["SubRubroName"])
             db.execute(sql)
 
         db.closeDB()
@@ -103,14 +103,14 @@ class Catalogo:
         sap.logout()
 
         for marca in marcas["value"]:
-            sql = "CALL marcas_upgrade({0}, '{1}')".format(marca["Code"], marca["Name"])
+            sql = "CALL sp_marcas_upgrade({0}, '{1}')".format(marca["MarcaCode"], marca["MarcaName"])
             db.execute(sql)
 
         db.closeDB()
         
-    def updateEntidades(self):
+    def updateClientes(self):
         """
-            Permite actualizar las entidades.
+            Permite actualizar los clientes en la tabla entidades.
         """
         db = MySqlManager()
         sap = SAPManager()
@@ -119,13 +119,15 @@ class Catalogo:
         sap.logout()
 
         for entidad in entidades["value"]:
-            sql = "CALL entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}')".format(
+            sql = "CALL sp_entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}', {6}, {7})".format(
                 entidad["CardCode"], 
-                entidad["FederalTaxID"], 
+                entidad["LicTradNum"], 
                 entidad["CardName"], 
-                entidad["Address"], 
-                entidad["EmailAddress"],
-                entidad["Phone1"])
+                "", # Dirección 
+                entidad["E_Mail"],
+                entidad["Phone1"],
+                entidad["U_ONESL_DescuentoP1"],
+                entidad["U_ONESL_DescuentoP2"])
             db.execute(sql)
 
         db.closeDB()
@@ -157,22 +159,11 @@ class Catalogo:
             codigo = articulo["ItemCode"]
             codigo_original = ""
             descripcion = articulo["ItemName"]
-            alicuota_iva = self.getTasaIVA(articulo["ArTaxCode"], sap)
+            alicuota_iva = self.getTasaIVA(articulo["TaxCodeAR"], sap)
             existencia_stock = 0.00
             stock_minimo = 0.00
 
-            # Las siguientes líneas de código las pongo provisora porque
-            # en la base demo de SAP no tiene asignado rubros, subrubros y marcas.
-            if rubro_cod == None:
-                rubro_cod = 2
-
-            if subrubro_cod == None:
-                subrubro_cod = 1
-
-            if marca_cod == None:
-                marca_cod = 1
-
-            sql = "CALL articulos_upgrade ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, {8})".format(
+            sql = "CALL sp_articulos_upgrade ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, {8})".format(
                 rubro_cod,
                 subrubro_cod,
                 marca_cod,

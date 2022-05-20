@@ -1,6 +1,4 @@
-DELIMITER $$
-DROP PROCEDURE IF EXISTS provincias_upgrade $$
-CREATE PROCEDURE provincias_upgrade (
+CREATE PROCEDURE sp_provincias_upgrade (
 	xcodigo varchar(10),
     xcodigo_pais varchar(10),
     xnombre varchar(100))
@@ -49,4 +47,4 @@ BEGIN
             xnombre);
     END IF;
     COMMIT;
-END $$
+END
