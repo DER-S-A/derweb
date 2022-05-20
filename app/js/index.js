@@ -84,24 +84,10 @@ function blanquearFormRegistro() {
 }
 
 // Validar formulario register
-function validarForm() {
-    if (document.formRegister.txtMail.value == "") {
-        swal("Oops!", "Campo de email obligatorio", "error");
-        document.formRegister.txtMail.focus();
-        return false;
-    }
-
-    if (document.formRegister.txtRazSoc.value == "" ) {
-        swal("Oops!", "Campo Razon Social Obligatorio", "error");
-        document.formRegister.txtRazSoc.focus();
-        return false;
-    }
-
-    if (document.formRegister.txtTelefono.value.length != 10) {
-        swal("Oops!", "Campo telefono Error, debe tener 10 digitos", "error");
-        document.formRegister.txtTelefono.focus();
-        return false;
-    }
-
-    return true;
+function validarForm() { 
+    
+    // Las funciones q estan a continuacion se encuentran en UTILS/FUNCIONES.JS
+    if(validarMail() && validarRazonSocial() && validarUbicacion() && validarTel()) {
+        return true;
+    } else return false;
 }

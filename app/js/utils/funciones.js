@@ -48,3 +48,60 @@ function addSelectOption(xobjSelectComponent, xvalue, xtext) {
     objOpcion.innerText = xtext;
     xobjSelectComponent.appendChild(objOpcion);
 }
+
+function validarMail() { 
+    let exp = new RegExp('^(.+)@(\\S+)$');
+    if (document.formRegister.txtMail.value == "") {
+        swal("Oops!", "Campo de email obligatorio", "error");
+        document.formRegister.txtMail.focus();
+        return false;
+    } else if (!exp.test(document.formRegister.txtMail.value)) {
+        swal("Oops!", "Email invalido", "error");
+        document.formRegister.txtMail.focus();
+        return false;
+    } else if (document.formRegister.txtMail.value.length > 99) {
+        swal("Oops!", "Maximo de caracteres superado en campo Email", "error");
+        document.formRegister.txtMail.focus();
+        return false;
+    }
+    return true;
+}
+
+function validarRazonSocial() {
+    if (document.formRegister.txtRazSoc.value == "" ) {
+        swal("Oops!", "Campo Razon Social Obligatorio", "error");
+        document.formRegister.txtRazSoc.focus();
+        return false;
+    } else if (document.formRegister.txtRazSoc.value.length > 99) {
+        swal("Oops!", "Maximo de caracteres superado en campo Razon Soc", "error");
+        document.formRegister.txtRazSoc.focus();
+        return false;
+    }
+    return true;
+}
+
+function validarUbicacion() {
+    if (document.formRegister.txtUbicacion.value == "" ) {
+        swal("Oops!", "Campo Ubicacion Obligatorio", "error");
+        document.formRegister.txtUbicacion.focus();
+        return false;
+    } else if (document.formRegister.txtUbicacion.value.length > 99) {
+        swal("Oops!", "Maximo de caracteres superado en campo Ubicacion", "error");
+        document.formRegister.txtUbicacion.focus();
+        return false;
+    }
+    return true;
+}
+
+function validarTel() {
+    if (document.formRegister.txtTelefono.value == "") {
+        swal("Oops!", "Campo Teléfono Obligatorio", "error");
+        document.formRegister.txtTelefono.focus();
+        return false;
+    } else if (document.formRegister.txtTelefono.value.length > 20) {
+        swal("Oops!", "Maximo de caracteres superado en campo Teléfono", "error");
+        document.formRegister.txtTelefono.focus();
+        return false;
+    }
+    return true;
+}

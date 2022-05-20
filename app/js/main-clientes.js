@@ -6,7 +6,7 @@ app.init();
  * Evento onLoad de la página.
  * Este evento se ejecuta al cargar la página.
  */
-window.onload = () => {
+window.onload = () => {   
     llenarMarcasRepuesto();
     llenarSubrubros();
     llenarMarcasVehiculos();
@@ -15,6 +15,7 @@ window.onload = () => {
     llenarAnio();
     generarMenuOperaciones();
     generarBotonListaArticulos();
+    generarCarrusel();
 }
 
 /**
@@ -94,4 +95,18 @@ function generarMenuOperaciones() {
 function generarBotonListaArticulos() {
     var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
     objListaArticulo.generateComponent();
+}
+
+/**
+ * Crea el componente Carrusel.
+ */
+ function generarCarrusel() {  
+     // ESTA FUNCION LA LLAMO DENTRO DE LA FUNCION WONDOW.ONLOAD Q ESTA EN LA LINEA 9
+    var objCarrusel = new CarruselComponent("carrusel-container");
+
+    const url_bannerPortada = "services/banner_portada/get";
+    fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
+    .then(data => {
+        objCarrusel.generateComponent(data);
+    })
 }
