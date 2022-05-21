@@ -4,9 +4,12 @@ Descripción
     Permite extraer los datos desde SAP y actualizar la base
     de datos del catálogo en MySQL.
 """
+from dataclasses import replace
 from datetime import datetime
+from multiprocessing.sharedctypes import Value
 from packages.db.mysql_manager import MySqlManager
 from packages.sap.SAPManager import SAPManager
+import re
 
 class Catalogo:
 
@@ -66,15 +69,23 @@ class Catalogo:
         """
         db = MySqlManager()
         sap = SAPManager()
-        sap.login()
-        rubros = sap.getData("rubros")
-        sap.logout()
+        try :
+            sap.login()
+            pagina = 0
+            rubros = sap.getData("rubros", None, pagina)
+            while len(rubros["value"]) != 0 :
+                for rubro in rubros["value"]:
+                    sql = "CALL sp_rubros_upgrade({0}, '{1}')".format(rubro["RubroCode"], rubro["RubroName"])
+                    db.execute(sql)
+                rubros = sap.getData("rubros", None, pagina)
+                pagina += 20
 
-        for rubro in rubros["value"]:
-            sql = "CALL sp_rubros_upgrade({0}, '{1}')".format(rubro["RubroCode"], rubro["RubroName"])
-            db.execute(sql)
-
-        db.closeDB()   
+            sap.logout()
+            db.closeDB() 
+        except ValueError :
+            print(ValueError)
+            sap.logout()
+            db.closeDB()
         
     def updateSubrubros(self):
         """
@@ -82,15 +93,23 @@ class Catalogo:
         """
         db = MySqlManager()
         sap = SAPManager()
-        sap.login()
-        subrubros = sap.getData("subrubros")
-        sap.logout()
+        try :
+            sap.login()
+            pagina = 0
+            subrubros = sap.getData("subrubros", None, pagina)
+            while len(subrubros["value"]) != 0 :
+                for subrubro in subrubros["value"]:
+                    sql = "CALL sp_subrubros_upgrade({0}, '{1}')".format(subrubro["SubRubroCode"], subrubro["SubRubroName"])
+                    db.execute(sql)
+                subrubros = sap.getData("subrubros", None, pagina)
+                pagina += 20
 
-        for subrubro in subrubros["value"]:
-            sql = "CALL sp_subrubros_upgrade({0}, '{1}')".format(subrubro["SubRubroCode"], subrubro["SubRubroName"])
-            db.execute(sql)
-
-        db.closeDB()
+            sap.logout()
+            db.closeDB()
+        except ValueError:
+            print(ValueError)
+            sap.logout()
+            db.closeDB()
         
     def updateMarcas(self):
         """
@@ -98,15 +117,24 @@ class Catalogo:
         """
         db = MySqlManager()
         sap = SAPManager()
-        sap.login()
-        marcas = sap.getData("marcas")
-        sap.logout()
+        try :
+            sap.login()
+            pagina = 0
+            marcas = sap.getData("marcas", None, pagina)
+            while len(marcas["value"]) != 0 :
+                for marca in marcas["value"] :
+                    sql = "CALL sp_marcas_upgrade({0}, '{1}')".format(marca["MarcaCode"], marca["MarcaName"])
+                    db.execute(sql)
+                marcas = sap.getData("marcas", None, pagina)
+                pagina += 20
 
-        for marca in marcas["value"]:
-            sql = "CALL sp_marcas_upgrade({0}, '{1}')".format(marca["MarcaCode"], marca["MarcaName"])
-            db.execute(sql)
+            sap.logout()
+            db.closeDB()
+        except ValueError:
+            print(ValueError)
+            sap.logout()
+            db.closeDB()
 
-        db.closeDB()
         
     def updateClientes(self):
         """
@@ -114,29 +142,39 @@ class Catalogo:
         """
         db = MySqlManager()
         sap = SAPManager()
-        sap.login()
-        entidades = sap.getData("clientes")
-        sap.logout()
+        try :
+            sap.login()
+            pagina = 0
+            entidades = sap.getData("clientes", None, pagina)
+            while len(entidades["value"]) != 0 :
+                for entidad in entidades["value"]:
+                    strCardName = str(entidad["CardName"])
 
-        for entidad in entidades["value"]:
-            sql = "CALL sp_entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}', {6}, {7})".format(
-                entidad["CardCode"], 
-                entidad["LicTradNum"], 
-                entidad["CardName"], 
-                "", # Dirección 
-                entidad["E_Mail"],
-                entidad["Phone1"],
-                entidad["U_ONESL_DescuentoP1"],
-                entidad["U_ONESL_DescuentoP2"])
-            db.execute(sql)
+                    sql = "CALL sp_entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}', {6}, {7})".format(
+                        entidad["CardCode"], 
+                        entidad["LicTradNum"], 
+                        re.sub("'", "''", strCardName),
+                        "", # Dirección 
+                        entidad["E_Mail"],
+                        entidad["Phone1"],
+                        entidad["U_ONESL_DescuentoP1"],
+                        entidad["U_ONESL_DescuentoP2"])
+                    db.execute(sql)
+                entidades = sap.getData("clientes", None, pagina)
+                pagina += 20
 
-        db.closeDB()
+            sap.logout()
+            db.closeDB()
+        except ValueError:
+            print (ValueError)
+            sap.logout()
+            db.closeDB()
+
 
     def updateArticulos(self):
         """
             Este método permite actualizar los artículos del catálogo.
         """
-
         rubro_cod = ""
         subrubro_cod = ""
         marca_cod = ""
@@ -149,35 +187,43 @@ class Catalogo:
 
         db = MySqlManager()
         sap = SAPManager()
-        sap.login()
-        articulos = sap.getData("articulos")
+        try :
+            sap.login()
+            pagina = 0
+            articulos = sap.getData("articulos", None, pagina)
+            while len(articulos["value"]) != 0 :
+                for articulo in articulos["value"]:
+                    rubro_cod = articulo["U_ONESL_RubroCod"]
+                    subrubro_cod = articulo["U_ONESL_SubRubroCod"]
+                    marca_cod = articulo["U_ONESL_MarcaCod"]
+                    codigo = articulo["ItemCode"]
+                    codigo_original = ""
+                    descripcion = re.sub("'", "''", str(articulo["ItemName"]))
+                    alicuota_iva = self.getTasaIVA(articulo["TaxCodeAR"], sap)
+                    existencia_stock = 0.00
+                    stock_minimo = 0.00
 
-        for articulo in articulos["value"]:
-            rubro_cod = articulo["U_ONESL_RubroCod"]
-            subrubro_cod = articulo["U_ONESL_SubRubroCod"]
-            marca_cod = articulo["U_ONESL_MarcaCod"]
-            codigo = articulo["ItemCode"]
-            codigo_original = ""
-            descripcion = articulo["ItemName"]
-            alicuota_iva = self.getTasaIVA(articulo["TaxCodeAR"], sap)
-            existencia_stock = 0.00
-            stock_minimo = 0.00
+                    sql = "CALL sp_articulos_upgrade ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, {8})".format(
+                        rubro_cod,
+                        subrubro_cod,
+                        marca_cod,
+                        codigo,
+                        codigo_original,
+                        descripcion,
+                        alicuota_iva,
+                        existencia_stock,
+                        stock_minimo
+                    )
+                    db.execute(sql)
+                articulos = sap.getData("articulos", None, pagina)
+                pagina += 20
 
-            sql = "CALL sp_articulos_upgrade ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, {8})".format(
-                rubro_cod,
-                subrubro_cod,
-                marca_cod,
-                codigo,
-                codigo_original,
-                descripcion,
-                alicuota_iva,
-                existencia_stock,
-                stock_minimo
-            )
-            db.execute(sql)
-
-        sap.logout()
-        db.closeDB()
+            sap.logout()
+            db.closeDB()
+        except:
+            print(ValueError)
+            sap.logout()
+            db.closeDB()
 
     def getTasaIVA(self, xcode, xsapObject):
         """

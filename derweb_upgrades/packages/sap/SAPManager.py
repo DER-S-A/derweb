@@ -30,7 +30,7 @@ class SAPManager:
         respuesta = requests.post(url, headers=headers, data=json.dumps(body), verify=False).json()
         self.sessionId = respuesta["SessionId"]
 
-    def getData (self, xurlName, xfilter = None):
+    def getData (self, xurlName, xfilter = None, xskip = 0):
         """ 
             Este método devuelve un dato a partir del nombre de una URL definida en
             el archivo config.json.
@@ -40,12 +40,16 @@ class SAPManager:
             url = self.configuracion["urls"][xurlName]
         else:
             url = self.configuracion["urls"][xurlName] + "?$filter=" + xfilter
+
+        if xskip != 0 :
+            url = url + "?$skip=" + str(xskip)
+
         headers = {
             "Content-Type": "application/json",
             "Cookie": 'B1SESSION=' + self.sessionId + "; ROUTER.node1"
         }
         result = requests.get(url, headers=headers, verify=False).json()
-        return result;
+        return result
 
     def logout (self):
         """ Permite desconectarse de SAP """
