@@ -15,6 +15,7 @@ class SubrubrosModel extends Model {
         // Armado de la sentencia SQL.
         $sql = "SELECT * FROM subrubros ";
         $this->setWhere($sql, $xfilter);
+        $sql .= "ORDER BY descripcion ASC";
         return $this->getQuery($sql);
     }
     

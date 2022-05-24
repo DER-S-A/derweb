@@ -198,8 +198,9 @@ class Catalogo:
                     marca_cod = articulo["U_ONESL_MarcaCod"]
                     codigo = articulo["ItemCode"]
                     codigo_original = ""
-                    descripcion = re.sub("'", "''", str(articulo["ItemName"]))
-                    alicuota_iva = self.getTasaIVA(articulo["TaxCodeAR"], sap)
+                    descripcion = re.sub("'", " ", str(articulo["ItemName"]))
+                    #alicuota_iva = self.getTasaIVA(articulo["TaxCodeAR"], sap)
+                    alicuota_iva = 21
                     existencia_stock = 0.00
                     stock_minimo = 0.00
 
@@ -215,12 +216,13 @@ class Catalogo:
                         stock_minimo
                     )
                     db.execute(sql)
-                articulos = sap.getData("articulos", None, pagina)
                 pagina += 20
+                print("Procesando página: " + str(pagina))
+                articulos = sap.getData("articulos", None, pagina)
 
             sap.logout()
             db.closeDB()
-        except:
+        except ValueError:
             print(ValueError)
             sap.logout()
             db.closeDB()
