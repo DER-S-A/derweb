@@ -90,107 +90,27 @@ $req = new FormValidator();
 			sc3ConvertirTablaUtf($bd, "sc_operaciones", "ayuda");
 			sc3ConvertirTablaUtf($bd, "sc_usuarios", "nombre");
 			sc3ConvertirTablaUtf($bd, "sc_adjuntos", "nota");
-
-			sc3ConvertirTablaUtf($bd, "gri_presentaciones", "direccion");
-			sc3ConvertirTablaUtf($bd, "gri_presentaciones", "observaciones");
-			sc3ConvertirTablaUtf($bd, "gri_trabajos", "observaciones");
-			sc3ConvertirTablaUtf($bd, "gri_trabajos", "direccion");
-			sc3ConvertirTablaUtf($bd, "gri_trabajos", "titular");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "Propietario");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "Localizacion");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "LimitesyLinderos");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "Perito");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "Observaciones");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "Observaciones2");
-			sc3ConvertirTablaUtf($bd, "gri_fichas", "DomicilioParcelario");
-
-			sc3ConvertirTablaUtf($bd, "far_farmacias", "nombre");
-			sc3ConvertirTablaUtf($bd, "far_farmacias", "direccion");
-
-			sc3ConvertirTablaUtf($bd, "obr_obras", "nombre");
-			sc3ConvertirTablaUtf($bd, "obr_rubros", "nombre");
-
-			sc3ConvertirTablaUtf($bd, "srv_periodos", "nombre");
-			sc3ConvertirTablaUtf($bd, "srv_productos", "descripcion");
-
-			sc3ConvertirTablaUtf($bd, "mat_materiales", "nombre");
-			sc3ConvertirTablaUtf($bd, "mat_materiales", "descripcion");
-
-			sc3ConvertirTablaUtf($bd, "gen_personas", "nombre");
-			sc3ConvertirTablaUtf($bd, "gen_personas", "jur_nombre_fantasia");
-			sc3ConvertirTablaUtf($bd, "gen_personas", "direccion");
-			sc3ConvertirTablaUtf($bd, "cta_cuentas", "nombre");
-			sc3ConvertirTablaUtf($bd, "cta_cuentas", "descripcion");
-			sc3ConvertirTablaUtf($bd, "sto_articulos", "nombre");
-			sc3ConvertirTablaUtf($bd, "sto_articulos", "descripcion");
-			sc3ConvertirTablaUtf($bd, "sto_combos", "nombre");
-			sc3ConvertirTablaUtf($bd, "sto_depositos", "nombre");
-			sc3ConvertirTablaUtf($bd, "bp_localidades", "nombre");
-			sc3ConvertirTablaUtf($bd, "bp_provincias", "nombre");
-			sc3ConvertirTablaUtf($bd, "cja2_cajas", "nombre");
-			sc3ConvertirTablaUtf($bd, "cja2_medios_pago", "nombre");
-			sc3ConvertirTablaUtf($bd, "cja2_conceptos", "nombre");
-			sc3ConvertirTablaUtf($bd, "cja2_movimientos", "observaciones");
-			sc3ConvertirTablaUtf($bd, "cja2_comprobantes", "observaciones");
-			sc3ConvertirTablaUtf($bd, "bco_bancos", "nombre");
-			sc3ConvertirTablaUtf($bd, "cja_movimientos", "observaciones");
-
-			sc3ConvertirTablaUtf($bd, "gal_estudios", "motivo");
-			sc3ConvertirTablaUtf($bd, "gal_estudios", "diagnostico");
-			sc3ConvertirTablaUtf($bd, "gal_estudios", "tratamiento");
-			sc3ConvertirTablaUtf($bd, "gal_turnos", "direccion");
-			sc3ConvertirTablaUtf($bd, "gal_turnos", "apellido");
-			sc3ConvertirTablaUtf($bd, "gal_turnos", "doctor");
-			sc3ConvertirTablaUtf($bd, "gal_nomenclaturas", "descripcion");
-
-			sc3ConvertirTablaUtf($bd, "eco_consorcios", "nombre");
-			sc3ConvertirTablaUtf($bd, "eco_consorcios", "direccion");
-			sc3ConvertirTablaUtf($bd, "eco_propietarios", "nombre");
-			sc3ConvertirTablaUtf($bd, "eco_propietarios", "direccion");
-			sc3ConvertirTablaUtf($bd, "eco_propietarios", "observaciones");
-			sc3ConvertirTablaUtf($bd, "eco_propietarios", "inq_nombre");
-			sc3ConvertirTablaUtf($bd, "eco_propietarios", "codigo_fantasia");
-			sc3ConvertirTablaUtf($bd, "eco_propietarios", "unidad");
-			sc3ConvertirTablaUtf($bd, "eco_facturas_proveedor", "observaciones");
-			sc3ConvertirTablaUtf($bd, "eco_facturas_proveedor", "medio_pago");
-			sc3ConvertirTablaUtf($bd, "eco_periodos", "nombre");
-
-			sc3ConvertirTablaUtf($bd, "kio_fotocopias", "titulo");
-			sc3ConvertirTablaUtf($bd, "kio_fotocopias", "descripcion");
-
-			sc3ConvertirTablaUtf($bd, "gen_impuestos", "nombre");
-
-			sc3ConvertirTablaUtf($bd, "ema_templates", "nombre");
-			sc3ConvertirTablaUtf($bd, "ema_templates", "cuerpo_html");
-			sc3ConvertirTablaUtf($bd, "ema_templates", "cuerpo_text");
-			
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "descripcion");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "descripcion_larga");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "obs_internas");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "distancias");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "com_habitaciones");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "com_camas");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "com_cochera");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "direccion");
-			sc3ConvertirTablaUtf($bd, "pro_propiedades", "com_parque");
-			sc3ConvertirTablaUtf($bd, "pro_complejos", "como_llegar");
-			sc3ConvertirTablaUtf($bd, "pro_complejos", "direccion");
-			sc3ConvertirTablaUtf($bd, "pro_complejos", "descripcion");
-			sc3ConvertirTablaUtf($bd, "pro_ocupacion", "observaciones");
-			sc3ConvertirTablaUtf($bd, "pro_pedidos", "observaciones");
-			//sc3ConvertirTablaUtf($bd, "pro_pedidos", "cliente");
-
-			sc3ConvertirTablaUtf($bd, "b2b_afip_datos", "nombre");
-			sc3ConvertirTablaUtf($bd, "b2b_afip_datos", "resultado");
-			
-			sc3ConvertirTablaUtf($bd, "tic_reparaciones", "nombre");
-			sc3ConvertirTablaUtf($bd, "tic_reparaciones", "observaciones");
-			sc3ConvertirTablaUtf($bd, "tic_tipos_trabajos", "nombre");
-
-			/*
-			
-			*/
-
+            sc3ConvertirTablaUtf($bd, "subrubros", "descripcion");
+            sc3ConvertirTablaUtf($bd, "rubros", "descripcion");
+            sc3ConvertirTablaUtf($bd, "marcas", "descripcion");
+            sc3ConvertirTablaUtf($bd, "articulos", "codigo");
+            sc3ConvertirTablaUtf($bd, "articulos", "codigo_original");
+            sc3ConvertirTablaUtf($bd, "articulos", "descripcion");
+            sc3ConvertirTablaUtf($bd, "articulos", "informacion_general");
+            sc3ConvertirTablaUtf($bd, "articulos", "datos_tecnicos");
+            sc3ConvertirTablaUtf($bd, "articulos", "diametro");
+            sc3ConvertirTablaUtf($bd, "art_catalogos", "descripcion");
+            sc3ConvertirTablaUtf($bd, "paises", "nombre");
+            sc3ConvertirTablaUtf($bd, "provincias", "nombre");
+            sc3ConvertirTablaUtf($bd, "lfw_operaciones", "nombre");
+            sc3ConvertirTablaUtf($bd, "entidades", "nombre");
+            sc3ConvertirTablaUtf($bd, "entidades", "direccion");
+            sc3ConvertirTablaUtf($bd, "entidades", "email");
+            sc3ConvertirTablaUtf($bd, "entidades", "nombre");
+            sc3ConvertirTablaUtf($bd, "sucursales", "codigo_sucursal");
+            sc3ConvertirTablaUtf($bd, "sucursales", "calle");
+            sc3ConvertirTablaUtf($bd, "sucursales", "ciudad");
+            sc3ConvertirTablaUtf($bd, "banner_portada", "descripcion");
 			?>
 			</textarea>
 		</td>

@@ -1,0 +1,49 @@
+
+
+
+24-5-2022 19:51:26[select id, direccion 
+				from gri_presentaciones
+				order by id desc
+				limit 1000000], codigo=1146: Table 'db_derweb.gri_presentaciones' doesn't exist
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0
+  QUERY_STRING=opid=799&favicon=ico%2Fsort.ico&fstack=1
+  SCRIPT_FILENAME=D:/public_html/derweb/admin/sc-convertir-utf8.php
+  REMOTE_ADDR=127.0.0.1
+  SCRIPT_NAME=/derweb/admin/sc-convertir-utf8.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
+
+
+24-5-2022 20:54:7[select id, descripcion 
+				from rubro
+				order by id desc
+				limit 1000000], codigo=1146: Table 'db_derweb.rubro' doesn't exist
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0
+  QUERY_STRING=opid=799&favicon=ico%2Fsort.ico&fstack=1
+  SCRIPT_FILENAME=D:/public_html/derweb/admin/sc-convertir-utf8.php
+  REMOTE_ADDR=127.0.0.1
+  SCRIPT_NAME=/derweb/admin/sc-convertir-utf8.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
+
+
+24-5-2022 20:55:21[select id, descripcion 
+				from rubro
+				order by id desc
+				limit 1000000], codigo=1146: Table 'db_derweb.rubro' doesn't exist
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0
+  QUERY_STRING=opid=799&favicon=ico%2Fsort.ico&fstack=1
+  SCRIPT_FILENAME=D:/public_html/derweb/admin/sc-convertir-utf8.php
+  REMOTE_ADDR=127.0.0.1
+  SCRIPT_NAME=/derweb/admin/sc-convertir-utf8.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
+
+
+24-5-2022 20:56:37[select id, descripcion 
+				from rubro
+				order by id desc
+				limit 1000000], codigo=1146: Table 'db_derweb.rubro' doesn't exist
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0
+  QUERY_STRING=opid=799&favicon=ico%2Fsort.ico&fstack=1
+  SCRIPT_FILENAME=D:/public_html/derweb/admin/sc-convertir-utf8.php
+  REMOTE_ADDR=127.0.0.1
+  SCRIPT_NAME=/derweb/admin/sc-convertir-utf8.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
