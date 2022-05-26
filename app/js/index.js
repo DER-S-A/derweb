@@ -86,7 +86,7 @@ function blanquearFormRegistro() {
 // Validar formulario register
 function validarForm() { 
     
-    // Las funciones q estan a continuacion se encuentran en UTILS/FUNCIONES.JS
+    /**  Las funciones q estan a continuacion se encuentran en UTILS/FUNCIONES.JS */
     if(validarMail() && validarRazonSocial() && validarUbicacion() && validarTel()) {
         return true;
     } else return false;
