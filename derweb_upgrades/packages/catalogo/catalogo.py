@@ -7,9 +7,13 @@ Descripción
 from dataclasses import replace
 from datetime import datetime
 from multiprocessing.sharedctypes import Value
+from time import strptime
 from packages.db.mysql_manager import MySqlManager
 from packages.sap.SAPManager import SAPManager
 import re
+import requests
+import json
+import sys
 
 class Catalogo:
 
@@ -67,165 +71,145 @@ class Catalogo:
         """
             Permite actualizar los rubros.
         """
-        db = MySqlManager()
         sap = SAPManager()
+        strUrl = "http://localhost/derweb/app/services/rubros/upgrade"
+        headers = {
+            "Content-Type": "application/json"
+        }         
         try :
             sap.login()
             pagina = 0
             rubros = sap.getData("rubros", None, pagina)
             while len(rubros["value"]) != 0 :
                 for rubro in rubros["value"]:
-                    sql = "CALL sp_rubros_upgrade({0}, '{1}')".format(rubro["RubroCode"], rubro["RubroName"])
-                    db.execute(sql)
+                    strParametro = "registro=" + json.dumps(rubro)
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+
+                print(repuesta)
+
                 rubros = sap.getData("rubros", None, pagina)
                 pagina += 20
 
             sap.logout()
-            db.closeDB() 
-        except ValueError :
-            print(ValueError)
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
-            db.closeDB()
         
     def updateSubrubros(self):
         """
             Permite actualizar los subrubros.
         """
-        db = MySqlManager()
         sap = SAPManager()
+        strUrl = "http://localhost/derweb/app/services/subrubros/upgrade"
+        headers = {
+            "Content-Type": "application/json"
+        }        
         try :
             sap.login()
             pagina = 0
             subrubros = sap.getData("subrubros", None, pagina)
             while len(subrubros["value"]) != 0 :
                 for subrubro in subrubros["value"]:
-                    sql = "CALL sp_subrubros_upgrade({0}, '{1}')".format(subrubro["SubRubroCode"], subrubro["SubRubroName"])
-                    db.execute(sql)
+                    strParametro = "registro=" + json.dumps(subrubro)
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+
+                print(repuesta)
+
                 subrubros = sap.getData("subrubros", None, pagina)
                 pagina += 20
 
             sap.logout()
-            db.closeDB()
-        except ValueError:
-            print(ValueError)
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
-            db.closeDB()
         
     def updateMarcas(self):
         """
             Permite actualizar las marcas.
         """
-        db = MySqlManager()
         sap = SAPManager()
+        strUrl = "http://localhost/derweb/app/services/marcas/upgrade"
+        headers = {
+            "Content-Type": "application/json"
+        }   
         try :
             sap.login()
             pagina = 0
             marcas = sap.getData("marcas", None, pagina)
             while len(marcas["value"]) != 0 :
                 for marca in marcas["value"] :
-                    sql = "CALL sp_marcas_upgrade({0}, '{1}')".format(marca["MarcaCode"], marca["MarcaName"])
-                    db.execute(sql)
+                    strParametro = "registro=" + json.dumps(marca)
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                
+                print(repuesta)
                 marcas = sap.getData("marcas", None, pagina)
                 pagina += 20
 
             sap.logout()
-            db.closeDB()
-        except ValueError:
-            print(ValueError)
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
-            db.closeDB()
 
         
     def updateClientes(self):
         """
             Permite actualizar los clientes en la tabla entidades.
         """
-        db = MySqlManager()
         sap = SAPManager()
+        strUrl = "http://localhost/derweb/app/services/entidades/upgradeClientes"
+        headers = {
+            "Content-Type": "application/json"
+        } 
         try :
             sap.login()
             pagina = 0
             entidades = sap.getData("clientes", None, pagina)
             while len(entidades["value"]) != 0 :
                 for entidad in entidades["value"]:
-                    strCardName = str(entidad["CardName"])
-
-                    sql = "CALL sp_entidades_upgrade(1, '{0}', '{1}', '{2}', '{3}' , '{4}' , '{5}', {6}, {7})".format(
-                        entidad["CardCode"], 
-                        entidad["LicTradNum"], 
-                        re.sub("'", "''", strCardName),
-                        "", # Dirección 
-                        entidad["E_Mail"],
-                        entidad["Phone1"],
-                        entidad["U_ONESL_DescuentoP1"],
-                        entidad["U_ONESL_DescuentoP2"])
-                    db.execute(sql)
+                    strParametro = "registro=" + json.dumps(entidad)
+                    strParametro = strParametro.replace("&", "y")
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                
+                print(repuesta)
                 entidades = sap.getData("clientes", None, pagina)
                 pagina += 20
 
             sap.logout()
-            db.closeDB()
-        except ValueError:
-            print (ValueError)
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            print(strParametro)
             sap.logout()
-            db.closeDB()
 
 
     def updateArticulos(self):
         """
             Este método permite actualizar los artículos del catálogo.
         """
-        rubro_cod = ""
-        subrubro_cod = ""
-        marca_cod = ""
-        codigo = ""
-        codigo_original = ""
-        descripcion = ""
-        alicuota_iva = 0.00
-        existencia_stock = 0.00
-        stock_minimo = 0.00
-
-        db = MySqlManager()
         sap = SAPManager()
+        strUrl = "http://localhost/derweb/app/services/articulos/upgrade"
+        headers = {
+            "Content-Type": "application/json"
+        } 
         try :
             sap.login()
             pagina = 0
             articulos = sap.getData("articulos", None, pagina)
             while len(articulos["value"]) != 0 :
                 for articulo in articulos["value"]:
-                    rubro_cod = articulo["U_ONESL_RubroCod"]
-                    subrubro_cod = articulo["U_ONESL_SubRubroCod"]
-                    marca_cod = articulo["U_ONESL_MarcaCod"]
-                    codigo = articulo["ItemCode"]
-                    codigo_original = ""
-                    descripcion = re.sub("'", " ", str(articulo["ItemName"]))
-                    #alicuota_iva = self.getTasaIVA(articulo["TaxCodeAR"], sap)
-                    alicuota_iva = 21
-                    existencia_stock = 0.00
-                    stock_minimo = 0.00
+                    strParametro = "registro=" + json.dumps(articulo)
+                    strParametro = strParametro.replace("&", "y")
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
 
-                    sql = "CALL sp_articulos_upgrade ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, {8})".format(
-                        rubro_cod,
-                        subrubro_cod,
-                        marca_cod,
-                        codigo,
-                        codigo_original,
-                        descripcion,
-                        alicuota_iva,
-                        existencia_stock,
-                        stock_minimo
-                    )
-                    db.execute(sql)
+                print(repuesta)
                 pagina += 20
                 print("Procesando página: " + str(pagina))
                 articulos = sap.getData("articulos", None, pagina)
 
             sap.logout()
-            db.closeDB()
-        except ValueError:
-            print(ValueError)
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            print(strParametro)
             sap.logout()
-            db.closeDB()
 
     def getTasaIVA(self, xcode, xsapObject):
         """

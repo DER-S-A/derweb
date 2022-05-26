@@ -32,4 +32,6 @@ include("modulos/derweb_operaciones/lfw-operacionesModel.inc.php");
 include("modulos/derweb_operaciones/lfw-operacionesController.php");
 include("modulos/entidades/tipos-entidadesModel.inc.php");
 include("modulos/entidades/tipos-entidadesController.php");
+include("modulos/articulos/articulosModel.inc.php");
+include("modulos/articulos/articulosController.php");
 ?>

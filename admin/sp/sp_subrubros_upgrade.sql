@@ -33,9 +33,9 @@ begin
 		update
 			subrubros
 		set
-			subrubros.descripcion=xdescripcion
+			subrubros.descripcion = xdescripcion
 		where
-			subrubros.codigo=xcodigo;
+			subrubros.codigo = xcodigo;
 	end if;
     commit;
 end

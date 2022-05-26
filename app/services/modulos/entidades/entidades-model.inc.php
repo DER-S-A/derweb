@@ -57,5 +57,57 @@ class EntidadesModel extends Model {
         }
         return $aResult;
     }
+
+    /**
+     * upgrade
+     * Permite actualizar los datos de la tabla entidades.
+     * @param  string $registro
+     * @return array Resultado de la operación
+     */
+    public function upgradeClientes($registro) {
+        $aResult = array();
+        $bd = new BDObject();
+        try {
+            $aRegistro = json_decode($registro, true);
+            $strCardCode = $aRegistro["CardCode"];
+            $strCuit = esVacio($aRegistro["LicTradNum"]) ? "" : $aRegistro["LicTradNum"];
+            $strCardName = esVacio($aRegistro["CardName"]) ? "SIN NOMBRE" : $aRegistro["CardName"];
+            $strEMail = esVacio($aRegistro["E_Mail"]) ? "" : $aRegistro["E_Mail"];
+            $strTelefono = esVacio($aRegistro["Phone1"]) ? "" : $aRegistro["Phone1"];
+            $descuento_p1 = doubleval($aRegistro["U_ONESL_DescuentoP1"]);
+            $descuento_p2 = doubleval($aRegistro["U_ONESL_DescuentoP2"]);
+
+            $sql = "CALL sp_entidades_upgrade(	
+                xid_tipoentidad,
+                xcliente_cardcode,
+                xnro_cuit,
+                xnombre,
+                xdireccion,
+                xemail,
+                xtelefono,
+                xdescuento_1,
+                xdescuento_2)";
+            $this->setParameter($sql, "xid_tipoentidad", 1);
+            $this->setParameter($sql, "xcliente_cardcode", $strCardCode);
+            $this->setParameter($sql, "xnro_cuit", $strCuit);
+            $this->setParameter($sql, "xnombre", $strCardName);
+            $this->setParameter($sql, "xdireccion", "");
+            $this->setParameter($sql, "xemail", $strEMail);
+            $this->setParameter($sql, "xtelefono", $strTelefono);
+            $this->setParameter($sql, "xdescuento_1", $descuento_p1);
+            $this->setParameter($sql, "xdescuento_2", $descuento_p2);
+            $bd->execQuery($sql);
+
+            $aResult["result_code"] = "OK";
+            $aResult["result_message"] = "Clientes actualizados satisfactoriamente"; 
+        } catch (Exception $ex) {
+            $aResult["result_code"] = "BD_ERROR";
+            $aResult["result_message"] = $ex->getMessage();
+        } finally {
+            $bd->close();
+        }
+
+        return $aResult;        
+    }
 }
 ?>

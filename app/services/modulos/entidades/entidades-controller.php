@@ -81,6 +81,31 @@ class EntidadesController extends APIController {
         $arrEntidades = $objEntidadesModel->verificarUsuarioYClaveCliente($xusuario, $xclave);
         return json_encode($arrEntidades);
     }
+
+	/**
+     * upgrade
+     * Endpoint para actualizar subrubros
+     * @return void
+     */
+    public function upgradeClientes() {
+        // Valido que la llamada venga por método PUT
+        if ($this->usePutMethod()) {
+            try {
+                $registro = $this->getURIParameters("registro");
+                $objModel = new EntidadesModel();
+                $responseData = json_encode($objModel->upgradeClientes($registro));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 
 ?>

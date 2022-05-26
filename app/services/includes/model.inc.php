@@ -107,6 +107,6 @@ class Model {
      */
     private static function getDoubleValue($value) {
         return str_replace(",", ".", $value);
-    }
+    }    
 }
 ?>

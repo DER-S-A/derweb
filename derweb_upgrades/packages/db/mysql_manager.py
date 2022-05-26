@@ -3,9 +3,11 @@ Clase: MySqlManager
 Descripción:
     Permite manejar el motor de base de datos de MySQL.
 """
+from pickletools import unicodestring1
 import traceback
 import pymysql
 from packages.lfw_json.json_manager import JSONManager
+import codecs
 
 class MySqlManager:
     dbConfig = None
@@ -54,4 +56,12 @@ class MySqlManager:
             result = cursor.fetchone()
         else:
             result = cursor.fetchall()
-        return result;
+        return result
+
+    def convertirStringAUTF8(self, str) :
+        """
+        Permite convertir un string a UTF-8 para enviarlo a la base de datos.
+        """
+        strResult = codecs.decode(str, "UTF-8")
+        print(strResult)
+        return strResult

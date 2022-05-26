@@ -46,5 +46,30 @@ class RubrosController extends APIController {
         $arrRubros = $rubrosModel->get($xfilter);
         return json_encode($arrRubros);
     }
+
+    /**
+     * upgrade
+     * Endpoint para actualizar subrubros
+     * @return void
+     */
+    public function upgrade() {
+        // Valido que la llamada venga por método PUT
+        if ($this->usePutMethod()) {
+            try {
+                $registro = $this->getURIParameters("registro");
+                $objModel = new RubrosModel();
+                $responseData = json_encode($objModel->upgrade($registro));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 ?>

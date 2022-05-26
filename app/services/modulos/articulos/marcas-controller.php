@@ -38,5 +38,30 @@ class MarcasController extends APIController {
         $a = $objModel->get($xfilter);
         return json_encode($a);
     }
+
+	/**
+     * upgrade
+     * Endpoint para actualizar subrubros
+     * @return void
+     */
+    public function upgrade() {
+        // Valido que la llamada venga por método PUT
+        if ($this->usePutMethod()) {
+            try {
+                $registro = $this->getURIParameters("registro");
+                $objModel = new MarcasModel();
+                $responseData = json_encode($objModel->upgrade($registro));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 ?>
