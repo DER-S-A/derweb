@@ -102,12 +102,12 @@ function generarBotonListaArticulos() {
  */
  function generarCarrusel() {  
      // ESTA FUNCION LA LLAMO DENTRO DE LA FUNCION WINDOW.ONLOAD Q ESTA EN LA LINEA 9
-    const idComp = "carrusel-container"
-     var objCarrusel = new CarruselComponent(idComp);
+    
+     var objCarrusel = new CarruselComponent("carrusel-container");
 
     const url_bannerPortada = "services/banner_portada/get";
     fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
     .then(data => {
-        objCarrusel.generateComponent(data, idComp);
+        objCarrusel.generateComponent(data);
     })
 }

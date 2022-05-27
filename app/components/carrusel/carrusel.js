@@ -4,21 +4,22 @@ class CarruselComponent {
      * @param {string} xidContainer Id. del contenedor para el Carrusel.
      */
     constructor(xidContainer) {
-        this.objContainerCarrusel = document.getElementById(xidContainer);
+        this.idContainer = xidContainer;
+        this.objContainerCarrusel = document.getElementById(this.idContainer);
+        //this.idContainer = xidContainer;
     }
 
     /**
      * Creo los div que necesito para el carrusel    
      */
-    generateComponent(xImagenes, xIdComp) {console.log(xIdComp)
+    generateComponent(xImagenes) {
         var objDiv2CarruselInner = document.createElement("div");
         objDiv2CarruselInner.classList.add("carousel-inner");
         ////////////////////////////////////////////////////////////////
         var objbuttonPrevCarrusel = document.createElement("button");
         objbuttonPrevCarrusel.classList.add("carousel-control-prev");
         objbuttonPrevCarrusel.setAttribute("type","button");
-        objbuttonPrevCarrusel.setAttribute("type","button");
-        objbuttonPrevCarrusel.setAttribute("data-bs-target",'#' + xIdComp);
+        objbuttonPrevCarrusel.setAttribute("data-bs-target",'#' + this.idContainer);
         objbuttonPrevCarrusel.setAttribute( "data-bs-slide","prev");
         var objSpan1ButtonCarrusel = document.createElement("span");
         objSpan1ButtonCarrusel.classList.add("carousel-control-prev-icon");
@@ -29,15 +30,16 @@ class CarruselComponent {
         var objbuttonNextCarrusel = document.createElement("button");
         objbuttonNextCarrusel.classList.add("carousel-control-next");
         objbuttonNextCarrusel.setAttribute("type","button");
-        objbuttonNextCarrusel.setAttribute("type","button");
-        objbuttonNextCarrusel.setAttribute("data-bs-target",'#' + xIdComp);
+        objbuttonNextCarrusel.setAttribute("data-bs-target",'#' + this.idContainer);
         objbuttonNextCarrusel.setAttribute( "data-bs-slide","next");
         var objSpan1ButtonNextCarrusel = document.createElement("span");
         objSpan1ButtonNextCarrusel.classList.add("carousel-control-next-icon");
         objSpan1ButtonNextCarrusel.setAttribute("aria-hidden","true");
         var objSpan2ButtonNextCarrusel = document.createElement("span");
         objSpan2ButtonNextCarrusel.classList.add("visually-hidden");
-
+        
+        objSpan2ButtonCarrusel.innerHTML = "Previous";
+        objSpan2ButtonNextCarrusel.innerHTML = "Next";
         //////////////////////////////////////////////////////////////////
 
         xImagenes.forEach((array, i) => {
@@ -55,9 +57,6 @@ class CarruselComponent {
             
             objDiv2CarruselInner.appendChild(objDiv3CarruselItem).appendChild(objImg);
         });
-
-        objSpan2ButtonCarrusel.innerHTML = "Previous";
-        objSpan2ButtonNextCarrusel.innerHTML = "Next";
 
         objbuttonPrevCarrusel.appendChild(objSpan1ButtonCarrusel);
         objbuttonPrevCarrusel.appendChild(objSpan2ButtonCarrusel);
