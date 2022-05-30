@@ -13,32 +13,34 @@ class CarruselComponent {
     generateComponent(xImagenes, xIdComp) {console.log(xIdComp)
         var objDiv2CarruselInner = document.createElement("div");
         objDiv2CarruselInner.classList.add("carousel-inner");
-        ////////////////////////////////////////////////////////////////
+        
         var objbuttonPrevCarrusel = document.createElement("button");
         objbuttonPrevCarrusel.classList.add("carousel-control-prev");
         objbuttonPrevCarrusel.setAttribute("type","button");
         objbuttonPrevCarrusel.setAttribute("type","button");
         objbuttonPrevCarrusel.setAttribute("data-bs-target",'#' + xIdComp);
         objbuttonPrevCarrusel.setAttribute( "data-bs-slide","prev");
+        
         var objSpan1ButtonCarrusel = document.createElement("span");
         objSpan1ButtonCarrusel.classList.add("carousel-control-prev-icon");
         objSpan1ButtonCarrusel.setAttribute("aria-hidden","true");
+
         var objSpan2ButtonCarrusel = document.createElement("span");
         objSpan2ButtonCarrusel.classList.add("visually-hidden");
-        /////////////////////////////////////////////////////////////////
+        
         var objbuttonNextCarrusel = document.createElement("button");
         objbuttonNextCarrusel.classList.add("carousel-control-next");
         objbuttonNextCarrusel.setAttribute("type","button");
         objbuttonNextCarrusel.setAttribute("type","button");
         objbuttonNextCarrusel.setAttribute("data-bs-target",'#' + xIdComp);
         objbuttonNextCarrusel.setAttribute( "data-bs-slide","next");
+
         var objSpan1ButtonNextCarrusel = document.createElement("span");
         objSpan1ButtonNextCarrusel.classList.add("carousel-control-next-icon");
         objSpan1ButtonNextCarrusel.setAttribute("aria-hidden","true");
+
         var objSpan2ButtonNextCarrusel = document.createElement("span");
         objSpan2ButtonNextCarrusel.classList.add("visually-hidden");
-
-        //////////////////////////////////////////////////////////////////
 
         xImagenes.forEach((array, i) => {
             var objDiv3CarruselItem = document.createElement("div");
