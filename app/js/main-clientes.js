@@ -115,8 +115,10 @@ function generarBotonListaArticulos() {
 
 /**
  * Permite mostrar los artículos seleccionado desde la lista de artículos.
+ * @param {int} xidRubro Id. de rubro seleccionado
+ * @param {int} xidSubrubro Id. Subrubro seleccionado
  */
-function mostrar_articulos(xidArticulo) {
+function mostrar_articulos(xidRubro, xidSubrubro) {
     var objGUI = new CatalogoGUIComponent("app-container");
     objGUI.generateComponent();
     objListaArticulo.abrirCerrarListaArticulos("close");
