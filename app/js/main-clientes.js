@@ -1,5 +1,7 @@
 // Inicio la aplicación
 var app = new App();
+var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
+
 app.init();
 
 /**
@@ -93,7 +95,6 @@ function generarMenuOperaciones() {
  * Crea el componente Lista de Artículos.
  */
 function generarBotonListaArticulos() {
-    var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
     objListaArticulo.generateComponent();
 }
 
@@ -110,4 +111,13 @@ function generarBotonListaArticulos() {
     .then(data => {
         objCarrusel.generateComponent(data, idComp);
     })
+}
+
+/**
+ * Permite mostrar los artículos seleccionado desde la lista de artículos.
+ */
+function mostrar_articulos(xidArticulo) {
+    var objGUI = new CatalogoGUIComponent("app-container");
+    objGUI.generateComponent();
+    objListaArticulo.abrirCerrarListaArticulos("close");
 }

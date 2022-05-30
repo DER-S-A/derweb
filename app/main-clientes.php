@@ -8,6 +8,8 @@
         <link href="css/app-style.css" rel="stylesheet">
         <link href="components/menus/menus.css" rel="stylesheet">
         <link href="components/lista-articulos/lista-articulos.css" rel="stylesheet">
+        <link href="components/catalogo/catalogo-gui.css" rel="stylesheet">
+        <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
 
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
@@ -152,10 +154,16 @@
 
         </div>
 
+        <script src="components/utilities/component-manager.js" type="text/javascript"></script>
         <script src="components/tabs/tabs.js" type="text/javascript"></script>
         <script src="components/menus/menus.js" type="text/javascript"></script>
         <script src="components/lista-articulos/lista-articulos.js" type="text/javascript"></script>
         <script src="components/carrusel/carrusel.js" type="text/javascript"></script>
+
+        <!-- Referencias para generar la página de catálogo -->
+        <script src="components/catalogo/panel-opciones/panel-opciones.js" type="text/javascript"></script>
+        <script src="components/catalogo/catalogo-gui.js" type="text/javascript"></script>
+
         <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>
