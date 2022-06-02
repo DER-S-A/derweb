@@ -39,4 +39,17 @@ class ComponentManager {
         });
         return objCol;
     }
+
+    /**
+     * Verifica si existe un componente por su ID.
+     * @param {string} xid Id. del elemento DOM a verificar
+     * @returns {boolean}
+     */
+    existsComponent(xid) {
+        var obj = document.getElementById(xid);
+        if ((obj === null) || (obj === undefined))
+            return false;
+        else
+            return true;
+    }
 }
