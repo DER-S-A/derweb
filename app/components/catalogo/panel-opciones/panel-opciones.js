@@ -25,14 +25,15 @@ class PanelOpcionesComponent extends ComponentManager {
 
     /**
      * Genera le componente
+     * @param {array} xOpcinesModo Array con las opciones del select MODO.
      * @returns {DOMElement}
      */
-    generateComponent() {
+    generateComponent(xOpcionesModo) {
         var objPanel = document.createElement("div");
         objPanel.id = this.__idPanel;
         objPanel.classList.add("panel-opciones");
 
-        this.__agregarSelectorModo();
+        this.__agregarSelectorModo(xOpcionesModo);
         this.__agregarOpciones();
         objPanel.appendChild(this.__objRow);
         
@@ -42,9 +43,10 @@ class PanelOpcionesComponent extends ComponentManager {
 
     /**
      * Arma la sección de selección de modo.
+     * @param {array} xOpcinesModo Array con las opciones del select MODO.
      * @returns {DOMElement}
      */
-    __agregarSelectorModo() {
+    __agregarSelectorModo(xOpcionesModo) {
         var objLabel = document.createElement("label");
         var objSelect = document.createElement("select");
         var objColumn = this.__addBoostralColumn(["col-md-3"]);
@@ -55,6 +57,13 @@ class PanelOpcionesComponent extends ComponentManager {
         objLabel.setAttribute("for", this.id_selector_modo);
         objSelect.id = this.id_selector_modo;
         objSelect.classList.add("select-modo");
+
+        xOpcionesModo.forEach((xelement) => {
+            let objOption = document.createElement("option");
+            objOption.value = xelement["valor"];
+            objOption.textContent = xelement["nombre"];
+            objSelect.appendChild(objOption);
+        });
 
         objColumn.appendChild(objLabel);
         objColumn.appendChild(objSelect);

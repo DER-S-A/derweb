@@ -22,7 +22,11 @@
 }
 
 .select-modo {
+    font-family: "futura";
+    font-size: 10pt;
+    font-weight: bold;
     margin-left: 5px;
+    width: 120px;
 }
 
 .options-container {

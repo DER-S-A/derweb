@@ -64,8 +64,14 @@ class CatalogoGUIComponent extends ComponentManager {
      */
     __generarPanelOpciones() {
         var objPanelOpciones = new PanelOpcionesComponent("panel-opciones");
-        if (!this.__existsComponent(this.__idPanelOpcionesContainter))
-            return objPanelOpciones.generateComponent();
+        var aOpcionesModo = new Array();
+        if (!this.__existsComponent(this.__idPanelOpcionesContainter)) {
+            // Armo las opciones del select de modo.
+            aOpcionesModo.push({"valor": "PED", "nombre": "Pedido"});
+            aOpcionesModo.push({"valor": "PRE", "nombre": "Presupuesto"});
+
+            return objPanelOpciones.generateComponent(aOpcionesModo);
+        }
         return null;
     }
 }
