@@ -11,15 +11,16 @@ class PanelOpcionesComponent extends ComponentManager {
      */
     constructor(xidcontainer) {
         super();
-        this.idContainer = xidcontainer;
+        this.__idContainer = xidcontainer;
+        this.__idPanel = "panel-opciones";
         this.__objContainer = document.createElement("div");
-        this.__objContainer.id = this.idContainer;
+        this.__objContainer.id = this.__idContainer;
         this.id_selector_modo = "sel-modo";
         this.nameOption = "opcion-precios";
         this.idOptionListaPrecio = "opcion-lista-precio";
         this.idOptionCosto = "opcion-costo";
         this.idOptionVenta = "opcion-venta";
-        this.__objRow = this.addBootstrapRow();
+        this.__objRow = this.__addBootstrapRow();
     }
 
     /**
@@ -28,7 +29,7 @@ class PanelOpcionesComponent extends ComponentManager {
      */
     generateComponent() {
         var objPanel = document.createElement("div");
-        objPanel.id = "panel-opciones";
+        objPanel.id = this.__idPanel;
         objPanel.classList.add("panel-opciones");
 
         this.__agregarSelectorModo();
@@ -46,7 +47,7 @@ class PanelOpcionesComponent extends ComponentManager {
     __agregarSelectorModo() {
         var objLabel = document.createElement("label");
         var objSelect = document.createElement("select");
-        var objColumn = this.addBoostralColumn(["col-md-3"]);
+        var objColumn = this.__addBoostralColumn(["col-md-3"]);
 
         // Armo el selector
         objLabel.classList.add("modo-label");
@@ -66,7 +67,7 @@ class PanelOpcionesComponent extends ComponentManager {
      */
     __agregarOpciones() {
         var objContenedorOpciones = document.createElement("div");
-        var objColumn = this.addBoostralColumn(["col-md-9"]);
+        var objColumn = this.__addBoostralColumn(["col-md-9"]);
         var objUl = document.createElement("ul");
         var objLiPrecioLista = document.createElement("li");
         var objLiPrecioCosto = document.createElement("li");

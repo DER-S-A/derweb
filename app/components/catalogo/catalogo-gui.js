@@ -11,7 +11,6 @@ class CatalogoGUIComponent extends ComponentManager {
      */
     constructor(xidAppContainer) {
         super();
-        this.__objListaContainer = document.createElement("div");
 
         // Id . del contendor de la aplicación donde se deberá desplegar la GUI.
         this.__idAppContainer = xidAppContainer;
@@ -23,25 +22,37 @@ class CatalogoGUIComponent extends ComponentManager {
         this.__idPanelOpcionesContainter = "panel-opciones-container";
 
         // Elimino el contenido de app container.
-        this.deleteContent(this.__idAppContainer, "carrusel-container");
+        this.__deleteContent(this.__idAppContainer, "carrusel-container");
 
         // Armo el contenedor de lista
-        this.__objListaContainer.classList.add("catalogo-container")
-        this.__objListaContainer.id = this.__idCatalogoContainer;
-        this.__objAppContainer.appendChild(this.__objListaContainer);
+        this.__createListaContainer();
+    }
+
+    /**
+     * Crea el contenedor general del catalogo.
+     */
+    __createListaContainer() {
+        if (!this.__existsComponent(this.__idCatalogoContainer)) {
+            this.__objListaContainer = document.createElement("div");
+            this.__objListaContainer.classList.add("catalogo-container");
+            this.__objListaContainer.id = this.__idCatalogoContainer;
+            this.__objAppContainer.appendChild(this.__objListaContainer);
+        }
     }
 
     /**
      * Permite generar la estructura de la página de catálogo.
      */
     generateComponent() {
-        var objPanelOpcionesContainer = document.createElement("div");
+        var objPanelOpcionesContainer = null;
         var objPanelOpciones = null;
 
         objPanelOpciones = this.__generarPanelOpciones();
         if (objPanelOpciones !== null) {
+            objPanelOpcionesContainer = document.createElement("div");
             objPanelOpcionesContainer.id = this.__idPanelOpcionesContainter;
             objPanelOpcionesContainer.classList.add("panel-opciones-container");
+            // Por algún motivo acá se está duplicado el div=id-opciones sin clase. (No causa efecto)
             objPanelOpcionesContainer.appendChild(objPanelOpciones);
             this.__objListaContainer.appendChild(objPanelOpcionesContainer);
         }
@@ -49,19 +60,12 @@ class CatalogoGUIComponent extends ComponentManager {
 
     /**
      * Genero el panel de opciones.
-     * @returns 
+     * @returns {DOM element}
      */
     __generarPanelOpciones() {
         var objPanelOpciones = new PanelOpcionesComponent("panel-opciones");
-        if (!this.existsComponent(this.__idPanelOpcionesContainter))
+        if (!this.__existsComponent(this.__idPanelOpcionesContainter))
             return objPanelOpciones.generateComponent();
         return null;
-    }
-
-    /**
-     * Permite limpiar la pantalla del catálogo.
-     */
-    clear() {
-        this.deleteContent(this.__idAppContainer, "catalogo-container");
     }
 }

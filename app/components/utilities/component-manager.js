@@ -10,7 +10,7 @@ class ComponentManager {
      * @param {string} xidContent 
      * @param {string} xidContentAEliminar 
      */
-    deleteContent (xidContent, xidContentAEliminar) {
+    __deleteContent (xidContent, xidContentAEliminar) {
         var objContenedor = document.getElementById(xidContent);
         var objContenedorAEliminar = document.getElementById(xidContentAEliminar);
         if (objContenedorAEliminar != null)
@@ -21,7 +21,7 @@ class ComponentManager {
      * Agrega una fila del layout de bootstrap.
      * @returns DOM element
      */
-     addBootstrapRow() {
+     __addBootstrapRow() {
         var objRow = document.createElement("div");
         objRow.classList.add("row");
         return objRow;
@@ -32,7 +32,7 @@ class ComponentManager {
      * @param {array} xClassColumns Array con las clases a asociar al div.
      * @returns DOM element
      */
-    addBoostralColumn(xClassColumns) {
+    __addBoostralColumn(xClassColumns) {
         var objCol = document.createElement("div");
         xClassColumns.forEach(xElement => {
             objCol.classList.add(xElement);
@@ -45,7 +45,7 @@ class ComponentManager {
      * @param {string} xid Id. del elemento DOM a verificar
      * @returns {boolean}
      */
-    existsComponent(xid) {
+    __existsComponent(xid) {
         var obj = document.getElementById(xid);
         if ((obj === null) || (obj === undefined))
             return false;
