@@ -64,6 +64,34 @@ class ArticulosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
+    
+    /**
+     * getByRubroAndSubrubro
+     * Obtiene los artículos para mostrar en el catálogo por rubro y subrubro.
+     * @return void
+     */
+    public function getByRubroAndSubrubro() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $sesion = $this->getURIParameters("sesion");
+                $id_rubro = intval($this->getURIParameters("id_rubro"));
+                $id_subrubro = intval($this->getURIParameters("id_subrubro"));
+                $pagina = intval($this->getURIParameters("pagina"));
+                $objModel = new ArticulosModel();
+                $responseData = json_encode($objModel->getByRubroAndSubrubro($sesion, $id_rubro, $id_subrubro, $pagina));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 	
 }
 

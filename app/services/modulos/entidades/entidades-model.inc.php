@@ -109,5 +109,25 @@ class EntidadesModel extends Model {
 
         return $aResult;        
     }
+    
+    /**
+     * getBySesion
+     * Permite obtener los datos del cliente que inició la sesión.
+     * @param  mixed $xsession
+     * @return void
+     */
+    public function getBySesion($xsesion) {
+        $session = json_decode($xsesion, true);
+        $id_cliente = $session["id_cliente"];
+
+        $sql = "SELECT
+                    *
+                FROM
+                    entidades
+                WHERE
+                    entidades.id = $id_cliente";
+        $aCliente = getRs($sql)->getAsArray();
+        return $aCliente;
+    }
 }
 ?>

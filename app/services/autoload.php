@@ -9,6 +9,7 @@
 include_once("../../admin/config.php");
 include_once("../../admin/funcionesSConsola.php");
 include_once("../../admin/dbcommand.php");
+include_once("includes/funciones.inc.php");
 
 include("includes/apis/api-controller.php");
 include("includes/model.inc.php");

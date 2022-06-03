@@ -107,6 +107,87 @@ class ArticulosModel extends Model {
 
         return $aResult;
     }
+    
+    /**
+     * getByRubroAndSubrubro
+     * Permite recuperar los artículos por rubros y subrubros
+     * @param  string $xsesion JSON con la sesión iniciada en DERWEB.
+     * @param  int $xidRubro Id. de rubro
+     * @param  int $xidSubrubro Id. de subrubro.
+     * @return array
+     */
+    public function getByRubroAndSubrubro($xsesion, $xidRubro, $xidSubrubro, $xpagina) {
+        $objEndidadesModel = new EntidadesModel();
+        $aArticulosResponse = [];
+        $aResponse = [];
+        $aCliente = $objEndidadesModel->getBySesion($xsesion);
+        $id_listaprecio = intval($aCliente[0]["id_listaprecio"]);
+        $descuento_p1 = doubleval($aCliente[1]["descuento_1"]);
+        $descuento_p2 = doubleval($aCliente[2]["descuento_2"]);
+        $rentabilidad = doubleval($aCliente[3]["rentabilidad_1"]);
+
+        $sql = "CALL sp_articulos_getByRubroAndRubro($id_listaprecio, $xidRubro, $xidSubrubro, $xpagina)";
+        $rsArticulos = getRs($sql, true);
+        $aResponse["cantreg"] = $rsArticulos->affectedRows;
+        $aResponse["pagina"] = $xpagina;
+        $aResponse["next"] = $xpagina + 40;
+        $index = 0;
+        while (!$rsArticulos->EOF()) {
+            $aArticulosResponse[$index]["id"] = $rsArticulos->getValueInt('id');
+            $aArticulosResponse[$index]["codigo"] = $rsArticulos->getValue('codigo');
+            $aArticulosResponse[$index]["desc"] = $rsArticulos->getValue('descripcion');
+            $aArticulosResponse[$index]["prlista"] = doubleval($rsArticulos->getValue('precio_lista'));
+            $aArticulosResponse[$index]["cped"] = calcular_costo("PED", doubleval($rsArticulos->getValue('precio_lista')), $descuento_p1, $descuento_p2);
+            $aArticulosResponse[$index]["cpre"] = calcular_costo("PRE", doubleval($rsArticulos->getValue('precio_lista')), $descuento_p1, $descuento_p2);
+            $aArticulosResponse[$index]["vped"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cped"]), $rentabilidad);
+            $aArticulosResponse[$index]["vpre"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cpre"]), $rentabilidad);
+            $aArticulosResponse[$index]["stkd"] = doubleval($rsArticulos->getValue("existencia")); 
+
+            $aArticulosResponse[$index]["imgs"] = $this->getImagenesByArt($rsArticulos->getValueInt('id_articulo'));
+            $aArticulosResponse[$index]["co"] = $this->getCodigosOriginales($rsArticulos->getValueInt('id_articulo'));
+            $aArticulosResponse[$index]["apl"] = []; // Por ahora dejo en un array vacío, se completará en la segunda etapa.
+
+            $index++;
+            $rsArticulos->next();
+        }
+
+        $rsArticulos->close();
+        $aResponse["values"] = $aArticulosResponse;
+        return $aResponse;
+    }
+    
+    /**
+     * getImagenesByArt
+     * Permite obtener el array con las imagenes del artículo.
+     * @param  mixed $xidArticulo
+     * @return void
+     */
+    public function getImagenesByArt($xidArticulo) {
+        $sql = "SELECT 
+                    archivo AS 'url',
+                    predeterminada AS 'default'
+                FROM
+                    art_fotos
+                WHERE
+                    art_fotos.id_articulo = $xidArticulo";
+        return getRs($sql)->getAsArray();
+    }
+    
+    /**
+     * getCodigosOriginales
+     * Permite levantar los códigos originales.
+     * @param  mixed $xidArticulo
+     * @return void
+     */
+    public function getCodigosOriginales($xidArticulo) {
+        $sql = "SELECT
+                    codigo AS 'cod'
+                FROM
+                    art_codigos_originales
+                WHERE
+                    id_articulo = $xidArticulo";
+        return getRs($sql)->getAsArray();
+    }
 }
 
 ?>
