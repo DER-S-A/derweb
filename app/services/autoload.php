@@ -39,4 +39,6 @@ include("modulos/entidades/tipos-entidadesModel.inc.php");
 include("modulos/entidades/tipos-entidadesController.php");
 include("modulos/articulos/articulosModel.inc.php");
 include("modulos/articulos/articulosController.php");
+include("modulos/articulos/articulos-destacadosModel.inc.php");
+include("modulos/articulos/articulos-destacadosController.php");
 ?>
