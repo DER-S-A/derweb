@@ -3,6 +3,7 @@
 /admin/scripts/tmpcache/
 /admin/scripts/autosuggest/tmpcache/
 /admin/css/tmpcache/
+/admin/ufiles/
 
 app/services/configuracion.php
 admin/config.php

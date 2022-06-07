@@ -18,6 +18,10 @@ include("modulos/articulos/rubros-model.inc.php");
 include("modulos/articulos/rubros-controller.php");
 
 // Referencia al end point entidades.
+include("modulos/paises/paisesModel.inc.php");
+include("modulos/paises/paisesController.php");
+include("modulos/provincias/provinciasModel.inc.php");
+include("modulos/provincias/provinciasController.php");
 include("modulos/entidades/entidades-model.inc.php");
 include("modulos/entidades/entidades-controller.php");
 include("modulos/articulos/marcas-model.inc.php");

@@ -22,34 +22,57 @@ class Catalogo:
             Actualiza los paises
         """
         sap = SAPManager()
-        db = MySqlManager()
+        strUrl = "http://localhost/derweb/app/services/paises/upgrade"
+        headers = {
+            "Content-Type": "application/json"
+        } 
 
         sap.login() # Me logueo en SAP
-        paises = sap.getData("paises") # Extraigo los datos
-        sap.logout() # Me desconecto de SAP
+        pagina = 0
+        paises = sap.getData("paises", None, pagina) # Extraigo los datos
+        try:
+            while len(paises["value"]) != 0:
+                for pais in paises["value"]:
+                    strParametro = "registro=" + json.dumps(pais)
+                    strParametro = strParametro.replace("&", "y")
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                print(repuesta)
+                pagina += 20
+                paises = sap.getData("paises", None, pagina) # Extraigo los datos
 
-        for pais in paises["value"]:
-            sql = "CALL sp_paises_upgrade('{0}', '{1}')".format(pais["PaisCode"], pais["PaisName"])
-            db.execute(sql)
-        db.closeDB()
+            sap.logout() # Me desconecto de SAP
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            print(strParametro)
+            sap.logout()        
             
     def updateProvincias(self):
         """
             Permite actualizar la tabla de provincias
         """
-        db = MySqlManager()
         sap = SAPManager()
-        sap.login()
-        provincias = sap.getData("provincias")
-        sap.logout()
+        strUrl = "http://localhost/derweb/app/services/provincias/upgrade"
+        headers = {
+            "Content-Type": "application/json"
+        }
+        try:
+            sap.login()
+            pagina = 0
+            provincias = sap.getData("provincias", None, pagina)
+            while len(provincias["value"]) != 0:
+                for pcia in provincias["value"]:
+                    strParametro = "registro=" + json.dumps(pcia)
+                    strParametro = strParametro.replace("&", "y")
+                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                pagina += 20
+                provincias = sap.getData("provincias", None, pagina)
 
-        for pcia in provincias["value"]:
-            sql = "CALL sp_provincias_upgrade ('{0}', '{1}', '{2}')".format(
-                                                            pcia["EstadoCode"],
-                                                            pcia["PaisCode"],
-                                                            pcia["EstadoName"])
-            db.execute(sql)
-        db.closeDB()
+            print(repuesta)
+            sap.logout()
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            print(strParametro)
+            sap.logout()
 
     def updateFormasEnvios(self):
         """

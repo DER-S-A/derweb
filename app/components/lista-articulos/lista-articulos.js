@@ -21,12 +21,12 @@ class ListaArticuloComponent {
 
         // Creo el evento click del botón
         document.getElementById("btnPushListaArticulo").addEventListener("click", () => {
-            this.__abrirCerrarListaArticulos("open");
+            this.abrirCerrarListaArticulos("open");
         })
 
         // Agrego evento para el botón cerrar
         document.getElementById("btnCerrarListaArticulo").addEventListener("click", () => {
-            this.__abrirCerrarListaArticulos("close");
+            this.abrirCerrarListaArticulos("close");
         });
     }
 
@@ -34,7 +34,7 @@ class ListaArticuloComponent {
      * Abre o cierra la lista de rubros.
      * @param {string} xcommand Establece el comando de apertura o cierre. "open": Abrir / "close": cerrar.
      */
-    __abrirCerrarListaArticulos(xcommand) {
+    abrirCerrarListaArticulos(xcommand) {
         let objRubrosContainer = document.getElementById("rubros-container");
         if (xcommand === "open")
             objRubrosContainer.style.display = "block";
