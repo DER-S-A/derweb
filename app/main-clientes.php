@@ -4,11 +4,13 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
         <link href="css/app-style.css" rel="stylesheet">
         <link href="components/menus/menus.css" rel="stylesheet">
         <link href="components/lista-articulos/lista-articulos.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
+        <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
@@ -106,8 +108,22 @@
             </header>
 
             <main class="container-fluid">
-                <section id="app-container" class="app-container">
-                    <div id="carrusel-container" class="carousel slide" data-bs-ride="carousel"></div>
+                <section id="app-container" class="app-container app-container2">
+                    <div id="carrusel-container" class="carousel slide carrusel" data-bs-ride="carousel"></div>
+                    <div id="imgCatCta" class= "row">
+                        <div class="col-auto border border-light">
+                        <img src="assets/imagenes/icons/catalogos-8.png" alt="" aling="left"><b>MIRÁ LOS CATÁLOGOS ONLINE</b>
+                        </div>    
+                        <div class="col-auto">
+                        <img src="assets/imagenes/icons/estado-cuenta-8.png" alt="" aling="left" id="imgCta"><b>¿TENES CUENTA CORRIENTE? REVISA SU ESTADO AQUI</b>
+                        </div>
+                    </div>
+                    <div id="carrusel-footer" class="contenedor">
+                        <div class="carousel">
+                            <div class="carousel__contenedor" id="carrusel-container-footer"></div>
+                            <div role="tablist" class="carousel__indicadores"></div>
+                        </div>
+                    </div>
                 </section>
             </main>
 
@@ -155,9 +171,14 @@
         <script src="components/tabs/tabs.js" type="text/javascript"></script>
         <script src="components/menus/menus.js" type="text/javascript"></script>
         <script src="components/lista-articulos/lista-articulos.js" type="text/javascript"></script>
-        <script src="components/carrusel/funciones_carrusel.js" type="text/javascript"></script>
         <script src="components/carrusel/carrusel.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.js"></script>
+        <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+        <script src="components/carrusel_footer/carruselfooter.js" type="text/javascript"></script>
         <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
+        
+        
+        
     </body>
 </html>
