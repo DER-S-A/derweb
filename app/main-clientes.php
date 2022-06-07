@@ -164,6 +164,9 @@
         <script src="components/catalogo/panel-opciones/panel-opciones.js" type="text/javascript"></script>
         <script src="components/catalogo/catalogo-gui.js" type="text/javascript"></script>
 
+        <!-- Referencias al componente grilla -->
+        <script src="components/catalogo/grid-articulos/grid-articulos.js" type="text/javascript"></script>
+
         <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>

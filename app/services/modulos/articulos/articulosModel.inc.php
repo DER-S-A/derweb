@@ -112,11 +112,11 @@ class ArticulosModel extends Model {
      * getByRubroAndSubrubro
      * Permite recuperar los artículos por rubros y subrubros
      * @param  string $xsesion JSON con la sesión iniciada en DERWEB.
-     * @param  int $xidRubro Id. de rubro
+     * @param  int $xJSONParam Parámetros de filtros
      * @param  int $xidSubrubro Id. de subrubro.
      * @return array
      */
-    public function getByRubroAndSubrubro($xsesion, $xidRubro, $xidSubrubro, $xpagina) {
+    public function getByRubroAndSubrubro($xsesion, $xJSONParam, $xpagina) {
         $objEndidadesModel = new EntidadesModel();
         $aArticulosResponse = [];
         $aResponse = [];
@@ -126,7 +126,12 @@ class ArticulosModel extends Model {
         $descuento_p2 = doubleval($aCliente[2]["descuento_2"]);
         $rentabilidad = doubleval($aCliente[3]["rentabilidad_1"]);
 
-        $sql = "CALL sp_articulos_getByRubroAndRubro($id_listaprecio, $xidRubro, $xidSubrubro, $xpagina)";
+        // Recupero los parámetros recibidos con el filtro a aplicar
+        $aParametros = json_decode($xJSONParam, true);
+        $id_rubro = intval($aParametros["values"]["id_rubro"]);
+        $id_subrubro = intval($aParametros["values"]["id_subrubro"]);
+
+        $sql = "CALL sp_articulos_getByRubroAndRubro($id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
         $rsArticulos = getRs($sql, true);
         $aResponse["cantreg"] = $rsArticulos->affectedRows;
         $aResponse["pagina"] = $xpagina;
@@ -141,7 +146,7 @@ class ArticulosModel extends Model {
             $aArticulosResponse[$index]["cpre"] = calcular_costo("PRE", doubleval($rsArticulos->getValue('precio_lista')), $descuento_p1, $descuento_p2);
             $aArticulosResponse[$index]["vped"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cped"]), $rentabilidad);
             $aArticulosResponse[$index]["vpre"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cpre"]), $rentabilidad);
-            $aArticulosResponse[$index]["stkd"] = doubleval($rsArticulos->getValue("existencia")); 
+            $aArticulosResponse[$index]["stkd"] = doubleval($rsArticulos->getValue("existencia"));
 
             $aArticulosResponse[$index]["imgs"] = $this->getImagenesByArt($rsArticulos->getValueInt('id_articulo'));
             $aArticulosResponse[$index]["co"] = $this->getCodigosOriginales($rsArticulos->getValueInt('id_articulo'));

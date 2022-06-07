@@ -74,4 +74,21 @@ class CatalogoGUIComponent extends ComponentManager {
         }
         return null;
     }
+
+    /**
+     * Obtiene los resultados cuando se ingresa desde LISTA ARTIUCLOS.
+     * @param {Array} xparametros Array con los parámetros de búsqueda
+     *  Formato:    { 
+     *                  api_url : "Establece la URL de la API a consultar", 
+     *                  values: [
+     *                      { id_rubro: "Id. de rubro"},
+     *                      { id_subrubro: "Id. de de subrubro"},
+     *                  ]
+     *              }
+     */
+    getArticulosResultadoBusqueda(xaParametros) {
+        var objGrilla = null;
+        objGrilla  = new CatalogoGridComponent("grilla-articulos", xaParametros);
+        objGrilla.generateComponent(this.__idAppContainer);
+    }
 }

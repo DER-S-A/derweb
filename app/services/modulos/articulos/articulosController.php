@@ -75,11 +75,11 @@ class ArticulosController extends APIController {
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {
                 $sesion = $this->getURIParameters("sesion");
-                $id_rubro = intval($this->getURIParameters("id_rubro"));
-                $id_subrubro = intval($this->getURIParameters("id_subrubro"));
+                $filters = $this->getURIParameters("parametros");
+                //$id_subrubro = intval($this->getURIParameters("id_subrubro"));
                 $pagina = intval($this->getURIParameters("pagina"));
                 $objModel = new ArticulosModel();
-                $responseData = json_encode($objModel->getByRubroAndSubrubro($sesion, $id_rubro, $id_subrubro, $pagina));
+                $responseData = json_encode($objModel->getByRubroAndSubrubro($sesion, $filters, $pagina));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

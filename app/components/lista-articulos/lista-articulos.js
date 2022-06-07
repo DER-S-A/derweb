@@ -10,6 +10,7 @@ class ListaArticuloComponent {
      */
     constructor(xidContainer) {
         this.objContainerListaArticulo = document.getElementById(xidContainer);
+        this.idRubroSeleccionado = 0;
     }
 
     /**
@@ -132,7 +133,7 @@ class ListaArticuloComponent {
             if (xesRubro)
                 objLink.href = "javascript:desplegar_subrubros(" + xrow.id + ");";
             else
-                objLink.href = "javascript:mostrar_articulos(" + xrow.id + ");";
+                objLink.href = "javascript:mostrar_articulos(" + sessionStorage.getItem("derweb_id_rubro_seleccionado") + ", " +  xrow.id + ");";
 
             objDivContainerOption.classList.add("opcion-rubro-container");
             objDivTexto.classList.add("opcion-rubro-texto-container");
@@ -169,6 +170,8 @@ function desplegar_subrubros(xid_rubro) {
     var objTitulo = document.createElement("h5");
     var rubroSeleccionado = objCatalogo.getRubros("id = " + xid_rubro);
     var objListaSubrubroAbierta = document.getElementById("lista-subrubros-container");
+
+    sessionStorage.setItem("derweb_id_rubro_seleccionado", xid_rubro);
 
     // Verifico si se abrió otra lista de subrubro anteriormente para eliminarla
     if (objListaSubrubroAbierta !== null)

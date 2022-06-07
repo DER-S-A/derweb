@@ -120,6 +120,19 @@ function generarBotonListaArticulos() {
  */
 function mostrar_articulos(xidRubro, xidSubrubro) {
     var objGUI = new CatalogoGUIComponent("app-container");
+    var aParametros;
     objGUI.generateComponent();
     objListaArticulo.abrirCerrarListaArticulos("close");
+
+    // Armo el parámetro para buscar por rubro y subrubro.
+    aParametros = {
+        "api_url": "http://localhost/derweb/app/services/articulos/getByRubroAndSubrubro",
+        "values": { 
+            "id_rubro": parseInt(xidRubro),
+            "id_subrubro": parseInt(xidSubrubro)
+        }
+    };
+
+    // Traigo los resultados
+    objGUI.getArticulosResultadoBusqueda(aParametros);
 }
