@@ -10,6 +10,9 @@
         <link href="components/lista-articulos/lista-articulos.css" rel="stylesheet">
         <link href="components/catalogo/catalogo-gui.css" rel="stylesheet">
         <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
+        <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
 
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
@@ -110,6 +113,23 @@
             <main class="container-fluid">
                 <section id="app-container" class="app-container">
                     <div id="carrusel-container" class="carousel slide" data-bs-ride="carousel"></div>
+
+                    <div class="iconos-home">
+                        <div id="imgCatCta" class= "row">
+                            <div class="col-auto border border-light">
+                                <img src="assets/imagenes/icons/catalogos-8.png" alt="" aling="left"><b>MIRÁ LOS CATÁLOGOS ONLINE</b>
+                            </div>    
+                            <div class="col-auto">
+                                <img src="assets/imagenes/icons/estado-cuenta-8.png" alt="" aling="left" id="imgCta"><b>¿TENES CUENTA CORRIENTE? REVISA SU ESTADO AQUI</b>
+                            </div>
+                        </div>
+                        <div id="carrusel-footer" class="contenedor">
+                            <div class="carousel">
+                                <div class="carousel__contenedor" id="carrusel-container-footer"></div>
+                                <div role="tablist" class="carousel__indicadores"></div>
+                            </div>
+                        </div>              
+                    </div>
                 </section>
             </main>
 
@@ -159,6 +179,10 @@
         <script src="components/menus/menus.js" type="text/javascript"></script>
         <script src="components/lista-articulos/lista-articulos.js" type="text/javascript"></script>
         <script src="components/carrusel/carrusel.js" type="text/javascript"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.js"></script>
+        <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+        <script src="components/carrusel_footer/carruselfooter.js" type="text/javascript"></script>
 
         <!-- Referencias para generar la página de catálogo -->
         <script src="components/catalogo/panel-opciones/panel-opciones.js" type="text/javascript"></script>

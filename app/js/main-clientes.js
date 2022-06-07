@@ -18,6 +18,7 @@ window.onload = () => {
     generarMenuOperaciones();
     generarBotonListaArticulos();
     generarCarrusel();
+    generarCarruselFotter();
 }
 
 /**
@@ -135,4 +136,48 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 
     // Traigo los resultados
     objGUI.getArticulosResultadoBusqueda(aParametros);
+}
+
+/**
+ * Crea el componente Carrusel footer.
+ */
+ function generarCarruselFotter() {  
+    // ESTA FUNCION LA LLAMO DENTRO DE LA FUNCION WINDOW.ONLOAD Q ESTA EN LA LINEA 19
+    let xId= 'carrusel-container-footer';
+    var objCarruselFooter = new CarruselFooterComponent(xId);
+
+   const url_bannerPortada = "services/articulos-destacados/get";
+   fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
+   .then(data => {
+       objCarruselFooter.generateComponent(data);
+
+        new Glider(document.querySelector('.carousel__lista'), {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            draggable: true,  //ESTO HACE Q EL CARRUSEL SEA ARRASTRABLE
+            dots: '.carousel__indicadores',
+            arrows: {
+                prev: '.carousel__anterior',
+                next: '.carousel__siguiente'
+            },
+            responsive: [
+                {
+                    // screens greater than >= 775px
+                    breakpoint: 450,
+                    settings: {
+                    // Set to `auto` and provide item width to adjust to viewport
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                    }
+                },{
+                    // screens greater than >= 1024px
+                    breakpoint: 800,
+                    settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 4
+                    }
+                }
+            ]
+        });
+   })
 }
