@@ -33,10 +33,6 @@ body {
     /*min-height: 100vh;*/
 }
 
-#content-wrap {
-    /*padding-bottom: 180px;*/
-}
-
 #boton_volver {
     margin-left: 200px !important;
 }
@@ -60,6 +56,10 @@ body {
 
 .toolbar-container ul li {
     display: inline-block;
+}
+
+.carousel-inner img {
+    max-height: 17rem;
 }
 
 #imgCatCta {
