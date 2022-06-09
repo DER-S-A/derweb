@@ -32,39 +32,34 @@ class CatalogoGridComponent extends ComponentManager {
         this._getData();
     }
 
+    /**
+     * Permite recupera los datos a mostrar en la grilla.
+     */
     _getData() {
         var pagina = 0;
-        /*while (!this._getArticulos(pagina, "derweb_articulos_" + pagina)) {
-            console.log("Procesando pagina " + pagina);
-            pagina += 40;
-        }*/
-        this._getArticulos(pagina, "derweb_articulos_" + pagina)
+        this._getArticulosByRubroAndSubrubro(pagina, "derweb_articulos")
     }
 
-    /// Analizar bien la recursividad con promesas.
-    _getArticulos(xpagina, xclaveSessionStorage, xEOF) {
+    /**
+     * Permite recuperar página por página el resultado de artículos en forma
+     * asincrónica.
+     * @param {int} xpagina Número de página a recuperar
+     * @param {string} xclaveSessionStorage Clave de almacenamiento para sessionStorage.
+     */
+    _getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {
         var url = this.aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
             + "&parametros=" + JSON.stringify(this.aParametros) + "&pagina=" + xpagina;
 
-        if (!xEOF) {
-            getAPI(url_con_parametros, (response) => {
-                let aDatos = JSON.parse(response);
-                console.log(aDatos["values"]);
-
-                xEOF = false;
-                if (aDatos["values"].length === 0)
-                    xEOF = true
-                else
-                    sessionStorage.setItem(xclaveSessionStorage, JSON.stringify(aDatos));
-                aDatos = null; 
-            }, true);
-
-            xpagina += 40;
-            xEOF = this._getArticulos(xpagina, xclaveSessionStorage, xEOF)
-        }
-
-        return xEOF;
+        fetch (url_con_parametros)
+            .then(xresponse => xresponse.json())
+            .then(xdata  => {
+                if (xdata["values"].length !== 0) {
+                    sessionStorage.setItem(xclaveSessionStorage + "_" + xpagina, JSON.stringify(xdata));
+                    xpagina += 40;
+                    this._getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage);         
+                }
+            });
     }
 
     /**
