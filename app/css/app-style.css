@@ -15,15 +15,9 @@
     src: url("../assets/fuentes/fl.ttf");
 }
 
-body {
-    overflow-x: hidden;
-}
-
 .app-container {
     position: relative;
     background-color: #f5f5f5;
-    /*overflow-y: auto;
-    overflow-x: hidden;*/
     padding: 3px;
 }
 
@@ -36,6 +30,7 @@ body {
 #boton_volver {
     margin-left: 200px !important;
 }
+
 
 #app-header-content{
     margin-left: 75%;
@@ -59,29 +54,42 @@ body {
 }
 
 .carousel-inner img {
-    max-height: 17rem;
+    max-height: 20rem;
 }
 
 #imgCatCta {
     text-align: center;
+    
     display: inline-flex;
     margin-top: 4%;
+    margin-bottom: 4%;
     font-size: 0.7rem;
+    margin-left: auto;
+    margin-right: auto;
+    /*width: 100%;*/
 }
 
 #imgCatCta img { 
     max-height: 6rem;
     max-width: 3.5rem;
+    padding-right: 3%;
+}
+
+#imgCatCta b { 
+    /*padding-left: 1%;*/
 }
 
 #imgCatCta .border-light  {
     border-top: none !important;
     border-bottom: none !important;
-    border-left: none !important;
+    border-right: none !important;
     border-width: medium !important;
     border-color: #9e9e9e!important;
-    padding-right: 2.5rem;
+    margin-left: 3em;
+    padding-left: 2rem;
+    /*padding-right: 2.5rem;
     margin-right: 2rem;
+    */
 }
 
 .iconos-home {
@@ -92,28 +100,6 @@ body {
     max-height: 21rem ;
 }
 
-#imgCatCta {
-    text-align: center;
-    display: inline-flex;
-    margin-top: 4%;
-    font-size: 0.7rem;
-}
-
-#imgCatCta img { 
-    max-height: 6rem;
-    max-width: 3.5rem;
-}
-
-#imgCatCta .border-light  {
-    border-top: none !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-width: medium !important;
-    border-color: #9e9e9e!important;
-    padding-right: 2.5rem;
-    margin-right: 2rem;
-}
-
 .app-container2 {
     text-align: center;
 }
@@ -121,10 +107,6 @@ body {
 .carrusel img {
     max-height: 21rem ;
 }
-
-/*#imgCatCta img {
-    height:400px;
-}*/
 
 /* Armo los media query para cuando cambia la resolución de pantalla se adapte. 
     Esto soluciona el problema de que en modo celu el footer tapaba el formulario.

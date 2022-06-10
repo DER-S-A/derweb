@@ -5,11 +5,14 @@
 
 .app-header {
     background-color: #003d7c;
-    padding: 5px;
+    max-width: 100%;
+    margin: auto;
 }
 
 .app-header-logo {
     width: 100px;
+    margin-top:4%;
+    margin-bottom: 4%;
 }
 
 .app-header-buscar {
