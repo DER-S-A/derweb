@@ -21,23 +21,23 @@ class CatalogoGridComponent extends ComponentManager {
      */
     constructor (xidgrid, xparametros) {
         super();
-        this.aParametros = xparametros;
-        this.finLista = false;
+        this._aParametros = xparametros;
+        this._claveSessionStorage = "derweb_articulos";
 
         this._objGridContainer = document.createElement("div");
-        this._objGridContainer.id = xidgrid.id;
+        this._objGridContainer.id = xidgrid;
         this._objGridContainer.classList.add("grid-container");
         this._aDatos = [];
 
-        this._getData();
+        this.__getData();
     }
 
     /**
      * Permite recupera los datos a mostrar en la grilla.
      */
-    _getData() {
+    __getData() {
         var pagina = 0;
-        this._getArticulosByRubroAndSubrubro(pagina, "derweb_articulos")
+        this.__getArticulosByRubroAndSubrubro(pagina, this._claveSessionStorage)
     }
 
     /**
@@ -46,10 +46,10 @@ class CatalogoGridComponent extends ComponentManager {
      * @param {int} xpagina Número de página a recuperar
      * @param {string} xclaveSessionStorage Clave de almacenamiento para sessionStorage.
      */
-    _getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {
-        var url = this.aParametros["api_url"];
+    __getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {
+        var url = this._aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
-            + "&parametros=" + JSON.stringify(this.aParametros) + "&pagina=" + xpagina;
+            + "&parametros=" + JSON.stringify(this._aParametros) + "&pagina=" + xpagina;
 
         fetch (url_con_parametros)
             .then(xresponse => xresponse.json())
@@ -57,15 +57,144 @@ class CatalogoGridComponent extends ComponentManager {
                 if (xdata["values"].length !== 0) {
                     sessionStorage.setItem(xclaveSessionStorage + "_" + xpagina, JSON.stringify(xdata));
                     xpagina += 40;
-                    this._getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage);         
+                    this.__getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage);
+                    this.__crearListaArticulos(xpagina - 40);
                 }
             });
     }
 
     /**
+     * Permite dibjar la grilla en pantalla
+     * @param {int} xpagina Página a levantar
+     */
+    __crearListaArticulos (xpagina) {
+        var aDatos = JSON.parse(sessionStorage.getItem(this._claveSessionStorage + "_" + xpagina));
+
+        aDatos["values"].forEach(xelement => {
+            var objRowLista = this.__addBootstrapRow();
+            var objColLista = this.__addBoostralColumn(["col-md-12"]);
+            var objItemRow = this.__addBootstrapRow();
+            var objItemCol1 = this.__addBoostralColumn(["col-md-2"]);
+            var objItemCol2 = this.__addBoostralColumn(["col-md-6"]);
+            var objItemCol3 = this.__addBoostralColumn(["col-md-4"]);
+
+            objRowLista.classList.add("row-lista");
+
+            objItemCol1.appendChild(this.__crearColumnaFoto());
+            objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"]));
+            objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
+
+            objItemRow.appendChild(objItemCol1);
+            objItemRow.appendChild(objItemCol2);
+            objItemRow.appendChild(objItemCol3);
+            objColLista.appendChild(objItemRow);
+            objRowLista.appendChild(objColLista);            
+            this._objGridContainer.appendChild(objRowLista);
+        });
+
+        sessionStorage.removeItem(this._claveSessionStorage + "_" + xpagina);
+        console.log("Cargando página " + xpagina);
+    }
+
+    /**
+     * Crea la primer columna con la foto.
+     * @param {string} xurlFoto 
+     * @returns {DOMElement}
+     */
+    __crearColumnaFoto(xurlFoto) {
+        var objContenedorFoto = document.createElement("div");
+        var objImg = document.createElement("img");
+        
+        objContenedorFoto.id = "info-articulo-foto"
+        objContenedorFoto.classList.add("info-articulo-foto");
+
+        objImg.src = "../admin/ufiles/sinfoto.svg";
+        objContenedorFoto.appendChild(objImg);
+
+        return objContenedorFoto;
+    }
+
+    /**
+     * Crea la segunda columna con la descripción y el código.
+     * @param {string} xdescripcion Descripción del artículo.
+     * @param {string} xcodigo Código del artículo.
+     * @returns {DOMElement}
+     */
+    __crearColumnaDescripcion(xdescripcion, xcodigo) {
+        var objContenedorGeneral = document.createElement("div");
+        var objInfoTitulo = document.createElement("div");
+        var objInfoCodigo = document.createElement("div");
+        var objInfoAplicaciones = document.createElement("div");
+        var objSpanDescripcion = document.createElement("span");
+        var objTituloCodigo = document.createElement("h4");
+        var objSpanCodigo = document.createElement("span");
+        var objTituloAplicaciones = document.createElement("h4");
+
+        objContenedorGeneral.id = "info-articulo-general";
+        objContenedorGeneral.classList.add("info-articulo-general");
+
+        objSpanDescripcion.textContent = xdescripcion;
+        objSpanDescripcion.classList.add("descripcion");
+        objInfoTitulo.appendChild(objSpanDescripcion);
+
+        objTituloCodigo.textContent = "CODIGO";
+        objSpanCodigo.textContent = xcodigo;
+        objInfoCodigo.appendChild(objTituloCodigo);
+        objInfoCodigo.appendChild(objSpanCodigo);
+
+        objTituloAplicaciones.textContent = "APLICACIONES";
+        objInfoAplicaciones.appendChild(objTituloAplicaciones);
+
+        objContenedorGeneral.appendChild(objInfoTitulo);
+        objContenedorGeneral.appendChild(objInfoCodigo);
+        objContenedorGeneral.appendChild(objInfoAplicaciones);
+        
+        return objContenedorGeneral;
+    }
+
+    /**
+     * Permite crear la columna precios.
+     * @param {double} xprecioLista Precio de lista.
+     * @param {double} xcosto Costo
+     * @param {double} xventa Precio de venta
+     * @returns {DOMElement}
+     */
+    __crearColumnaPrecios(xprecioLista, xcosto, xventa) {
+        var objInfoPrecios = document.createElement("div");
+        var objTituloPrecioLista = document.createElement("h5");
+        var objSpanPrecioLista = document.createElement("span");
+        var objTituloCosto = document.createElement("h5");
+        var objSpanCosto = document.createElement("span");
+        var objTituloPrecioVenta = document.createElement("h5");
+        var objSpanPrecioVenta = document.createElement("span");
+
+        objInfoPrecios.id = "info-articulo-pedido";
+        objInfoPrecios.classList.add("info-articulo-pedido");
+
+        objTituloPrecioLista.textContent = "PRECIO DE LISTA";
+        objSpanPrecioLista.textContent = "$ " + xprecioLista;
+
+        objTituloCosto.textContent = "PRECIO DE COSTO";
+        objSpanCosto.textContent = "$ " + xcosto;
+
+        objTituloPrecioVenta.textContent = "PRECIO DE VENTA";
+        objSpanPrecioVenta.textContent = "$ " + xventa;
+
+        objInfoPrecios.appendChild(objTituloPrecioLista);
+        objInfoPrecios.appendChild(objSpanPrecioLista);
+        objInfoPrecios.appendChild(objTituloCosto);
+        objInfoPrecios.appendChild(objSpanCosto);
+        objInfoPrecios.appendChild(objTituloPrecioVenta);
+        objInfoPrecios.appendChild(objSpanPrecioVenta);
+
+        return objInfoPrecios;
+    }
+
+
+    /**
      * Permite generar el componente datagrid
      */
-    generateComponent (xidAppContainer) {
+     generateComponent (xidAppContainer) {
         var objAppContainer = document.getElementById(xidAppContainer);
         objAppContainer.appendChild(this._objGridContainer);
     }
