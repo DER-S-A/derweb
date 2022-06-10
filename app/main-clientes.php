@@ -112,15 +112,15 @@
             </header>
 
             <main class="container-fluid">
-                <section id="app-container" class="app-container">
+                <section id="app-container">
                     <div id="carrusel-container" class="carousel slide" data-bs-ride="carousel"></div>
 
                     <div class="iconos-home">
                         <div id="imgCatCta" class= "row">
-                            <div class="col-auto border border-light">
+                            <div class="col-auto ">
                                 <img src="assets/imagenes/icons/catalogos-8.png" alt="" aling="left"><b>MIRÁ LOS CATÁLOGOS ONLINE</b>
                             </div>    
-                            <div class="col-auto">
+                            <div class="col-auto border border-light">
                                 <img src="assets/imagenes/icons/estado-cuenta-8.png" alt="" aling="left" id="imgCta"><b>¿TENES CUENTA CORRIENTE? REVISA SU ESTADO AQUI</b>
                             </div>
                         </div>
