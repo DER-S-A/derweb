@@ -49,12 +49,12 @@
     margin-top: 3px;
 }
 
-.grid-container .info-articulo-pedido {
+.grid-container .info-articulo-precios {
     width: 400px;
     text-align: center;
 }
 
-.grid-container .info-articulo-pedido h5 {
+.grid-container .info-articulo-precios h5 {
     font-family: "futura";
     font-size: 10px;
     font-weight: bold;
@@ -63,8 +63,33 @@
     margin-top: 3px;
 }
 
-.grid-container .info-articulo-pedido span {
+.grid-container .info-articulo-precios span {
     font-family: "futura";
     font-weight: bold;
     font-size: 15px;
+}
+
+.grid-container .pedido-container {
+    position: relative;
+    width: 100%;
+}
+
+.grid-container .pedido-container .carrito-container {
+    margin-top: 5px;
+}
+
+.grid-container .pedido-container .carrito-container input {
+    width: 50px;
+    text-align: right;
+}
+
+/* Botón carrito container */
+.grid-container .pedido-container .carrito-container button {
+    width: 50px;
+    margin-left: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #003d7c;
+    color: white;
+    border: none;
 }

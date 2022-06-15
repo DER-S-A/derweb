@@ -72,23 +72,26 @@ class CatalogoGridComponent extends ComponentManager {
 
         aDatos["values"].forEach(xelement => {
             var objRowLista = this.__addBootstrapRow();
-            var objColLista = this.__addBoostralColumn(["col-md-12"]);
+            var objColLista = this.__addBoostralColumn(["col-md-12", "col-sm-12"]);
             var objItemRow = this.__addBootstrapRow();
-            var objItemCol1 = this.__addBoostralColumn(["col-md-2"]);
-            var objItemCol2 = this.__addBoostralColumn(["col-md-6"]);
-            var objItemCol3 = this.__addBoostralColumn(["col-md-4"]);
+            var objItemCol1 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
+            var objItemCol2 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
+            var objItemCol3 = this.__addBoostralColumn(["col-md-4", "col-sm-4"]);
+            var objItemCol4 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
 
             objRowLista.classList.add("row-lista");
 
             objItemCol1.appendChild(this.__crearColumnaFoto());
             objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"]));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
+            objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"]));
 
             objItemRow.appendChild(objItemCol1);
             objItemRow.appendChild(objItemCol2);
             objItemRow.appendChild(objItemCol3);
+            objItemRow.appendChild(objItemCol4);
             objColLista.appendChild(objItemRow);
-            objRowLista.appendChild(objColLista);            
+            objRowLista.appendChild(objColLista);
             this._objGridContainer.appendChild(objRowLista);
         });
 
@@ -168,8 +171,8 @@ class CatalogoGridComponent extends ComponentManager {
         var objTituloPrecioVenta = document.createElement("h5");
         var objSpanPrecioVenta = document.createElement("span");
 
-        objInfoPrecios.id = "info-articulo-pedido";
-        objInfoPrecios.classList.add("info-articulo-pedido");
+        objInfoPrecios.id = "info-articulo-precios";
+        objInfoPrecios.classList.add("info-articulo-precios");
 
         objTituloPrecioLista.textContent = "PRECIO DE LISTA";
         objSpanPrecioLista.textContent = "$ " + xprecioLista;
@@ -190,6 +193,29 @@ class CatalogoGridComponent extends ComponentManager {
         return objInfoPrecios;
     }
 
+    /**
+     * Arma la columna de carrito de compras para hacer el pedido.
+     * @returns {DOMElement}
+     */
+    __crearColumnaPedido(xidarticulo) {
+        var objPedidoContainter = document.createElement("div");
+        var objContainerCarrito = document.createElement("div");
+        var objInputCantidad = document.createElement("input");
+        var objBotonCarrito = document.createElement("button");
+        
+        objPedidoContainter.classList.add("pedido-container");
+        objContainerCarrito.classList.add("carrito-container");
+        
+        objInputCantidad.id = "txtcantidad_" + xidarticulo;
+        objInputCantidad.name = "txtcantidad_" + xidarticulo;
+        objBotonCarrito.innerHTML = "<i class=\"fa-solid fa-cart-plus\"></i>";
+
+        objContainerCarrito.appendChild(objInputCantidad);
+        objContainerCarrito.appendChild(objBotonCarrito);
+        objPedidoContainter.appendChild(objContainerCarrito);
+        
+        return objPedidoContainter;
+    }
 
     /**
      * Permite generar el componente datagrid
