@@ -12,6 +12,8 @@ class CatalogoGUIComponent extends ComponentManager {
     constructor(xidAppContainer) {
         super();
 
+        this.clearContainer(xidAppContainer);
+
         // Id . del contendor de la aplicación donde se deberá desplegar la GUI.
         this.__idAppContainer = xidAppContainer;
         this.__objAppContainer = document.getElementById(this.__idAppContainer);

@@ -10,6 +10,7 @@
         <link href="components/lista-articulos/lista-articulos.css" rel="stylesheet">
         <link href="components/catalogo/catalogo-gui.css" rel="stylesheet">
         <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
+        <link href="components/catalogo/grid-articulos/grid-articulos.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
         <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">

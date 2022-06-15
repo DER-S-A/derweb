@@ -52,4 +52,8 @@ class ComponentManager {
         else
             return true;
     }
+
+    clearContainer(xidContainer) {
+        document.getElementById(xidContainer).innerHTML = "";
+    }
 }
