@@ -201,19 +201,20 @@ class CatalogoGridComponent extends ComponentManager {
         var objPedidoContainter = document.createElement("div");
         var objContainerCarrito = document.createElement("div");
         var objInputCantidad = document.createElement("input");
-        var objBotonCarrito = document.createElement("button");
+        var objBotonCarrito = document.createElement("a");
         
         objPedidoContainter.classList.add("pedido-container");
         objContainerCarrito.classList.add("carrito-container");
         
         objInputCantidad.id = "txtcantidad_" + xidarticulo;
         objInputCantidad.name = "txtcantidad_" + xidarticulo;
-        objBotonCarrito.innerHTML = "<i class=\"fa-solid fa-cart-plus\"></i>";
+        
+        objBotonCarrito.innerHTML = "&nbsp&nbsp;<i class=\"fa-solid fa-cart-plus\"></i>&nbsp&nbsp;";
 
         objContainerCarrito.appendChild(objInputCantidad);
         objContainerCarrito.appendChild(objBotonCarrito);
         objPedidoContainter.appendChild(objContainerCarrito);
-        
+
         return objPedidoContainter;
     }
 
