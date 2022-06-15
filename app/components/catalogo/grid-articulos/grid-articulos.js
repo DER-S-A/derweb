@@ -210,6 +210,7 @@ class CatalogoGridComponent extends ComponentManager {
         objInputCantidad.name = "txtcantidad_" + xidarticulo;
         
         objBotonCarrito.innerHTML = "&nbsp&nbsp;<i class=\"fa-solid fa-cart-plus\"></i>&nbsp&nbsp;";
+        objBotonCarrito.href = "javascript:agregarAlCarrito(" + xidarticulo + ");";
 
         objContainerCarrito.appendChild(objInputCantidad);
         objContainerCarrito.appendChild(objBotonCarrito);
