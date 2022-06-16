@@ -138,6 +138,21 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
     objGUI.getArticulosResultadoBusqueda(aParametros);
 }
 
+function buscarPorFrase () {
+    var objGUI = new CatalogoGUIComponent("app-container");
+    var aParametros;
+    objGUI.generateComponent();
+
+    aParametros = {
+        "api_url": "http://localhost/derweb/app/services/articulos/getByFrase",
+        "values": {
+            "frase": document.getElementById("txtValorBuscado").value
+        }
+    };
+
+    objGUI.getArticulosResultadoBusqueda(aParametros, true);
+}
+
 /**
  * Crea el componente Carrusel footer.
  */

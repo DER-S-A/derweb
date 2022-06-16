@@ -19,7 +19,7 @@ class CatalogoGridComponent extends ComponentManager {
      *              }
      * @param {array} xparametros Array JSON con los parámetros de búsqueda.
      */
-    constructor (xidgrid, xparametros) {
+    constructor (xidgrid, xparametros, xbuscarPorFrase) {
         super();
         this._aParametros = xparametros;
         this._claveSessionStorage = "derweb_articulos";
@@ -28,8 +28,16 @@ class CatalogoGridComponent extends ComponentManager {
         this._objGridContainer.id = xidgrid;
         this._objGridContainer.classList.add("grid-container");
         this._aDatos = [];
+        this.__realizarBusquedaPorFrase = xbuscarPorFrase;
 
         this.__getData();
+    }
+
+    /**
+     * Establece la búsqueda por frase.
+     */
+    setBuscarPorFrase (xvalue) {
+        this.__realizarBusquedaPorFrase = xvalue;
     }
 
     /**
@@ -37,7 +45,10 @@ class CatalogoGridComponent extends ComponentManager {
      */
     __getData() {
         var pagina = 0;
-        this.__getArticulosByRubroAndSubrubro(pagina, this._claveSessionStorage)
+        if (!this.__realizarBusquedaPorFrase)
+            this.__getArticulosByRubroAndSubrubro(pagina, this._claveSessionStorage)
+        else
+            this.__buscarPorFrase(pagina, this._claveSessionStorage);
     }
 
     /**
@@ -225,5 +236,22 @@ class CatalogoGridComponent extends ComponentManager {
      generateComponent (xidAppContainer) {
         var objAppContainer = document.getElementById(xidAppContainer);
         objAppContainer.appendChild(this._objGridContainer);
+    }
+
+    __buscarPorFrase(xpagina, xclaveSessionStorage) {
+        var url = this._aParametros["api_url"];
+        var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
+            + "&frase=" + this._aParametros["values"]["frase"] + "&pagina=" + xpagina;
+        console.log(this._aParametros);
+        fetch (url_con_parametros)
+            .then(xresponse => xresponse.json())
+            .then(xdata  => {
+                if (xdata["values"].length !== 0) {
+                    sessionStorage.setItem(xclaveSessionStorage + "_" + xpagina, JSON.stringify(xdata));
+                    xpagina += 40;
+                    this.__buscarPorFrase(xpagina, xclaveSessionStorage);
+                    this.__crearListaArticulos(xpagina - 40);
+                }
+            });        
     }
 }
