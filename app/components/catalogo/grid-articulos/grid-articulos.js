@@ -238,6 +238,11 @@ class CatalogoGridComponent extends ComponentManager {
         objAppContainer.appendChild(this._objGridContainer);
     }
 
+    /**
+     * Permite consultar por frase y presentar los resultados en pantalla.
+     * @param {int} xpagina 
+     * @param {string} xclaveSessionStorage 
+     */
     __buscarPorFrase(xpagina, xclaveSessionStorage) {
         var url = this._aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
