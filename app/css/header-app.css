@@ -117,3 +117,10 @@
     -webkit-box-shadow: 0px 0px 2px #ffffff;
     box-shadow: 0px 0px 2px #ffffff;     
 }
+
+@media screen and (max-width: 580px) {
+    .app-header-buscar {
+        max-width: 80%;
+    }
+    
+}
