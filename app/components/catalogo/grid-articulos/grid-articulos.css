@@ -84,12 +84,13 @@
 }
 
 /* Botón carrito container */
-.grid-container .pedido-container .carrito-container button {
-    width: 50px;
+.grid-container .pedido-container .carrito-container a {
+    width: 60px;
     margin-left: 5px;
     padding: 5px;
     border-radius: 5px;
     background-color: #003d7c;
     color: white;
     border: none;
+    text-decoration: none;
 }

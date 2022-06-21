@@ -5,6 +5,11 @@
  * 
  */
 class ArticulosModel extends Model {
+    private $id_listaprecio;
+    private $descuento_p1;
+    private $descuento_p2;
+    private $rentabilidad;  
+
     /**
      * get
      * Devuelve los registros de la tabla articulos.
@@ -117,22 +122,49 @@ class ArticulosModel extends Model {
      * @return array
      */
     public function getByRubroAndSubrubro($xsesion, $xJSONParam, $xpagina) {
-        $objEndidadesModel = new EntidadesModel();
-        $aArticulosResponse = [];
         $aResponse = [];
-        $aCliente = $objEndidadesModel->getBySesion($xsesion);
-        $id_listaprecio = intval($aCliente[0]["id_listaprecio"]);
-        $descuento_p1 = doubleval($aCliente[1]["descuento_1"]);
-        $descuento_p2 = doubleval($aCliente[2]["descuento_2"]);
-        $rentabilidad = doubleval($aCliente[3]["rentabilidad_1"]);
-
+        $this->getDatosClientes($xsesion);
         // Recupero los parámetros recibidos con el filtro a aplicar
         $aParametros = json_decode($xJSONParam, true);
         $id_rubro = intval($aParametros["values"]["id_rubro"]);
         $id_subrubro = intval($aParametros["values"]["id_subrubro"]);
 
-        $sql = "CALL sp_articulos_getByRubroAndRubro($id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
+        $sql = "CALL sp_articulos_getByRubroAndRubro($this->id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
         $rsArticulos = getRs($sql, true);
+        $aResponse = $this->loadResponseArray($rsArticulos, 
+                $xpagina, 
+                $this->descuento_p1, 
+                $this->descuento_p2, 
+                $this->rentabilidad);
+        $rsArticulos->close();
+        
+        return $aResponse;
+    }
+    
+    /**
+     * getDatosClientes
+     * Levanta los datos de descuento y rentabilidad de los clientes.
+     * @param  string $xsesion JSON con la sesi´pon iniciada en DERWEB.
+     * @return void
+     */
+    private function getDatosClientes($xsesion) {
+        $objEndidadesModel = new EntidadesModel();
+        $aCliente = $objEndidadesModel->getBySesion($xsesion);
+        $this->id_listaprecio = intval($aCliente[0]["id_listaprecio"]);
+        $this->descuento_p1 = doubleval($aCliente[1]["descuento_1"]);
+        $this->descuento_p2 = doubleval($aCliente[2]["descuento_2"]);
+        $this->rentabilidad = doubleval($aCliente[3]["rentabilidad_1"]);        
+    }
+        
+    /**
+     * loadResponseArray
+     * Permite recuperar los datos del conjunto de resultados en el arrya que va a devolver
+     * la API.
+     * @param  BDObject $rsArticulos
+     * @return array
+     */
+    private function loadResponseArray(&$rsArticulos, $xpagina, $xdescuento_p1, $xdescuento_p2, $xrentabilidad) {
+        $aArticulosResponse = array();
         $aResponse["cantreg"] = $rsArticulos->affectedRows;
         $aResponse["pagina"] = $xpagina;
         $aResponse["next"] = $xpagina + 40;
@@ -142,12 +174,12 @@ class ArticulosModel extends Model {
             $aArticulosResponse[$index]["codigo"] = $rsArticulos->getValue('codigo');
             $aArticulosResponse[$index]["desc"] = $rsArticulos->getValue('descripcion');
             $aArticulosResponse[$index]["prlista"] = doubleval($rsArticulos->getValue('precio_lista'));
-            $aArticulosResponse[$index]["cped"] = calcular_costo("PED", doubleval($rsArticulos->getValue('precio_lista')), $descuento_p1, $descuento_p2);
-            $aArticulosResponse[$index]["cpre"] = calcular_costo("PRE", doubleval($rsArticulos->getValue('precio_lista')), $descuento_p1, $descuento_p2);
-            $aArticulosResponse[$index]["vped"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cped"]), $rentabilidad);
-            $aArticulosResponse[$index]["vpre"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cpre"]), $rentabilidad);
+            $aArticulosResponse[$index]["cped"] = calcular_costo("PED", doubleval($rsArticulos->getValue('precio_lista')), $xdescuento_p1, $xdescuento_p2);
+            $aArticulosResponse[$index]["cpre"] = calcular_costo("PRE", doubleval($rsArticulos->getValue('precio_lista')), $xdescuento_p1, $xdescuento_p2);
+            $aArticulosResponse[$index]["vped"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cped"]), $xrentabilidad);
+            $aArticulosResponse[$index]["vpre"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cpre"]), $xrentabilidad);
             $aArticulosResponse[$index]["stkd"] = doubleval($rsArticulos->getValue("existencia"));
-
+    
             $aArticulosResponse[$index]["imgs"] = $this->getImagenesByArt($rsArticulos->getValueInt('id_articulo'));
             $aArticulosResponse[$index]["co"] = $this->getCodigosOriginales($rsArticulos->getValueInt('id_articulo'));
             $aArticulosResponse[$index]["apl"] = []; // Por ahora dejo en un array vacío, se completará en la segunda etapa.
@@ -155,8 +187,6 @@ class ArticulosModel extends Model {
             $index++;
             $rsArticulos->next();
         }
-
-        $rsArticulos->close();
         $aResponse["values"] = $aArticulosResponse;
         return $aResponse;
     }
@@ -175,7 +205,7 @@ class ArticulosModel extends Model {
                     art_fotos
                 WHERE
                     art_fotos.id_articulo = $xidArticulo";
-        return getRs($sql)->getAsArray();
+        $rsArticulos = getRs($sql, true);
     }
     
     /**
@@ -193,6 +223,91 @@ class ArticulosModel extends Model {
                     id_articulo = $xidArticulo";
         return getRs($sql)->getAsArray();
     }
+    
+    /**
+     * getArticuloByFrase
+     * Permite recuperar los artículos buscando por una frase.
+     * @param  string $xfrase
+     * @param  int $xpagina
+     * @return void
+     */
+    public function getByFrase($xsesion, $xfrase, $xpagina) {
+        if (strlen($xfrase) <= 4) {
+            $aResponse["error"] = "VALID_ERROR";
+            $aResponse["message"] = "Debe ingresar al menos 5 caracteres para buscar";
+            return $aResponse;
+        }
+
+        $this->getDatosClientes($xsesion);
+        $this->formatearValorBuscado($xfrase);
+        $palabras = explode(' ', $xfrase);
+        $filtro = "";
+        for ($i = 0; $i < sizeof($palabras); $i++) {
+            $this->generarCriterios($filtro, $i);
+            $filtro .= $palabras[$i] . "%'";
+        }
+
+        $sql = "SELECT
+                    art.id,
+                    art.descripcion,
+                    art.codigo,
+                    pre.precio_lista,
+                    art.existencia_stock
+                FROM
+                    articulos art
+                        INNER JOIN articulos_precios pre ON pre.id_articulo = art.id
+                        INNER JOIN marcas ON marcas.id = art.id_marca
+                        INNER JOIN rubros rub ON rub.id = art.id_rubro
+                        INNER JOIN subrubros srb ON srb.id = art.id_subrubro
+                WHERE
+                    art.eliminado = 0 AND
+                    art.habilitado = 1 AND
+                    $filtro AND
+                    pre.id_listaprecio = 1
+                ORDER BY 
+                    id ASC
+                LIMIT 40 OFFSET $xpagina";
+
+        $rsArticulos = getRs($sql, true);
+        $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->rentabilidad);
+        $rsArticulos->close();
+        return $aResponse;
+    }
+    
+    /**
+     * formatearValorBuscado
+     * Formatea los valores a filtrar
+     * @param  string $valorBuscado
+     * @return void
+     */
+    private function formatearValorBuscado(&$valorBuscado) {
+        $valorBuscado = str_replace(" ", "%", strtoupper($valorBuscado));
+    }
+    
+    /**
+     * generarCriterios
+     * Genera los criterios para buscar por frase.
+     * @param  string $filtro
+     * @param  int $i
+     * @return void
+     */
+    private function generarCriterios(&$filtro, $i) {
+        if ($i == 0) {
+            $filtro = "CONCAT(art.codigo, ' ', " .
+                    "srb.descripcion, ' ', " .
+                    "IFNULL(art.informacion_general, ''), ' ', " .
+                    "marcas.descripcion, ' ', " .
+                    "rub.descripcion, ' ', " .
+                    "art.descripcion, ' ') LIKE '%";
+        } else {
+            $filtro .= "AND CONCAT(art.codigo, ' ', " .
+                    "srb.descripcion, ' ', " .
+                    "IFNULL(art.informacion_general, ''), ' ', " .
+                    "marcas.descripcion, ' ', " .
+                    "rub.descripcion, ' ', " .
+                    "art.descripcion, ' ') LIKE '%";
+        }
+    }  
 }
 
 ?>

@@ -92,6 +92,29 @@ class ArticulosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
+
+    public function getByFrase() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $sesion = $this->getURIParameters("sesion");
+                $frase = $this->getURIParameters("frase");
+                //$id_subrubro = intval($this->getURIParameters("id_subrubro"));
+                $pagina = intval($this->getURIParameters("pagina"));
+                $objModel = new ArticulosModel();
+                $responseData = json_encode($objModel->getByFrase($sesion, $frase, $pagina));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());          
+    }
 	
 }
 

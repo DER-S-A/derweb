@@ -34,7 +34,7 @@
                             <div class="col-md-2">
                                 <div class="app-header-buscar">
                                     <input type="text" id="txtValorBuscado" name="txtValorBuscado" class="app-input-buscar" placeholder="Buscar">
-                                    <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+                                    <a href="javascript:buscarPorFrase()"><i class="fa-solid fa-magnifying-glass"></i></a>
                                 </div>
                             </div>
 

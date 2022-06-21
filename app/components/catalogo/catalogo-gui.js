@@ -88,9 +88,19 @@ class CatalogoGUIComponent extends ComponentManager {
      *                  ]
      *              }
      */
-    getArticulosResultadoBusqueda(xaParametros) {
+    getArticulosResultadoBusqueda(xaParametros, xbuscarPorFrase = false) {
         var objGrilla = null;
-        objGrilla  = new CatalogoGridComponent("grilla-articulos", xaParametros);
+        objGrilla = new CatalogoGridComponent("grilla-articulos", xaParametros, xbuscarPorFrase);
+        objGrilla.generateComponent(this.__idAppContainer);
+    }
+
+    /*
+     * Permite obtener una lista de artículos buscando por una frase.
+     * @param {array} $xaParametros Array con los parámetors a pasar
+     */
+    getByFrase($xaParametros) {
+        var objGrilla = null;
+        objGrilla = new CatalogoGridComponent("grilla-articulos", $xaParametros);
         objGrilla.generateComponent(this.__idAppContainer);
     }
 }
