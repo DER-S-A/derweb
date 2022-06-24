@@ -92,6 +92,7 @@ class PedidosModel extends Model {
         $importeIVA = 0.00;
         $total = 0.00;
 
+        $this->calcularCostoUnitario($this->aPedido["item"]);
         $subtotal = doubleval($this->aPedido["item"]["costo_unitario"]) * doubleval($this->aPedido["item"]["cantidad"]);
         $importeIVA = $subtotal * ($this->aPedido["item"]["alicuota_iva"] / 100);
         $total = ($subtotal + $importeIVA);
@@ -263,6 +264,11 @@ class PedidosModel extends Model {
         $subtotal = 0.00;
         $total = 0.00;
 
+        $this->calcularCostoUnitario($xaItem);
+        $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100);
+        $subtotal = doubleval($xaItem["cantidad"]) * doubleval($xaItem["costo_unitario"]);
+        $total = $subtotal + $importeIVA;      
+
         $sql = "INSERT INTO pedidos_items (
                     id_pedido,
                     id_articulo,
@@ -294,16 +300,23 @@ class PedidosModel extends Model {
         $this->setParameter($sql, "xprecioLista", doubleval($xaItem["precio_lista"]));
         $this->setParameter($sql, "xcostoUnitario", doubleval($xaItem["costo_unitario"]));
         $this->setParameter($sql, "xalicuotaIVA", doubleval($xaItem["alicuota_iva"]));
-        
-        $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100);
-        $subtotal = doubleval($xaItem["cantidad"]) * doubleval($xaItem["costo_unitario"]);
-        $total = $subtotal + $importeIVA;
-
         $this->setParameter($sql, "xsubtotal", $subtotal);
         $this->setParameter($sql, "ximporteIVA", $importeIVA);
         $this->setParameter($sql, "xtotal", $total);
 
         return $sql;
+    }
+    
+    /**
+     * calcularPrecioUnitario
+     * Permite calcular el precio de costo unitario.
+     * @param  array $xaItem Array con los ítems.
+     * @return void
+     */
+    private function calcularCostoUnitario(&$xaItem) {
+        // Tengo que hacer que aplique los descuentos que tiene el cliente para calcular
+        // el costo unitario.
+        $xaItem["costo_unitario"] = $xaItem["precio_lista"];        
     }
     
     /**
@@ -317,7 +330,9 @@ class PedidosModel extends Model {
         // Recupero la cantidad grabada y la sumo a la nueva cantidad ingresada. Luego
         // recalculo los importes en base a la nueva cantidad.
         $cantidad = $this->obtenerCantidadItemActual($xaItem) + $xaItem["cantidad"];
-        $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100);
+
+        $this->calcularCostoUnitario($xaItem);     
+        $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100) * $cantidad;
         $subtotal = $cantidad * doubleval($xaItem["costo_unitario"]);
         $total = $subtotal + $importeIVA;
 
@@ -326,12 +341,14 @@ class PedidosModel extends Model {
                 SET
                     pedidos_items.cantidad = xcantidad,
                     pedidos_items.subtotal = xsubtotal,
+                    pedidos_items.importe_iva = ximporteIVA,
                     pedidos_items.total = xtotal
                 WHERE
                     pedidos_items.id_pedido = xidpedido AND
                     pedidos_items.id_articulo = xidarticulo";
         $this->setParameter($sql, "xcantidad", $cantidad);
         $this->setParameter($sql, "xsubtotal", $subtotal);
+        $this->setParameter($sql, "ximporteIVA", $importeIVA);
         $this->setParameter($sql, "xtotal", $total);
         $this->setParameter($sql, "xidpedido", $this->idPedido);
         $this->setParameter($sql, "xidarticulo", intval($xaItem["id_articulo"]));

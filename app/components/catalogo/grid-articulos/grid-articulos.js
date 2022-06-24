@@ -260,3 +260,62 @@ class CatalogoGridComponent extends ComponentManager {
             });        
     }
 }
+
+/**
+ * Permite agregar al carrito un articulo.
+ * @param {int} xidarticulo Id. del artículo a insertar
+ */
+function agregarAlCarrito(xidarticulo) {
+    var parametros;
+    var cantidad = document.getElementById("txtcantidad_" + xidarticulo).value;
+    var url_articulo = "services/articulos/get";
+    var url_carrito = "services/pedidos/agregarAlCarrito";
+    var aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
+    var aArticulo = new Array();
+
+    url_articulo += "?sesion=" + JSON.stringify(aSesion);
+    url_articulo += "&pagina=0&filter=\"art.id = " + xidarticulo + "\"";
+
+    if (cantidad == "") {
+        alert("Cargar cantidad");
+        return;
+    }
+
+    // Recupero los datos del artículo desde la API.
+    getAPI(url_articulo, xresponse => {
+        aArticulo = JSON.parse(xresponse);
+    });
+
+    // Armo la estructura de JSON para enviar al API.
+    parametros = {
+        "cabecera": {
+            "_comment": "Los campos subtotal, importe_iva y total los dejo en cero porque se calculan en el API. Solo necesito la definición.",
+            "id_entidad": aSesion["id_tipoentidad"],
+            "id_estado" : 1,
+            "descuento_1": 0.00,
+            "descuento_2": 0.00,
+            "subtotal": 0.00,
+            "importe_iva": 0.00,
+            "total": 0.00
+        },
+        "item": {
+            "id_articulo": xidarticulo,
+            "cantidad": parseFloat(cantidad),
+            "porcentaje_oferta": 0.00,
+            "precio_lista": parseFloat(aArticulo["values"][0]["prlista"]),
+            "costo_unitario": 0,
+            "alicuota_iva": parseFloat(aArticulo["values"][0]["iva"])
+        }
+    };
+    console.log(parametros);
+    
+    // Envío el pedido al API para grabarlo en la base de datos.
+    url_carrito += "?datos=" + JSON.stringify(parametros);
+    fetch(url_carrito, {
+        method: "PUT"
+        })
+        .then(xresponse => xresponse.json())
+        .then(xdata => {
+            alert(xdata.mensaje);
+        });
+}

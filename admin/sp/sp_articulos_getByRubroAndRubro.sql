@@ -10,7 +10,8 @@ BEGIN
         art.descripcion,
         art.codigo,
         pre.precio_lista,
-        art.existencia_stock
+        art.existencia_stock,
+        art.alicuota_iva
     FROM
         articulos art
             INNER JOIN articulos_precios pre ON pre.id_articulo = art.id

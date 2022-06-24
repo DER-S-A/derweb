@@ -14,8 +14,10 @@ class ArticulosController extends APIController {
         // Valido que la llamada venga por método GET o POST.
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {
+                $sesion = $this->getURIParameters("sesion");
+                $pagina = intval($this->getURIParameters("pagina"));
                 $filter = $this->getURIParameters("filter");
-                $responseData = $this->ejecutarMetodoGet($filter);
+                $responseData = $this->ejecutarMetodoGet($sesion, $pagina, $filter);
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
@@ -35,9 +37,9 @@ class ArticulosController extends APIController {
      * @param  string $xfilter
      * @return string
      */
-    private function ejecutarMetodoGet($xfilter = "") {
+    private function ejecutarMetodoGet($xsesion, $xpagina, $xfilter = "") {
         $objModel = new ArticulosModel();
-        return json_encode($objModel->get($xfilter));
+        return json_encode($objModel->get($xsesion, $xfilter, $xpagina));
     }
 
 	/**

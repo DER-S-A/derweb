@@ -17,11 +17,27 @@ class ArticulosModel extends Model {
      * @return array $result
      */
 
-    public function get($xfilter) {
+    public function get($xsesion, $xfilter, $xpagina) {
+        $aResponse = [];
+        $this->getDatosClientes($xsesion);
+
         // Armado de la sentencia SQL.
-        $sql = "SELECT * FROM articulos ";
+        $sql = "    SELECT
+                art.id,
+                art.descripcion,
+                art.codigo,
+                pre.precio_lista,
+                art.existencia_stock,
+                art.alicuota_iva
+            FROM
+                articulos art
+                    INNER JOIN articulos_precios pre ON pre.id_articulo = art.id ";
+
         $this->setWhere($sql, $xfilter);
-        return $this->getQuery($sql);
+        //return $this->getQuery($sql);
+        $rsArticulo = getRs($sql, true);
+        $aResponse = $this->loadResponseArray($rsArticulo, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->rentabilidad);
+        return $aResponse;
     }
     
     /**
@@ -173,6 +189,7 @@ class ArticulosModel extends Model {
             $aArticulosResponse[$index]["id"] = $rsArticulos->getValueInt('id');
             $aArticulosResponse[$index]["codigo"] = $rsArticulos->getValue('codigo');
             $aArticulosResponse[$index]["desc"] = $rsArticulos->getValue('descripcion');
+            $aArticulosResponse[$index]["iva"] = $rsArticulos->getValueFloat('alicuota_iva');
             $aArticulosResponse[$index]["prlista"] = doubleval($rsArticulos->getValue('precio_lista'));
             $aArticulosResponse[$index]["cped"] = calcular_costo("PED", doubleval($rsArticulos->getValue('precio_lista')), $xdescuento_p1, $xdescuento_p2);
             $aArticulosResponse[$index]["cpre"] = calcular_costo("PRE", doubleval($rsArticulos->getValue('precio_lista')), $xdescuento_p1, $xdescuento_p2);
@@ -252,7 +269,8 @@ class ArticulosModel extends Model {
                     art.descripcion,
                     art.codigo,
                     pre.precio_lista,
-                    art.existencia_stock
+                    art.existencia_stock,
+                    art.alicuota_iva
                 FROM
                     articulos art
                         INNER JOIN articulos_precios pre ON pre.id_articulo = art.id
@@ -307,7 +325,7 @@ class ArticulosModel extends Model {
                     "rub.descripcion, ' ', " .
                     "art.descripcion, ' ') LIKE '%";
         }
-    }  
+    }
 }
 
 ?>
