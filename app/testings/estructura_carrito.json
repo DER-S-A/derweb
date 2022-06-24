@@ -1,0 +1,21 @@
+{
+	"cabecera": {
+        "_comment": "Los campos subtotal, importe_iva y total los dejo en cero porque se calculan en el API. Solo necesito la definición.",
+		"id_entidad": 1,
+		"id_estado" : 1,
+		"descuento_1": 0.00,
+		"descuento_2": 0.00,
+		"subtotal": 0.00,
+		"importe_iva": 0.00,
+		"total": 0.00
+	},
+	"item": {
+		"id_articulo": 1,
+		"cantidad": 1,
+		"porcentaje_oferta": 0.00,
+		"precio_lista": 1000.00,
+		"costo_unitario": 1000.00,
+		"alicuota_iva": 21.00
+	}
+}
+
