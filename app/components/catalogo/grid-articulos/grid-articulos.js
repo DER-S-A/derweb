@@ -290,7 +290,7 @@ function agregarAlCarrito(xidarticulo) {
     parametros = {
         "cabecera": {
             "_comment": "Los campos subtotal, importe_iva y total los dejo en cero porque se calculan en el API. Solo necesito la definición.",
-            "id_entidad": aSesion["id_tipoentidad"],
+            "id_entidad": aSesion["id_cliente"],
             "id_estado" : 1,
             "descuento_1": 0.00,
             "descuento_2": 0.00,
@@ -307,7 +307,6 @@ function agregarAlCarrito(xidarticulo) {
             "alicuota_iva": parseFloat(aArticulo["values"][0]["iva"])
         }
     };
-    console.log(parametros);
     
     // Envío el pedido al API para grabarlo en la base de datos.
     url_carrito += "?datos=" + JSON.stringify(parametros);
