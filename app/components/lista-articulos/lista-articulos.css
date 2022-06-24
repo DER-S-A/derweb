@@ -108,3 +108,15 @@
     color: #003d7c;
     text-align: center;
 }
+
+
+
+
+
+@media screen and (max-width: 580px) {
+    .lista-articulos-subrubros-container {
+        margin-left: 40%;
+        margin-right: 40%;
+    }
+
+}

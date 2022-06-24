@@ -50,3 +50,10 @@
 .home-texto-footer {
     margin-top: -10px;
 }
+
+@media screen and (max-width: 580px) {
+    .app-footer-info {
+        text-align: center;
+    }
+    
+}

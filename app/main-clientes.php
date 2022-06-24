@@ -27,7 +27,7 @@
             <header>
                 <div class="row app-header">
                     <div class="col-md-1">
-                        <img src="assets/imagenes/logo_app.png" class="app-header-logo" alt="" />
+                        <a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
                     </div>
                     <div class="col-md-11">
                         <div class="row">
@@ -117,7 +117,7 @@
 
                     <div class="iconos-home">
                         <div id="imgCatCta" class= "row">
-                            <div class="col-auto ">
+                            <div class="col-auto catalogo">
                                 <img src="assets/imagenes/icons/catalogos-8.png" alt="" aling="left"><b>MIRÁ LOS CATÁLOGOS ONLINE</b>
                             </div>    
                             <div class="col-auto border border-light">
@@ -137,7 +137,7 @@
             <footer class="app-footer" style="bottom: 0; position:relative;">
                 <div class="app-footer-container container">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <ul class="app-social-bar">
                                 <li>
                                     <a href="https://www.facebook.com/derdistribuciones/">
