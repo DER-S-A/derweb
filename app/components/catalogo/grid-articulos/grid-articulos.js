@@ -26,7 +26,7 @@ class CatalogoGridComponent extends ComponentManager {
 
         this._objGridContainer = document.createElement("div");
         this._objGridContainer.id = xidgrid;
-        this._objGridContainer.classList.add("grid-container");
+        this._objGridContainer.classList.add("container","grid-container");
         this._aDatos = [];
         this.__realizarBusquedaPorFrase = xbuscarPorFrase;
 
@@ -122,7 +122,7 @@ class CatalogoGridComponent extends ComponentManager {
         objContenedorFoto.id = "info-articulo-foto"
         objContenedorFoto.classList.add("info-articulo-foto");
 
-        objImg.src = "../admin/ufiles/sinfoto.svg";
+        objImg.src = "../admin/ufiles/sinfoto.png";
         objContenedorFoto.appendChild(objImg);
 
         return objContenedorFoto;
