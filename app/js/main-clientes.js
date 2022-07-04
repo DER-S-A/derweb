@@ -127,7 +127,7 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 
     // Armo el parámetro para buscar por rubro y subrubro.
     aParametros = {
-        "api_url": "http://localhost/derweb/app/services/articulos/getByRubroAndSubrubro",
+        "api_url": "services/articulos/getByRubroAndSubrubro",
         "values": { 
             "id_rubro": parseInt(xidRubro),
             "id_subrubro": parseInt(xidSubrubro)
@@ -144,7 +144,7 @@ function buscarPorFrase () {
     objGUI.generateComponent();
 
     aParametros = {
-        "api_url": "http://localhost/derweb/app/services/articulos/getByFrase",
+        "api_url": "services/articulos/getByFrase",
         "values": {
             "frase": document.getElementById("txtValorBuscado").value
         }

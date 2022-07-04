@@ -94,3 +94,18 @@
     border: none;
     text-decoration: none;
 }
+
+@media screen and (max-width: 580px) {
+    .grid-container {
+        width: auto;
+        text-align: center;
+    }
+    .grid-container .info-articulo-precios {
+        width: auto;
+        
+    }
+    .panel-opciones {
+        text-align: center;
+    }
+    
+}

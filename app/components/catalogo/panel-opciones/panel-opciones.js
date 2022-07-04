@@ -109,9 +109,10 @@ class PanelOpcionesComponent extends ComponentManager {
         objOptionPrecioLista.type = "checkbox"
         objOptionPrecioLista.id = this.idOptionListaPrecio;
         objOptionPrecioLista.name = this.nameOptionPrecio;
+        objOptionPrecioLista.checked = "true";
         objLabel.appendChild(objOptionPrecioLista);
         objLabel.appendChild(objSpan);
-
+        
         return objLabel;
     }
 
@@ -128,6 +129,7 @@ class PanelOpcionesComponent extends ComponentManager {
         objOptionPrecioCosto.type = "checkbox";
         objOptionPrecioCosto.id = this.idOptionCosto;
         objOptionPrecioCosto.name = this.nameOption;
+        objOptionPrecioCosto.checked = "true";
         objLabel.appendChild(objOptionPrecioCosto);
         objLabel.appendChild(objSpan);
 
@@ -147,6 +149,7 @@ class PanelOpcionesComponent extends ComponentManager {
         objOptionPrecioVenta.type = "checkbox";
         objOptionPrecioVenta.id = this.idOptionVenta;
         objOptionPrecioVenta.name = this.nameOption;
+        objOptionPrecioVenta.setAttribute("checked","true");
         objLabel.appendChild(objOptionPrecioVenta);
         objLabel.appendChild(objSpan);
 

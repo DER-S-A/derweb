@@ -32,6 +32,37 @@ class CatalogoGridComponent extends ComponentManager {
 
         this.__getData();
     }
+    
+    setVerPrecioLista(xvalue = true) {
+           const allboxLista = document.querySelectorAll(".pLista");
+           allboxLista.forEach(xbox => {
+                if (xvalue)
+                    xbox.style.display = "block";
+                else
+                    xbox.style.display = "none";
+           });
+    }
+
+    setVerPrecioCosto(xvalue = true) {
+        const allboxCosto = document.querySelectorAll(".pCosto");
+           allboxCosto.forEach(xbox => {
+                if (xvalue)
+                    xbox.style.display = "block";
+                else
+                    xbox.style.display = "none";
+           });
+    }
+
+    setVerPrecioVenta(xvalue = true) {
+        const allboxVenta = document.querySelectorAll(".pVenta");
+           allboxVenta.forEach(xbox => {
+                if (xvalue)
+                    xbox.style.display = "block";
+                else
+                    xbox.style.display = "none";
+           });
+
+    }
 
     /**
      * Establece la búsqueda por frase.
@@ -87,7 +118,7 @@ class CatalogoGridComponent extends ComponentManager {
             var objItemRow = this.__addBootstrapRow();
             var objItemCol1 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
             var objItemCol2 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
-            var objItemCol3 = this.__addBoostralColumn(["col-md-4", "col-sm-4"]);
+            var objItemCol3 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
             var objItemCol4 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
 
             objRowLista.classList.add("row-lista");
@@ -194,12 +225,35 @@ class CatalogoGridComponent extends ComponentManager {
         objTituloPrecioVenta.textContent = "PRECIO DE VENTA";
         objSpanPrecioVenta.textContent = "$ " + xventa;
 
-        objInfoPrecios.appendChild(objTituloPrecioLista);
+        var objDivPrecioLista = document.createElement("div");
+        var objDivPrecioCosto = document.createElement("div");
+        var objDivPrecioVenta = document.createElement("div");
+
+        objDivPrecioLista.id = "plista-container";
+        objDivPrecioCosto.id = "pcosto-container";
+        objDivPrecioVenta.id = "pventa-container";
+
+        objDivPrecioLista.classList.add("pLista");
+        objDivPrecioCosto.classList.add("pCosto");
+        objDivPrecioVenta.classList.add("pVenta");
+        
+        objDivPrecioLista.appendChild(objTituloPrecioLista);
+        objDivPrecioLista.appendChild(objSpanPrecioLista);
+        objDivPrecioCosto.appendChild(objTituloCosto);
+        objDivPrecioCosto.appendChild(objSpanCosto);
+        objDivPrecioVenta.appendChild(objTituloPrecioVenta);
+        objDivPrecioVenta.appendChild(objSpanPrecioVenta);
+
+        objInfoPrecios.appendChild(objDivPrecioLista);
+        objInfoPrecios.appendChild(objDivPrecioCosto);
+        objInfoPrecios.appendChild(objDivPrecioVenta);
+
+        /*objInfoPrecios.appendChild(objTituloPrecioLista);
         objInfoPrecios.appendChild(objSpanPrecioLista);
         objInfoPrecios.appendChild(objTituloCosto);
         objInfoPrecios.appendChild(objSpanCosto);
         objInfoPrecios.appendChild(objTituloPrecioVenta);
-        objInfoPrecios.appendChild(objSpanPrecioVenta);
+        objInfoPrecios.appendChild(objSpanPrecioVenta);*/
 
         return objInfoPrecios;
     }

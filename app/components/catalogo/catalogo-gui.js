@@ -13,6 +13,7 @@ class CatalogoGUIComponent extends ComponentManager {
         super();
 
         this.clearContainer(xidAppContainer);
+        this.__objGrilla = null;
 
         // Id . del contendor de la aplicación donde se deberá desplegar la GUI.
         this.__idAppContainer = xidAppContainer;
@@ -57,6 +58,48 @@ class CatalogoGUIComponent extends ComponentManager {
             // Por algún motivo acá se está duplicado el div=id-opciones sin clase. (No causa efecto)
             objPanelOpcionesContainer.appendChild(objPanelOpciones);
             this.__objListaContainer.appendChild(objPanelOpcionesContainer);
+
+            // Agrego los eventos de las opciones de vista de precios.
+            
+            document.getElementById("opcion-lista-precio").addEventListener("click", () => {
+                let objOpcionLista = document.getElementById("opcion-lista-precio");
+                let objOpcionCosto = document.getElementById("opcion-costo");
+                let objOpcionVenta = document.getElementById("opcion-venta");
+                console.log(this.__validarCheck(objOpcionLista.checked, objOpcionCosto.checked, objOpcionVenta.checked))
+                if(this.__validarCheck(objOpcionLista.checked, objOpcionCosto.checked, objOpcionVenta.checked)){
+                    this.__objGrilla.setVerPrecioLista(objOpcionLista.checked);
+                } else {
+                    swal("Oops!", "Debe seleccionar otro campo antes de quitar este", "error");
+                    objOpcionLista.checked = "true";
+                }
+                
+            });
+
+            document.getElementById("opcion-costo").addEventListener("click", () => {
+                let objOpcionLista = document.getElementById("opcion-lista-precio");
+                let objOpcionCosto = document.getElementById("opcion-costo");
+                let objOpcionVenta = document.getElementById("opcion-venta");
+                if(this.__validarCheck(objOpcionLista.checked, objOpcionCosto.checked, objOpcionVenta.checked)){
+                    this.__objGrilla.setVerPrecioCosto(objOpcionCosto.checked);
+                } else {
+                    swal("Oops!", "Debe seleccionar otro campo antes de quitar este", "error");
+                    objOpcionCosto.checked = "true";
+                }
+                
+            });
+
+            document.getElementById("opcion-venta").addEventListener("click", () => {
+                let objOpcionLista = document.getElementById("opcion-lista-precio");
+                let objOpcionCosto = document.getElementById("opcion-costo");
+                let objOpcionVenta = document.getElementById("opcion-venta");
+                if(this.__validarCheck(objOpcionLista.checked, objOpcionCosto.checked, objOpcionVenta.checked)) {
+                    this.__objGrilla.setVerPrecioVenta(objOpcionVenta.checked);
+                } else {
+                    swal("Oops!", "Debe seleccionar otro campo antes de quitar este", "error");
+                    objOpcionVenta.checked = "true";
+                }
+                
+            });
         }
     }
 
@@ -77,6 +120,12 @@ class CatalogoGUIComponent extends ComponentManager {
         return null;
     }
 
+    __validarCheck(xlista, xcosto, xventa) {
+        if (xlista == false && xcosto == false && xventa == false) {
+            return false;
+        } else return true;
+    }
+
     /**
      * Obtiene los resultados cuando se ingresa desde LISTA ARTIUCLOS.
      * @param {Array} xparametros Array con los parámetros de búsqueda
@@ -89,9 +138,8 @@ class CatalogoGUIComponent extends ComponentManager {
      *              }
      */
     getArticulosResultadoBusqueda(xaParametros, xbuscarPorFrase = false) {
-        var objGrilla = null;
-        objGrilla = new CatalogoGridComponent("grilla-articulos", xaParametros, xbuscarPorFrase);
-        objGrilla.generateComponent(this.__idAppContainer);
+        this.__objGrilla = new CatalogoGridComponent("grilla-articulos", xaParametros, xbuscarPorFrase);
+        this.__objGrilla.generateComponent(this.__idAppContainer);
     }
 
     /*
@@ -99,8 +147,7 @@ class CatalogoGUIComponent extends ComponentManager {
      * @param {array} $xaParametros Array con los parámetors a pasar
      */
     getByFrase($xaParametros) {
-        var objGrilla = null;
-        objGrilla = new CatalogoGridComponent("grilla-articulos", $xaParametros);
-        objGrilla.generateComponent(this.__idAppContainer);
+        this.__objGrilla = new CatalogoGridComponent("grilla-articulos", $xaParametros);
+        this.__objGrilla.generateComponent(this.__idAppContainer);
     }
 }
