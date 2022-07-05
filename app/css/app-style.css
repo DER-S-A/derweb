@@ -31,7 +31,6 @@
     margin-left: 200px !important;
 }
 
-
 #app-header-content{
     margin-left: 75%;
 }
@@ -51,6 +50,18 @@
 
 .toolbar-container ul li {
     display: inline-block;
+}
+
+.toolbar-container .toolbar-col-1 {
+    width: 10%;
+}
+
+.toolbar-container .toolbar-col-2 {
+    width: 20%;
+}
+
+.toolbar-container .toolbar-col-3 {
+    width: 65%;
 }
 
 .carousel-inner img {

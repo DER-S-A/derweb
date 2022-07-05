@@ -19,6 +19,7 @@ window.onload = () => {
     generarBotonListaArticulos();
     generarCarrusel();
     generarCarruselFotter();
+    generarBotonMiCarrito();
 }
 
 /**
@@ -195,4 +196,14 @@ function buscarPorFrase () {
             ]
         });
    })
+}
+
+
+/**
+ * Crea el botón mi carrito en el toolbar.
+ */
+function generarBotonMiCarrito() {
+    var objBtnMiCarrito = new BotonMiCarritoComponent("boton-mi-carrito-container");
+    objBtnMiCarrito.setJSFunction("abrir_mi_carrito");
+    objBtnMiCarrito.generateComponent();
 }
