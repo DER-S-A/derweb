@@ -113,8 +113,8 @@ class EntidadesModel extends Model {
     /**
      * getBySesion
      * Permite obtener los datos del cliente que inició la sesión.
-     * @param  mixed $xsession
-     * @return void
+     * @param  string $xsession JSON con los datos de la sesión actual.
+     * @return array
      */
     public function getBySesion($xsesion) {
         $session = json_decode($xsesion, true);
