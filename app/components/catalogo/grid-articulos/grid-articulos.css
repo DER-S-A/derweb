@@ -9,7 +9,7 @@
     margin-top: 5px;
     margin-bottom: 5px;
     background-color: #fff !important;
-    padding: 5px;
+    padding: 5%;
 }
 
 .grid-container .row-lista {
@@ -23,6 +23,9 @@
 .grid-container .info-articulo-foto {
     width: 100%;
     text-align: center;
+    display:table-cell;
+    height:8em;
+    vertical-align: middle;
 }
 
 .grid-container .info-articulo-foto img {
@@ -108,4 +111,8 @@
         text-align: center;
     }
     
+    .grid-container .info-articulo-foto {
+        height:18em;
+    } 
+
 }

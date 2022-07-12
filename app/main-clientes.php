@@ -135,7 +135,7 @@
                 </section>
             </main>
 
-            <footer class="app-footer" style="bottom: 0; position:relative;">
+            <footer class="app-footer" style="bottom: 0; position:fixed;">
                 <div class="app-footer-container container">
                     <div class="row">
                         <div class="col-lg-3">

@@ -10,7 +10,7 @@ class Catalogo {
      */
     getMarcas(xfilter = "") {
         var objApi = new APIs();
-        var aMarcas = objApi.getFromAPI("services/marcas/get", xfilter);;
+        var aMarcas = objApi.getFromAPI("services/marcas.php/get", xfilter);;
         return aMarcas;
     }
 
@@ -21,7 +21,7 @@ class Catalogo {
      */
     getRubros(xfilter = "") {
         var objApi = new APIs();
-        var aRubros = objApi.getFromAPI("services/rubros/get", xfilter);;
+        var aRubros = objApi.getFromAPI("services/rubros.php/get", xfilter);;
         return aRubros;
     }
 
@@ -32,7 +32,7 @@ class Catalogo {
      */
     getSubrubros(xfilter = "") {
         var objApi = new APIs();
-        var aSubrubros = objApi.getFromAPI("services/subrubros/get", xfilter);
+        var aSubrubros = objApi.getFromAPI("services/subrubros.php/get", xfilter);
         return aSubrubros;
     }
 
@@ -44,7 +44,7 @@ class Catalogo {
     getSubrubrosByRubro(xid_rubro) {
         var objApi = new APIs();
         var filter = "id_rubro=" + xid_rubro;
-        var aSubrubros = objApi.getFromAPI("services/subrubros/getSubrubrosPorRubro?" + filter);
+        var aSubrubros = objApi.getFromAPI("services/subrubros.php/getSubrubrosPorRubro?" + filter);
         return aSubrubros;
     }
 

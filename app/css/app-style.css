@@ -99,6 +99,10 @@
     max-height: 21rem ;
 }
 
+#carrusel-footer {
+    padding-bottom: 5%;
+}
+
 /* Armo los media query para cuando cambia la resolución de pantalla se adapte. 
     Esto soluciona el problema de que en modo celu el footer tapaba el formulario.
 */

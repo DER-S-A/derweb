@@ -55,5 +55,8 @@
     .app-footer-info {
         text-align: center;
     }
-    
+
+    .app-footer {
+        position: relative!important;
+    }
 }
