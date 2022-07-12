@@ -1,6 +1,7 @@
 // Inicio la aplicación
 var app = new App();
 var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
+var objMiCarrito = null;
 
 app.init();
 
@@ -19,6 +20,8 @@ window.onload = () => {
     generarBotonListaArticulos();
     generarCarrusel();
     generarCarruselFotter();
+    generarBotonMiCarrito();
+    iniciarlizarComponenteMiCarrito();
 }
 
 /**
@@ -195,4 +198,31 @@ function buscarPorFrase () {
             ]
         });
    })
+}
+
+/**
+ * Crea el botón mi carrito en el toolbar.
+ */
+function generarBotonMiCarrito() {
+    var objBtnMiCarrito = new BotonMiCarritoComponent("boton-mi-carrito-container");
+    objBtnMiCarrito.setJSFunction("abrir_mi_carrito");
+    objBtnMiCarrito.generateComponent();
+}
+
+/**
+ * Crea el componente mi carrito pero lo deja oculto.
+ */
+function iniciarlizarComponenteMiCarrito() {
+    objMiCarrito = new MiCarritoModalComponent("mi-carrito");
+    objMiCarrito.generateComponent();
+}
+
+/**
+ * Abre el modal para mostrar el pedido actual (mi carrito)
+ */
+function abrir_mi_carrito() {
+    var objGrillaMiCarrito = new CarritoGridComponent("grd-pedido", "mi-carrito-contenido");
+    objGrillaMiCarrito.setEliminarFunctionName("eliminar_item_mi_carrito");
+    objGrillaMiCarrito.generateComponent();
+    objMiCarrito.open();
 }

@@ -11,6 +11,9 @@
         <link href="components/catalogo/catalogo-gui.css" rel="stylesheet">
         <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
         <link href="components/catalogo/grid-articulos/grid-articulos.css" rel="stylesheet">
+        <link href="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.css" rel="stylesheet">
+        <link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
+        <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
         <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
@@ -106,8 +109,9 @@
                 <!-- Acá armar el menú principal -->
                 <div id="toolbar" class="toolbar-container">
                     <ul>
-                        <li><div id="menu-container" class="menu-container"></div></li>
-                        <li><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
+                        <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
+                        <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
+                        <li class="toolbar-col-3"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
                 </div>
             </header>
@@ -194,6 +198,11 @@
         <script src="components/catalogo/grid-articulos/grid-articulos.js" type="text/javascript"></script>
 
         <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
+
+        <!-- Componente botón mi carrito -->
+        <script src="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js" type="text/javascript"></script>
+        <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
+        <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>
 </html>

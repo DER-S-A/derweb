@@ -377,6 +377,84 @@ class PedidosModel extends Model {
         $rs->close();
         return $cantidad;
     }
+    
+    /**
+     * getPedidoActual
+     * Obtiene el detalle de mi pedido actual para mostrar en Mi Carrito.
+     * @param  string $xsesion JSON con los datos de la sesión actual.
+     * @return array
+     */
+    public function getPedidoActual($xsesion) {
+        $aResponse = [];
+        $totalPedido = 0.00;
+        $totalPedidoConIVA = 0.00;
+
+        // Recupero los datos que necesito del cliente.
+        $objEntidad = new EntidadesModel();
+        $aCliente = $objEntidad->getBySesion($xsesion);
+        $id_cliente = intval($aCliente[0]["id"]);
+        $id_precio_lista = intval($aCliente[0]["id_listaprecio"]);
+        $descuento_p1 = doubleval($aCliente[0]["descuento_p1"]);
+        $descuento_p2 = doubleval($aCliente[0]["descuento_p2"]);
+
+        $sql = "SELECT
+                    items.id,
+                    art.id AS id_articulo,
+                    items.cantidad,
+                    foto.archivo,
+                    art.codigo,
+                    art.descripcion AS descripcion_articulo,
+                    rub.descripcion AS descripcion_rubro,
+                    srb.descripcion AS descripcion_subrubro,
+                    precio.precio_lista,
+                    art.alicuota_iva
+                FROM
+                    pedidos_items items
+                        INNER JOIN articulos art ON art.id = items.id_articulo
+                        INNER JOIN articulos_precios precio ON precio.id_articulo = art.id
+                        INNER JOIN listas_precios lpre ON lpre.id = precio.id_listaprecio
+                        INNER JOIN pedidos ped ON ped.id = items.id_pedido
+                        INNER JOIN estados_pedidos estado ON estado.id = ped.id_estado
+                        INNER JOIN rubros rub ON rub.id = art.id_rubro
+                        INNER JOIN subrubros srb ON srb.id = art.id_subrubro
+                        LEFT OUTER JOIN art_fotos foto ON foto.id_articulo = art.id
+                WHERE
+                    estado.estado_inicial = 1 AND
+                    (foto.predeterminada = 1 OR foto.predeterminada IS NULL) AND
+                    ped.id_entidad = $id_cliente AND
+                    lpre.id = $id_precio_lista";
+
+        $rs = getRs($sql);
+        $indice = 0;
+        while (!$rs->EOF()) {
+            $aResponse["items"][$indice]["id"] = $rs->getValueInt("id");
+            $aResponse["items"][$indice]["id_articulo"] = $rs->getValueInt("id_articulo");
+            $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
+            $aResponse["items"][$indice]["archivo"] = $rs->getValue("archivo");
+            $aResponse["items"][$indice]["codigo"] = $rs->getValue("codigo");
+            $aResponse["items"][$indice]["descripcion"] = $rs->getValue("descripcion_articulo");
+            $aResponse["items"][$indice]["rubro"] = $rs->getValue("descripcion_rubro");
+            $aResponse["items"][$indice]["subrubro"] = $rs->getValue("descripcion_subrubro");
+            $aResponse["items"][$indice]["precio_lista"] = $rs->getValueFloat("precio_lista");
+            $aResponse["items"][$indice]["alicuota_iva"] = $rs->getValueFloat("alicuota_iva");
+            $aResponse["items"][$indice]["costo"] = calcular_costo("PED", $rs->getValueFloat("precio_lista"), $descuento_p1, $descuento_p2);
+            $aResponse["items"][$indice]["costo_final"] = $aResponse["items"][$indice]["costo"] * (1 + ($rs->getValueFloat("alicuota_iva") / 100));
+            $aResponse["items"][$indice]["subtotal"] = $rs->getValueFloat("cantidad") * $aResponse["items"][$indice]["costo"];
+            $aResponse["items"][$indice]["subtotal_final"] = $aResponse["items"][$indice]["costo_final"] * $rs->getValueFloat("cantidad");
+
+            $totalPedido += $aResponse["items"][$indice]["subtotal"];
+            $totalPedidoConIVA += $aResponse["items"][$indice]["subtotal_final"];
+            
+            $indice++;
+            $rs->next();
+        }
+
+        $aResponse["total_pedido"] = $totalPedido;
+        $aResponse["total_con_iva"] = $totalPedidoConIVA;
+        $rs->close();
+
+        return $aResponse;
+    }
 }
 
 ?>

@@ -64,6 +64,31 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+    
+    /**
+     * getPedidoActual
+     * Permite obtener los ítems del pedido actual para mi carrito.
+     * @return void
+     */
+    public function getPedidoActual() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $sesion = $this->getURIParameters("sesion");
+                $objModelo = new PedidosModel();
+                $responseData = json_encode($objModelo->getPedidoActual($sesion));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 }
 
 ?>

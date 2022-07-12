@@ -33,6 +33,10 @@ class CatalogoGridComponent extends ComponentManager {
         this.__getData();
     }
     
+    /**
+     * Establece si se debe mostrar el precio de lista o no.
+     * @param {bool} xvalue 
+     */
     setVerPrecioLista(xvalue = true) {
            const allboxLista = document.querySelectorAll(".pLista");
            allboxLista.forEach(xbox => {
@@ -43,6 +47,10 @@ class CatalogoGridComponent extends ComponentManager {
            });
     }
 
+    /**
+     * Establece si se debe mostrar el precio de costo o no.
+     * @param {bool} xvalue 
+     */
     setVerPrecioCosto(xvalue = true) {
         const allboxCosto = document.querySelectorAll(".pCosto");
            allboxCosto.forEach(xbox => {
@@ -53,6 +61,10 @@ class CatalogoGridComponent extends ComponentManager {
            });
     }
 
+    /**
+     * Establece si se debe mostrar el precio de venta o no.
+     * @param {bool} xvalue 
+     */
     setVerPrecioVenta(xvalue = true) {
         const allboxVenta = document.querySelectorAll(".pVenta");
            allboxVenta.forEach(xbox => {
@@ -247,13 +259,6 @@ class CatalogoGridComponent extends ComponentManager {
         objInfoPrecios.appendChild(objDivPrecioLista);
         objInfoPrecios.appendChild(objDivPrecioCosto);
         objInfoPrecios.appendChild(objDivPrecioVenta);
-
-        /*objInfoPrecios.appendChild(objTituloPrecioLista);
-        objInfoPrecios.appendChild(objSpanPrecioLista);
-        objInfoPrecios.appendChild(objTituloCosto);
-        objInfoPrecios.appendChild(objSpanCosto);
-        objInfoPrecios.appendChild(objTituloPrecioVenta);
-        objInfoPrecios.appendChild(objSpanPrecioVenta);*/
 
         return objInfoPrecios;
     }
