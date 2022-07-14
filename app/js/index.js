@@ -31,6 +31,14 @@ document.getElementById("btnIniciarSesion").addEventListener("click", () => {
     login.loginCliente();
 });
 
+document.getElementById("txtPassword").addEventListener("keypress", (e) => {
+    if(e.keyCode === 13) {
+        login.loginCliente();
+    }
+    
+});
+
+
 // Agrego el evento para registrar un cliente potencial.
 document.getElementById("btnRegistrarse").addEventListener("click", () => {
     //console.log(validarForm());

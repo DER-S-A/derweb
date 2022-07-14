@@ -142,18 +142,25 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 }
 
 function buscarPorFrase () {
-    var objGUI = new CatalogoGUIComponent("app-container");
-    var aParametros;
-    objGUI.generateComponent();
+    
+    let valor = document.getElementById("txtValorBuscado").value;
+    if(valor.length>4){
+        var objGUI = new CatalogoGUIComponent("app-container");
+        var aParametros;
+        objGUI.generateComponent();
+    
+        aParametros = {
+            "api_url": "services/articulos.php/getByFrase",
+            "values": {
+                "frase": document.getElementById("txtValorBuscado").value
+            }
+        };
+    
+        objGUI.getArticulosResultadoBusqueda(aParametros, true);  
+    } else {
+        swal("Oops!", "Debe escribir al menos 5 caracteres", "error");
+    } 
 
-    aParametros = {
-        "api_url": "services/articulos/getByFrase",
-        "values": {
-            "frase": document.getElementById("txtValorBuscado").value
-        }
-    };
-
-    objGUI.getArticulosResultadoBusqueda(aParametros, true);
 }
 
 /**
@@ -226,3 +233,10 @@ function abrir_mi_carrito() {
     objGrillaMiCarrito.generateComponent();
     objMiCarrito.open();
 }
+
+let objTxtValorBuscado = document.getElementById("txtValorBuscado");
+objTxtValorBuscado.addEventListener("keypress",(e) => {
+    if(e.keyCode === 13) {
+        buscarPorFrase ();
+    }
+})
