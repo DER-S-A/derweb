@@ -66,6 +66,8 @@ class MiCarritoModalComponent extends ComponentManager {
         var objTituloContainer = document.createElement("div");
         var objBotonCerrarContainer = document.createElement("div");
         var objTitulo = document.createElement("h5");
+        var objImgCarrito = new Image(50,50);
+        objImgCarrito.src = "assets/imagenes/icons/carrito.png";
         var objBotonCerrar = document.createElement("button");
 
         // Contenedor del header
@@ -76,6 +78,7 @@ class MiCarritoModalComponent extends ComponentManager {
         objTituloContainer.id = this.__idModal + "-header-titulo-container"
         objTituloContainer.classList.add("modal-titulo-container")
         objTitulo.innerHTML = "Mi Carrito";
+        objTituloContainer.appendChild(objImgCarrito);
         objTituloContainer.appendChild(objTitulo);
 
         // Contenedor del botón de cerrar.

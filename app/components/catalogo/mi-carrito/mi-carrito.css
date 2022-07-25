@@ -34,6 +34,7 @@
     position: relative;
     float: left;
     width: 100px;
+    display: contents;
 }
 
 .modal-header .boton-cerrar-container {
