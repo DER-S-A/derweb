@@ -10,6 +10,12 @@ app.init();
  * Este evento se ejecuta al cargar la página.
  */
 window.onload = () => {   
+    // Si la sesión no está en cache entonces vuelvo al login.
+    if (!validarSession()) {
+        location.href = "index.php";
+        return;
+    }
+
     llenarMarcasRepuesto();
     llenarSubrubros();
     llenarMarcasVehiculos();
@@ -23,6 +29,17 @@ window.onload = () => {
     generarBotonMiCarrito();
     iniciarlizarComponenteMiCarrito();
     esconderHamburguesa();
+}
+
+/**
+ * Valida si la sesión está activa.
+ * @returns bool
+ */
+function validarSession () {
+    let aSesion = sessionStorage.getItem("derweb_sesion");
+    if (aSesion == null)
+        return false;
+    return true;
 }
 
 
