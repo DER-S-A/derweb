@@ -110,7 +110,7 @@ function generarBotonListaArticulos() {
     const idComp = "carrusel-container"
      var objCarrusel = new CarruselComponent(idComp);
 
-    const url_bannerPortada = "services/banner_portada/get";
+    const url_bannerPortada = "services/banner_portada.php/get";
     fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
     .then(data => {
         objCarrusel.generateComponent(data, idComp);
@@ -130,7 +130,7 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 
     // Armo el parámetro para buscar por rubro y subrubro.
     aParametros = {
-        "api_url": "services/articulos/getByRubroAndSubrubro",
+        "api_url": "services/articulos.php/getByRubroAndSubrubro",
         "values": { 
             "id_rubro": parseInt(xidRubro),
             "id_subrubro": parseInt(xidSubrubro)
@@ -171,7 +171,7 @@ function buscarPorFrase () {
     let xId= 'carrusel-container-footer';
     var objCarruselFooter = new CarruselFooterComponent(xId);
 
-   const url_bannerPortada = "services/articulos-destacados/get";
+   const url_bannerPortada = "services/articulos-destacados.php/get";
    fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
    .then(data => {
        objCarruselFooter.generateComponent(data);

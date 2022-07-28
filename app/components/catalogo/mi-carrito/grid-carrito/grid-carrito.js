@@ -32,7 +32,7 @@ class CarritoGridComponent extends ComponentManager {
      */
     generateComponent() {
         var strSesion = sessionStorage.getItem("derweb_sesion");
-        var url = "services/pedidos/getPedidoActual";
+        var url = "services/pedidos.php/getPedidoActual";
         this.clearContainer(this.__idContenedor);
 
         url = url + "?sesion=" + strSesion;

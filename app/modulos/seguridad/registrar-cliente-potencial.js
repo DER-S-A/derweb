@@ -79,7 +79,7 @@ class RegistrarClientePotencial {
         }
         console.warn(JSON.stringify(aRegistro));
 
-        url = "services/cliente-potencial/registrarCliente?registro=" + JSON.stringify(aRegistro);
+        url = "services/cliente-potencial.php/registrarCliente?registro=" + JSON.stringify(aRegistro);
         objAPI.put(url, (xResponse) => {
             this.aResponse = JSON.parse(xResponse);
         });
