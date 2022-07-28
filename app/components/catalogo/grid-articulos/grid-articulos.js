@@ -369,7 +369,7 @@ function agregarAlCarrito(xidarticulo) {
     };
     
     // Envío el pedido al API para grabarlo en la base de datos.
-    url_carrito += "?datos=" + JSON.stringify(parametros);
+    url_carrito += "?sesion=" + JSON.stringify(aSesion) + "&" + "datos=" + JSON.stringify(parametros);
     fetch(url_carrito, {
         method: "PUT"
         })
