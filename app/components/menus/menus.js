@@ -45,7 +45,7 @@ class MenuComponent {
 
         // Recupero las opciones de menú según el tipo de entidad para mostrar solo
         // a lo que puede acceder.
-        var aOperaciones = objAPIs.getFromAPI("services/lfw-operaciones/getByTipoEntidad?idTipoEntidad=" + idTipoEntidad);
+        var aOperaciones = objAPIs.getFromAPI("services/lfw-operaciones.php/getByTipoEntidad?idTipoEntidad=" + idTipoEntidad);
 
         aOperaciones.forEach(xElement => {
             let objLink = document.createElement("a");

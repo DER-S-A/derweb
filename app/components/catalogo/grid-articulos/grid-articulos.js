@@ -165,7 +165,7 @@ class CatalogoGridComponent extends ComponentManager {
         objContenedorFoto.id = "info-articulo-foto"
         objContenedorFoto.classList.add("info-articulo-foto");
 
-        objImg.src = "../admin/ufiles/sinfoto.png";
+        objImg.src = "../admin/ufiles/sinfoto.jpeg";
         objContenedorFoto.appendChild(objImg);
 
         return objContenedorFoto;
@@ -327,8 +327,8 @@ class CatalogoGridComponent extends ComponentManager {
 function agregarAlCarrito(xidarticulo) {
     var parametros;
     var cantidad = document.getElementById("txtcantidad_" + xidarticulo).value;
-    var url_articulo = "services/articulos/get";
-    var url_carrito = "services/pedidos/agregarAlCarrito";
+    var url_articulo = "services/articulos.php/get";
+    var url_carrito = "services/pedidos.php/agregarAlCarrito";
     var aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
     var aArticulo = new Array();
 
