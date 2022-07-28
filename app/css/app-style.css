@@ -46,14 +46,13 @@
 .toolbar-container ul {
     list-style: none;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .toolbar-container ul li {
     display: inline-block;
-}
-
-.toolbar-container .toolbar-col-1 {
-    width: 10%;
 }
 
 .toolbar-container .toolbar-col-2 {
@@ -136,6 +135,17 @@
 
     #imgCatCta .catalogo  {
         padding-left: 2.5px;
+    }
+
+    .toolbar-container ul {
+        padding: 0;
+    }
+    .toolbar-container .toolbar-col-2 {
+        width: auto;
+    }
+
+    .toolbar-container .toolbar-col-3 {
+        width: auto;
     }
 
 }

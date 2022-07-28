@@ -118,5 +118,8 @@
         margin-left: 40%;
         margin-right: 40%;
     }
+    .lista-articulos-container {
+        width: auto;
+    }
 
 }

@@ -59,4 +59,8 @@
     .app-footer {
         position: relative!important;
     }
+
+    .app-footer-container {
+        text-align: center;
+    }
 }
