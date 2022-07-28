@@ -1,0 +1,40 @@
+
+.sc3-accordion 
+{
+	background-color: #616161;
+	color: white;
+	cursor: pointer;
+	margin-top: 3px;
+	padding: 5px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 14px;
+}
+
+
+.sc3-accordion-flecha 
+{
+	float: right;
+	margin: 5px;
+}
+
+.sc3-accordion-panel 
+{
+	padding-left: 12px;
+	padding-top: 2px;
+	background-color: white;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
+}
+
+.sc3-accordion-panel-abierta
+{
+	padding-left: 12px;
+	padding-top: 5px;
+	background-color: white;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;  
+}
