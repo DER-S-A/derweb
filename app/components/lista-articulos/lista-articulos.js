@@ -62,6 +62,7 @@ class ListaArticuloComponent {
         objButton.classList.add("lista-articulos-button");
                 
         this.objContainerListaArticulo.appendChild(objButton);
+
     }
 
     /**
@@ -191,3 +192,13 @@ function desplegar_subrubros(xid_rubro) {
     document.body.appendChild(objDivSubrubrosContainer);
     window.scrollTo(0, 0);
 }
+
+
+
+/*let objBotonLista = document.querySelector("#btnPushListaArticulo")
+let objHambur = document.getElementById("menu-options");
+console.log(objHambur)
+objBotonLista.addEventListener("click",()=>{
+    console.log(objHambur)
+    objHambur.display = "none";
+})*/

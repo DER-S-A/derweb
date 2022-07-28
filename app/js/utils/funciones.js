@@ -106,3 +106,11 @@ function validarTel() {
     return true;
 }
 
+/*let objBotoonLista = document.querySelector("#btnPushListaArticulo")
+let objHambuur = document.getElementById("menu-options");
+console.log(objHambuur)
+objBotoonLista.addEventListener("click",()=>{
+    console.log(objHambuur)
+    objHambuur.display = "none";
+})*/
+
