@@ -22,7 +22,9 @@ window.onload = () => {
     generarCarruselFotter();
     generarBotonMiCarrito();
     iniciarlizarComponenteMiCarrito();
+    esconderHamburguesa();
 }
+
 
 /**
  * Permite llenar el selector con las marcas de repuestos.
@@ -144,7 +146,7 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 function buscarPorFrase () {
     
     let valor = document.getElementById("txtValorBuscado").value;
-    if(valor.length>4){
+    if(valor.length>3){
         var objGUI = new CatalogoGUIComponent("app-container");
         var aParametros;
         objGUI.generateComponent();
@@ -158,7 +160,7 @@ function buscarPorFrase () {
     
         objGUI.getArticulosResultadoBusqueda(aParametros, true);  
     } else {
-        swal("Oops!", "Debe escribir al menos 5 caracteres", "error");
+        swal("Oops!", "Debe escribir al menos 4 caracteres", "error");
     } 
 
 }
@@ -240,3 +242,15 @@ objTxtValorBuscado.addEventListener("keypress",(e) => {
         buscarPorFrase ();
     }
 })
+
+function esconderHamburguesa() {
+    let objHambur = document.getElementById("menu-options");
+    let objBotonLista = document.getElementById("btnPushListaArticulo");
+    objBotonLista.addEventListener ("click", () => {
+        objHambur.style.display = "none";
+        console.log(document.querySelector(".fa-xmark"))
+        document.querySelector("#botonHambur").className = "fas fa-bars";
+    })
+
+}
+

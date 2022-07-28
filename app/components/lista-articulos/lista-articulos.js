@@ -29,6 +29,12 @@ class ListaArticuloComponent {
         document.getElementById("btnCerrarListaArticulo").addEventListener("click", () => {
             this.abrirCerrarListaArticulos("close");
         });
+
+        document.getElementById("btnPushListaArticulo").addEventListener("keyup", (e)=>{
+            if(e.keyCode === 27){
+                this.abrirCerrarListaArticulos("close");
+            }
+        })
     }
 
     /**
@@ -193,12 +199,3 @@ function desplegar_subrubros(xid_rubro) {
     window.scrollTo(0, 0);
 }
 
-
-
-/*let objBotonLista = document.querySelector("#btnPushListaArticulo")
-let objHambur = document.getElementById("menu-options");
-console.log(objHambur)
-objBotonLista.addEventListener("click",()=>{
-    console.log(objHambur)
-    objHambur.display = "none";
-})*/

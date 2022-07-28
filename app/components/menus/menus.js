@@ -23,13 +23,19 @@ class MenuComponent {
             if (document.getElementById("menu-options").style.display === "none" 
                     || document.getElementById("menu-options").style.display === "") {
                 document.getElementById("menu-options").style.display = "block";
-                document.getElementById("btnPushMenu").innerHTML = "<i class='fa-solid fa-xmark'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-xmark'></i>";
             }
             else {
                 document.getElementById("menu-options").style.display = "none";
-                document.getElementById("btnPushMenu").innerHTML = "<i class='fas fa-bars'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
             }
             });
+            document.getElementById("btnPushMenu").addEventListener("keyup", (e)=>{
+                if(e.keyCode === 27){
+                    document.getElementById("menu-options").style.display = "none";
+                    document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+                }
+            })
         });
     }
 
