@@ -8,6 +8,13 @@ class PedidosModel extends Model {
     private $idPedido = 0;
     private $aPedido = [];
 
+    // Estas propiedades se completan a partir de los datos
+    // de la sesión actual
+    protected $id_listaprecio;
+    protected $descuento_p1;
+    protected $descuento_p2;
+    protected $rentabilidad;  
+
     /**
      * get
      * Devuelve los registros de la tabla pedidos.
@@ -27,10 +34,11 @@ class PedidosModel extends Model {
      * @param  string $xjsonData
      * @return void
      */
-    public function agregarCarrito($xjsonData) {
+    public function agregarCarrito($xsesion, $xjsonData) {
         $objBD = new BDObject();
         $this->aPedido = json_decode($xjsonData, true);
         $aResult = [];
+        $this->getClienteActual($xsesion);
 
         $this->calcularTotalPedido();
         $aCabecera = $this->aPedido["cabecera"];
@@ -135,7 +143,8 @@ class PedidosModel extends Model {
                     pedidos
                         INNER JOIN estados_pedidos ON estados_pedidos.id = pedidos.id_estado
                 WHERE
-                    estados_pedidos.estado_inicial = 1";
+                    estados_pedidos.estado_inicial = 1 AND
+                    pedidos.id_entidad = " . $this->idCliente;
         $rs = $this->getQuery2($sql);
         $this->idPedido = $rs->getValueInt("id");
         $rs->close();

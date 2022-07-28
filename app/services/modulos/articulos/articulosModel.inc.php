@@ -5,10 +5,10 @@
  * 
  */
 class ArticulosModel extends Model {
-    private $id_listaprecio;
-    private $descuento_p1;
-    private $descuento_p2;
-    private $rentabilidad;  
+    protected $id_listaprecio;
+    protected $descuento_p1;
+    protected $descuento_p2;
+    protected $rentabilidad;  
 
     /**
      * get
@@ -19,7 +19,7 @@ class ArticulosModel extends Model {
 
     public function get($xsesion, $xfilter, $xpagina) {
         $aResponse = [];
-        $this->getDatosClientes($xsesion);
+        $this->getClienteActual($xsesion);
 
         // Armado de la sentencia SQL.
         $sql = "    SELECT
@@ -139,7 +139,10 @@ class ArticulosModel extends Model {
      */
     public function getByRubroAndSubrubro($xsesion, $xJSONParam, $xpagina) {
         $aResponse = [];
-        $this->getDatosClientes($xsesion);
+
+        /** Recupero los datos de sesión */
+        $this->getClienteActual($xsesion);
+
         // Recupero los parámetros recibidos con el filtro a aplicar
         $aParametros = json_decode($xJSONParam, true);
         $id_rubro = intval($aParametros["values"]["id_rubro"]);
@@ -156,22 +159,7 @@ class ArticulosModel extends Model {
         
         return $aResponse;
     }
-    
-    /**
-     * getDatosClientes
-     * Levanta los datos de descuento y rentabilidad de los clientes.
-     * @param  string $xsesion JSON con la sesi´pon iniciada en DERWEB.
-     * @return void
-     */
-    private function getDatosClientes($xsesion) {
-        $objEndidadesModel = new EntidadesModel();
-        $aCliente = $objEndidadesModel->getBySesion($xsesion);
-        $this->id_listaprecio = intval($aCliente[0]["id_listaprecio"]);
-        $this->descuento_p1 = doubleval($aCliente[1]["descuento_1"]);
-        $this->descuento_p2 = doubleval($aCliente[2]["descuento_2"]);
-        $this->rentabilidad = doubleval($aCliente[3]["rentabilidad_1"]);        
-    }
-        
+           
     /**
      * loadResponseArray
      * Permite recuperar los datos del conjunto de resultados en el arrya que va a devolver
@@ -255,7 +243,7 @@ class ArticulosModel extends Model {
             return $aResponse;
         }
 
-        $this->getDatosClientes($xsesion);
+        $this->getClienteActual($xsesion);
         $this->formatearValorBuscado($xfrase);
         $palabras = explode(' ', $xfrase);
         $filtro = "";

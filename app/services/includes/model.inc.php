@@ -7,6 +7,8 @@
  */
 
 class Model {
+    protected $idCliente = 0;
+
     /**
      * ejecutar_comando
      * Devuelve un conjunto de resultados a partir de una sentencia SELECT.
@@ -107,6 +109,22 @@ class Model {
      */
     private static function getDoubleValue($value) {
         return str_replace(",", ".", $value);
-    }    
+    }
+    
+    /**
+     * getClienteActual
+     * Levanta los datos de descuento y rentabilidad del cliente acutalmente logueado.
+     * @param  string $xsesion JSON con la sesi´pon iniciada en DERWEB.
+     * @return Array Datos del cliente
+     */
+    protected function getClienteActual($xsesion) {
+        $objEndidadesModel = new EntidadesModel();
+        $aCliente = $objEndidadesModel->getBySesion($xsesion);
+        $this->id_listaprecio = intval($aCliente[0]["id_listaprecio"]);
+        $this->descuento_p1 = doubleval($aCliente[0]["descuento_1"]);
+        $this->descuento_p2 = doubleval($aCliente[0]["descuento_2"]);
+        $this->rentabilidad = doubleval($aCliente[0]["rentabilidad_1"]);
+        $this->idCliente = intval($aCliente[0]["id"]);
+    }
 }
 ?>

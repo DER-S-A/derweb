@@ -49,9 +49,10 @@ class PedidosController extends APIController {
         // Valido que la llamada venga por método GET o POST.
         if ($this->usePutMethod()) {
             try {
+                $sesion = $this->getURIParameters("sesion");
                 $datos = $this->getURIParameters("datos");
                 $objModel = new PedidosModel();
-                $responseData = json_encode($objModel->agregarCarrito($datos));
+                $responseData = json_encode($objModel->agregarCarrito($sesion, $datos));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

@@ -126,7 +126,7 @@ class EntidadesModel extends Model {
                     entidades
                 WHERE
                     entidades.id = $id_cliente";
-        $aCliente = getRs($sql)->getAsArray();
+        $aCliente = getRs($sql, true)->getAsArray();
         return $aCliente;
     }
 }
