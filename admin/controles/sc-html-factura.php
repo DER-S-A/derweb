@@ -102,6 +102,7 @@ class HtmlFactura
 		$cboTipo->add("ND", "ND");
 		$cboTipo->add("NC", "NC");
 		$cboTipo->add("TK", "Ticket");
+		$cboTipo->add("PROF", "Prof");
 		$cboTipo->add("RE", "Remito");
 		$cboTipo->add("INV", "Invoice");
 		$cboTipo->add("-", "s/comp");

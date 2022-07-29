@@ -1,8 +1,7 @@
 <?php
- 
-if (!session_id()) 
-{
-    session_start();
+
+if (!session_id()) {
+	session_start();
 }
 
 include("config.php");
@@ -11,15 +10,15 @@ include("sc-csv.php");
 
 include("sc-html.php");
 include("controles/sc-html-mensajes.php");
-include("controles/sc-html-input-text.php"); 
-include("controles/sc-html-table.php"); 
-include("controles/sc-html-checkbox.php"); 
-include("controles/sc-html-areas.php"); 
-include("controles/sc-html-selector.php"); 
-include("controles/sc-html-grid.php"); 
-include("controles/sc-html-pdf.php"); 
-include("controles/sc-html-tabs.php"); 
-include("controles/sc-html-menu.php"); 
+include("controles/sc-html-input-text.php");
+include("controles/sc-html-table.php");
+include("controles/sc-html-checkbox.php");
+include("controles/sc-html-areas.php");
+include("controles/sc-html-selector.php");
+include("controles/sc-html-grid.php");
+include("controles/sc-html-pdf.php");
+include("controles/sc-html-tabs.php");
+include("controles/sc-html-menu.php");
 include("controles/sc-html-combo.php");
 include("controles/sc-html-date.php");
 include("controles/sc-html-boolean.php");
@@ -31,6 +30,7 @@ include("controles/sc-html-input-file.php");
 include("controles/sc-html-graphic.php");
 include("controles/sc-html-input-text-email.php");
 include("controles/sc-html-divdatos.php");
+include("controles/sc-html-divs.php");
 include("controles/sc-html-buscador.php");
 
 include("controles/sc-html-factura.php");
@@ -53,29 +53,26 @@ require("sc-fileutils.php");
 require("sc-ajax.php");
 require("sc-funciones-json.php");
 
-if (!isset($INCLUDE_LIGHT) || $INCLUDE_LIGHT == 0)
-{
+if (!isset($INCLUDE_LIGHT) || $INCLUDE_LIGHT == 0) {
 	include("sc-nroletras.php");
 	include("sc-encrypt.php");
 	include("sc-escritorio.php");
 	include("sc-barcode3ro.php");
 }
 
-if (function_exists('date_default_timezone_set'))
-{
+if (function_exists('date_default_timezone_set')) {
 	date_default_timezone_set('America/Buenos_Aires');
 }
 
 require_once('terceros/cezpdf/src/Cezpdf.php');
-	
+
 
 $EMPTY_SELECTOR = "";
 $VERSION = "1";
 $RELEASE = "0";
 
 
-if (esExcel())
-{
+if (esExcel()) {
 	$xlsname = Request("xlsname");
 	if (esVacio($xlsname))
 		$xlsname = "datos";
@@ -89,40 +86,49 @@ function esExcel()
 	$format = Request("format");
 	if (strcmp($format, "excel") == 0)
 		return true;
-	return false;	
+	return false;
 }
-	
 
-/*
-Retorna si encuentra el parametro enviar=1
-*/	
+
+/**
+ * Retorna si encuentra el parametro enviar=1
+ */
 function enviado()
 {
 	$enviar = RequestInt("enviar");
 	if ($enviar == 1)
 		return true;
-	return false;	
+	return false;
 }
-	
-	
+
+/**
+ * Retorna la versión del sistema tomando la fecha de 
+ * sc-updversion.php  o
+ * sc-updversion-core.php
+ * En formato vAA.MM (rd)
+ */
 function getVersion()
 {
 	$result = "v";
 	$filename = "sc-updversion.php";
 	if (file_exists($filename))
-	{
-		$dia = (int) date ("d", filemtime($filename));
-		if ($dia >= 20)
-			$dia = 3;
-		elseif ($dia >= 10)
-			$dia = 2;
-		else
-			$dia = 1;
-		
-		$result .= date ("y.m", filemtime($filename)) . " (r$dia)";
-	}	
-	return $result;	
-}	
+		$dia = (int) date("d", filemtime($filename));
+	else {
+		$filename = "sc-updversion-core.php";
+		if (file_exists($filename))
+			$dia = (int) date("d", filemtime($filename));
+	}
+
+	if ($dia >= 20)
+		$dia = 3;
+	elseif ($dia >= 10)
+		$dia = 2;
+	else
+		$dia = 1;
+
+	$result .= date("y.m", filemtime($filename)) . " (r$dia)";
+	return $result;
+}
 
 
 /**
@@ -134,62 +140,51 @@ function Request($str, $xdefault = "")
 	$strRet = "";
 	$inGet = false;
 	$inPost = false;
-	
+
 	global $_GET;
 	global $_POST;
-	
-	if (is_array($_GET))
-	{
-		$a = array_keys ($_GET);
-		if (is_array($a))
-		{
-			if (in_array($str, $a))
-			{
+
+	if (is_array($_GET)) {
+		$a = array_keys($_GET);
+		if (is_array($a)) {
+			if (in_array($str, $a)) {
 				$strRet = $_GET[$str];
 				$inGet = true;
 			}
 		}
 	}
-	
+
 	//POST le gana a GET
-	if (is_array($_POST))
-	{
-		$a = array_keys ($_POST);
-		if (is_array($a))
-		{
-			if (in_array($str, $a))
-			{
+	if (is_array($_POST)) {
+		$a = array_keys($_POST);
+		if (is_array($a)) {
+			if (in_array($str, $a)) {
 				$strRet = $_POST[$str];
 				$inPost = true;
 			}
 		}
 	}
-	
+
 	//$encriptaUrl = getParameterInt("sc3-encripta-url", 0);
 	$encriptaUrl = 0;
 	//intento descubrir si est� encriptado
-	if (($encriptaUrl == 1) && esVacio($strRet))
-	{
+	if (($encriptaUrl == 1) && esVacio($strRet)) {
 		$a = array_keys($_GET);
-		if (is_array($a))
-		{
-			if (in_array("p", $a))
-			{
+		if (is_array($a)) {
+			if (in_array("p", $a)) {
 				$strE = $_GET["p"];
-				if (!esVacio($strE))
-				{
+				if (!esVacio($strE)) {
 					$enc = new Sc3Encriptador();
 					$urlOrig = $enc->decryptUrl($strE);
 					$avalores = explode2Niveles($urlOrig, "&", "=");
-					if (isset($avalores[$str]))
-					{
+					if (isset($avalores[$str])) {
 						$strRet = urldecode($avalores[$str]);
 						$inGet = true;
 					}
-					$strRet = $avalores[$str];					
+					$strRet = $avalores[$str];
 				}
 			}
-		}		
+		}
 	}
 
 	//no está presente en los parámetros, retorna el valor default
@@ -198,7 +193,7 @@ function Request($str, $xdefault = "")
 
 	if (is_array($strRet))
 		return $strRet;
-	
+
 	return trim($strRet);
 }
 
@@ -209,23 +204,19 @@ function inRequest($xParam)
 {
 	global $_GET;
 	global $_POST;
-	
-	if (is_array($_GET))
-	{
-		$a = array_keys ($_GET);
-		if (is_array($a))
-		{
+
+	if (is_array($_GET)) {
+		$a = array_keys($_GET);
+		if (is_array($a)) {
 			if (in_array($xParam, $a))
 				return true;
 		}
 	}
-	
+
 	//POST le gana a GET
-	if (is_array($_POST))
-	{
-		$a = array_keys ($_POST);
-		if (is_array($a))
-		{
+	if (is_array($_POST)) {
+		$a = array_keys($_POST);
+		if (is_array($a)) {
 			if (in_array($xParam, $a))
 				return true;
 		}
@@ -239,8 +230,7 @@ function inRequest($xParam)
  */
 function requestOrSession($xstr)
 {
-	if (inRequest($xstr))
-	{
+	if (inRequest($xstr)) {
 		setSession($xstr, Request($xstr));
 		return Request($xstr);
 	}
@@ -258,18 +248,17 @@ function requestOrValue($xstr, $xvalue)
 }
 
 /*
- * recupera en orden, el request, la session o el parametro
- */
+* recupera en orden, el request, la session o el parametro
+*/
 function requestOrParameter($xrequest, $xparameter = "", $xdefault = "")
 {
 	if (sonIguales($xparameter, ""))
 		$xparameter = $xrequest;
-		
+
 	$valorRequest = Request($xrequest);
-	if (!sonIguales($valorRequest, ""))
-	{
+	if (!sonIguales($valorRequest, "")) {
 		saveParameter($xparameter, $valorRequest);
-		return $valorRequest;	
+		return $valorRequest;
 	}
 	$valorParametro = getParameter($xparameter, $xdefault);
 	return $valorParametro;
@@ -287,21 +276,15 @@ function RequestAll($xstr)
 	$vars = "";
 	if (isset($_GET[$xstr]))
 		$vars = $_GET[$xstr];
-	if (is_array($vars))
-	{
-		foreach($vars as $value)
-		{
+	if (is_array($vars)) {
+		foreach ($vars as $value) {
 			array_push($arr, $value);
 		}
-	} 
-	else
-	{
+	} else {
 		if (isset($_POST[$xstr]))
 			$vars = $_POST[$xstr];
-		if (is_array($vars))
-		{
-			foreach($vars as $value)
-			{
+		if (is_array($vars)) {
+			foreach ($vars as $value) {
 				array_push($arr, $value);
 			}
 		}
@@ -326,8 +309,7 @@ function RequestInt($xstr, $xdefault = "0")
 function RequestIntMaster($xname, $xquery)
 {
 	$value = intval(Request($xname));
-	if ($value == 0)
-	{
+	if ($value == 0) {
 		if (sonIguales(Request("mquery"), $xquery))
 			$value = intval(Request("mid"));
 	}
@@ -348,10 +330,11 @@ function RequestFloat($xstr, $xdefault = "0")
  */
 function RequestStr($xstr)
 {
-	global $gDb;
 	$result = Request($xstr);
-	return $gDb->realEscape($result);
+	$result = str_replace("'", "''", $result);
+	return $result;
 }
+
 
 /**
  * Elimina comillas, espacios, guiones, puntos y comas
@@ -361,7 +344,7 @@ function RequestSafe($xstr)
 	$result = Request($xstr);
 	$rep = array("'", " ", "-", ";", ",");
 	$result = str_replace($rep, "", $result);
-	return $result;	
+	return $result;
 }
 
 /**
@@ -372,34 +355,28 @@ function RequestSafe($xstr)
  */
 function RequestFecha($xstr)
 {
-	$aResult = array("year"=>2010, "mon"=>01, "mday"=>01);
-	$aHr = array("hr"=> 0, "min"=>0);
+	$aResult = array("year" => 2010, "mon" => 01, "mday" => 01);
+	$aHr = array("hr" => 0, "min" => 0);
 
 	//analiza si viene el año separado del resto, viejo control de AAAA MM DD
 	$anio = RequestInt($xstr . "_a");
-	if ($anio != 0)
-	{
+	if ($anio != 0) {
 		$aResult["year"] = $anio;
 		$aResult["mon"] = RequestInt($xstr . "_m");
 		$aResult["mday"] = RequestInt($xstr . "_d");
 
 		$hr = RequestInt($xstr . "_h");
 		$min = RequestInt($xstr . "_n");
-		if ($hr + $min > 0)
-		{
+		if ($hr + $min > 0) {
 			$aHr["hr"] = $hr;
 			$aHr["min"] = $min;
 		}
-	}
-	else
-	{
+	} else {
 		//viene en formato 2020-04-19
 		$fecha = Request($xstr);
-		if (!esVacio($fecha))
-		{
+		if (!esVacio($fecha)) {
 			$aFecha = explode("-", $fecha);
-			if (count($aFecha) == 3)
-			{
+			if (count($aFecha) == 3) {
 				$aResult["year"] = $aFecha[0];
 				$aResult["mon"] = $aFecha[1];
 				$aResult["mday"] = $aFecha[2];
@@ -450,12 +427,11 @@ function RequestFecha($xstr)
  */
 function getSession($str)
 {
-    $val = "";
-	if (isset($_SESSION[$str]))
-	{    
+	$val = "";
+	if (isset($_SESSION[$str])) {
 		$val = $_SESSION[$str];
 		if (startsWith($val, "--YXY--"))
-		    $val = descompactarB64(substr($val, 7));
+			$val = descompactarB64(substr($val, 7));
 	}
 	return $val;
 }
@@ -465,11 +441,10 @@ function getSession($str)
  */
 function setSession($str, $val, $xcompactar = 0)
 {
-    if ($xcompactar == 1)
-    {
-        $val = "--YXY--" . compactarB64($val);
-    }
-    $_SESSION[$str] = $val;
+	if ($xcompactar == 1) {
+		$val = "--YXY--" . compactarB64($val);
+	}
+	$_SESSION[$str] = $val;
 }
 
 
@@ -489,7 +464,7 @@ function getVariableUsuario($xvar)
  */
 function compactarB64($xtxt)
 {
-    return base64_encode(gzcompress($xtxt));
+	return base64_encode(gzcompress($xtxt));
 }
 
 /**
@@ -499,7 +474,7 @@ function compactarB64($xtxt)
  */
 function descompactarB64($xtxt)
 {
-    return gzuncompress(base64_decode($xtxt));
+	return gzuncompress(base64_decode($xtxt));
 }
 
 /**
@@ -519,25 +494,25 @@ function microtime_float()
 /*
 Elimina caracteres raros para el RTE
 */
-function rteSafe($xtxt) 
+function rteSafe($xtxt)
 {
 	//returns safe code for preloading in the RTE
 	$tmpString = $xtxt;
-	
+
 	//convert all types of single quotes
 	$tmpString = str_replace(chr(145), chr(39), $tmpString);
 	$tmpString = str_replace(chr(146), chr(39), $tmpString);
 	$tmpString = str_replace("'", "&#39;", $tmpString);
-	
+
 	//convert all types of double quotes
 	$tmpString = str_replace(chr(147), chr(34), $tmpString);
 	$tmpString = str_replace(chr(148), chr(34), $tmpString);
-//	$tmpString = str_replace("\"", "\"", $tmpString);
-	
+	//	$tmpString = str_replace("\"", "\"", $tmpString);
+
 	//replace carriage returns & line feeds
 	$tmpString = str_replace(chr(10), " ", $tmpString);
 	$tmpString = str_replace(chr(13), " ", $tmpString);
-	
+
 	return $tmpString;
 }
 
@@ -580,7 +555,7 @@ function escapeJsValor($xstr)
 	$tmpString = str_replace("\"", "", $tmpString);
 	return $tmpString;
 }
-		
+
 
 function sc3DefaultEncoding()
 {
@@ -608,66 +583,60 @@ function getUserAgent()
 {
 	if (isMobileAgent())
 		return "MOBILE: " . $_SERVER['HTTP_USER_AGENT'];
-	
+
 	return $_SERVER['HTTP_USER_AGENT'];
 }
 
 function isMobileAgent()
 {
-	
+
 	$mobile_browser = 0;
-	if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|android|phone)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) 
-	{
-		return TRUE;
-	}
- 
-	if((strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml')>0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) 
-	{
-		return TRUE;
-	}    
- 
-	if (RequestInt("mobile") == 1) 
-	{
+	if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|android|phone)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
 		return TRUE;
 	}
 
-	if (isset($_SERVER['ALL_HTTP']) &&  strpos(strtolower($_SERVER['ALL_HTTP']),'OperaMini') > 0) 
-	{
+	if ((strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))) {
 		return TRUE;
 	}
-	
-	$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'],0,4));
+
+	if (RequestInt("mobile") == 1) {
+		return TRUE;
+	}
+
+	if (isset($_SERVER['ALL_HTTP']) &&  strpos(strtolower($_SERVER['ALL_HTTP']), 'OperaMini') > 0) {
+		return TRUE;
+	}
+
+	$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 	$mobile_agents = array(
-						    'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
-						    'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
-						    'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
-						    'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
-						    'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
-						    'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
-						    'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
-						    'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
-						    'wapr','webc','winw','winw','xda','xda-');
- 
-	if (in_array($mobile_ua, $mobile_agents)) 
-	{
+		'w3c ', 'acs-', 'alav', 'alca', 'amoi', 'audi', 'avan', 'benq', 'bird', 'blac',
+		'blaz', 'brew', 'cell', 'cldc', 'cmd-', 'dang', 'doco', 'eric', 'hipt', 'inno',
+		'ipaq', 'java', 'jigs', 'kddi', 'keji', 'leno', 'lg-c', 'lg-d', 'lg-g', 'lge-',
+		'maui', 'maxo', 'midp', 'mits', 'mmef', 'mobi', 'mot-', 'moto', 'mwbp', 'nec-',
+		'newt', 'noki', 'oper', 'palm', 'pana', 'pant', 'phil', 'play', 'port', 'prox',
+		'qwap', 'sage', 'sams', 'sany', 'sch-', 'sec-', 'send', 'seri', 'sgh-', 'shar',
+		'sie-', 'siem', 'smal', 'smar', 'sony', 'sph-', 'symb', 't-mo', 'teli', 'tim-',
+		'tosh', 'tsm-', 'upg1', 'upsi', 'vk-v', 'voda', 'wap-', 'wapa', 'wapi', 'wapp',
+		'wapr', 'webc', 'winw', 'winw', 'xda', 'xda-'
+	);
+
+	if (in_array($mobile_ua, $mobile_agents)) {
 		$mobile_browser = 0;
-		if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) 
-		{
-	    	$mobile_browser++;
+		if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
+			$mobile_browser++;
 		}
- 
-	    $mobile_browser++;
+
+		$mobile_browser++;
 	}
-	
-	if (isset($_SERVER['HTTP_USER_AGENT']) && strpos(strtolower($_SERVER['HTTP_USER_AGENT']),'windows') > 0) 
-	{
-	    $mobile_browser = 0;
+
+	if (isset($_SERVER['HTTP_USER_AGENT']) && strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') > 0) {
+		$mobile_browser = 0;
 	}
-	
+
 
 	if ($mobile_browser > 0)
 		return TRUE;
-	return FALSE;	
+	return FALSE;
 }
 
 
@@ -687,44 +656,45 @@ function thisUrl()
 {
 	$url = "";
 	if (isset($_SERVER["SCRIPT_URI"]))
-	$url = dirname($_SERVER["SCRIPT_URI"]);
-		elseif (isset($_SERVER['SERVER_NAME']))
-	$url = $_SERVER['SERVER_NAME'];
+		$url = dirname($_SERVER["SCRIPT_URI"]);
+	elseif (isset($_SERVER['SERVER_NAME']))
+		$url = $_SERVER['SERVER_NAME'];
 	return $url;
 }
 
 
 function getCacheName($xsitio)
 {
-    return substr(md5($xsitio), 0, 5);
+	return substr(md5($xsitio), 0, 5);
 }
 
 /*
 Retorna el str sin los acentos y ñ
- */
+*/
 function sinCaracteresEspeciales($xstr)
 {
 	$sacar = array("(", ")", "á", "Á", "é", "í", "ó", "ú", "ñ", "Ñ", "°", chr(164), chr(165));
 	$poner = array("",  "",  "a", "A", "e", "i", "o", "u", "n", "N", " ", "n", "n");
-	
+
 	$str = str_replace($sacar, $poner, $xstr);
 	return $str;
 }
 
 /*
- Retorna el array sin los acentos y ñ
- */
+Retorna el array sin los acentos y ñ
+*/
 function sinCaracteresEspecialesArray($xaValores)
 {
 	$sacar = array("á", "Á", "é", "í", "ó", "Ú", "ñ", "Ñ", chr(164), chr(165));
 	$poner = array("a", "A", "e", "i", "o", "u", "n", "N", "n", "n");
-	
+
 	$aValores = array();
-	foreach ($xaValores as $i => $valor)
-	{
-		$aValores[$i] = utf8_encode(str_replace($sacar, $poner, $valor));
+	foreach ($xaValores as $i => $valor) {
+		$aValores[$i] = "";
+		if ($valor != null)
+			$aValores[$i] = utf8_encode(str_replace($sacar, $poner, $valor));
 	}
-	
+
 	return $aValores;
 }
 
@@ -748,14 +718,14 @@ function htmlVisible($xstr)
 function pdfVisible($xstr, $xInTable = false)
 {
 	return $xstr;
-	
+
 	$sacar = array("á", "é", "í", "ó", "ú", "ñ", "Ñ", "\r\n");
 	$poner = array("a", "e", "i", "o", "u", "n", "N", "<br>");
 	$str = str_replace($sacar, $poner, $xstr);
 
 	//resuelve codificacion
 	$str = textToPdfEncoding($str, $xInTable);
-	
+
 	return $str;
 }
 
@@ -770,7 +740,7 @@ function resumirTexto($xtext, $xlargo)
 {
 	if (strlen($xtext) <= $xlargo)
 		return $xtext;
-	
+
 	return substr($xtext, 0, $xlargo / 2 - 3) . "... " . substr($xtext, strlen($xtext) - $xlargo / 2 + 1, $xlargo / 2);
 }
 
@@ -780,15 +750,17 @@ function resumirTexto($xtext, $xlargo)
  */
 function toUtf8($xtext)
 {
+	if ($xtext == null)
+		$xtext = "";
 	$result = $xtext;
 	$code = mb_detect_encoding($xtext, "UTF-8, ISO-8859-1");
 	if ($code != "UTF-8")
 		$result = iconv($code, "UTF-8", $xtext);
 
-	$isUTF8 = preg_match('//u', $result);	
+	$isUTF8 = preg_match('//u', $result);
 	if (!$isUTF8)
 		return "-";
-		
+
 	return $result;
 }
 
@@ -806,7 +778,7 @@ function textToPdfEncoding($xtext, $xInTable = false)
 	//PDF usa:     public $targetEncoding = 'ISO-8859-1';
 
 	//echo("<br>" . substr($texto, 0, 10) . ": " . mb_detect_encoding($texto, 'UTF-8, ISO-8859-1'));
-	
+
 	$quitar = array("<br>", "&nbsp;", "<span style=\"font-weight: bold;\">", "</span>", "<span style=\"font-weight: bold; text-decoration: underline;\">", "<div style=\"text-align: right;\">", "</div>", "<style type=\"text/css\">", "body ", "{", "background:", "#FFF;", "}", "</style>", "<span style=\"font-style: italic;\">");
 	$poner = array("\n", " ", "<b>", "</b>", "", "", "\n", "", "", "", "", "", "", "", "", "");
 	$texto = str_replace($quitar, $poner, $texto);
@@ -819,8 +791,8 @@ function textToPdfEncoding($xtext, $xInTable = false)
 	*/
 	//parece funcionar en PHP5 y 7 (aleluya hermanos !)
 	return utf8_encode($texto);
-	
-	
+
+
 
 	//detecta si es iso o utf (en esta creo)
 	if (sonIguales(mb_detect_encoding($texto, 'UTF-8, ISO-8859-1'), "UTF-8"))
@@ -840,13 +812,12 @@ function sinCaracteresEspecialesNiEspacios($xstr)
 /**
  * Igual al wordwrap pero respeta \n ya existentes
  * @return array
-**/
-function linewrap($string, $width, $break = '\n', $cut = false) 
+ **/
+function linewrap($string, $width, $break = '\n', $cut = false)
 {
 	$array = explode("\n", $string);
 	$result = "";
-	foreach($array as $key => $val) 
-	{
+	foreach ($array as $key => $val) {
 		$result .= wordwrap($val, $width, $break, $cut);
 		$result .= '\n';
 	}
@@ -856,51 +827,43 @@ function linewrap($string, $width, $break = '\n', $cut = false)
 
 function doLogin($xUser, $xPass)
 {
-	if (strcmp($xUser,"") == 0)
+	if (strcmp($xUser, "") == 0)
 		return 0;
-	else
-		{
+	else {
 		//Valida psw y setea variables de entorno
-		$rsUsuarios = new BDObject();	
+		$rsUsuarios = new BDObject();
 		$rs = new BDObject();
 		$rsUsuarios->execQuery("select * from sc_usuarios where (habilitado > 0) and login like '" . $xUser . "' and clave like md5('" . $xPass . "')");
 		$idUser = $rsUsuarios->getValue("id");
 		$diaHoy = date("N");
 		$hora = date("G");
-		if ($rsUsuarios->EOF())
-		{
+		if ($rsUsuarios->EOF()) {
 			setSession("sc3_logueado", false);
 			sleep(2);
 			return 0;
-		}
-		else
-		{
+		} else {
 			$rs->execQuery("SELECT * FROM sc_perfiles p 
 									INNER JOIN sc_perfiles_horarios h on (p.id = h.idperfil) 
 									INNER JOIN sc_usuarios_perfiles u on (h.idperfil = u.idperfil) 
 							WHERE u.idusuario =" . $idUser . " ");
-			if (!$rs->EOF())
-			{
+			if (!$rs->EOF()) {
 				$rsFecha = new BDObject();
 
 				$rsFecha->execQuery("SELECT p.id, p.hr_fin
-									 FROM sc_perfiles_horarios as p 
+									FROM sc_perfiles_horarios as p 
 										INNER JOIN sc_perfiles sp ON (p.idperfil = sp.id)
 										INNER JOIN sc_usuarios_perfiles up ON (sp.id = up.idperfil)
-									 WHERE p.dia = $diaHoy and 
+									WHERE p.dia = $diaHoy and 
 										p.hr_inicio <= $hora and 
 										p.hr_fin > $hora and 
 										up.idusuario = $idUser");
-			    
-				if ($rsFecha->EOF())
-				{
+
+				if ($rsFecha->EOF()) {
 					setSession("sc3_logueado", false);
 					logOp("LOGIN ERR", "", 0, "Fuera de Horario, IP: " . getRemoteIp() . ", AGENT: " . getUserAgent());
 					sleep(1);
 					return 0;
-				}
-				else
-				{
+				} else {
 					$horafinal = $rsFecha->getValue("hr_fin");
 					setSession("sc3_hora_final", $horafinal);
 				}
@@ -916,9 +879,9 @@ function doLogin($xUser, $xPass)
 			setSession("idcontacto", $rsUsuarios->getValueInt("idcontacto"));
 			setSession("usuario_punto_venta", $rsUsuarios->getValue("punto_venta"));
 			setSession("usuario_idlista", $rsUsuarios->getValue("idlista"));
-			
+
 			logOp("LOGIN", "", 0, "IP: " . getRemoteIp() . ", AGENT: " . getUserAgent());
-			
+
 			//borra registros de login de mas de 2 años, borra todo de mas de 5 años
 			$rsUsuarios->execQuery("delete from sc_logs 
 									where codigo_operacion = 'login' and 
@@ -926,8 +889,8 @@ function doLogin($xUser, $xPass)
 			$rsUsuarios->execQuery("delete from sc_logs 
 									where datediff(current_timestamp(), fecha) > (365*5)");
 			return 1;
-			}	
 		}
+	}
 }
 
 function getCurrentUserLogin()
@@ -952,32 +915,31 @@ Cambia la clave del usuario
 function sc3cambiarClave($xclavev, $xclaven, $xclaven2, $xidusuario = 0)
 {
 	debug("sc3cambiarClave($xclavev, $xclaven, $xclaven2)");
-	
+
 	$sql = "update sc_usuarios";
 	$sql .= "   set clave = md5('" . $xclaven . "')";
 	$sql .= " where id = $xidusuario";
 	//está cambiando clave propia
 	if ($xidusuario == getCurrentUser())
 		$sql .= "   and clave = md5('" . $xclavev . "')";
-	
-	$rs = new BDObject();	
+
+	$rs = new BDObject();
 	$rs->execQuery($sql);
-	
 }
 
 
 function sc3IsValidPass($xclave)
 {
 	$login = getCurrentUserLogin();
-	
+
 	$sql = "select *
 			from sc_usuarios
 			where login = '$login' and habilitado = 1 and 
 				clave = md5('$xclave')";
-	
+
 	$rs = new BDObject();
 	$rs->execQuery($sql);
-	
+
 	if ($rs->EOF())
 		return false;
 	return true;
@@ -986,12 +948,12 @@ function sc3IsValidPass($xclave)
 function sc3cambiarClave2($xlogin, $xclave)
 {
 	debug("sc3cambiarClave2($xlogin)");
-		 
+
 	$sql = "update sc_usuarios
 			set clave = md5('" . $xclave . "')
 			where login = '$xlogin'";
 
-	$rs = new BDObject();	
+	$rs = new BDObject();
 	$rs->execQuery($sql);
 }
 
@@ -1003,39 +965,37 @@ function sc3UsuariosActivos()
 	$sql = "update sc_usuarios
 			set ultima_actividad = CURRENT_TIMESTAMP()
 			where id = " . getCurrentUser();
-	
-	$rs = new BDObject();	
+
+	$rs = new BDObject();
 	$rs->execQuery($sql);
-	
+
 	$sql = "select login
 			from sc_usuarios
 			where ultima_actividad is not null and 
 				date_add(ultima_actividad, interval 2 MINUTE) > CURRENT_TIMESTAMP()
 			order by login";
 	$rs->execQuery($sql);
-	
+
 	$aUsr = $rs->getAsArray("");
-	
+
 	$aUsr[] = array('login' => 0);
-	if (!esVacio(getSession("sc3_hora_final")))
-	{
-		if (date("G") >= getSession("sc3_hora_final"))
-		{
-			header('Location: loginerror.php');
+	if (!esVacio(getSession("sc3_hora_final"))) {
+		if (date("G") >= getSession("sc3_hora_final")) {
+			header('Location: sc-loginerror.php');
 		}
 	}
-	
+
 	return $aUsr;
 }
 
 
 /*
- * Genera una clave con los 3 primeros del login mas 3 nros al azar
- */
+* Genera una clave con los 3 primeros del login mas 3 nros al azar
+*/
 function sc3GenerarClave($xlogin)
 {
 	debug("sc3GenerarClave($xlogin)");
-	
+
 	$clave = substr($xlogin, 1, 3) . getClave(3);
 	return $clave;
 }
@@ -1046,11 +1006,11 @@ function esClaveCorrecta($xclavev)
 	$sql = "select * from sc_usuarios";
 	$sql .= " where clave = md5('$xclavev')";
 	$sql .= " and id = " . getCurrentUser();
-	$rs = new BDObject();	
+	$rs = new BDObject();
 	$rs->execQuery($sql);
 	if ($rs->EOF())
 		return false;
-	return true;	
+	return true;
 }
 
 /*
@@ -1072,7 +1032,7 @@ function getRsUsuariosSistema()
 	$sql = "select id, nombre, login, email from sc_usuarios
 			where  (habilitado > 0)
 			order by nombre";
-	
+
 	$rs = new BDObject();
 	$rs->execQuery($sql);
 	return $rs;
@@ -1099,16 +1059,15 @@ function usuarioLogueado()
 	if (getSession("sc3_logueado"))
 		return 1;
 	else
-		return 0;	
+		return 0;
 }
 
 
 function checkUsuarioLogueado()
 {
-	if (!usuarioLogueado())
-	{
-		header("Location:./loginerror.php");
-		exit;  
+	if (!usuarioLogueado()) {
+		header("Location:./sc-loginerror.php");
+		exit;
 	}
 	s15();
 }
@@ -1116,9 +1075,8 @@ function checkUsuarioLogueado()
 function checkUsuarioLogueadoRoot()
 {
 	checkUsuarioLogueado();
-	if (!esRoot())
-	{
-		header("Location:./loginerror.php");
+	if (!esRoot()) {
+		header("Location:./sc-loginerror.php");
 		exit;
 	}
 }
@@ -1160,7 +1118,7 @@ function goOn($xstackname = "")
 	if (esVacio($xstackname))
 		$xstackname = Request("stackname");
 	header("Location:./hole.php?stackname=$xstackname");
-	exit;  
+	exit;
 }
 
 
@@ -1169,35 +1127,35 @@ function goOnAnterior($xstackname = "")
 	if (esVacio($xstackname))
 		$xstackname = Request("stackname");
 	header("Location:./hole.php?anterior=1&stackname=$xstackname");
-	exit;  
+	exit;
 }
 
 /**
-* Va al hole pero con la indicacion de ejecutar una accion
-*/
+ * Va al hole pero con la indicacion de ejecutar una accion
+ */
 function goOn2($xopid, $xmid, $xstackname = "")
 {
 	if (esVacio($xstackname))
 		$xstackname = Request("stackname");
 	header("Location:./hole.php?opid=$xopid&mid=$xmid&stackname=$xstackname");
-	exit;  
+	exit;
 }
 
 /**
-* Va al hole pero tambien muestra un archivo
-*/
+ * Va al hole pero tambien muestra un archivo
+ */
 function goOnShowFile($xfile, $xstackname = "")
 {
 	if (esVacio($xstackname))
 		$xstackname = Request("stackname");
 	header("Location:./hole.php?file=$xfile&stackname=$xstackname");
-	exit;  
+	exit;
 }
 
 function goToPage($xpage)
 {
 	header("Location:./$xpage");
-	exit;  
+	exit;
 }
 
 
@@ -1212,14 +1170,14 @@ function goToPageView($xquery, $xid, $xstackname = "")
 {
 	if (esVacio($xstackname))
 		$xstackname = Request("stackname");
-	
+
 	goToPage("sc-viewitem.php?stackname=$xstackname&query=$xquery&registrovalor=$xid");
 }
 
 
 function esNumero($xpalabra)
 {
-	return (is_numeric($xpalabra) == TRUE );
+	return (is_numeric($xpalabra) == TRUE);
 }
 
 /*
@@ -1230,8 +1188,8 @@ function esFecha($xpalabra)
 	$a = explode("/", $xpalabra);
 	if (count($a) != 3)
 		return false;
-		
-	return true;	
+
+	return true;
 }
 
 
@@ -1241,15 +1199,14 @@ function condicionSql($xfilterField, $xcondicion, $xfilterValue, $xalias = "")
 	debug("condicionSql($xfilterField, $xcondicion, $xfilterValue, $xalias)");
 	if ($xfilterField == "" || $xcondicion == "" || $xfilterValue == "")
 		return "";
-	
+
 	//analiza si hay alias para el campo
 	if (sonIguales($xalias, ""))
 		$result = $xfilterField;
 	else
 		$result = $xalias . "." . $xfilterField;
-		
-	if (esNumero($xfilterValue))
-	{
+
+	if (esNumero($xfilterValue)) {
 		if ($xcondicion == "CON" || $xcondicion == "IGU")
 			$result .= " = ";
 		if ($xcondicion == "MAY")
@@ -1259,12 +1216,10 @@ function condicionSql($xfilterField, $xcondicion, $xfilterValue, $xalias = "")
 		if ($xcondicion == "DIF")
 			$result .= " <> ";
 		$result .= $xfilterValue;
-	}
-	else
-	{
+	} else {
 		if (esFecha($xfilterValue))
 			$xfilterValue = Sc3FechaUtils::strToFecha($xfilterValue);
-		
+
 		if ($xcondicion == "CON")
 			$result .= " like '%" . $xfilterValue . "%'";
 		if ($xcondicion == "IGU")
@@ -1287,7 +1242,7 @@ Dado un nombre de tabla, retorna un RS con todos sus registros
 function getRsTabla($xtabla, $xfields = "*", $xorder = "")
 {
 	debug("getRsTabla($xtabla)");
-	$sql = "select " . $xfields ." from " . $xtabla;
+	$sql = "select " . $xfields . " from " . $xtabla;
 	if (!sonIguales($xorder, ""))
 		$sql .= " order by " . $xorder;
 	$rs = new BDObject();
@@ -1322,8 +1277,8 @@ Ubica el registro que lo invoca en una operacion
 */
 function locateRecordMaster()
 {
-	debug("locateRecordMaster()"); 
-	
+	debug("locateRecordMaster()");
+
 	$query = Request("mquery");
 	$id = RequestInt("mid");
 	$qinfo = getQueryObj($query);
@@ -1374,29 +1329,25 @@ Retorna el icono y el nombre de la operacion
 */
 function getOpTitle($xidoperacion, $xtitle = "", $xicono = "")
 {
-	debug(" getOpTitle($xidoperacion, $xtitle)");
-	
-	if (sonIguales($xidoperacion, ""))
-	{
+	if (sonIguales($xidoperacion, "")) {
 		$titulo = $xtitle;
 		$icon = $xicono;
 		$ayuda = "";
-	}
-	else
-	{
+	} else {
 		$rs = locateRecordId("sc_operaciones", $xidoperacion);
-			
+
 		$icon = $rs->getValue("icon");
 		if ($icon == "")
 			$icon = "images/question.gif";
 		$ayuda = $rs->getValue("ayuda");
 		$titulo = htmlVisible($rs->getValue("nombre"));
-	}	
+		$rs->close();
+	}
 	$title = "";
 	if (!esExcel())
 		$title .= img($icon, $ayuda);
 	$title .= " " . $titulo;
-	
+
 	if (esVacio(trim($titulo)))
 		$title = Request("op_titulo");
 	return $title;
@@ -1412,15 +1363,14 @@ function sc3NombreColAbreviado($xnombreCol)
 	$aCols = explode("_", $xnombreCol);
 	if (count($aCols) == 1)
 		return $xnombreCol;
-	
+
 	$ares = array();
 	$i = 0;
-	while ($i < count($aCols))
-	{
+	while ($i < count($aCols)) {
 		$ares[] = substr($aCols[$i], 0, 4);
 		$i++;
 	}
-	
+
 	return implode("_", $ares);
 }
 
@@ -1468,14 +1418,14 @@ function findOperacionId($xurl)
 function locateRecordWhere($xtable, $xwhere, $xSoloAsoc = false, $xorderby = "")
 {
 	debug(" locateRecordWhere($xtable, $xwhere)");
-	
+
 	$sql = "select * 
 			from $xtable
 			where $xwhere";
-	
+
 	if (!esVacio($xorderby))
 		$sql .= " order by $xorderby";
-		
+
 	$rs = new BDObject();
 	$rs->execQuery($sql, false, $xSoloAsoc);
 	return $rs;
@@ -1484,24 +1434,25 @@ function locateRecordWhere($xtable, $xwhere, $xSoloAsoc = false, $xorderby = "")
 
 function getDataAlign($xnombreCampo, $xtipoCampo, $xfields_ref = "", $xvalor = "", $xcolsStyles = "", $index = -1)
 {
-	if (is_array($xcolsStyles))
-	{
+	if (is_array($xcolsStyles)) {
 		if (isset($xcolsStyles[$index]["align"]))
 			return $xcolsStyles[$index]["align"];
 	}
-	
+
 	//el campo forma parte de un FK
 	if (is_array($xfields_ref) && isset($xfields_ref[$xnombreCampo]) && is_array($xfields_ref[$xnombreCampo]))
 		return "left";
-	
-	if (esCampoFecha($xtipoCampo) || esCampoInt($xtipoCampo) || esCampoPorcentaje($xvalor)
-			 || esCampoFloat($xtipoCampo) || esCampoConMoneda($xvalor))
+
+	if (
+		esCampoFecha($xtipoCampo) || esCampoInt($xtipoCampo) || esCampoPorcentaje($xvalor)
+		|| esCampoFloat($xtipoCampo) || esCampoConMoneda($xvalor)
+	)
 		return "right";
-	
+
 	if (esCampoColor($xvalor) || esCampoBoleano($xtipoCampo) || startsWith($xvalor, "pdf:"))
 		return "middle";
-	
-	return "left";	
+
+	return "left";
 }
 
 /*
@@ -1512,14 +1463,13 @@ function getFieldsInArray($xtable, $xskip, $xcant = 100)
 	debug("getFieldsInArray($xtable, $xskip, $xcant)");
 	$str = "select * 
 			from $xtable 
-			limit 0"; 
+			limit 0";
 
 	$rs = new BDObject();
 	$rs->execQuery($str);
 	$i = 0;
 	$fields = array();
-	while ($i < $rs->cantF() && ($i < $xcant))
-	{
+	while ($i < $rs->cantF() && ($i < $xcant)) {
 		if (strcmp($xskip, $rs->getFieldName($i)) != 0)
 			array_push($fields, $rs->getFieldName($i));
 		$i++;
@@ -1535,124 +1485,123 @@ function pageSize()
 	$page = requestOrSession("top");
 	if ($page == "")
 		return 20;
-	return $page;	
+	return $page;
 }
 
 //Genera claves alfanumericas.
 function randomValue($num)
 {
-  switch($num)
-  {
-    case "1":
-     $rand_value = "a";
-    break;
-    case "2":
-     $rand_value = "b";
-    break;
-    case "3":
-     $rand_value = "c";
-    break;
-    case "4":
-     $rand_value = "d";
-    break;
-    case "5":
-     $rand_value = "e";
-    break;
-    case "6":
-     $rand_value = "f";
-    break;
-    case "7":
-     $rand_value = "g";
-    break;
-    case "8":
-     $rand_value = "h";
-    break;
-    case "9":
-     $rand_value = "i";
-    break;
-    case "10":
-     $rand_value = "j";
-    break;
-    case "11":
-     $rand_value = "k";
-    break;
-    case "12":
-     $rand_value = "k";
-    break;
-    case "13":
-     $rand_value = "m";
-    break;
-    case "14":
-     $rand_value = "n";
-    break;
-    case "15":
-     $rand_value = "p";
-    break;
-    case "16":
-     $rand_value = "p";
-    break;
-    case "17":
-     $rand_value = "q";
-    break;
-    case "18":
-     $rand_value = "r";
-    break;
-    case "19":
-     $rand_value = "s";
-    break;
-    case "20":
-     $rand_value = "t";
-    break;
-    case "21":
-     $rand_value = "u";
-    break;
-    case "22":
-     $rand_value = "v";
-    break;
-    case "23":
-     $rand_value = "w";
-    break;
-    case "24":
-     $rand_value = "x";
-    break;
-    case "25":
-     $rand_value = "y";
-    break;
-    case "26":
-     $rand_value = "z";
-    break;
-    case "27":
-     $rand_value = "2";
-    break;
-    case "28":
-     $rand_value = "5";
-    break;
-    case "29":
-     $rand_value = "2";
-    break;
-    case "30":
-     $rand_value = "3";
-    break;
-    case "31":
-     $rand_value = "4";
-    break;
-    case "32":
-     $rand_value = "5";
-    break;
-    case "33":
-     $rand_value = "6";
-    break;
-    case "34":
-     $rand_value = "7";
-    break;
-    case "35":
-     $rand_value = "8";
-    break;
-    case "36":
-     $rand_value = "9";
-    break;
-  }
-return $rand_value;
+	switch ($num) {
+		case "1":
+			$rand_value = "a";
+			break;
+		case "2":
+			$rand_value = "b";
+			break;
+		case "3":
+			$rand_value = "c";
+			break;
+		case "4":
+			$rand_value = "d";
+			break;
+		case "5":
+			$rand_value = "e";
+			break;
+		case "6":
+			$rand_value = "f";
+			break;
+		case "7":
+			$rand_value = "g";
+			break;
+		case "8":
+			$rand_value = "h";
+			break;
+		case "9":
+			$rand_value = "i";
+			break;
+		case "10":
+			$rand_value = "j";
+			break;
+		case "11":
+			$rand_value = "k";
+			break;
+		case "12":
+			$rand_value = "k";
+			break;
+		case "13":
+			$rand_value = "m";
+			break;
+		case "14":
+			$rand_value = "n";
+			break;
+		case "15":
+			$rand_value = "p";
+			break;
+		case "16":
+			$rand_value = "p";
+			break;
+		case "17":
+			$rand_value = "q";
+			break;
+		case "18":
+			$rand_value = "r";
+			break;
+		case "19":
+			$rand_value = "s";
+			break;
+		case "20":
+			$rand_value = "t";
+			break;
+		case "21":
+			$rand_value = "u";
+			break;
+		case "22":
+			$rand_value = "v";
+			break;
+		case "23":
+			$rand_value = "w";
+			break;
+		case "24":
+			$rand_value = "x";
+			break;
+		case "25":
+			$rand_value = "y";
+			break;
+		case "26":
+			$rand_value = "z";
+			break;
+		case "27":
+			$rand_value = "2";
+			break;
+		case "28":
+			$rand_value = "5";
+			break;
+		case "29":
+			$rand_value = "2";
+			break;
+		case "30":
+			$rand_value = "3";
+			break;
+		case "31":
+			$rand_value = "4";
+			break;
+		case "32":
+			$rand_value = "5";
+			break;
+		case "33":
+			$rand_value = "6";
+			break;
+		case "34":
+			$rand_value = "7";
+			break;
+		case "35":
+			$rand_value = "8";
+			break;
+		case "36":
+			$rand_value = "9";
+			break;
+	}
+	return $rand_value;
 }
 
 //Generador de Claves alfanumericas
@@ -1660,19 +1609,17 @@ function getClave($valor = 20)
 {
 	$num = '4';
 	randomValue($num);
-	if ($valor > 0) 
-	{ 
+	if ($valor > 0) {
 		$rand_id = "";
-		for($i = 1; $i <= $valor; $i++)
-		{
-			mt_srand((double)microtime() * 1000000);
+		for ($i = 1; $i <= $valor; $i++) {
+			mt_srand((float)microtime() * 1000000);
 			$num = mt_rand(1, 36);
 			$rand_id .= randomValue($num);
 		}
 	}
 	return $rand_id;
 }
- 
+
 
 /*
 Dado un str cualquiera, lo guarda en la sesion y retorna un key unico
@@ -1687,7 +1634,7 @@ function saveSessionStr($xstr, $xprefix = "_sql", $xforceUnique = false)
 		$key = $xprefix . getClave(4) . $hash;
 	else
 		$key = $xprefix . $hash;
-	
+
 	$_SESSION[$key] = $xstr;
 	return $key;
 }
@@ -1700,14 +1647,20 @@ function getSessionStr($xkey)
 	return getSession($xkey);
 }
 
+/**
+ * Retorna si dos textos son iguales
+ */
 function sonIguales($xs1, $xs2)
 {
-    if (is_array($xs1))
-        return false;
-    
+	if (is_array($xs1))
+		return false;
+
+	if ($xs1 == null) {
+		$xs1 = "";
+	}
 	if (strcmp($xs1, $xs2) == 0)
 		return true;
-	return false;	
+	return false;
 }
 
 function esVacio($xstr)
@@ -1724,8 +1677,8 @@ function ifemptyNull($xstr)
 {
 	if (esVacio($xstr))
 		return "null";
-	
-	return $xstr;	
+
+	return $xstr;
 }
 
 /**
@@ -1741,22 +1694,26 @@ function strContiene($xtotal, $xbuscar)
 		return false;
 	if (strpos($xtotal, $xbuscar) === false)
 		return false;
-	return true;	
+	return true;
 }
 
+/**
+ * Comienza con !
+ * @param string $string el total
+ */
 function startsWith($string, $char)
 {
 	$string = trim($string);
-    $length = strlen($char);
-    return (substr($string, 0, $length) === $char);
+	$length = strlen($char);
+	return (substr($string, 0, $length) === $char);
 }
 
 function endsWith($string, $char)
 {
 	$string = trim($string);
 	$length = strlen($char);
-    $start =  $length * -1;
-    return (substr($string, $start, $length) === $char);
+	$start =  $length * -1;
+	return (substr($string, $start, $length) === $char);
 }
 
 
@@ -1767,7 +1724,17 @@ function getImagesPath()
 }
 
 
-																																				function s15(){	global $BD_DATABASE; $p = md5("" . $_SERVER['SERVER_NAME']);	$v = md5($BD_DATABASE);	if (!sonIguales(getParameter($p, ""), $v))	{		gotoPage("./sc-error.php?code=lic");			return false;}	return true;	}
+function s15()
+{
+	global $BD_DATABASE;
+	$p = md5("" . $_SERVER['SERVER_NAME']);
+	$v = md5($BD_DATABASE);
+	if (!sonIguales(getParameter($p, ""), $v)) {
+		gotoPage("./sc-error.php?code=lic");
+		return false;
+	}
+	return true;
+}
 
 /**
  * Recupera el parametro o retorna el valor default
@@ -1776,40 +1743,38 @@ function getImagesPath()
  */
 function getParameter($xnombre, $xvalor)
 {
-	if (!isset($_SESSION[$xnombre]))
-	{
+	if (!isset($_SESSION[$xnombre])) {
 		$retVal = $xvalor;
 		$rsParams = new BDObject();
 		$rsParams->execQuery("select valor 
 							from sc_parametros 
 							where nombre like '" . $xnombre . "'");
-		if (!$rsParams->EOF())  
-			$retVal = $rsParams->getValue("valor");	
-		else
-		{
+		if (!$rsParams->EOF())
+			$retVal = $rsParams->getValue("valor");
+		else {
 			$rsParams->execQuery("insert into sc_parametros(nombre, valor) 
 								values('" . $xnombre . "', '" . $xvalor . "')");
-		}			
+		}
 		$rsParams->close();
 		setSession($xnombre, $retVal);
-	}	
+	}
 	return getSession($xnombre);
 }
 
-/*
-Guarda el parametro si es necesario
-*/
+/**
+ * Guarda el parametro si es necesario
+ */
 function saveParameter($xnombre, $xvalor)
 {
-	debug("  saveParameter($xnombre, $xvalor)");
-
 	$result = getParameter($xnombre, $xvalor);
-	if (!sonIguales($xvalor, $result))
-	{
+	if (!sonIguales($xvalor, $result)) {
 		$rsParams = new BDObject();
-		$rsParams->execQuery("update sc_parametros set valor = '$xvalor' where nombre like '$xnombre'");
+		$rsParams->execQuery("update sc_parametros 
+							set valor = '$xvalor' 
+							where nombre like '$xnombre'");
 		setSession($xnombre, $xvalor);
 		$result = $xvalor;
+		$rsParams->close();
 	}
 	return $result;
 }
@@ -1819,7 +1784,7 @@ Retorna el valor del parametro convertido a INT, si es invalido retorna un CERO
 */
 function getParameterInt($xnombre, $xvalor)
 {
-	return (int) getParameter($xnombre, $xvalor);
+	return intval(getParameter($xnombre, $xvalor));
 }
 
 
@@ -1829,19 +1794,17 @@ function getFKValueWithURL($xidquery, $xcampo, $xvalor)
 	debug("getFKValueWithURL($xidquery, $xcampo, $xvalor)");
 	$rsRefInfo = new BDObject();
 	$rsRefInfo->execQuery("SELECT sc_referencias.*, sc_querys.* FROM sc_referencias LEFT JOIN sc_querys ON sc_referencias.idquery = sc_querys.idquery where sc_referencias.idquerymaster=" . $xidquery . " and campo_ like '" . $xcampo . "'");
-	
+
 	$retVal = $xvalor;
-	if (!$rsRefInfo->EOF())  
-		{
+	if (!$rsRefInfo->EOF()) {
 		$rsFKInfo = new BDObject();
-		$rsFKInfo->execQuery("select " .  $rsRefInfo->getValue("combofield_") . " from " .  $rsRefInfo->getValue("table_") . " where " .  $rsRefInfo->getValue("keyfield_") . "=" . $xvalor); 		
-		if ($rsFKInfo->EOF())	
+		$rsFKInfo->execQuery("select " .  $rsRefInfo->getValue("combofield_") . " from " .  $rsRefInfo->getValue("table_") . " where " .  $rsRefInfo->getValue("keyfield_") . "=" . $xvalor);
+		if ($rsFKInfo->EOF())
 			$retVal = $xvalor . " (FKE)";
-		else
-			{
+		else {
 			$retVal = $xvalor . "-" . $rsFKInfo->getValue($rsRefInfo->getValue("combofield_"));
-			}
-		}	
+		}
+	}
 	return $retVal;
 }
 
@@ -1858,14 +1821,14 @@ function sc3NombreMapaGooglePoint($xlat, $xlon, $xqueryName, $xid)
 	$latlon2 = str_replace("-", "m", $latlon);
 	$latlon2 = str_replace(",", "-", $latlon2);
 	$latlon2 = str_replace(".", "p", $latlon2);
-	
+
 	$nombreMapa = getImagesPath() . "mapa-" . $xqueryName . "-$xid-" . $latlon2 . ".png";
 	return $nombreMapa;
 }
 
 /**
  * Retorna nombre de mapa del punto dadoo. Lo crea y copia de google en carpeta de archivos
-* @param decimal $xlat
+ * @param decimal $xlat
  * @param decimal $xlon
  * @param string $xqueryName
  * @param int $xid
@@ -1874,21 +1837,20 @@ function sc3MapaGooglePoint($xlat, $xlon, $xqueryName, $xid)
 {
 	if ($xlat == 0 || $xlon == 0 || $xid == 0)
 		return "";
-	
+
 	$nombreMapa = sc3NombreMapaGooglePoint($xlat, $xlon, $xqueryName, $xid);
-	if (!file_exists($nombreMapa))
-	{
+	if (!file_exists($nombreMapa)) {
 		$latlon = $xlat . "," . $xlon;
 		$mapSize = getParameter("sc3-map-preview-size", "300x300");
 		$mapZoom = getParameter("sc3-map-preview-zoom", "16");
-		
+
 		$img_url = "http://maps.googleapis.com/maps/api/staticmap?center=" . $latlon . "&zoom=$mapZoom&size=$mapSize&sensor=true";
 		$img_url .= "&markers=color:red%7Ccolor:red%7Clabel:P%7C" . $latlon;
 		$errorR = error_reporting(0);
 		copy($img_url, $nombreMapa);
 		error_reporting($errorR);
 	}
-	
+
 	if (!file_exists($nombreMapa))
 		return "";
 	return $nombreMapa;
@@ -1903,15 +1865,13 @@ function googlePointField($xnombrecampo, $xvalor, $xfield_def, $xid = 0, $xquery
 	// 8 decimales es inaf !
 	$input->setTypeFloat(8);
 	$input->dontShowCalculator();
-	
+
 	$res = "";
-	
+
 	//busca imagen ya grabada del punto en cuestion
-	if ($xid != 0 && $xlongitud != 0)
-	{
+	if ($xid != 0 && $xlongitud != 0) {
 		$nombreMapa = sc3MapaGooglePoint($xvalor, $xlongitud, $xqueryName, $xid);
-		if (!esVacio($nombreMapa))
-		{	
+		if (!esVacio($nombreMapa)) {
 			$sizeImg = getParameter("sc3-map-img-size", "100");
 			$res = href(img($nombreMapa, $nombreMapa, $sizeImg), $nombreMapa, "mapas") . "<br>";
 		}
@@ -1939,13 +1899,12 @@ Retorna un combo con la info dada, pero si es autogesti�n aplica filtro de idu
 function getComboWithInfo($xCampoID, $xTabla, $xId, $xCampoVisible, $xwhere, $xwhereeval, $xselected, $xautogestion, $xis_required)
 {
 	debug("getComboWithInfo($xCampoID, $xTabla, $xId, $xCampoVisible, $xwhere, $xwhereeval, $xselected, $xautogestion, $xis_required)");
-	$str = "select " . $xId . ", " . $xCampoVisible ." from " . $xTabla;
-	if ((strcmp($xwhere,"") != 0) || (strcmp($xwhereeval,"") != 0))
-	{
+	$str = "select " . $xId . ", " . $xCampoVisible . " from " . $xTabla;
+	if ((strcmp($xwhere, "") != 0) || (strcmp($xwhereeval, "") != 0)) {
 		$str .= " where " . $xwhere;
-		if (strcmp($xwhereeval,"") != 0)
+		if (strcmp($xwhereeval, "") != 0)
 			$str .= " " . eval($xwhereeval);
-	}	
+	}
 	$str .= " order by " . $xCampoVisible;
 	$rsPpal0 = new BDObject();
 	$rsPpal0->execQuery($str);
@@ -1964,21 +1923,18 @@ Utiliza la fecha.
 function getPrefijoImg()
 {
 	$dia = getdate(time());
-	$prefijoImg = "f" . $dia["year"] . "" .$dia["mon"] . "-" . $dia["mday"];
+	$prefijoImg = "f" . $dia["year"] . "" . $dia["mon"] . "-" . $dia["mday"];
 	return $prefijoImg;
 }
 
 
-if (!function_exists('array_intersect_key'))
-{
+if (!function_exists('array_intersect_key')) {
 	function array_intersect_key($isec, $keys)
 	{
 		$res = array();
-		foreach (array_keys($isec) as $key)
-		{
-			if (isset($keys[$key]))
-			{
-			$res[$key] = $isec[$key];
+		foreach (array_keys($isec) as $key) {
+			if (isset($keys[$key])) {
+				$res[$key] = $isec[$key];
 			}
 		}
 		return $res;
@@ -1993,7 +1949,7 @@ function getRsLocalidades()
 				left join bp_provincias p on (l.idprovincia = p.id)
 			order by l.nombre
 			limit 1000";
-	
+
 	$rs = new BDObject();
 	$rs->execQuery($sql);
 	return $rs;
@@ -2037,23 +1993,20 @@ function esFeriado($xfecha)
 function favIconBuild($xicon, $xasumeExists = false)
 {
 	$favicon = "";
-	if (!esVacio($xicon))
-	{
+	if (!esVacio($xicon)) {
 		if (!file_exists("./ico/"))
 			mkdir("./ico");
-		
+
 		$path_parts = pathinfo($xicon);
 		$favicon = "./ico/" . $path_parts['filename'] . ".ico";
-		if (!$xasumeExists)
-		{
-			if (!file_exists($favicon))
-			{
+		if (!$xasumeExists) {
+			if (!file_exists($favicon)) {
 				require_once "sc-ico.php";
 				$ico_lib = new PHP_ICO($xicon, array(array(16, 16)));
 				$ico_lib->save_ico($favicon);
 			}
 		}
-		
+
 		$favicon = substr($favicon, 2);
 	}
 	return $favicon;
@@ -2074,7 +2027,7 @@ function esCampoConMoneda($xvalor)
 		return false;
 
 	$valores = explode(" ", $xvalor);
-	if ((count($valores) == 2) && strContiene($valores[0], "$")) 
+	if ((count($valores) == 2) && strContiene($valores[0], "$"))
 		return true;
 	return false;
 }
@@ -2104,7 +2057,7 @@ function esCampoPorcentaje($xvalor)
 {
 	//contempla que tenga el signo %
 	$valores = explode("%", $xvalor);
-	if ((count($valores) == 2) && esVacio($valores[1]) && (strlen($xvalor) <= 6)) 
+	if ((count($valores) == 2) && esVacio($valores[1]) && (strlen($xvalor) <= 6))
 		return true;
 	return false;
 }
@@ -2117,22 +2070,21 @@ function esCampoPorcentaje($xvalor)
  */
 function splitValorConMoneda($xvalor)
 {
-    if (esVacio($xvalor))
-        return  0.00;
-    
-	if (esCampoConMoneda($xvalor))
-	{
-		$separadorMiles = getParameter("sc3-separador-miles", ",");	
+	if (esVacio($xvalor))
+		return  0.00;
+
+	if (esCampoConMoneda($xvalor)) {
+		$separadorMiles = getParameter("sc3-separador-miles", ",");
 		$valores = explode(" ", $xvalor);
-		return str_replace($separadorMiles, "", $valores[1]) * 1.00; 
-	}
-	else
+		return str_replace($separadorMiles, "", $valores[1]) * 1.00;
+	} else
 		return $xvalor;
 }
 
-/*
-Retorna un float con dos decimales
-*/
+/**
+ * Retorna un float con dos decimales
+ * @param float $xvalue
+ */
 function formatFloat($xvalue, $xdecimales = 2, $xsepMilesVacio = 0, $xaPdf = 0)
 {
 	if (strcmp($xvalue, "") == 0)
@@ -2142,37 +2094,32 @@ function formatFloat($xvalue, $xdecimales = 2, $xsepMilesVacio = 0, $xaPdf = 0)
 	$moneda = "";
 	//contempla que tenga la moneda
 	$valores = explode(" ", $xvalue);
-	if (count($valores) > 1)
-	{
+	if (count($valores) > 1) {
 		$moneda = $valores[0] . " ";
 		$valorFloat = $valores[1];
-	}
-	else
+	} else
 		$valorFloat = $valores[0];
-	
+
 	//parametros generales o toma los del usuario
-	$separadorMiles = getParameter("sc3-separador-miles", ",");	
-	$separadorDecimales = getParameter("sc3-separador-decimales", ".");	
-	
+	$separadorMiles = getParameter("sc3-separador-miles", ",");
+	$separadorDecimales = getParameter("sc3-separador-decimales", ".");
+
 	$separadorMiles = getParameter("sc3-separador-miles-" . getCurrentUser(), $separadorMiles);
 	$separadorDecimales = getParameter("sc3-separador-decimales-" . getCurrentUser(), $separadorDecimales);
 	$notacionArgentina = getParameter("sc3-notacion-argentina-pdf", 0);
 
-	if ($xsepMilesVacio == 1)
-	{
+	if ($xsepMilesVacio == 1) {
 		$separadorMiles = "";
 	}
 
-	if (($xaPdf == 1) && ($notacionArgentina == 1))
-	{
+	if (($xaPdf == 1) && ($notacionArgentina == 1)) {
 		$separadorMiles = ".";
-		$separadorDecimales = ",";	
+		$separadorDecimales = ",";
 	}
-		
+
 	if (esExcel())
 		$result = number_format($valorFloat, $xdecimales, ',', '');
-	else			
-	{
+	else {
 		if (is_numeric($valorFloat))
 			$result = number_format($valorFloat, $xdecimales, $separadorDecimales, $separadorMiles);
 		else
@@ -2180,9 +2127,9 @@ function formatFloat($xvalue, $xdecimales = 2, $xsepMilesVacio = 0, $xaPdf = 0)
 	}
 
 	if (sonIguales($result, "-0" . $separadorDecimales . "00"))
-		$result = "0" . $separadorDecimales . "00";	
-		
-	return $moneda . $result;	
+		$result = "0" . $separadorDecimales . "00";
+
+	return $moneda . $result;
 }
 
 /**
@@ -2196,23 +2143,20 @@ function formatFloatArchivo($xvalor, $xancho, $xSepDecimal = "", $xDecimales = 2
 	$ret = "";
 	$mult = 100;
 	if ($xDecimales == 3)
-	    $mult = 1000;
-    if ($xDecimales == 0)
-        $mult = 1;
-	
-	if (esVacio($xSepDecimal))
-	{
+		$mult = 1000;
+	if ($xDecimales == 0)
+		$mult = 1;
+
+	if (esVacio($xSepDecimal)) {
 		if ($xvalor < 0)
 			$ret = "-" . str_pad("" . abs($xvalor * $mult), $xancho - 1, $xcompletarCon, STR_PAD_LEFT);
 		else
 			$ret = str_pad("" . ($xvalor * $mult), $xancho, $xcompletarCon, STR_PAD_LEFT);
-	}
-	else
-	{
+	} else {
 		$valor = str_pad("" . ($xvalor * 100), $xancho, $xcompletarCon, STR_PAD_LEFT);
-		$ret = substr($valor, 1, $xancho - 3) . $xSepDecimal . substr($valor, $xancho - 2, 2); 
+		$ret = substr($valor, 1, $xancho - 3) . $xSepDecimal . substr($valor, $xancho - 2, 2);
 	}
-		
+
 	return $ret;
 }
 
@@ -2231,8 +2175,7 @@ function saveArrayAsFile($xfilename, $xarray)
 {
 	$fp = fopen($xfilename, 'w');
 
-	foreach($xarray as $i => $valor)
-	{
+	foreach ($xarray as $i => $valor) {
 		fwrite($fp, $valor . "\r\n");
 	}
 
@@ -2262,9 +2205,9 @@ function roundTo($number, $redondeo)
  */
 function roundToStandar($number, $redondeo)
 {
-    if ($redondeo == 0)
-        return $number;
-    return round($number / $redondeo, 0) * $redondeo;
+	if ($redondeo == 0)
+		return $number;
+	return round($number / $redondeo, 0) * $redondeo;
 }
 
 
@@ -2272,7 +2215,7 @@ function valorConMonedaEnTabla($xmoneda, $xvalor)
 {
 	if (sonIguales($xmoneda, ""))
 		return $xvalor;
-		
+
 	return $xmoneda . $xvalor;
 
 	//TODO: esta tabla le pone bordes !
@@ -2284,7 +2227,7 @@ function valorConMonedaEnTabla($xmoneda, $xvalor)
 	$result .= $xvalor;
 	$result .= "</td>";
 	$result .= "</tr></table>";
-	
+
 	return $result;
 }
 
@@ -2299,20 +2242,18 @@ function formatFloatRed($xvalue, $xdecimales = 2)
 	$moneda = "";
 	//contempla que tenga la moneda
 	$valores = explode(" ", $xvalue);
-	if (count($valores) > 1)
-	{
+	if (count($valores) > 1) {
 		$moneda = $valores[0] . " ";
 		$valorFloat = $valores[1];
-	}
-	else
+	} else
 		$valorFloat = $valores[0];
-	
+
 	if ($valorFloat < 0)
 		$res = "<font color=\"red\">" . valorConMonedaEnTabla($moneda, formatFloat($valorFloat, $xdecimales)) . "</font>";
-	else	
+	else
 		$res = valorConMonedaEnTabla($moneda, formatFloat($valorFloat, $xdecimales));
 	return $res;
-}	
+}
 
 /*
 Retorna: $ 300
@@ -2325,19 +2266,18 @@ function sayMoney($xmoneda, $xmonto)
 /**
  * Retorna 
  * sayMoneyWords("pesos", 456.78) -> pesos cuatrocientos cincuenta y seis con setenta y ocho centavos
-**/
+ **/
 function sayMoneyWords($xmoneda, $xmonto)
 {
 	$str = $xmoneda . " ";
-	
+
 	$xmonto = (float) $xmonto + 0.009;
 	$Numero = intval($xmonto);
 	$Decimales = $xmonto - intval($xmonto);
 	$Decimales = $Decimales * 100;
 	$Decimales = intval($Decimales);
 	$str .= NumerosALetras($Numero);
-	If ($Decimales > 0)
-	{
+	if ($Decimales > 0) {
 		$str .= " con ";
 		$str .= NumerosALetras($Decimales);
 		$str .= " centavos";
@@ -2347,96 +2287,78 @@ function sayMoneyWords($xmoneda, $xmonto)
 }
 
 
-/*
-Crea una version reducida de la imagen dada
-resizeImg("img", "theFileName.jpg", 100);
-*/
+/**
+ * Crea una version reducida de la imagen dada
+ * resizeImg("img", "theFileName.jpg", 100);
+ */
 function resizeImg($imageDirectory, $imageName, $thumbWidth, $xresize = 1, $xpath = "", $xVerbose = false)
 {
 	$imageExt = strtolower($imageName);
 	$pos = strpos($imageExt, ".jpg");
-	
+
 	if (!sonIguales($xpath, ""))
 		$xpath = "/" . $xpath;
-		
+
 	$format = "";
-	if  ($pos > 0 || (strpos($imageExt, ".jpeg") > 0))
-	{
+	if ($pos > 0 || (strpos($imageExt, ".jpeg") > 0)) {
 		$format = "JPG";
 		$srcImg = imagecreatefromjpeg("$imageDirectory$xpath/$imageName");
-	}
-	else
-	{
+	} else {
 		$pos = strpos($imageExt, ".gif");
-		if ($pos > 0)
-		{
+		if ($pos > 0) {
 			$format = "GIF";
 			$srcImg = imagecreatefromgif("$imageDirectory$xpath/$imageName");
-		}
-		else
-		{
+		} else {
 			$pos = strpos($imageExt, ".png");
-			if ($pos > 0)
-			{
+			if ($pos > 0) {
 				$format = "PNG";
 				$srcImg = imagecreatefrompng("$imageDirectory$xpath/$imageName");
-			}		
-			else
-			{
+			} else {
 				$pos = strpos($imageExt, ".exe");
-				if ($pos > 0)
-				{
+				if ($pos > 0) {
 					$format = "EXE";
 					unlink("$imageDirectory$xpath/$imageName");
 					return FALSE;
-				}		
+				}
 			}
-		}	
-	}		
+		}
+	}
 
 	$oldName = $imageName;
 
 	//Analiza si es un archivo que no es imagen
-	if ($format == "")
-	{
+	if ($format == "") {
 		if ($xVerbose)
-			echo("por renombrar $imageDirectory$xpath/$oldName por $imageDirectory$xpath/$imageName<br />");
-//		rename("$imageDirectory$xpath/$oldName", "$imageDirectory$xpath/$imageName");
-	}	
-	else
-	{
+			echo ("por renombrar $imageDirectory$xpath/$oldName por $imageDirectory$xpath/$imageName<br />");
+		//		rename("$imageDirectory$xpath/$oldName", "$imageDirectory$xpath/$imageName");
+	} else {
 		$origWidth = imagesx($srcImg);
 		$origHeight = imagesy($srcImg);
 		//analiza si es necesario el resize
-		if (($origWidth < $thumbWidth) || ($xresize < 1))
-		{	
+		if (($origWidth < $thumbWidth) || ($xresize < 1)) {
 			//deja mismo ancho, para que no la redimensione
 			$thumbWidth = $origWidth;
 			$thumbHeight = $origHeight;
 			rename("$imageDirectory$xpath/$oldName", "$imageDirectory$xpath/$imageName");
-		}	
-		else
-		{
+		} else {
 			//caso final, es formato conocido, lo redimensiona
 			$ratio = $origWidth / $thumbWidth;
-			$thumbHeight = $origHeight / $ratio;
-		
+			$thumbHeight = intval($origHeight / $ratio);
+
 			$thumbImg = ImageCreateTrueColor($thumbWidth, $thumbHeight);
-			if ($thumbImg === FALSE)
-			{
-				echo("ERROR al crear archivo con ImageCreateTrueColor(), GD requerido !!<br>");
+			if ($thumbImg === FALSE) {
+				echo ("ERROR al crear archivo con ImageCreateTrueColor(), GD requerido !!<br>");
 				return FALSE;
-			}	
-				
+			}
+
 			$filedCopied = imagecopyresampled($thumbImg, $srcImg, 0, 0, 0, 0, imagesx($thumbImg), imagesy($thumbImg), $origWidth, $origHeight);
-			if ($filedCopied === FALSE)
-			{
-				echo("ERROR copiando archivo nuevo (imagecopyresampled())...<br>");
+			if ($filedCopied === FALSE) {
+				echo ("ERROR copiando archivo nuevo (imagecopyresampled())...<br>");
 				return FALSE;
-			}	
+			}
 
 			if ($xVerbose)
-				echo("por crear $imageDirectory$xpath/$imageName...<br>");	
+				echo ("por crear $imageDirectory$xpath/$imageName...<br>");
 			if ($format == "JPG")
 				$filedCreated = imagejpeg($thumbImg, "$imageDirectory$xpath/$imageName");
 			else if ($format == "GIF")
@@ -2444,18 +2366,16 @@ function resizeImg($imageDirectory, $imageName, $thumbWidth, $xresize = 1, $xpat
 			else if ($format == "PNG")
 				$filedCreated = imagepng($thumbImg, "$imageDirectory$xpath/$imageName");
 			else
-				echo("formato desconocido: $format<br>");
-			
-			if ($filedCreated === FALSE)
-			{
-				echo("ERROR creando archivo de destino $format...<br>");
-				return FALSE;
-			}	
+				echo ("formato desconocido: $format<br>");
 
-			if ($xVerbose)
-			{
-				echo("Grabada con el nombre $imageDirectory<b>$xpath/$imageName</b><br>");
-				echo("por borrar $imageDirectory$xpath/$oldName<br>");
+			if ($filedCreated === FALSE) {
+				echo ("ERROR creando archivo de destino $format...<br>");
+				return FALSE;
+			}
+
+			if ($xVerbose) {
+				echo ("Grabada con el nombre $imageDirectory<b>$xpath/$imageName</b><br>");
+				echo ("por borrar $imageDirectory$xpath/$oldName<br>");
 			}
 
 			if (!sonIguales($imageName, $oldName))
@@ -2466,12 +2386,11 @@ function resizeImg($imageDirectory, $imageName, $thumbWidth, $xresize = 1, $xpat
 }
 
 
-
-/*
-Crea una version reducida (si no existe ya) de la imagen dada
-Y la guarda con el mismo nombre + "-small"
-Retorna el nombre del archivo
-*/
+/**
+ * Crea una version reducida (si no existe ya) de la imagen dada
+ * Y la guarda con el mismo nombre + "-small"
+ * @return string Retorna el nombre del archivo
+ */
 function sc3getImgSmall($imageDirectory, $imageName, $thumbWidth = 80, $xcompact = false)
 {
 	$postfix = "-x80";
@@ -2483,12 +2402,10 @@ function sc3getImgSmall($imageDirectory, $imageName, $thumbWidth = 80, $xcompact
 		$fileSmall = "$imageDirectory" . $fileParts[0] . $postfix . "." . $fileParts[1];
 	else
 		$fileSmall = $imageDirectory . $imageName;
-		
+
 	//analiza si existe el archivo (evita warnings)	
-	if (!file_exists("$imageDirectory/$imageName"))
-	{
-		if (strContiene($imageName, "youtube"))
-		{
+	if (!file_exists("$imageDirectory/$imageName")) {
+		if (strContiene($imageName, "youtube")) {
 			$texto = substr($imageName, -11);
 			return linkImgFa($imageName, "fa-youtube", $texto, "fa-2x verde", "yotu", "");
 		}
@@ -2497,91 +2414,84 @@ function sc3getImgSmall($imageDirectory, $imageName, $thumbWidth = 80, $xcompact
 	}
 
 	$pos = strpos($imageExt, ".svg");
-	if ($pos > 0)
-	{
+	if ($pos > 0) {
 		return "<img src=\"$imageDirectory/$imageName\" border=\"0\" title=\"$imageName\" width=\"$thumbWidth\">";
 	}
 	//analiza si ya fue creada la version x80	
-	if (!file_exists($fileSmall))
-	{
+	if (!file_exists($fileSmall)) {
 		$pos = strpos($imageExt, ".jpg");
 		$pos2 = strpos($imageExt, ".jpeg");
 		$format = "";
-		if  (($pos + $pos2) > 0)
-		{
+		if (($pos + $pos2) > 0) {
 			$format = "JPG";
 			$srcImg = imagecreatefromjpeg("$imageDirectory/$imageName");
-		}
-		else
-		{
+		} else {
 			$pos = strpos($imageExt, ".gif");
-			if ($pos > 0)
-			{
-				echo("Imagen .GIF<br>");
+			if ($pos > 0) {
+				echo ("Imagen .GIF<br>");
 				$srcImg = imagecreatefromgif("$imageDirectory/$imageName");
-			}
-			else
-			{
+			} else {
 				$pos = strpos($imageExt, ".png");
-				if ($pos > 0)
-				{
+				if ($pos > 0) {
 					$format = "PNG";
 					$srcImg = imagecreatefrompng("$imageDirectory/$imageName");
-				}		
-				else
-				{
+				} elseif (($pos = strpos($imageExt, ".bmp")) > 0) {
+					$format = "BMP";
+					$srcImg = imagecreatefrombmp("$imageDirectory/$imageName");
+				} else {
 					$file = new HtmlInputFile("", $imageName);
 					$file->setWidth($thumbWidth);
 					$file->setReadOnly(true);
 					if ($xcompact)
 						$file->setCompact();
-					return $file->toHtml();				
+					return $file->toHtml();
 				}
-			}	
-		}		
-	
+			}
+		}
+
+
 		$origWidth = imagesx($srcImg);
 		$origHeight = imagesy($srcImg);
-		
+
 		//analiza si es necesario el resize
-		if ($origWidth < $thumbWidth)
-		{	
+		if ($origWidth < $thumbWidth) {
 			//deja mismo ancho, para que no la redimensione
 			$thumbWidth = $origWidth;
 			$thumbHeight = $origHeight;
 			copy("$imageDirectory/$imageName", $fileSmall);
-		}	
-		else
-		{
+		} else {
 			//caso final, es formato conocido, lo redimensiona
 			$ratio = $origWidth / $thumbWidth;
-			$thumbHeight = $origHeight / $ratio;
-		
+			$thumbHeight = intval($origHeight / $ratio);
+
 			$thumbImg = ImageCreateTrueColor($thumbWidth, $thumbHeight);
 			imagecopyresampled($thumbImg, $srcImg, 0, 0, 0, 0, imagesx($thumbImg), imagesy($thumbImg), $origWidth, $origHeight);
-			
+
 			if ($format == "JPG")
 				imagejpeg($thumbImg, $fileSmall);
 			if ($format == "GIF")
 				imagegif($thumbImg, $fileSmall);
 			if ($format == "PNG")
 				imagepng($thumbImg, $fileSmall);
+			if ($format == "BMP") {
+				$fileSmall = str_replace(".bmp", ".jpeg", $fileSmall);
+				imagejpeg($thumbImg, $fileSmall);
+			}
 		}
-	}	
-	
+	}
+
 	return "<img src=\"" . $fileSmall . "\" border=\"0\" alt=\"" . $fileSmall . "\" width=\"$thumbWidth\">";
 }
 
 
 /**
-* Retorna el RS con la persona=empresa
-* Opcional el parametro de idempresa
-* @return BDObject
-**/
+ * Retorna el RS con la persona=empresa
+ * Opcional el parametro de idempresa
+ * @return BDObject
+ **/
 function getRsEmpresa($xidempresa = 0)
 {
-	if ($xidempresa == 0)
-	{
+	if ($xidempresa == 0) {
 		$strSql = "select p.*, 
 						iva.descripcion as condicion_iva,
 						iva.codigo as codigo_iva,
@@ -2595,9 +2505,7 @@ function getRsEmpresa($xidempresa = 0)
 
 		$strSql .= " where p.id= ";
 		$strSql .= getParameter("idpersonaempresa", "1");
-	}
-	else
-	{
+	} else {
 		$strSql = "select emp.*,
 						iva.descripcion as condicion_iva,
 						iva.codigo as codigo_iva,
@@ -2611,12 +2519,12 @@ function getRsEmpresa($xidempresa = 0)
 
 		$strSql .= " where emp.id = $xidempresa";
 	}
-	
+
 	$rs = new BDObject();
 	$rs->execQuery($strSql);
 	return $rs;
 }
- 
+
 
 /**
  * Retorna la empresa de la tabla cja2_empresas
@@ -2636,7 +2544,7 @@ function getRsEmpresaId($xidempresa)
 					left join bp_provincias prov on (loc.idprovincia = prov.id) 
 
 				where e.id = $xidempresa";
-	
+
 	$rs = new BDObject();
 	$rs->execQuery($strSql);
 	return $rs;
@@ -2644,8 +2552,8 @@ function getRsEmpresaId($xidempresa)
 
 
 /*
- Retorna el RS con los datos completos de la persona
- */
+Retorna el RS con los datos completos de la persona
+*/
 function getRsDatosPersona($xid)
 {
 	$strSql = "select p.*, 
@@ -2657,7 +2565,7 @@ function getRsDatosPersona($xid)
 					left join gen_tipos_iva iva on (p.id_tipo_iva = iva.id)
 					left join bp_localidades loc on (p.idlocalidad = loc.id) 
 					left join bp_provincias prov on (loc.idprovincia = prov.id)";
-	
+
 	$strSql .= " where p.id= $xid";
 
 	$rs = new BDObject();
@@ -2667,7 +2575,7 @@ function getRsDatosPersona($xid)
 
 
 
-  
+
 function logOp($xcodigo_operacion, $xobjeto_operado, $xid_operado, $xdescripcion)
 {
 	debug("logOp($xcodigo_operacion, $xobjeto_operado, $xid_operado, $xdescripcion)");
@@ -2694,7 +2602,7 @@ function sc3UpdateTableChecksum($xtabla, $xbd = null)
 			set table_checksum = ifnull(table_checksum, 0) + 1
 			where (table_ = '$xtabla' or '$xtabla' = '*')";
 
-	if ($xbd == null)			
+	if ($xbd == null)
 		$xbd = new BDObject();
 	$xbd->execQuery($sql);
 }
@@ -2703,12 +2611,12 @@ function sc3UpdateTableChecksum($xtabla, $xbd = null)
 function botonToolbar($xoperacion, $xmquery, $xmid, $record)
 {
 	debug("botonToolbar($xmquery, $xmid)");
-	
+
 	$url = new HtmlUrl($xoperacion["url"]);
 	$url->add("mquery", $xmquery);
 	$url->add("mid", $xmid);
 	$url->add("opid", $xoperacion["id"]);
-	
+
 	$target = $xoperacion["target"];
 	if (strcmp($target, "") != 0)
 		$target = " target=\"" . $target . "\" ";
@@ -2718,20 +2626,19 @@ function botonToolbar($xoperacion, $xmquery, $xmid, $record)
 		$condicion = true;
 	else
 		eval($condicion);
-	if ($condicion)		
-	{
+	if ($condicion) {
 		$result .= "<a href=\"" . $url->toUrl();
 		$result .= "\"";
 		$result .= $target;
 		$result .= ">";
-	}	
+	}
 	$result .= img($xoperacion["icon"], $xoperacion["ayuda"]);
 	$result .= "<br />";
 	$result .= $xoperacion["nombre"];
-	if ($condicion)		
+	if ($condicion)
 		$result .= "</a>";
 	$result .= "</td>";
-	return $result;	 
+	return $result;
 }
 
 /*
@@ -2739,12 +2646,12 @@ reemplaza +/= para evitar problemas en urls
 */
 function base64_encode_safe($input)
 {
-    return strtr(base64_encode($input), '+/=', '-_,');
+	return strtr(base64_encode($input), '+/=', '-_,');
 }
 
 function base64_decode_safe($input)
 {
-    return base64_decode(strtr($input, '-_,', '+/='));
+	return base64_decode(strtr($input, '-_,', '+/='));
 }
 
 
@@ -2754,11 +2661,9 @@ function base64_decode_safe($input)
 function sc3LoadModules()
 {
 	debug("sc3LoadModules()");
-	
-	foreach (glob("./app-*.php") as $filename)
-	{
-		if ((strlen($filename) < 15) && !sonIguales($filename, "./app-cja.php") && !sonIguales($filename, "./app-test.php"))
-		{
+
+	foreach (glob("./app-*.php") as $filename) {
+		if ((strlen($filename) < 15) && !sonIguales($filename, "./app-cja.php") && !sonIguales($filename, "./app-test.php")) {
 			//echo("<br>analizando $filename... ");
 			include_once($filename);
 		}
@@ -2766,61 +2671,53 @@ function sc3LoadModules()
 }
 
 
-function implode_array( $glue, $separator, $array ) 
+function implode_array($glue, $separator, $array)
 {
-    if ( ! is_array( $array ) ) return $array;
-    $string = array();
-    foreach ( $array as $key => $val ) 
-    {
-        if ( is_array( $val ) )
-            $val = implode( ',', $val );
-        $string[] = "{$key}{$glue}{$val}";
-    }
-    return implode( $separator, $string );
+	if (!is_array($array)) return $array;
+	$string = array();
+	foreach ($array as $key => $val) {
+		if (is_array($val))
+			$val = implode(',', $val);
+		$string[] = "{$key}{$glue}{$val}";
+	}
+	return implode($separator, $string);
 }
 
+
 /**
-Desarma string: 
+ * Desarma string: 
 	query=qagenda&fstack=1&todesktop=1
 en el arreglo:
 	Array
 	(
-	    [query] => qagenda
-	    [fstack] => 1
-	    [todesktop] => 1
+		[query] => qagenda
+		[fstack] => 1
+		[todesktop] => 1
 	)
-**/
+ **/
 function explode2Niveles($xstr, $xdelimitador1, $xdelimitador2)
 {
 	$aresult = array();
-	
+
 	$explode1 = explode($xdelimitador1, $xstr);
-	foreach ($explode1 as $str)
-	{
+	foreach ($explode1 as $str) {
 		$explode2 = explode($xdelimitador2, $str);
 		$aresult[trim($explode2[0])] = $explode2[1];
 	}
-	
+
 	return $aresult;
 }
 
 
 
-
-function utf8ize($mixed) 
+function utf8ize($mixed)
 {
-	if (is_array($mixed)) 
-	{
-		foreach ($mixed as $key => $value) 
-		{
+	if (is_array($mixed)) {
+		foreach ($mixed as $key => $value) {
 			$mixed[$key] = utf8ize($value);
 		}
-	} 
-	elseif (is_string($mixed)) 
-	{
+	} elseif (is_string($mixed)) {
 		return mb_convert_encoding($mixed, "UTF-8", "UTF-8");
 	}
 	return $mixed;
 }
-	
-

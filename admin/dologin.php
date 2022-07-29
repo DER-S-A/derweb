@@ -3,10 +3,11 @@ require("funcionesSConsola.php");
 
 setSession("dbname", $BD_DATABASE);
 
-
 if (doLogin(RequestSafe("login"), RequestSafe("clave"))) {
-	//borra tmp de ayer o anterior
+	//borra tmp de mas de 7 días
 	Sc3FileUtils::borrarArchivos("tmp/", false);
+	Sc3FileUtils::borrarArchivos("log/", false, 60);
+	Sc3FileUtils::borrarArchivos("errores/", false, 60);
 
 	if (usuarioLogueado()) {
 		$menuB = "";

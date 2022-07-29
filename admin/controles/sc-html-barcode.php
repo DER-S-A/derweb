@@ -30,14 +30,14 @@ class HtmlBarcode2
 		$result = "\n<!-- HtmlBarcode -->";
 		$result .= "<table><tr><td>";
 		$result .= "<img ";
-		$result .=" name=\"" . $this->id . "\"";
-		$result .=" id=\"" . $this->id . "\"";
-		$result .=" alt=\"" . $this->value . "\"";
-		$result .=" title=\"" . $this->value . "\"";
-		$result .=" src=\"sc-barcode.php?barcode=" . $this->value . "\"";
-		$result .=" />\n";
-		$result .="</td></tr>";
-		$result .="<tr><td align=\"center\">" . $this->value . "</td></tr></table>";
+		$result .= " name=\"" . $this->id . "\"";
+		$result .= " id=\"" . $this->id . "\"";
+		$result .= " alt=\"" . $this->value . "\"";
+		$result .= " title=\"" . $this->value . "\"";
+		$result .= " src=\"sc-barcode.php?barcode=" . $this->value . "\"";
+		$result .= " />\n";
+		$result .= "</td></tr>";
+		$result .= "<tr><td align=\"center\">" . $this->value . "</td></tr></table>";
 		return $result;
 	}
 }
@@ -62,7 +62,7 @@ class HtmlBarcode
 		$this->id = $xid;
 		$this->value = $xvalue;
 	}
-	
+
 	function dontDisplayValue()
 	{
 		$this->displayValue = "false";
@@ -77,18 +77,18 @@ class HtmlBarcode
 	{
 		$this->width = 3;
 	}
-	
+
 	function setWidth1()
 	{
 		$this->width = 1;
 	}
-	
-	
+
+
 	function setHeight($xheight)
 	{
 		$this->height = $xheight;
 	}
-	
+
 	function setValue($xvalue)
 	{
 		$this->value = $xvalue;
@@ -109,7 +109,7 @@ class HtmlBarcode
 	{
 		$this->format = $xformat;
 	}
-	
+
 	function toHtml()
 	{
 		$result = "\n<!-- HtmlBarcode -->";
@@ -126,10 +126,7 @@ class HtmlBarcode
 							);					
 					</script>
 					<br />';
-		
+
 		return $result;
 	}
 }
-
-
-?>

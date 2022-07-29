@@ -44,7 +44,7 @@ if (enviado() && $idtemplate == 0)
 	if (!esVacio($cel))
 	{			
 		// Invoca acortador de URLS -------------------------------------------------
-		$datos = array();
+		$datos = [];
 		$datos["url"] = thisUrl() . Request("file1");
 		$datos["usuario"] = $urlCortosUsr;
 		$datos["clave"] = $urlCortosClave;

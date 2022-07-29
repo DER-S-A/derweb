@@ -19,4 +19,3 @@ $options = stream_context_create(['http' => [
 // Send a request
 $result = file_get_contents($url, false, $options);
 echo($result);
-?>

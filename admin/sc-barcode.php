@@ -4,7 +4,7 @@
 
 //set the default values
 $cod = $_REQUEST["barcode"];
-	
+
 $width = 480;
 if (strlen($cod) < 15)
 	$width = 360;
@@ -16,16 +16,16 @@ $fontsize = 45;
 $text = "*" . $_REQUEST["barcode"] . "*";
 if (strlen($text) > 20)
 	$text = "*0*";
-	
+
 //Get the parameters passed to the page
-if(isset($_REQUEST["width"]))
-   $width = $_REQUEST["width"];
-if(isset($_REQUEST["height"]))
-   $height = $_REQUEST["height"];
-if(isset($_REQUEST["fontsize"]))
-   $fontsize = $_REQUEST["fontsize"];
-if(isset($_REQUEST["string"]))
-   $text = $_REQUEST["string"];
+if (isset($_REQUEST["width"]))
+	$width = $_REQUEST["width"];
+if (isset($_REQUEST["height"]))
+	$height = $_REQUEST["height"];
+if (isset($_REQUEST["fontsize"]))
+	$fontsize = $_REQUEST["fontsize"];
+if (isset($_REQUEST["string"]))
+	$text = $_REQUEST["string"];
 
 //align the barcode at the bottom and one pixel from the left
 $startlocation_y = $height - 5;
@@ -41,11 +41,10 @@ $black = imagecolorallocate($img_handle, 0, 0, 0);
 //barcode font which must be in the same directory.
 //The $black colour is negated to remove anti-aliasing.
 //The 0 indicates the angle of the text.
-imagettftext($img_handle, $fontsize , 0, $startlocation_x, $startlocation_y, -$black, "./FREE3OF9.TTF", $text);
+imagettftext($img_handle, $fontsize, 0, $startlocation_x, $startlocation_y, -$black, "./FREE3OF9.TTF", $text);
 //imagettftext($img_handle, "7" , 0, $startlocation_x + 10, $startlocation_y + 10, -$black, "Arial", $text);
 
 //return the image and release resources
 //imagepng ($img_handle, "./tmp/111.png");
-imagepng ($img_handle, null, 0);
-imagedestroy ($img_handle);
-?>
+imagepng($img_handle, null, 0);
+imagedestroy($img_handle);

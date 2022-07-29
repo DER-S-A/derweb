@@ -1,0 +1,83 @@
+.conteiner {
+    border: radius 3px;
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    box-shadow: rgb(100 100 111 / 40%) 0px 7px 29px;
+    text-align: center;
+    justify-content: center;
+}
+
+.div-galeria {
+    display: flex;
+    flex-direction: row;
+    height: 82vh;
+    width: 100vw;
+    padding: 6px;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+}
+
+.div-funciones {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.div-imagen {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 93%;
+}
+
+.div-puntero {
+    background-color: #fff;
+    border: 1px solid #cccccc;
+    box-shadow: rgb(100 100 111 / 40%) 0px 7px 29px;
+    margin-left: 40px;
+    padding: 2px;
+    justify-content: center;
+}
+
+.puntero {
+    margin-bottom: 4px;
+    margin-top: 2px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#imagen {
+    max-height: 80vh;
+    max-width: 80vw;
+}
+
+.btn-derecha,
+.btn-izquierda {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    justify-content: center;
+    margin: 6px;
+}
+
+.boton {
+    display: inline-block;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 3px solid #cccccc;
+    width: 40px;
+    height: 40px;
+}
+
+.boton:hover {
+    transition: 400ms;
+    background: #cccccc;
+}
+
+.deshabilitado {
+    opacity: 0.5;
+}

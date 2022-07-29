@@ -215,7 +215,7 @@ body
 
 	<?php
 	$area = new HtmlExpandingArea("Mis favoritos");
-	$area->setTitleClass("expandingcellmenu");
+	$area->setTitleClass("expandingcell-menu");
 	$area->setClassMenu();
 	$area->setInTable(false);
 	$area->setWidth(212);
@@ -238,7 +238,7 @@ body
 			$url->add("todesktop", "1");
 			$item = $rsTablas->getValue("querydescription");
 			
-			//nombre que tendrá la pila, sin el filtro
+			//nombre que tendrï¿½ la pila, sin el filtro
 			$stackname = "sel_" . lcfirst(escapeJsNombreVar($item));
 			
 			$icon = $rsTablas->getValue("icon");
@@ -353,7 +353,7 @@ body
 		
 		echo("<td valign='top'>");
 		$expA->setTitleAlign("left");
-		$expA->setTitleClass("expandingcellmenu");
+		$expA->setTitleClass("expandingcell-menu");
 		echo($expA->start($expanded, true));
 		
 		buildMenuExpanding($idmenu, $colWidth, $innerCols);
@@ -370,7 +370,7 @@ body
 </div>
 
 <?php 
-//Arma fav icons de todo, tablas y operaciones para que la navegación usual no tenga que crearlos 
+//Arma fav icons de todo, tablas y operaciones para que la navegaciï¿½n usual no tenga que crearlos 
 $rsTablas = getRs("select distinct icon from sc_querys");
 while (!$rsTablas->EOF())
 {

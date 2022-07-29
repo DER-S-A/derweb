@@ -9,7 +9,7 @@ $AJAX_SESSION_KEY = "_AJAX_HELPER";
  */
 class ScAjaxHelper
 {
-	var $aFunctions = array();
+	var $aFunctions = [];
 
 	function __construct()
 	{
@@ -114,7 +114,7 @@ function getAjaxResponseArray($xfn = "", $xResult = 1, $xaParams = [])
 	$aResult["msg"] = "";
 	$aResult["checksum"] = 0;
 	$aResult["cant"] = 0;
-	$aResult["rs"] = array();
+	$aResult["rs"] = [];
 
 	//devueve guid si está
 	if (isset($xaParams["guid"]))
@@ -132,4 +132,33 @@ function getAjaxResponseArray($xfn = "", $xResult = 1, $xaParams = [])
 function escapeAjax($xstr)
 {
 	return escapeSql(urldecode($xstr));
+}
+
+
+/**
+ * Version PHP para invocar una API de un sistema basado en SC3 CORE
+ */
+function sc3InvokeServerApi($xurl, $xfn, $xAparam)
+{
+	//VIAJA En BASE 64
+	$param64 = base64_encode(json_encode($xAparam));
+
+	$postData = [
+		'fn' => $xfn,
+		'p' => $param64
+	];
+
+	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_URL, $xurl);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	$aResult = json_decode($response);
+	return $aResult;
 }

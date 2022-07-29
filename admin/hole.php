@@ -241,9 +241,11 @@ if (!isset($DESARROLLADOR_LOGO))
 			$rsIniciales = $sec->getRsOperacionesPantallaInicial();
 			if (!$rsIniciales->EOF()) {
 				while (!$rsIniciales->EOF()) {
-					$url = $rsIniciales->getValue("url");
+					$url = new HtmlUrl($rsIniciales->getValue("url"));
+					$url->add("pantallainicial", 1);
+					$urlfull = $url->toUrl();
 					echo ("<div class=\"divDesk\">
-						<iframe src=\"$url\" frameborder=\"0\" class=\"escritorio-op\"></iframe>
+						<iframe src=\"$urlfull\" frameborder=\"0\" class=\"escritorio-op\"></iframe>
 					</div>");
 					$rsIniciales->Next();
 				}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Funciones JSON (JASON!) de SC3
  * Fecha: 18-may-2021
@@ -15,7 +16,7 @@ function sc3ArrayJasonTabla($xtabla, $xorderby = "id", $xpuntoComaFinal = true)
 	$sql = "select *
 			from $xtabla
 			order by $xorderby";
-	
+
 	$rsTbl = new BDObject();
 	$rsTbl->execQuery($sql, false, true);
 	return rsToJsonArray($rsTbl, $xpuntoComaFinal);
@@ -27,21 +28,21 @@ function sc3ArrayJasonTabla($xtabla, $xorderby = "id", $xpuntoComaFinal = true)
  * @param string $xorderby
  * @return JSON
  */
-function sc3ArrayJasonTablaWhere($xtabla, $xwhere, $xorderby = "")
+function sc3ArrayJasonTablaWhere($xtabla, $xwhere, $xorderby = "", $xconvierteUtf = true)
 {
-	$aSql = array();
+	$aSql = [];
 	$aSql[] = "select *
 				from $xtabla";
 
-	if (!esVacio($xwhere))			
+	if (!esVacio($xwhere))
 		$aSql[] = "where $xwhere";
 
 	if (!esVacio($xorderby))
 		$aSql[] = "order by $xorderby";
-	
+
 	$rsTbl = new BDObject();
 	$rsTbl->execQuery(implode(" ", $aSql), false, true);
-	return rsToJsonArray($rsTbl, false);
+	return rsToJsonArray($rsTbl, false, $xconvierteUtf);
 }
 
 
@@ -56,19 +57,18 @@ function sc3ArrayJasonTablaWhere($xtabla, $xwhere, $xorderby = "")
  */
 function rsToJsonArray2Levels($xrs, $xMasterField, $xDetailField, $xDetailKey, $xbd, $xsqlDetail)
 {
-	$aResult = array();
-	while (!$xrs->EOF())
-	{
+	$aResult = [];
+	while (!$xrs->EOF()) {
 		$row = $xrs->getRow();
 		$row = array_map('utf8_encode', $row);
-		
+
 		$masterValue = $xrs->getValue($xMasterField);
 		$sqlD = str_replace("MASTER_ID", $masterValue, $xsqlDetail);
-		 
+
 		$xbd->execQuery($sqlD, false, true);
 		$rowsDetail = $xbd->getAsArray("");
 		$row[$xDetailKey] = $rowsDetail;
-		
+
 		$aResult[] = json_encode($row);
 		$xrs->Next();
 	}
@@ -81,8 +81,7 @@ function rsToJsonArray2Levels($xrs, $xMasterField, $xDetailField, $xDetailKey, $
 function safe_json_decode($value)
 {
 	$encoded = json_decode($value, true, 512);
-	if ($encoded === NULL && json_last_error() == JSON_ERROR_UTF8) 
-	{
+	if ($encoded === NULL && json_last_error() == JSON_ERROR_UTF8) {
 		$encoded = json_decode(utf8ize($value), true, 512);
 	}
 	return $encoded;
@@ -93,13 +92,14 @@ function safe_json_decode($value)
  * @param BDObject $xrs
  * @return string
  */
-function rsToJsonArray($xrs, $xpuntoComaFinal = true)
+function rsToJsonArray($xrs, $xpuntoComaFinal = true, $xconvierteUtf = true)
 {
-	$aResult = array();
-	while (!$xrs->EOF())
-	{
-		$row = $xrs->getRow(); 
-		$row = array_map('utf8_encode', $row);
+	$aResult = [];
+	while (!$xrs->EOF()) {
+		$row = $xrs->getRow();
+		if ($xconvierteUtf) {
+			$row = array_map('utf8_encode', $row);
+		}
 		$aResult[] = json_encode($row);
 		$xrs->Next();
 	}
@@ -118,9 +118,8 @@ function rsToJsonArray($xrs, $xpuntoComaFinal = true)
  */
 function rsToJsonArrayId($xrs, $xpuntoComaFinal = true)
 {
-	$aResult = array();
-	while (!$xrs->EOF())
-	{
+	$aResult = [];
+	while (!$xrs->EOF()) {
 		$row = $xrs->getRow();
 		//$row = array_map('utf8_encode', $row);
 		$row = sinCaracteresEspecialesArray($row);
@@ -133,6 +132,3 @@ function rsToJsonArrayId($xrs, $xpuntoComaFinal = true)
 		$puntoComa = "";
 	return "[" . implode(",\r\n\t", $aResult) . "]$puntoComa";
 }
-
-
-?>

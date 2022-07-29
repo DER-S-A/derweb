@@ -103,6 +103,18 @@ if (!isset($DESARROLLADOR_LOGO))
 				iFa.className = "fa fa-eye fa-lg";
 			}
 		}
+
+		/** 
+		 * Guarda en Local Storage que es un equipo de confianza
+		*/
+		function esMiEquipo() {
+			chk = document.getElementById('miEquipo');
+			if (chk.checked === true) {
+				sc3LSSet('miEquipo', 1);
+			} else {
+				sc3LSSet('miEquipo', 0);
+			}
+		}
 	</script>
 
 </head>
@@ -140,6 +152,20 @@ if (!isset($DESARROLLADOR_LOGO))
 				<button class="boton-login" type="submit">
 					<i class="fa fa-sign-in fa-2x"></i> Ingresar
 				</button>
+
+				<?php
+				$pwa = getParameterInt("pwa-activo", 0);
+				if ($pwa == 1) {
+					echo '<div>
+								<input type="checkbox" onclick="esMiEquipo()" checked="true" name="miEquipo" id="miEquipo">
+								<label for="miEquipo" title="Destildar si estás en un equipo compartido o fuera de tu empresa">Es mi equipo</label>
+								<script type="text/javascript">
+									esMiEquipo();
+								</script>
+						  </div>';
+				}
+				?>
+
 
 				<div class="w3-display-container w3-margin" style="height:50px;">
 					<div class="w3-display-middle">

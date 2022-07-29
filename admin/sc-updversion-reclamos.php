@@ -7,7 +7,6 @@
 //19-may-2021: salimos con reclamos
 function sc3UpdateVersionReclamosSalimos()
 {
-
 	$bd = new BDObject();
 
 	$perfil = "Alta Reclamos";
@@ -29,7 +28,6 @@ function sc3UpdateVersionReclamosSalimos()
 		sc3addFk($tabla, "idperfil", "sc_perfiles", "id", false);
 		sc3addlink($query, "idperfil", "qperfiles", 0);
 	}
-
 
 	$tabla = "recla_con_historial";
 	$query = $tabla;
@@ -78,6 +76,32 @@ function sc3UpdateVersionReclamosSalimos()
 	$field = "ultima_modificacion";
 	if (!sc3existeCampo($tabla, $field)) {
 		sc3agregarCampoFecha($tabla, $field, 0, "");
+		sc3generateFieldsInfo($tabla);
+		sc3UpdateRequeridos($tabla);
+	}
+	$SQL = "UPDATE recla_con
+			SET ultima_modificacion = fecha
+			WHERE ultima_modificacion < '2020-01-01' OR ultima_modificacion IS NULL";
+	$bd->execQuery($SQL);
+
+	$field = "recursos_tecnicos";
+	if (!sc3existeCampo($tabla, $field)) {
+		sc3agregarCampoStr($tabla, $field, false, "", "", 255);
+		sc3generateFieldsInfo($tabla);
+		sc3UpdateRequeridos($tabla);
+	}
+	$tabla = "internos";
+	$field = "recursos_tecnicos";
+	if (!sc3existeCampo($tabla, $field)) {
+		sc3agregarCampoStr($tabla, $field, false, "", "", 255);
+		sc3generateFieldsInfo($tabla);
+		sc3UpdateRequeridos($tabla);
+	}
+
+	$tabla = "int_internet";
+	$field = "recursos_tecnicos";
+	if (!sc3existeCampo($tabla, $field)) {
+		sc3agregarCampoStr($tabla, $field, false, "", "", 255);
 		sc3generateFieldsInfo($tabla);
 		sc3UpdateRequeridos($tabla);
 	}

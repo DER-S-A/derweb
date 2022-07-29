@@ -104,7 +104,7 @@ function buildMenuBootstrap()
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="loginerror.php" title="Cerrar sesion" class="nav-link d-flex align-items-center" style="background-color: #84817a;">
+		<a href="sc-loginerror.php" title="Cerrar sesion" class="nav-link d-flex align-items-center" style="background-color: #84817a;">
 			<i class="fa fa-sign-out fa-2x fa-fw"></i><span class="d-lg-none">Salir</span>
 		</a>
 	</li>

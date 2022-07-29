@@ -163,7 +163,7 @@ class HtmlBoolean2
 		if ($this->value == "")
 			$this->value = 0;
 			
-		$jscript = "sc3CambiarBoolean('$id', 'boton$id')";
+		$jscript = "sc3CambiarBoolean('$id', 'boton$id');" . $this->monchange;
 		if ($this->readonly)
 			$jscript = "";
 		

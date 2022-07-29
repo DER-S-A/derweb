@@ -82,7 +82,15 @@ class BDObjectSQL
 			$this->execQuery($sql);
 		}
 	}
-	
+
+	/**
+	 * Cierra o no cierra
+	 */
+	function close()
+	{
+
+	}
+
 	/**
 	 * Pasa los tipos porque el 12 es varchar y en mysql es date
 	 * @param unknown $xArr

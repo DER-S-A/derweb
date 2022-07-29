@@ -34,9 +34,12 @@ function sc3setVisible($xtabla, $xfield, $xvisible)
 }
 
 
-/*
-Cambia el campo a visible o invisible, por query
-*/
+/**
+ * Cambia el campo a visible o invisible, por query
+ * @param {string} $xquery 
+ * @param {string} $xfield
+ * @param {int} $xvisible
+ */
 function sc3setVisibleQuery($xquery, $xfield, $xvisible)
 {
 	debug("sc3setVisible($xquery, $xfield, $xvisible)");
@@ -160,7 +163,7 @@ function getGruposArray($xfields)
 {
 	debug("getGruposArray()");
 
-	$grupos = array();
+	$grupos = [];
 	array_push($grupos, "Datos");
 	foreach ($xfields as $field => $fielddef) {
 		$grupo = "";
@@ -517,8 +520,8 @@ function insertIntoTable($xquery, $xvalues, $xincludeId = false)
 	$rsMeta->execQuery($sql);
 	$sql = "insert into " . $qinfo->getQueryTable() . "(";
 	$i = 0;
-	$afields = array();
-	$avalues = array();
+	$afields = [];
+	$avalues = [];
 	while ($i < $rsMeta->cantF()) {
 		$field = $rsMeta->getFieldName($i);
 		$type = $rsMeta->getFieldType($i);
@@ -585,8 +588,8 @@ function insertIntoTable2($xtable, $xvalues, $xTomaId = false, $xCampoId = "id")
 	$rsMeta->execQuery($sql);
 	$sql = "insert into " . $xtable . "(";
 	$i = 0;
-	$afields = array();
-	$avalues = array();
+	$afields = [];
+	$avalues = [];
 	while ($i < $rsMeta->cantF()) {
 		$field = $rsMeta->getFieldName($i);
 		$type = $rsMeta->getFieldType($i);
@@ -781,7 +784,7 @@ function sc3GrabarAdjunto($xqueryName, $xid, $xfileName)
 				where idquery = $idquery and
 				iddato = $xid";
 	} else {
-		$valuesAdj = array();
+		$valuesAdj = [];
 		$valuesAdj['usuario'] = getCurrentUserLogin();
 		$valuesAdj['idquery'] = $idquery;
 		$valuesAdj['iddato'] = $xid;
@@ -794,6 +797,44 @@ function sc3GrabarAdjunto($xqueryName, $xid, $xfileName)
 }
 
 
+/**
+ * Resuelve el error de caracteres de utf al igual que al editar 
+ */
+function sc3ConvertirTablaUtf($bd, $tabla, $campo, $campoId = "id", $xEcho = true)
+{
+	if ($xEcho)
+		echo ("\r\n --- $tabla.$campo: ");
+
+	$rs = getRs("select $campoId, $campo 
+				from $tabla
+				order by $campoId desc
+				limit 100000");
+
+	$i = 0;
+	while (!$rs->EOF()) {
+		$id = $rs->getValueInt($campoId);
+		$valor = $rs->getValue($campo);
+		$valorEdit = htmlspecialchars($valor, ENT_COMPAT, "UTF-8");
+
+		//la codificacion dio vacia
+		if (!esVacio($valor) && esVacio($valorEdit)) {
+			$valorEdit = utf8_encode($valor);
+
+			$valorEdit = escapeSql($valorEdit);
+			echo ("\r\n $id: " . substr($valor, 0, 40) . " por " . substr($valorEdit, 0, 40));
+			$bd->execQuery("update $tabla 
+							set $campo = '$valorEdit' 
+							where $campoId = $id");
+		} else
+			if (($i % 10 == 0) && $xEcho)
+			echo (".");
+
+		$i++;
+		$rs->Next();
+	}
+}
+
+
 //-----------------------------------------------CLASES----------------------------------------------------------------------
 
 /**
@@ -801,11 +842,11 @@ function sc3GrabarAdjunto($xqueryName, $xid, $xfileName)
  **/
 class ScQueryInfo
 {
-	var $mquery_info = array();
-	var $mfields_def = array();
-	var $mfields_ref = array();
-	var $msequence = array();
-	var $mfilters = array();
+	var $mquery_info = [];
+	var $mfields_def = [];
+	var $mfields_ref = [];
+	var $msequence = [];
+	var $mfilters = [];
 
 	function __construct($xqueryinfo, $xloadAll = true)
 	{
@@ -815,6 +856,15 @@ class ScQueryInfo
 			$this->loadFieldsDef();
 			$this->loadFilters();
 		}
+	}
+
+	/**
+	 * Retorna el arreglo con toda la info del query
+	 * return array
+	 */
+	function getQueryInfoArray()
+	{
+		return $this->mquery_info;
 	}
 
 	function getQueryId()
@@ -930,7 +980,7 @@ class ScQueryInfo
 	 */
 	function startCursor()
 	{
-		$this->msequence = array();
+		$this->msequence = [];
 	}
 
 	/**
@@ -1025,7 +1075,7 @@ class ScQueryInfo
 		debug("ScQueryInfo::loadFieldsDef()");
 
 		$idquery = $this->getQueryId();
-		$this->mfields_def = array();
+		$this->mfields_def = [];
 		$rsFields = new BDObject();
 		$sql = "select * 
 				from sc_fields  
@@ -1075,7 +1125,7 @@ class ScQueryInfo
 	{
 		debug("ScQueryInfo::loadFieldsRef()");
 
-		$this->mfields_ref = array();
+		$this->mfields_ref = [];
 		$idquery = $this->getQueryId();
 
 		$rsFields = new BDObject();
@@ -1110,7 +1160,7 @@ class ScQueryInfo
 	{
 		debug("ScQueryInfo::loadFilters()");
 
-		$this->mfilters = array();
+		$this->mfilters = [];
 		$idquery = $this->getQueryId();
 
 		$rsFilters = new BDObject();
@@ -1298,10 +1348,8 @@ class ScQueryInfo
 		if (isset($this->mfields_ref[$xnombreCampo]))
 			return "izquierda";
 
-		if (
-			esCampoFecha($xtipoCampo) || esCampoInt($xtipoCampo) || esCampoPorcentaje($xvalor)
-			|| esCampoFloat($xtipoCampo) || esCampoConMoneda($xvalor)
-		)
+		if (esCampoFecha($xtipoCampo) || esCampoInt($xtipoCampo) || esCampoPorcentaje($xvalor)
+			|| esCampoFloat($xtipoCampo) || esCampoConMoneda($xvalor))
 			return "derecha";
 
 		if (esCampoColor($xvalor) || esCampoBoleano($xtipoCampo) || startsWith($xvalor, "pdf:"))
@@ -1342,7 +1390,7 @@ class ScQueryInfo
 		$rsPpal->execQuery($str);
 		$rsIns = new BDObject();
 		$i = 0;
-		$aCampos = array();
+		$aCampos = [];
 
 		while ($i < $rsPpal->cantF()) {
 			$nombreCampo = $rsPpal->getFieldName($i);
@@ -1475,7 +1523,7 @@ class ScQueryInfo
 		$asql = explode("from", $sql);
 		$asql[0] = "select ";
 		$asql[2] = "group by ";
-		$aOrder = array();
+		$aOrder = [];
 
 		$i = 0;
 		if (array_key_exists($xg1, $this->mfields_ref)) {
@@ -1511,7 +1559,7 @@ class ScQueryInfo
 		debug("ScQueryInfo::setFieldsAlias($xfields, $xalias)");
 
 		$afields = explode(",", $xfields);
-		$result = array();
+		$result = [];
 		foreach ($afields as $i => $field) {
 			//si ya tiene alias (ej: t3.email) entonces no agrega alias
 			//lo mismo si encuentra un subquery
@@ -1531,7 +1579,7 @@ class ScQueryInfo
 		debug("ScQueryInfo::getQuerySql($xfilterField, $xfilterValue, $xorderby, $xall, $xcondicion, $xmquery, $xmid, $xmfield, $xfilter)");
 
 		if (!is_array($this->mfields_ref))
-			$xfields_ref = array();
+			$xfields_ref = [];
 
 		if ($xall == "")
 			$xretsql = "select " . $this->getKeyField() . ", " . $this->getQueryFields() . " from " . $this->getQueryTable();
@@ -1649,7 +1697,8 @@ class ScQueryInfo
 	/**
 	 * Dado un query Info, arma un sql con la consulta
 	 */
-	function getQuerySql2($xfilterField, $xfilterValue, $xorderby, $xall, $xcondicion, $xmquery = "", $xmid = "", $xmfield = "", $xfilter = 0, $xextendedFilter = "", $xallFields = false, $xVistaMinima = false) {
+	function getQuerySql2($xfilterField, $xfilterValue, $xorderby, $xall, $xcondicion, $xmquery = "", $xmid = "", $xmfield = "", $xfilter = 0, $xextendedFilter = "", $xallFields = false, $xVistaMinima = false)
+	{
 
 		$result = $this->buildSelectLeftJoin($xallFields, false, $xVistaMinima);
 
@@ -1784,7 +1833,7 @@ class ScQueryInfo
 			return "";
 
 		$aorder = explode(",", $xorderby);
-		$result = array();
+		$result = [];
 		foreach ($aorder as $i => $orderPart) {
 
 			//saca los espacios y ademas puede haber un "desc" 
@@ -1962,7 +2011,7 @@ class ScQueryInfo
 	 */
 	function getListaCamposCompleta($xqueryDesc = "", $xenProfundidad = true, $xfkIndex = 1)
 	{
-		$ares = array();
+		$ares = [];
 		foreach ($this->mfields_def as $field => $fielddef) {
 			//analiza si este campo es FL
 			$fkindex = $this->getFkIndex($field);
@@ -2104,7 +2153,7 @@ class ScQueryInfo
 	 */
 	function getColorDatoRelacionado($xid)
 	{
-		if ($xid == 0)
+		if ($xid == "")
 			return ["color" => "", "bgcolor" => ""];
 
 		//Ubica el registro en cuestión por si tiene un color relacionado
@@ -2316,7 +2365,7 @@ function getQueryName($xtabla)
  */
 function getSqlLinksInsert($xquery1, $xid1)
 {
-	$asql = array();
+	$asql = [];
 
 	$i = 1;
 	$ref_q = Request("ref_query$i");
@@ -2405,14 +2454,14 @@ function getLink2Id($xquery1, $xid1, $xquery2)
 function sc3SqlObtenerCount($xsql, $xtable)
 {
 	//si hay una sentencia con ORDER BY al final, la quita: no importa el orden al contar
-	$aOrders = array();
+	$aOrders = [];
 	$aOrders = explode("order by", $xsql);
 	if (count($aOrders) == 2)
 		$xsql = $aOrders[0];
 
 	//busca el from principal con el nombre de la tabla
 	$aSql = explode("from $xtable ", $xsql);
-	$result = array();
+	$result = [];
 	$result[] = "select count(*) as cant_rows";
 	$result[] = $aSql[1];
 
@@ -2444,7 +2493,7 @@ function sc3LoadMetadata($xaParams)
 	$query = $xaParams['query'];
 	$qinfo = getQueryObj($query, true);
 
-	$aResult = array();
+	$aResult = [];
 	$aResult['queryname'] = $query;
 	$aResult['querydescription'] = toUtf8($qinfo->getQueryDescription());
 	$aResult['table_'] = $qinfo->getQueryTable();
@@ -2463,8 +2512,8 @@ function sc3LoadMetadata($xaParams)
 	$aResult['fieldsref'] = $qinfo->getFieldsRef();
 
 	//arma titulos con la descripcion a mostrar (para facilitar la otra punta)
-	$aTitulos = array();
-	$aTitulosFields = array();
+	$aTitulos = [];
+	$aTitulosFields = [];
 	$aFields = explode(",", $qinfo->getQueryFields());
 	foreach ($aFields as $id => $campo) {
 		$campo = trim($campo);
@@ -2541,7 +2590,7 @@ function sc3LoadData($xaParams)
 			$rs = new BDObject();
 			$rs->execQuery($sql, true, true);
 
-			$aData = array();
+			$aData = [];
 			$cant = 0;
 			while (!$rs->EOF() && $cant <= $AJAX_PAGE_SIZE) {
 				$row = $rs->getRow();
@@ -2549,7 +2598,7 @@ function sc3LoadData($xaParams)
 
 				//para reducir rta borra los _fk
 				if ($flat == 1) {
-					$row2 = array();
+					$row2 = [];
 					foreach ($row as $key => $valor) {
 						if (!strContiene($key, "_fk"))
 							$row2[$key] = $valor;
@@ -2597,7 +2646,7 @@ function sc3LoadQueryOperaciones($xaParams)
 	$aResult['icon'] = $qinfo->getQueryIcon();
 
 	while (!$rs->EOF()) {
-		$row = array();
+		$row = [];
 		$row['opid'] = $rs->getId();
 		$row['nombre'] = $rs->getValue("nombre");
 		$row['icon'] = $rs->getValue("icon");

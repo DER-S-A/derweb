@@ -1,5 +1,7 @@
-<?php 
+<?php
 require("funcionesSConsola.php");
+//OJO da error al entregar "rombos"
+//header('Content-Type: text/html; charset=utf-8');
 
 //TODO: establecer conexión seguro
 //checkUsuarioLogueado();
@@ -16,34 +18,30 @@ if (!esVacio($where))
 
 $fecha = date("d/m/Y");
 
-$aResult = array("checksum" => 0,
-				"reload" => 1,
-				"reload_hr" => $hr,
-				"reload_fecha" => $fecha,
-				"status" => "",
-				"where" => $where,
-				"data" => 0);
+$aResult = [
+	"checksum" => 0,
+	"reload" => 1,
+	"reload_hr" => $hr,
+	"reload_fecha" => $fecha,
+	"status" => "",
+	"where" => $where,
+	"data" => 0
+];
 
-if (esVacio($tabla))
-{
+if (esVacio($tabla)) {
 	$aResult["reload"] = -1;
 	$aResult["status"] = "ERROR: Falta parametro tabla";
-}
-else
-{    
+} else {
 	//determina si necesita un refresh a la version dada por el usuario ($chk)
 	$rs = getRs("select table_checksum, keyfield_, order_by
 				from sc_querys 
 				where table_ = '$tabla'
 				limit 1");
 
-	if ($rs->EOF())                
-	{
+	if ($rs->EOF()) {
 		$aResult["reload"] = -1;
 		$aResult["status"] = "ERROR: No existe la tabla $tabla";
-	}
-	else
-	{
+	} else {
 		$keyField = $rs->getValue("keyfield_");
 		$orderby = $rs->getValue("order_by");
 		if (esVacio($orderby))
@@ -54,19 +52,15 @@ else
 		$aResult["orderby"] = $orderby;
 
 		//no hace falta actualizar (chk informado es igual al de la BD)
-		if ($chk == $chk1)
-		{
+		if ($chk == $chk1) {
 			$aResult["reload"] = 0;
 			$aResult["status"] = "No requiere reload";
-		}
-		else
-		{
+		} else {
 			$aResult["reload"] = 1;
 			$aResult["status"] = "Requiere reload";
-			$aResult["data"] = sc3ArrayJasonTablaWhere($tabla, $where, $orderby);
+			$aResult["data"] = sc3ArrayJasonTablaWhere($tabla, $where, $orderby, false);
 		}
 	}
 }
 
-echo(json_encode($aResult));
-?>
+echo (json_encode($aResult));

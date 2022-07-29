@@ -7,9 +7,9 @@ class Sc3FileUtils {
 
 	/**
 	 * Funcion para borrar archivos, recibe como parametro la carpeta 
-	 * Sólo borra archivos del día anterior, no de hoy
+	 * Sólo borra archivos con mas de 7 días de antiguedad
 	 */
-	public static function borrarArchivos($dir, $imprimir = true)
+	public static function borrarArchivos($dir, $imprimir = true, $xDias = 7)
 	{
 		//valida no borrar carpeta vacía (otra vez)
 		if (isset($dir) && $dir != "" && $dir != " ") {
@@ -17,11 +17,17 @@ class Sc3FileUtils {
 			if ($path !== false && is_dir($path)) {
 				if ($imprimir)
 					echo ("<br>Borrando archivos en la carpeta $dir ... ");
-				$fechaActual = date("Y-m-d");
+
+				$date2 = date_create_from_format('Y-m-d', date('Y-m-d'));
 				$cant = 0;
 				foreach (glob($dir . '*.*') as $v) {
-					$fechaArchivo = date("Y-m-d", filemtime($v));
-					if ($fechaArchivo < $fechaActual) {
+					$date1 = date_create_from_format('Y-m-d', date("Y-m-d", filemtime($v)));
+
+					//calcula diferencia de dias
+					$aDiff = (array) date_diff($date1, $date2, true);
+
+					//si tiene mas dias de antiguedad que lo dado, borra
+					if ($aDiff['days'] > $xDias) {
 						unlink($v);
 						$cant++;
 					}

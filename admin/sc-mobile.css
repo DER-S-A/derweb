@@ -582,7 +582,7 @@ div.mensajeChicoAlerta
 }
 
 /* estilo de div para el resultado de la suma de celdas */
-div.sumBotRight
+div.div-suma-grilla
 {
     display:block;
     position:fixed;

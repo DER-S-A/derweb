@@ -18,7 +18,7 @@ checkUsuarioLogueadoRoot();
 			border-radius: 3px;
 			margin: 3px;
 			background-color: #54a0ff;
-			padding: 3px;
+			padding: 4px;
 			color: white;
 		}
 	</style>
@@ -71,7 +71,10 @@ checkUsuarioLogueadoRoot();
 									$aFields = getFieldsInArray($tbl, "");
 									$campos = implode(", ", $aFields);
 									echo ("<tr><td class=\"td_dato\">");
-									echo ("<i class=\"fa fa-code icono-show\" onclick=\"javascript:agregarShow('$tbl', '$campos')\" title='show create table'></i><a onclick=\"javascript:agregarTabla('$tbl', '$campos')\">$tbl</a>");
+									echo ("	<a onclick=\"javascript:agregarTabla('$tbl', '$campos')\">$tbl</a>
+											<a href='sc-dbexplorer.php?tabla=$tbl' target='diagrama'>
+												<i class=\"fa fa-link icono-show\" title='Mostrar diagrama'></i>
+											</a>");
 									echo ("</td></tr>");
 									$rsTbl->Next();
 									$i++;

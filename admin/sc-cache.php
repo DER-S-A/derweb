@@ -6,8 +6,8 @@ En un array se cargan las tablas indexadas por un campo clave.
 */
 class ScCache
 {
-	var $tables = Array();
-	var $qobjs = Array();
+	var $tables = [];
+	var $qobjs = [];
 	var $dirty = true;
 
 	function ___construct()
@@ -15,24 +15,24 @@ class ScCache
 		$this->flushCache();
 		$this->iamDirty();
 	}
-	
-	/*
-	borra todo lo de la cach�
-	*/
+
+	/**
+	 * borra todo lo de la caché
+	 */
 	function flushCache()
 	{
-		$this->tables = array();
-		$this->qobjs = array();
+		$this->tables = [];
+		$this->qobjs = [];
 	}
 
 	function isDirty()
 	{
 		return $this->dirty;
 	}
-	
-	/*
-	Indica que debe grabarse
-	*/
+
+	/**
+	 * Indica que debe grabarse (no es obsceno)
+	 */
 	function iamDirty()
 	{
 		$this->dirty = true;
@@ -49,8 +49,7 @@ class ScCache
 	function loadRs($xtable, $xrs, $xkfield)
 	{
 		debug("ScCache::loadRs($xtable, ..., $xkfield)");
-		while (!$xrs->EOF())
-		{
+		while (!$xrs->EOF()) {
 			$keyvalue = $xrs->getValue($xkfield);
 			$this->tables[$xtable][$keyvalue] = $xrs->getRow();
 			$xrs->Next();
@@ -100,9 +99,9 @@ class ScCache
 	function getQueryObj($xqueryname)
 	{
 		debug("ScCache::getQueryObj($xqueryname)");
-		
+
 		$qobj = $this->deserializar($this->qobjs[$xqueryname]);
-		return $qobj;		
+		return $qobj;
 	}
 
 	/**
@@ -116,7 +115,7 @@ class ScCache
 		$this->qobjs[$xqueryname] = $this->serializar($xobj);
 		$this->iamDirty();
 	}
-	
+
 	/**
 	 * Convierte a texto
 	 * @param object $xobj
@@ -124,29 +123,29 @@ class ScCache
 	 */
 	function serializar($xobj)
 	{
-	    return base64_encode(gzcompress(serialize($xobj)));
+		return base64_encode(gzcompress(serialize($xobj)));
 	}
 
 	/**
 	 * Dado un texto, lo hace obj
-	 * @param unknown $xtxt
+	 * @param string $xtxt
 	 * @return mixed
 	 */
 	function deserializar($xtxt)
 	{
-	    return unserialize(gzuncompress(base64_decode($xtxt)));
+		return unserialize(gzuncompress(base64_decode($xtxt)));
 	}
-	
+
 	/**
-	* Retorna si existe el objeto cacheado
-	*/
+	 * Retorna si existe el objeto cacheado
+	 */
 	function existsQueryObj($xqueryname)
 	{
 		debug("ScCache::existsQueryObj($xqueryname)");
 		return array_key_exists($xqueryname, $this->qobjs);
 	}
-	
-	
+
+
 	/*
 	Verifica si est� en cach� y la carga si no lo est�
 	*/
@@ -155,10 +154,9 @@ class ScCache
 		debug("ScCache::checkTable($xtable, $xkfield)");
 		if (!$this->tableInCache($xtable))
 			$this->loadTable($xtable, $xkfield);
-		else
-		{
+		else {
 			debug("ScCache::checkTable($xtable): CACHE HIT !");
-		}	
+		}
 	}
 
 	/*
@@ -169,8 +167,7 @@ class ScCache
 		debug("ScCache::checkTableAndKey($xtable, $xkfield, $xkeyvalue, $xneedscomillas)");
 		if (!$this->tableAndKeyInCache($xtable, $xkeyvalue))
 			$this->loadTableAndKey($xtable, $xkfield, $xkeyvalue, $xneedscomillas);
-		else
-		{
+		else {
 			debug("ScCache::checkTableAndKey($xtable-$xkeyvalue): CACHE HIT !");
 		}
 	}
@@ -183,7 +180,7 @@ class ScCache
 		debug("ScCache::tableInCache($xtable)");
 		return array_key_exists($xtable, $this->tables);
 	}
-	
+
 	/*
 	Retorna si la tabla est� en cach� y el key dado tambien
 	*/
@@ -196,26 +193,24 @@ class ScCache
 			return false;
 		return true;
 	}
-		
+
 	/*
 	Muestra el estado de la cache
 	*/
 	function debug()
 	{
 		$inside = "ScCache::debug(): ";
-		foreach ($this->tables as $k => $v) 
-		{
-		    $inside .= " -Tabla: " . $k . ", rows: " . count($v) . "\n ";
-			foreach ($v as $key => $row) 
-			{
-			    if ($row !== null)
-			         $inside .= " (key: " . $key . ", columns: " . count(array_keys($row)) . ")";
+		foreach ($this->tables as $k => $v) {
+			$inside .= " -Tabla: " . $k . ", rows: " . count($v) . "\n ";
+			foreach ($v as $key => $row) {
+				if ($row !== null)
+					$inside .= " (key: " . $key . ", columns: " . count(array_keys($row)) . ")";
 			}
 		}
 		debug($inside);
 	}
-//fin de clase ScCache
-} 
+	//fin de clase ScCache
+}
 
 
 /*
@@ -233,22 +228,20 @@ function initCache()
  */
 function getCache()
 {
-	if (!isset($_SESSION["_CACHE"])) 
-	{
-		initCache(); 
-	}	
+	if (!isset($_SESSION["_CACHE"])) {
+		initCache();
+	}
 	$cache = new ScCache();
 	$cache = unserialize($_SESSION["_CACHE"]);
-	return $cache;		
+	return $cache;
 }
 
 function saveCache($xcache)
 {
 	$xcache->debug();
-	if ($xcache->isDirty())
-	{
+	if ($xcache->isDirty()) {
 		$_SESSION["_CACHE"] = serialize($xcache);
-		$xcache->iamClean();	
+		$xcache->iamClean();
 	}
 }
 
@@ -258,17 +251,17 @@ function saveCache($xcache)
  */
 class ScFileCache
 {
-	var $mcachefile = Array();
+	var $mcachefile = "";
 	var $mcacheext = ".htmlc";
-	var $mcachedir = "./tmp/"; 
+	var $mcachedir = "./tmp/";
 	var $mcacheprefix = "cache-";
 	var $mactive = true;
-	 
+
 	function __construct()
 	{
 		debug("ScFileCache::constructor()");
 	}
-	
+
 	/**
 	 * Inicia la cache y guarda 
 	 *
@@ -277,14 +270,13 @@ class ScFileCache
 	{
 		debug("ScFileCache::start($xnivel)");
 		$this->mactive = getParameterInt("sc3-view-filecache", 1);
-		if ($this->mactive)
-		{
-		    $this->mcachefile = $this->buildFileName($xnivel, $xstackname); 
-		    ob_start();
+		if ($this->mactive) {
+			$this->mcachefile = $this->buildFileName($xnivel, $xstackname);
+			ob_start();
 		}
-	    return $this->mcachefile;
+		return $this->mcachefile;
 	}
-	
+
 	/**
 	 * Arma el nombre del archivo con el usuario y el nivel del stack 
 	 * @param int $xnivel
@@ -295,7 +287,7 @@ class ScFileCache
 		$key = "u" . getCurrentUser() . "-n" . $xnivel . $xstackname;
 		return $this->mcachedir . $this->mcacheprefix . $key . $this->mcacheext;
 	}
-	
+
 	/**
 	 * guardar todo lo generado en cach� y retorna el valor
 	 */
@@ -303,19 +295,17 @@ class ScFileCache
 	{
 		debug("ScFileCache::end()");
 
-		if ($this->mactive)
-		{
+		if ($this->mactive) {
 			//no guarda en cach� los niveles de navegaci�n superiores
-			if ($xstackSize <= 3)
-			{
-				$fp = fopen($this->mcachefile, 'w'); 
-			    fwrite($fp, ob_get_contents());
-			    fclose($fp); 
+			if ($xstackSize <= 3) {
+				$fp = fopen($this->mcachefile, 'w');
+				fwrite($fp, ob_get_contents());
+				fclose($fp);
 			}
 			ob_end_flush();
 		}
 	}
-	
+
 	/**
 	 * Borra todos los archivos de la cache
 	 */
@@ -323,15 +313,14 @@ class ScFileCache
 	{
 		debug("ScFileCache::clear()");
 		$i = 1;
-		while ($i <= 3)
-		{
-			$filename = $this->buildFileName($i, $xstackname); 
+		while ($i <= 3) {
+			$filename = $this->buildFileName($i, $xstackname);
 			if (file_exists($filename))
-				unlink($filename);	
-			$i++;	
+				unlink($filename);
+			$i++;
 		}
 	}
-	
+
 	/**
 	 * Retorna si la pagina existe y esta vigente >> el nombre del archivo
 	 * @param string $xnivel
@@ -339,31 +328,28 @@ class ScFileCache
 	function fileExists($xnivel, $xstackname = "")
 	{
 		debug("ScFileCache::fileExists($xnivel)");
-		
-	    $this->mcachefile = $this->buildFileName($xnivel, $xstackname); 
-	    
+
+		$this->mcachefile = $this->buildFileName($xnivel, $xstackname);
+
 		if (!file_exists($this->mcachefile))
 			return "";
 
-        //TODO: ver error de volver en diferentes solapas !			
+		//TODO: ver error de volver en diferentes solapas !			
 		//return "";	
-			
+
 		//verifica la existencia de la pagina en cache
-	    $cachefile_created = filemtime($this->mcachefile);
-	    clearstatcache();
-	 
+		$cachefile_created = filemtime($this->mcachefile);
+		clearstatcache();
+
 		// 5 minutos
-		$cachetime = 300; 
+		$cachetime = 300;
 		// si no se vencio, retorna el nombre del archivo
-	    if (time() - $cachetime < $cachefile_created) 
-		{
+		if (time() - $cachetime < $cachefile_created) {
 			debug("ScFileCache::fileExists($xnivel) - HIT: $this->mcachefile");
 			return $this->mcachefile;
-	    }
+		}
 		debug("ScFileCache::fileExists($xnivel) - archivo viejo: $this->mcachefile");
-	    
+
 		return "";
 	}
 }
-
-?>

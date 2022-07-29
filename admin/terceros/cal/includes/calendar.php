@@ -34,17 +34,17 @@ function cal_navbar($year, $month, $day)
 	$output .= '<input type="button" value="' . CAL_MENU_TODAY . '" class="formButtons hoy" onClick="location=\'index.php?' . $today . '\'"> ';
 	$output .= '<select name="calendar_month" class="formElements" id="calendar_month"> ';
 	for ($mm = 1; $mm <= 12; $mm++) {
-		if ($mm == $month) 
+		if ($mm == $month)
 			$output .= "<option value='$mm' selected>" . cal_month_name($mm) . "</option>";
-		else 
+		else
 			$output .= "<option value='$mm'>" . cal_month_name($mm) . "</option>";
 	}
 	$output .= '</select>';
 	$output .= '<select name="calendar_year" class="formElements" id="calendar_year">';
 	for ($yy = $year - 3; $yy < $year + 5; $yy++) {
-		if ($yy == $year) 
+		if ($yy == $year)
 			$output .= "<option selected>$yy</option>";
-		else 
+		else
 			$output .= "<option value='$yy'>$yy</option>";
 	}
 	// calculate next month/year and previous month/year.
@@ -88,9 +88,9 @@ function cal_calendar($year, $month, $day)
 	$cmonth = $_SESSION['cal_month'];
 	$cyear = $_SESSION['cal_year'];
 
-	if (cal_option("start_monday")) 
+	if (cal_option("start_monday"))
 		$firstday = (date("w", mktime(0, 0, 0, $month, 1, $year)) - 1) % 7;
-	else 
+	else
 		$firstday = (date("w", mktime(0, 0, 0, $month, 1, $year))) % 7;
 	$lastday = date("t", mktime(0, 0, 0, $month, 1, $year));
 
@@ -188,7 +188,7 @@ function cal_calendar($year, $month, $day)
 			$output .= "</div>";
 			// This loop writes the events for the day in the cell
 			$result = cal_query_get_eventlist($w, $month, $year);
-			if ($cal_db->sql_numrows($result) < 1) 
+			if ($cal_db->sql_numrows($result) < 1)
 				$output .= "&nbsp;";
 
 			while ($row = $cal_db->sql_fetchrow($result)) {
@@ -204,10 +204,11 @@ function cal_calendar($year, $month, $day)
 				// organize the time and duraton data
 				switch ($typeofevent) {
 					case 1:
-						if (!cal_option("hours_24")) 
+						if (!cal_option("hours_24"))
 							$timeformat = 'g:i A';
-						else 
+						else
 							$timeformat = 'G:i';
+
 						$event_time = date($timeformat, $row['start_since_epoch']);
 						$overlib_time = "@ $event_time";
 						break;
@@ -219,7 +220,13 @@ function cal_calendar($year, $month, $day)
 						$event_time = '??:??';
 						$overlib_time = CAL_UNKNOWN_TIME;
 						break;
-					default:;
+					default:
+						if (!cal_option("hours_24"))
+							$timeformat = 'g:i A';
+						else
+							$timeformat = 'G:i';
+
+						$event_time = date($timeformat, $row['start_since_epoch']);;
 				}
 				// build overlib text
 				$overlib = "<strong>$subject<br>$overlib_time</strong><br>$desc";
@@ -227,33 +234,33 @@ function cal_calendar($year, $month, $day)
 				$c1 = $color[0];
 				$c2 = $color[2];
 				$c3 = $color[4];
-				if (!is_numeric($c1)) 
+				if (!is_numeric($c1))
 					$c1 = 10;
-				if (!is_numeric($c2)) 
+				if (!is_numeric($c2))
 					$c2 = 10;
-				if (!is_numeric($c3)) 
+				if (!is_numeric($c3))
 					$c3 = 10;
-				if ($c1 < 4 && $c2 < 9 && $c3 < 9) 
+				if ($c1 < 4 && $c2 < 9 && $c3 < 9)
 					$overlibtext = "#FFFFFF";
-				elseif ($c2 < 4 && $c1 < 9 && $c3 < 9) 
+				elseif ($c2 < 4 && $c1 < 9 && $c3 < 9)
 					$overlibtext = "#FFFFFF";
-				elseif ($c3 < 4 && $c1 < 9 && $c2 < 9) 
+				elseif ($c3 < 4 && $c1 < 9 && $c2 < 9)
 					$overlibtext = "#FFFFFF";
-				else 
+				else
 					$overlibtext = "#000000";
 
 				// make the event subjects links or not according to the variable $whole_day in gatekeeper.php
 				if (!$private || !cal_anon()) {
-					if ($row['typecolor'] == "") 
+					if ($row['typecolor'] == "")
 						$output .= '<div class="event_block">';
-					else 
+					else
 						$output .= '<div class="event_block" style="border-left-color: #' . $color . ';">';
-					if ($subject == "") 
+					if ($subject == "")
 						$subject = "[" . CAL_NO_SUBJECT . "]";
 					$output .= '<span onmouseover="return overlib(\'' . str_replace("'", "\\'", $overlib) . '\',FGCOLOR,\'#' . $color . '\',BGCOLOR,\'#000000\',TEXTCOLOR,\'' . $overlibtext . '\');" onmouseout="return nd();">';
-					if (cal_option("show_times")) 
+					if (cal_option("show_times"))
 						$output .= "$event_time - $subject";
-					else 
+					else
 						$output .= "$subject";
 					$output .= '</span>';
 					$output .= "</div>";

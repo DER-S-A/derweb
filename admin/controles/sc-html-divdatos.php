@@ -13,11 +13,11 @@ class HtmlDivDatos
 	var $mExpandida = true;
 	var $mClass = "expandingtable";
 	var $mTitleClass = "expandingcell";
-	var $mDivStyle = "divFlotante";
+	var $mDivStyle = "div-flotante";
 	var $mInnerTableClass = "";
 	var $mAwesomeFont = "";
 	var $mVisible = true;
-	var $mDatos = array();
+	var $mDatos = [];
 	var $tituloBase = "";
 
 	function __construct($xtitulo)
@@ -47,7 +47,7 @@ class HtmlDivDatos
 
 	function setStyleForm()
 	{
-		$this->mDivStyle = "divFlotanteForm";
+		$this->mDivStyle = "div-flotante-form";
 	}
 
 	function setEtiquetaChica()
@@ -71,7 +71,7 @@ class HtmlDivDatos
 
 	function setStyleForm2Cols()
 	{
-		$this->mDivStyle = "divFlotanteForm ancho100";
+		$this->mDivStyle = "div-flotante-form ancho100";
 	}
 
 
@@ -82,7 +82,7 @@ class HtmlDivDatos
 	 */
 	function add($xEtiqueta, $xDato, $xclass = "", $xRowId = "", $xVisible = 1)
 	{
-		$this->mDatos[] = array($xEtiqueta, $xDato, $xclass, $xRowId, $xVisible);
+		$this->mDatos[] = [$xEtiqueta, $xDato, $xclass, $xRowId, $xVisible];
 	}
 
 	function setClassMenu($xclass = "expandingtablemenu")

@@ -8,7 +8,6 @@ class SecurityManager
 {
 	function __construct()
 	{
-
 	}
 
 	/*
@@ -24,18 +23,16 @@ class SecurityManager
 
 		if (!sonIguales($xidmenu, ""))
 			$sql .= " and q.idmenu = " . $xidmenu;
-		if (!sonIguales($xfiltro, ""))
-		{
+		if (!sonIguales($xfiltro, "")) {
 			$sql .= " and q.querydescription like '%$xfiltro%'";
 		}
-		if ($xdeBuscador)
-		{
+		if ($xdeBuscador) {
 			$sql .= " and q.idmenu is not null";
 		}
 		$sql .= " order by q.querydescription";
 		$sql .= " limit 1000";
-		
-		$rs= new BDObject();
+
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
@@ -64,11 +61,11 @@ class SecurityManager
 		$sql .= " and q.querydescription like '%$xfiltro%'";
 		$sql .= " order by men.item, men2.item, q.querydescription";
 
-		$rs= new BDObject();
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
+
 	/*
 	Retorna los querys que aparecen en info
 	*/
@@ -84,11 +81,11 @@ class SecurityManager
 		$sql .= "   and q.idmenu is not null";
 		$sql .= " order by q.querydescription";
 
-		$rs= new BDObject();
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
+
 
 	/**
 	 * Retorna Mis Favoritos para el usuario actual
@@ -99,8 +96,8 @@ class SecurityManager
 		$sql = "SELECT distinct q.*, pref.valor2";
 		$sql .= " FROM sc_querys q";
 		$sql .= "   inner join sc_perfiles_querys pq on (pq.idquery = q.id)";
-		$sql .= "   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop'"; 
-		$sql .= "												and pref.idusuario = " . getCurrentUser(); 
+		$sql .= "   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop'";
+		$sql .= "												and pref.idusuario = " . getCurrentUser();
 		$sql .= "												and pref.valor1 = q.queryname)";
 		$sql .= "   inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil)";
 		$sql .= " where up.idusuario = " . getCurrentUser();
@@ -108,43 +105,45 @@ class SecurityManager
 		$sql .= "   and q.idmenu is not null";
 		$sql .= " order by q.querydescription";
 
-		$rs= new BDObject();
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
+
 	/**
 	 * Retorna Mis Favoritos para el usuario actual (querys y ops)
 	 * @return BDObject
 	 */
 	function getRsFavoritos()
 	{
-		$sql = "SELECT distinct 'Q' as tipo, q.id, q.querydescription, q.queryname, q.icon, '' as target, pref.valor2";
-		$sql .= " FROM sc_querys q";
-		$sql .= "   inner join sc_perfiles_querys pq on (pq.idquery = q.id)";
-		$sql .= "   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop'"; 
-		$sql .= "												and pref.idusuario = " . getCurrentUser(); 
-		$sql .= "												and pref.valor1 = q.queryname)";
+		$sql = "SELECT distinct 'Q' as tipo, q.id, q.querydescription, q.queryname, 
+					q.icon, '' as target, pref.valor2, 0 as acceso_offline
+				FROM sc_querys q
+					inner join sc_perfiles_querys pq on (pq.idquery = q.id)
+					inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop' and 
+																pref.idusuario = :IDUSUARIO	and 
+																pref.valor1 = q.queryname)";
 		$sql .= "   inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil)";
-		$sql .= " where up.idusuario = " . getCurrentUser();
-		$sql .= "   and q.idmenu is not null";
-			
+		$sql .= " where up.idusuario = :IDUSUARIO and 
+					q.idmenu is not null";
+
 		$sql .= " union ";
-		
-		$sql .= "SELECT distinct 'O' as tipo, o.id, o.nombre, o.url, o.icon, o.target, o.ayuda";
+
+		$sql .= "SELECT distinct 'O' as tipo, o.id, o.nombre, o.url, 
+					o.icon, o.target, o.ayuda, o.acceso_offline";
 		$sql .= " FROM sc_operaciones o";
 		$sql .= "   inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)";
-		$sql .= "   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop-op'"; 
-		$sql .= "												and pref.idusuario = " . getCurrentUser(); 
+		$sql .= "   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop-op'";
+		$sql .= "												and pref.idusuario = " . getCurrentUser();
 		$sql .= "												and pref.valor1 = o.id)";
 		$sql .= "   inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil)";
 		$sql .= " where up.idusuario = " . getCurrentUser();
 
-		$rs= new BDObject();
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
+
 	/**
 	 * Retorna Mis Notas para el escritorio
 	 *
@@ -152,16 +151,6 @@ class SecurityManager
 	 */
 	function getRsMisNotas()
 	{
-		/*
-		union all	
-						
-					(select distinct '', '', '', '', a.nota, a.color, a.iddato, a.id as idadjunto, a.fecha
-						from sc_adjuntos a
-						where a.usuario  = :IDUSUARIO
-							and a.nota <> '' and a.color <> ''
-							and a.idquery = 0 and a.iddato = 0)
-		*/
-
 		$sql = "select distinct u.login, q.querydescription, q.queryname, 
 					q.icon, a.nota, a.color, a.iddato, a.id as idadjunto, a.fecha
 				from sc_adjuntos a
@@ -170,16 +159,17 @@ class SecurityManager
 					inner join sc_perfiles_querys pq on (pq.idquery = q.id)
 					inner join sc_perfiles per on (pq.idperfil = per.id)
 					inner join sc_usuarios_perfiles pusu on (pusu.idperfil = per.id and pusu.idusuario = :IDUSUARIO)
-				where (a.nota <> '' or a.color <> '')
+				where (a.nota <> '')
 				
-				order by fecha desc, idadjunto desc";
+				order by fecha desc, idadjunto desc
+				limit 40";
 
 		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
-	
+
+
 	/**
 	 * Retorna las operaciones de un menu para el usuario actual
 	 * @param int $xidmenu 
@@ -191,18 +181,18 @@ class SecurityManager
 					from sc_operaciones o
 						inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)
 						inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil)";
-			
+
 		$sql .= " where o.idmenu = $xidmenu and 
 					o.activo = 1 and
 					up.idusuario = " . getCurrentUser();
-		
+
 		$sql .= " order by o.nombre";
-		
+
 		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
+
 
 	/**
 	 * Retorna las operaciones para el usuario actual que van al escritorio
@@ -222,12 +212,35 @@ class SecurityManager
 					up.idusuario = :IDUSUARIO
 
 				order by o.nombre";
-		
+
 		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
-	
+
+	/**
+	 * Retorna las operaciones marcadas para ser accedidas fuera de linea
+	 * @return BDObject
+	 */
+	function getRsOperacionesOffline()
+	{
+		$sql = "select distinct o.*
+
+				from sc_operaciones o
+					inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)
+					inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil)
+				
+				where o.activo = 1 and
+					o.idquery is null and
+					o.acceso_offline = 1 and
+					up.idusuario = :IDUSUARIO
+
+				order by o.nombre";
+
+		$rs = new BDObject();
+		$rs->execQuery($sql);
+		return $rs;
+	}
 
 	/**
 	 * Retorna las operaciones validas para un usuario en un query dado
@@ -236,15 +249,18 @@ class SecurityManager
 	function getRsOperacionesQuery($xidquery, $xgrupales = 0)
 	{
 		$sql = "select distinct o.*
+		
 				from sc_operaciones o
+
 					inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)
 					inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil)
+
 				where activo = 1 and 
 					grupal = $xgrupales and 
 					idquery = $xidquery and 
-					up.idusuario = " . getCurrentUser();
+					up.idusuario = :IDUSUARIO
 
-		$sql .= " order by o.nombre";
+				order by o.nombre";
 
 		$rs = new BDObject();
 		$rs->execQuery($sql);
@@ -256,19 +272,23 @@ class SecurityManager
 	 */
 	function getRsOperacionesRelacionadas($xidquery, $xinmaster = 0)
 	{
-		debug("SecurityManager::getRsOperacionesRelacionadas($xidquery, $xinmaster)");
+		$sql = "SELECT distinct q.id, q.queryname, 
+						q.querydescription, 
+						q.icon, 
+						ref.campo_ as mfield
+						
+				FROM sc_querys q
+					inner join sc_perfiles_querys pq on (pq.idquery = q.id)
+					inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil)
+					inner join sc_referencias ref on (q.id = ref.idquerymaster and 
+													ref.idquery = $xidquery)
 
-		$sql = "SELECT distinct q.id, q.queryname, q.querydescription, q.icon, ref.campo_ as mfield";
-		$sql .= " FROM sc_querys q";
-		$sql .= " inner join sc_perfiles_querys pq on (pq.idquery = q.id)";
-		$sql .= " inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil)";
-		$sql .= " inner join sc_referencias ref on (q.id = ref.idquerymaster";
-		$sql .= "                                      and ref.idquery = " . $xidquery . ")";
-		$sql .= " where up.idusuario = " . getCurrentUser();
-		$sql .= "  and ref.in_master = $xinmaster";
-		$sql .= " order by q.querydescription";
+				where up.idusuario = :IDUSUARIO and 
+					ref.in_master = $xinmaster
 
-		$rs= new BDObject();
+				order by q.querydescription";
+
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
@@ -282,15 +302,15 @@ class SecurityManager
 		$sql .= " FROM sc_querys q
 					inner join sc_referencias ref on (q.id = ref.idquerymaster
 										and ref.idquery = " . $xidquery . ")";
-		
+
 		$sql .= " order by q.querydescription";
-		
-		$rs= new BDObject();
+
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
 
-	
+
 	/**
 	 * Recupera los filtros 
 	 */
@@ -304,14 +324,14 @@ class SecurityManager
 					q.queryname = '$xquery'";
 		$rsF = new BDObject();
 		$rsF->execQuery($sqlF);
-		
+
 		return $rsF;
 	}
-	
-	
+
+
 	/*
 	Retorna las operaciones para navegar los "MASTERS" o los datos relacionados al actual
-	*/	
+	*/
 	function getRsOperacionesMasters($xidquery)
 	{
 		debug("SecurityManager::getRsOperacionesMasters($xidquery)");
@@ -320,11 +340,11 @@ class SecurityManager
 					inner join sc_perfiles_querys pq on (pq.idquery = q.id)
 					inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil)
 					inner join sc_referencias ref on (q.id = ref.idquery and ref.idquerymaster = " . $xidquery . ")";
-		
+
 		$sql .= " where up.idusuario = " . getCurrentUser();
 		$sql .= " order by q.querydescription";
 
-		$rs= new BDObject();
+		$rs = new BDObject();
 		$rs->execQuery($sql);
 		return $rs;
 	}
@@ -337,7 +357,7 @@ class SecurityManager
 	{
 		$sql = "SELECT distinct m.* 
 				FROM sc_menuconsola m ";
-		
+
 		$sql .= " WHERE (activo = 1) and 
 					(m.item = '$xMenu' or '$xMenu' = '') and
 					(m.iditemmenu in (select distinct o.idmenu
@@ -345,7 +365,7 @@ class SecurityManager
 										inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)
 										inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil)
 									where activo=1 and o.idmenu is not null and 
-										up.idusuario = " . getCurrentUser() ." ) 
+										up.idusuario = " . getCurrentUser() . " ) 
 						or (m.iditemmenu in (SELECT distinct q.idmenu
 											FROM sc_querys q
 												inner join sc_perfiles_querys pq on (pq.idquery = q.id)
@@ -359,7 +379,7 @@ class SecurityManager
 		return $rs;
 	}
 
-	
+
 	/**
 	 * Verifica si el usuario actual tiene el perfil dado
 	 * @param string $xperfil
@@ -372,17 +392,17 @@ class SecurityManager
 				  inner join sc_perfiles p on (up.idperfil = p.id)
 				where p.nombre = '$xperfil' and 
 					up.idusuario = :IDUSUARIO";
-		
+
 		$rs = new BDObject();
 		$rs->execQuery($sql);
 		$rs->close();
 		if ($rs->EOF())
 			return false;
-		
+
 		return true;
 	}
 
-	
+
 	/**
 	 * Verifica si el usuario tiene acceso a un Query dado
 	 * @param string $xquery
@@ -397,7 +417,7 @@ class SecurityManager
 					inner join sc_querys q on (pq.idquery = q.id)
 				where q.queryname = '$xquery' and up.idusuario = :IDUSUARIO
 				limit 1";
-		
+
 		$rs = new BDObject();
 		$rs->execQuery($sql);
 		$rs->close();
@@ -428,7 +448,7 @@ class SecurityManager
 		return $tiene;
 	}
 
-	
+
 	/*
 	Chequea que el url solicitado esta permitido. Caso contrario desvia a una pagina de error
 	*/
@@ -438,10 +458,6 @@ class SecurityManager
 		$script = $_SERVER['SCRIPT_NAME'];
 
 		header("Location:./sc-url-nopermitida.php");
-		exit;  
-	
+		exit;
 	}
-
 }
-
-?>

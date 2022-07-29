@@ -103,6 +103,8 @@ function generarArchivoModelo($xquery)
 		} else {
 			$requiereFlushCache = true;
 			$aBorrados[] = $field;
+
+			//existía una definicion de un campo que ya no existe
 			$bd->execQuery("delete from sc_fields 
 							where idquery = $idquery and 
 								field_ = '$field'");
@@ -136,6 +138,11 @@ if (enviado()) {
 }
 
 $archivoModelo = generarArchivoModelo($query);
+
+$url = new HtmlUrl("sc-vercsv.php");
+$url->add("f1", $archivoModelo);
+$url->add("csv", $archivoModelo);
+
 ?>
 <!doctype html>
 <html lang="es">
@@ -167,7 +174,7 @@ $archivoModelo = generarArchivoModelo($query);
 			<tr>
 				<td class="td_etiqueta">Archivo de ejemplo: </td>
 				<td class="td_dato">
-					<a href="<?php echo ($archivoModelo); ?>">
+					<a href="<?php echo ($url->toUrl()); ?>">
 						<i class="fa fa-file-excel-o fa-lg verde"></i> Archivo modelo (;)
 					</a>
 				</td>

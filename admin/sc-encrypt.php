@@ -1,8 +1,10 @@
 <?php
 
-//autor: Marcos C.
-//libreria de encriptado y cifrado de datos.
-
+/**
+ * autor: Marcos C.
+ * Libreria de encriptado y cifrado de datos.  
+ * TODO: revisar
+ */
 class Sc3Encriptador 
 {
     private $securekey, $iv;
@@ -49,5 +51,3 @@ class Sc3Encriptador
     	return base64_decode_safe($input);
     }
 }
-
-?>

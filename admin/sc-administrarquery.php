@@ -34,24 +34,6 @@ $ajaxH->registerFunction("actualizarCampo", "sc-query-api.php");
 sc3SaveAjaxHelper($ajaxH);
 
 $idquery = $qinfo->getQueryId();
-
-$sqlCampos = "select field_, 
-					case when ifnull(grupo, '') = '' then show_name 
-					else concat(upper(grupo), ' - ', show_name) end as campo
-				from sc_fields
-				where visible = 1 and 
-					ifnull(password_field, 0) = 0 and
-					idquery = " . $qinfo->getQueryId() .
-	" order by grupo, campo";
-
-$rsFields = getRs($sqlCampos);
-
-$cboCampos = new HtmlCombo("listacampos", "");
-$cboCampos->setClass("oculto");
-$cboCampos->addSeleccione();
-$cboCampos->cargarRs($rsFields, "field_", "campo");
-$rsFields->close();
-
 ?>
 <!doctype html>
 <html lang="es">
@@ -62,11 +44,7 @@ $rsFields->close();
 	<?php include("include-head.php");
 	//guardo el idquery para poder realizar el update y obtenerlo mediante JS.
 	echo "<input type=\"hidden\" name=\"idquery\" id=\"idquery\" value=\"" . $idquery . "\">"
-
 	?>
-
-	<script type="text/javascript" src="<?php echo (sc3CacheButer("scripts/sc-reportar.js")); ?>"></script>
-
 
 	<script language="javascript">
 		var queryname = '<?php echo ($rquery); ?>';
@@ -145,6 +123,8 @@ $rsFields->close();
 			$subgrupo = $qinfo->getFieldSubgrupo($nombreCampo);
 			$defaultValue = $qinfo->getFieldDefaultValue($nombreCampo);
 			$ocultarVacio = $qinfo->getFieldOCultarVacio($nombreCampo);
+			$class = $qinfo->getFieldClass($nombreCampo, []);
+
 			$pos = strpos($nombreCampo, "_fk");
 			if ($pos === FALSE) {
 				//analiza si el campo esta en el grupo que estoy mostrando
@@ -205,7 +185,10 @@ $rsFields->close();
 					if ($subgrupo != "")
 						$aExtra[] = "Subgrupo: $subgrupo";
 
-					$pDefaultValue = "<span style=\"margin-left: 8px;\">" . implode(" ", $aExtra) . "</span>";
+					if ($class != "")
+						$aExtra[] = "Class: $class";
+
+					$pDefaultValue = "<span style=\"margin-left: 8px;\">" . implode(", ", $aExtra) . "</span>";
 
 					$divCampo = div('<p class="campoDrageable" value="' . $nombreCampo . '">
 					' . $iRichtext . $iColorField . $iGooglePoint . $iFileField . $nombreMuestra . $iPasswordField . $iOcultarVacio . $iVisible . $iEditable . $iRequerido . '</p>' . $pDefaultValue, "divDrageable", $nombreCampo, true, "mostrarModalCampo('" . $nombreCampo . "')");
@@ -398,7 +381,7 @@ $rsFields->close();
 
 
 		var div1 = document.createElement("div");
-		div1.setAttribute("class", "divFlotante");
+		div1.setAttribute("class", "div-flotante");
 		div1.setAttribute("id", nombreGrupo);
 
 		//nuevo div 

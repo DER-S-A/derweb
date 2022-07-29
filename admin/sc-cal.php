@@ -53,6 +53,10 @@ function calInicializar()
 	//Ubica usuario
 	$rs = cal_query_getuser(getCurrentUserLogin());
 	$t = $cal_db->sql_fetchrow($rs);
+
+	if (!isset($t["id"]))
+		$t["id"] = 0;
+
 	$_SESSION['cal_userid'] = $t["id"];
 	$_SESSION['cal_user'] = getCurrentUser();
 	cal_load_permissions($t["id"]);

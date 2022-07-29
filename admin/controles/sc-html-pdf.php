@@ -92,7 +92,7 @@ class HtmlPdf
 			'Author' => $SITIO,
 			'Subject' => $xtitulo,
 			'Creator' => 'info@sc3.com.ar',
-			'Producer' => 'http://www.sc3.com.ar/'
+			'Producer' => 'https://www.sc3.com.ar/'
 		);
 
 		$this->pdf->addInfo($datacreator);
@@ -237,7 +237,7 @@ class HtmlPdf
 		if (!esVacio($rsempresa->getValue("cuit")))
 			$empresa .= " - CUIT: " . $rsempresa->getValue("cuit");
 		if (!esVacio($rsempresa->getValue("fecha_alta")))
-			$empresa .= " - F. Inicio Act.: " . $rsempresa->getValueFechaFormateada("fecha_alta");
+			$empresa .= " - Inicio Act.: " . $rsempresa->getValueFechaFormateada("fecha_alta");
 
 		if (!sonIguales($rsempresa->getValue("web"), ""))
 			$empresa .= " - " . $rsempresa->getValue("web");
@@ -303,7 +303,7 @@ class HtmlPdf
 	{
 		$this->pdf->addPngFromFile("./" . $ximg, $this->puntos_cm($x), $this->puntos_cm($y), $xancho, $xalto);
 	}
-	
+
 	function addSpace($xlines = 1)
 	{
 		while ($xlines > 0) {
@@ -358,16 +358,16 @@ class HtmlPdf
 			return;
 
 		global $SITIO;
-		$cols = array();
-		$cols["izq"] = array('justification' => 'left');
-		$cols["der"] = array('justification' => 'right');
+		$cols = [];
+		$cols["izq"] = ['justification' => 'left'];
+		$cols["der"] = ['justification' => 'right'];
 
 		$fecha = "";
 		if ($this->mImprimeFecha)
 			$fecha = "<b>Fecha:</b> " . date("d/m/Y") . " " . date("H:i:s");
 
-		$data = array();
-		$data[] = array("izq" => $SITIO, "der" => $fecha);
+		$data = [];
+		$data[] = ["izq" => $SITIO, "der" => $fecha];
 		$this->addTable($data, "", 0, $cols);
 	}
 
@@ -402,8 +402,7 @@ class HtmlPdf
 		if ($xLimiteYCambioHoja == 0)
 			$xLimiteYCambioHoja = getParameterInt("sc3-pdf-limiteY_hojanueva", 160);
 
-		if ($this->getPdfObj()->ezGetY() < $xLimiteYCambioHoja)
-		{
+		if ($this->getPdfObj()->ezGetY() < $xLimiteYCambioHoja) {
 			$this->newPage();
 			return true;
 		}
@@ -797,7 +796,7 @@ class HtmlPdf
 		$width    = 2;
 		if (strlen($xcode) > 50)
 			$width = 1;
-			
+
 		// rotation in degrees : nb : non horizontable barcode might not be usable because of pixelisation 
 		$angle    = 0;
 		// barcode center

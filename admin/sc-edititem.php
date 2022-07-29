@@ -333,7 +333,7 @@ function processField($xnombrecampo, $xtype, $xsize, $xvalor, $xqinfo, $xrsPpal,
 								else
 								{
 									$input = "<input type=\"";
-									if ($fieldsDefs[$xnombrecampo]["password_field"]  == 1) 
+									if (isset($fieldsDefs[$xnombrecampo]["password_field"]) && $fieldsDefs[$xnombrecampo]["password_field"]  == 1) 
 										$input .= "password\" ";
 									else
 										$input .= "text\" ";

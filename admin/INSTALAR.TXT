@@ -3,10 +3,10 @@
 
 Autor: Ing. Marcos Casamayor
 Sugerencias / mejoras / recuerdos familiares: marcos.casamayor@gmail.com
-Fecha: mayo-2020 / enero-2022
-Version: 202201
+Fecha: mayo-2020 / junio-2022
+Version: 202206
 
-Descargar: https://www.sc3.com.ar/sc3core/sc3-core-202201.zip
+Descargar y FAQ: https://core.sc3.com.ar/
 
 ¿ Qué es ?
 
@@ -16,7 +16,11 @@ caché de tablas en Session/Local Storage, funciones para hacer APIs JSON y mas.
 
 Mejoras
 
-	2022-ene: nuevo buscador de menú, definir comportamieto de campos y grupos con Drag&Drop
+	2021-jun: 
+		Navegador de relaciones de tablas
+		Nueva hoja de estilos
+		
+	2022-ene: nuevo buscador de menú, definir comportamiento de campos y grupos con Drag&Drop
 		Root / Adminer, un phpMyAdmin pero mas rápido y fácil en un sólo archivo
 		Baja libreria terceros/phpids 
 	2021-dic: Mejoras en Favoritos, importar datos, velocidad, mejoras buscador,

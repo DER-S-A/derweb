@@ -1,8 +1,9 @@
 <?php
 
-/*
-Clase que maneja las ultimas operaciones realizadas para ser mostradas en el escritorio
-*/
+/**
+ * Clase que maneja las ultimas operaciones realizadas para ser 
+ * mostradas en el escritorio
+ */
 class ScEscritorio
 {
 	var $aQuerys = [];
@@ -11,7 +12,6 @@ class ScEscritorio
 
 	function __construct()
 	{
-
 	}
 
 	/**
@@ -19,10 +19,8 @@ class ScEscritorio
 	 */
 	function addQuery($xquery_info, $xfilter, $xfiltername)
 	{
-		if (!$this->existsQuery($xquery_info["queryname"], $xfilter))
-		{
-			if (count($this->aQuerys) >= $this->MAX)
-			{
+		if (!$this->existsQuery($xquery_info["queryname"], $xfilter)) {
+			if (count($this->aQuerys) >= $this->MAX) {
 				array_shift($this->aQuerys);
 			}
 			$aQuery = [];
@@ -32,7 +30,7 @@ class ScEscritorio
 			$aQuery["FID"] = $xfilter;
 			$aQuery["FNAME"] = $xfiltername;
 			$aQuery["PALABRA"] = "";
-			
+
 			$this->aQuerys[] = $aQuery;
 		}
 	}
@@ -43,9 +41,7 @@ class ScEscritorio
 	 */
 	function addOp($xopid, $xopname, $xoplink, $xopicon, $xophelp)
 	{
-		debug("ScEscritorio:addOp($xopid, $xopname, $xoplink, $xopicon, $xophelp)");
-		if (count($this->aOperaciones) >= $this->MAX)
-		{
+		if (count($this->aOperaciones) >= $this->MAX) {
 			array_shift($this->aOperaciones);
 		}
 		$aOp = [];
@@ -54,7 +50,7 @@ class ScEscritorio
 		$aOp["ICON"] = $xopicon;
 		$aOp["HELP"] = $xophelp;
 		$aOp["ID"] = $xopid;
-		
+
 		$this->aOperaciones[] = $aOp;
 	}
 
@@ -65,8 +61,7 @@ class ScEscritorio
 		$str = "";
 		//invierte el menú para mostrar arriba las últimas consultadas
 		$auxquerys =  array_reverse($this->aQuerys);
-		if ((sizeof($this->aQuerys) == 0) && $xmotrarVacio)
-		{
+		if ((sizeof($this->aQuerys) == 0) && $xmotrarVacio) {
 			$str .= "\n<div class=\"$xclass\">(sin historia)</div>";
 		}
 
@@ -74,58 +69,52 @@ class ScEscritorio
 			return "";
 
 		$largoBoton = 22;
-		if (count($auxquerys) >= ($this->MAX - 1))	
+		if (count($auxquerys) >= ($this->MAX - 1))
 			$largoBoton = 16;
 
-		foreach ($auxquerys as $i => $query)
-		{
+		foreach ($auxquerys as $i => $query) {
 			$class = $xclass;
-			if (sonIguales($query["QN"], $xactiveQuery))
-			{				
+			if (sonIguales($query["QN"], $xactiveQuery)) {
 				$class .= " $xclass-activo";
 			}
 
 			//ver si vamos a mostrar el último dato accedido
-			if (0)
-			{
-				//recupera el íltimo id visto
+			if (0) {
+				//recupera el último id visto
 				$lastId = (int) getSession("sc3-last-" . $query["QN"]);
-				if ($lastId != 0)
-				{
+				if ($lastId != 0) {
 					$str .= "<a href=\"" . $this->urlVerUltimo($query["QN"], $lastId) . "\">";
 					$str .= imgFa("fa-hand-o-right", "fa-lg", "gris") . "</a>";
-				}
-				else
+				} else
 					$str .= espacio();
 			}
-					
-			$record = Array();
-			
+
+			$record = [];
+
 			$url = new HtmlUrl("sc-selitems.php");
 			$url->add("query", $query["QN"]);
 			$url->add("fstack", "1");
 			$url->add("stackname", $xstackName);
-			if ($query["FID"] != 0)
-			{
+			if ($query["FID"] != "") {
 				$url->add("filter", $query["FID"]);
 				$url->add("filtername", $query["FNAME"]);
 			}
 			$url->add("palabra", $query["PALABRA"]);
-			
-			$op = array();
+
+			$op = [];
 			$op["url"] = $url->toUrl();
 			$op["icon"] = $query["ICON"];
 			if (sonIguales($op["icon"], ""))
-					$op["icon"] = "images/table.png";	
+				$op["icon"] = "images/table.png";
 
 			$qdesc = $query["QD"];
 			//analiza si hay filtro guardado para concatenar al nombre de la op
-			if ($query["FID"] != 0)
+			if ($query["FID"] != 0 && $query["FID"] != "")
 				$qdesc .= " (" .  $query["FNAME"] . ")";
-			
+
 			if (!$xvertical)
 				$qdesc = substr($qdesc, 0, $largoBoton);
-						
+
 			$op["ayuda"] = $qdesc;
 			$op["nombre"] = $qdesc;
 
@@ -133,9 +122,9 @@ class ScEscritorio
 			$boton->setFlat(true);
 			$boton->setInTable(false);
 			$boton->setClass($class);
-			$str .= $boton->toHtml();							
+			$str .= $boton->toHtml();
 		}
-	
+
 		return $str;
 	}
 
@@ -153,53 +142,48 @@ class ScEscritorio
 	{
 		//invierte el menú para mostrar arriba las últimas consultadas
 		$auxquerys =  array_reverse($this->aQuerys);
-		if (count($this->aQuerys) <= 1)
-		{
+		if (count($this->aQuerys) <= 1) {
 			return "";
 		}
 
 		$menu = new HtmlMenu2("historia", "Mi Historial", $xButtonClass);
 		$menu->setIcon($xicon);
-	
+
 		//para no repetir query (ni con filtros)
-		$aQuerys = array();
-		
-		foreach ($auxquerys as $i => $query)
-		{
+		$aQuerys = [];
+
+		foreach ($auxquerys as $i => $query) {
 			$queryname = $query["QN"];
-			
-			if (!sonIguales($queryname, $xskipQuery) && !in_array($queryname, $aQuerys))
-			{
+
+			if (!sonIguales($queryname, $xskipQuery) && !in_array($queryname, $aQuerys)) {
 				$aQuerys[] = $queryname;
-				
+
 				$url = new HtmlUrl("sc-selitems.php");
 				$url->add("query", $queryname);
 				$url->add("fstack", "1");
-				if ($query["FID"] != 0)
-				{
+				if ($query["FID"] != "") {
 					$url->add("filter", $query["FID"]);
 					$url->add("filtername", $query["FNAME"]);
 				}
-	
-				$op = array();
+
+				$op = [];
 				$op["icon"] = $query["ICON"];
 				if (sonIguales($op["icon"], ""))
 					$op["icon"] = "images/table.png";
-	
+
 				$qdesc = $query["QD"];
 				//analiza si hay filtro guardado para concatenar al nombre de la op
-				if ($query["FID"] != 0)
+				if ($query["FID"] != "")
 					$qdesc .= " (" .  $query["FNAME"] . ")";
-	
+
 				$qdesc = substr($qdesc, 0, 35);
 				$menu->add($qdesc, $op["icon"], $url->toUrl());
-				
-				//recupera el �ltimo id visto
+
+				//recupera el último id visto
 				$lastId = (int) getSession("sc3-last-" . $queryname);
-				if ($lastId != 0)
-				{
+				if ($lastId != 0) {
 					$url1 = new HtmlUrl($this->urlVerUltimo($queryname, $lastId));
-					$menu->add(substr(getSession("sc3-last-" . $queryname . "-desc"), 0, 18), "fa-hand-o-right", $url1->toUrl(), "", "dropdown-content-submenu"); 
+					$menu->add(substr(getSession("sc3-last-" . $queryname . "-desc"), 0, 18), "fa-hand-o-right", $url1->toUrl(), "", "dropdown-content-submenu");
 				}
 			}
 		}
@@ -207,15 +191,15 @@ class ScEscritorio
 		return $menu->toHtml();
 	}
 
-	
-	
+
+
 	function urlVerUltimo($xquery, $xid)
 	{
 		$result = "sc-viewitem.php";
 		$result .= "?query=$xquery&registrovalor=$xid&fstack=1";
 		return $result;
 	}
-	
+
 	/**
 	 * Muestra los favoritos
 	 * @param BDObject $xrs
@@ -225,35 +209,31 @@ class ScEscritorio
 	{
 		$str = "";
 		//invierte el menu para mostrar arriba las ultimas consultadas
-		if ($xrs->EOF())
-		{
+		if ($xrs->EOF()) {
 			return "";
 		}
 
-		while (!$xrs->EOF())
-		{
+		while (!$xrs->EOF()) {
 			$str .= "\n<div class=\"boton\">";
 
 			$tipo = $xrs->getValue("tipo");
-			if (sonIguales($tipo, "Q"))
-			{
-				$record = Array();
-			
+			if (sonIguales($tipo, "Q")) {
+				$record = [];
+
 				$url = new HtmlUrl("sc-selitems.php");
 				$url->add("query", $xrs->getValue("queryname"));
 				$url->add("todesktop", "1");
 				$valor2 = explode("--", $xrs->getValue("valor2"));
-				if ((int) $valor2[0] != 0)
-				{
+				if ((int) $valor2[0] != 0) {
 					$url->add("filter", $valor2[0]);
 					$url->add("filtername", $valor2[1]);
 				}
-				
-				$op = array();
+
+				$op = [];
 				$op["url"] = $url->toUrl();
 				$op["icon"] = $xrs->getValue("icon");
 				if (sonIguales($op["icon"], ""))
-						$op["icon"] = "images/table.png";	
+					$op["icon"] = "images/table.png";
 
 				$qdesc = $xrs->getValue("querydescription");
 				//analiza si hay filtro guardado para concatenar al nombre de la op
@@ -272,42 +252,38 @@ class ScEscritorio
 				$qinfo = getQueryObj($xrs->getValue("queryname"));
 				$cant = $qinfo->getRecordCountFilter($valor2[0]);
 				$str .= "<br><font size=\"4\"><b>$cant</b></font>";
-			}
-			else
-			{
+			} else {
 				$url = new HtmlUrl($xrs->getValue("queryname"));
 				$url->add("opid", $xrs->getValueInt("id"));
 				$item = $xrs->getValue("querydescription");
 				$icon = $xrs->getValue("icon");
 				$target = $xrs->getValue("target");
-				if (esVacio($target))
-				{
+				if (esVacio($target)) {
 					$target = "contenido";
 					$url->add("fstack", "1");
 				}
-				
-				$stackname = "op_" . lcfirst(escapeJsNombreVar($item));	
+
+				$stackname = "op_" . lcfirst(escapeJsNombreVar($item));
 
 				$str .= href(img($icon, $item) . " " . $item, $url->toUrl(), $target, "", "td_toolbarIzq");
 			}
 			$str .= "</div>";
 			$xrs->Next();
 		}
-	
+
 		return $str;
 	}
-	
+
 	/**
 	 * determina si existe el query en el escritorio
 	 */
 	function existsQuery($xquery, $xfilter)
 	{
-		foreach ($this->aQuerys as $i => $query)
-		{
+		foreach ($this->aQuerys as $i => $query) {
 			if (sonIguales($query["QN"], $xquery) && $xfilter == $query["FID"])
-				return true;	
+				return true;
 		}
-	
+
 		return false;
 	}
 
@@ -316,18 +292,13 @@ class ScEscritorio
 	 */
 	function setQuerySearch($xquery, $xfilter, $xpalabra)
 	{
-		foreach ($this->aQuerys as $i => $query)
-		{
-			if (sonIguales($query["QN"], $xquery) && $xfilter == $query["FID"])
-			{
+		foreach ($this->aQuerys as $i => $query) {
+			if (sonIguales($query["QN"], $xquery) && $xfilter == $query["FID"]) {
 				$this->aQuerys[$i]["PALABRA"] = $xpalabra;
 				return true;
 			}
 		}
-
 	}
-
-	
 } //fin clase
 
 
@@ -346,19 +317,16 @@ function initEscritorio()
  */
 function getEscritorio()
 {
-	if (!isset($_SESSION["_DESK"])) 
-	{
-		initEscritorio(); 
-	}	
-	
+	if (!isset($_SESSION["_DESK"])) {
+		initEscritorio();
+	}
+
 	$desk = new ScEscritorio();
 	$desk = unserialize($_SESSION["_DESK"]);
-	return $desk;		
+	return $desk;
 }
 
 function saveEscritorio($xdesk)
 {
 	$_SESSION["_DESK"] = serialize($xdesk);
 }
-
-?>

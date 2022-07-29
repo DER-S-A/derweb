@@ -573,7 +573,7 @@ class HtmlDateRange
 	function toHtml()
 	{
 		$combo = new HtmlCombo($this->id . "_combo", $this->value);
-		$combo->setClass("rango_fechas");
+		$combo->setClass("rango-fechas");
 		$combo->add("mes_actual", "Mes actual");
 		$combo->add("ultimo_mes", "Mes &uacute;ltimo");
 		$combo->add("mes_pasado", "Mes pasado");

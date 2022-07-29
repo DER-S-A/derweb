@@ -26,7 +26,7 @@ if (enviado()) {
 	if (!esVacio($error))
 		setWarning($error . " " . $result);
 	else
-		setMensaje("$msg $result");
+		setMensaje("$msg " . str_replace(",", ", ", $result));
 	goOn();
 }
 

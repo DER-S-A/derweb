@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 /**
@@ -15,18 +15,16 @@ class HtmlTabber
 	}
 
 	/*
-	 comienza un Tab
+	comienza un Tab
 	*/
 	function startTabs()
 	{
 		$str = "";
-		if ($this->mcrearTabla)
-		{
+		if ($this->mcrearTabla) {
 			$str .= "<tr><td colspan=\"2\">";
 			//crea un ID unico para que se guarde el cookie con el tab seleccionado
 			$str .= "\n<div class=\"tabber\" id=\"" . getPageId() . "\">";
-		}
-		else
+		} else
 			$str .= "\n<div class=\"tabber\" id=\"" . getPageId() . "\">";
 		return $str;
 	}
@@ -34,17 +32,15 @@ class HtmlTabber
 	function endTabs()
 	{
 		$str = "";
-		if ($this->mcrearTabla)
-		{
+		if ($this->mcrearTabla) {
 			$str .= "</div></td></tr>";
-		}
-		else
+		} else
 			$str .= "\n</div>\n";
 		return $str;
 	}
 
 	/*
-	 Comienza una solapa con un titulo dado y un icono
+	Comienza una solapa con un titulo dado y un icono
 	*/
 	function startSolapa($xtitulo, $xicono = "")
 	{
@@ -91,120 +87,104 @@ class HtmlTabber
  */
 class HtmlTabs2
 {
-    var $mSolapas = array();
-    var $mid = "";
+	var $mSolapas = [];
+	var $mid = "";
 	var $mAltura = "";
 	//si se puede convertir cuando la pantalla es grande
 	var $mConvertible = false;
-    
-    function __construct()
-    {
-        $this->mid = "t" . rand(200, 999);
+
+	function __construct()
+	{
+		$this->mid = "t" . rand(200, 999);
 	}
-	
+
 	function setConvertible($xconvert = true)
 	{
 		$this->mConvertible = $xconvert;
 	}
 
-    function getID()
-    {
-        return $this->mid;
-    }
-    
+	function getID()
+	{
+		return $this->mid;
+	}
+
 	function setId($xid)
 	{
 		$this->mid = $xid;
 	}
 
-    function agregarSolapa($xEtiqueta, $xIcono, $xContenido, $xConPadding = true)
-    {
-        $solapa = array($xEtiqueta, $xIcono, $xContenido, $xConPadding);
-        $this->mSolapas[] = $solapa;
-    }
+	function agregarSolapa($xEtiqueta, $xIcono, $xContenido, $xConPadding = true)
+	{
+		$this->mSolapas[] = [$xEtiqueta, $xIcono, $xContenido, $xConPadding];
+	}
 
-    function setHeight($xAltura)
-    {
-        $this->mAltura = $xAltura;
-    }
+	function setHeight($xAltura)
+	{
+		$this->mAltura = $xAltura;
+	}
 
-    function getHeight()
-    {
-        return $this->mAltura;
-    }
-    
-    function toHtml()
-    {
+	function getHeight()
+	{
+		return $this->mAltura;
+	}
+
+	function toHtml()
+	{
 		$estiloBotones = "ocultar-grande";
 		$estiloTituloInterior = "mostrar-grande";
 		$estiloSolapas = "solapa-convertible";
 		//si no es convertible, siempre será solapa
-		if (!$this->mConvertible)
-		{
+		if (!$this->mConvertible) {
 			$estiloBotones = "";
 			$estiloTituloInterior = "oculto";
 			$estiloSolapas = "";
 		}
 
-        $result = "\n<div class=\"w3-container sc3-tabs\" id=\"" . $this->getID() . "\">";
-        $result .= "<div class=\"w3-bar $estiloBotones\">";
-        $icono = "";
-        for ($i = 0; $i < count($this->mSolapas); $i++) 
-        {
-            if ($i == 0)
-            {
-                $clase = "solapaActiva";
-            }
-            else
-            {
-                $clase = "";
-            }
+		$result = "\n<div class=\"w3-container sc3-tabs\" id=\"" . $this->getID() . "\">";
+		$result .= "<div class=\"w3-bar $estiloBotones\">";
+		$icono = "";
+		for ($i = 0; $i < count($this->mSolapas); $i++) {
+			if ($i == 0) {
+				$clase = "solapa-activa";
+			} else {
+				$clase = "";
+			}
 
 			$icono = $this->mSolapas[$i][1];
-            if ($icono != "")
-            {  
-                if (esIconFontAwesome($icono))
-                {
-                	$icono ="<i class=\"fa fa-fw fa-lg " . $icono . "\"></i>";
+			if ($icono != "") {
+				if (esIconFontAwesome($icono)) {
+					$icono = "<i class=\"fa fa-fw fa-lg " . $icono . "\"></i>";
+				} else {
+					$icono = "<img src=\"" . $icono . "\">";
 				}
-				else
-                {
-                	$icono = "<img src=\"" . $icono . "\">";
-                }
-            }
+			}
 
-			$result .= "\n<a class=\"w3-bar-item botonSolapa botonSolapa" . $this->getID() . " $clase \" onclick=\"openSolapa(event, '" . $this->getID() ."', '" . $i . "');\" > $icono " . $this->mSolapas[$i][0] . "</a>";
+			$result .= "\n<a class=\"w3-bar-item boton-solapa boton-solapa" . $this->getID() . " $clase \" onclick=\"openSolapa(event, '" . $this->getID() . "', '" . $i . "');\" > $icono " . $this->mSolapas[$i][0] . "</a>";
 		}
-		
-        $result .= "</div>";
+
+		$result .= "</div>";
 		$padding = "";
-		
-		for ($j = 0; $j < count($this->mSolapas); $j++) 
-		{
+
+		for ($j = 0; $j < count($this->mSolapas); $j++) {
 			$id = $this->getID() . $j;
 
-			$padding = ""; 
-            if ($this->mSolapas[$j][3] == true)
-                $padding = "w3-padding";
+			$padding = "";
+			if ($this->mSolapas[$j][3] == true)
+				$padding = "w3-padding";
 
 			$display = "";
-            if ($j != 0)
+			if ($j != 0)
 				$display = "display:none;";
 
-			$result .= "\n<div class=\"$padding w3-white solapa $estiloSolapas solapa" . $this->getID() . "\" id=\"" . $id ."\" style=\"$display height:". $this->getHeight() ."\">";
+			$result .= "\n<div class=\"$padding w3-white solapa $estiloSolapas solapa" . $this->getID() . "\" id=\"" . $id . "\" style=\"$display height:" . $this->getHeight() . "\">";
 			$result .= "<div class=\"tabs-titulo $estiloTituloInterior\">";
 			$result .= $this->mSolapas[$j][0];
 			$result .= "</div>";
 			$result .= $this->mSolapas[$j][2];
 			$result .= "</div>";
 		}
-		
-        $result .= "</div>";
-        return $result;
-    }
-    
+
+		$result .= "</div>";
+		return $result;
+	}
 }
-
-
-
-?>

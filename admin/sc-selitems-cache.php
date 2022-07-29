@@ -187,7 +187,7 @@ function getFormBusqueda($xnropag, $ximg, $xaltimg, $xid = "", $xhideSmall = fal
 	if ($xhideSmall)
 		$hideSmall = " w3-hide-small ";
 
-	$strAux = href("<i class=\"$ximg fa-lg\"></i>", $href, "", $xid,  "w3-button botonPaginado w3-text-white w3-margin-left $hideSmall");
+	$strAux = href("<i class=\"$ximg fa-lg\"></i>", $href, "", $xid,  "w3-button boton-paginado w3-text-white w3-margin-left $hideSmall");
 	return $strAux;
 }
 

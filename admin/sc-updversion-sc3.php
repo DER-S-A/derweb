@@ -1815,7 +1815,7 @@ function sc3UpdateVersionSc3Varios2021()
 					where idusuario not in (select id from sc_usuarios)");
 
 	$url = "sc-limpiar-temporales.php";
-	sc3AgregarOperacion("Limpiar temporales", $url, "images/delete.gif", "Limpia archivos temporales creados en tmpcache", "", "Root", 0, "Root");
+	sc3AgregarOperacion("Limpiar temporales", $url, "images/delete.gif", "Limpia archivos temporales creados en tmpcache", "", "Root", 0, "");
 
 	$tabla = "sc_operaciones";
 	$query = "qoperaciones";
@@ -1854,16 +1854,86 @@ function sc3UpdateVersionSc3Varios2021()
 
 	$url = "sc-instalarmodulo.php";
 	//sc3AgregarOperacion("Instalar modulo", $url, "images/inmoobjetivos.gif", "Instalar o actualizar un modulo", "", "root", 0, "root"); 
-	
+
 	//operacion para administrar query (campos draggeables etc)
 	$url = "sc-administrarquery.php";
-	$opid = sc3AgregarOperacion("Definir consulta", $url, "images/toolsc3.png", "Administar tabla y campos", "sc_querys", "", 0, "root", "defquery", 0, "sc_querysall");
+	$opid = sc3AgregarOperacion("Definir campos", $url, "images/toolsc3.png", "Administar tabla y campos", "sc_querys", "", 0, "root", "defquery", 0, "sc_querysall");
 	if ($opid != 0) {
-
 	}
+
+	$bd->execQuery("update sc_operaciones set nombre = 'Definir campos' where url='$url'");
 
 	$url = "sc-adminer.php";
 	$opid = sc3AgregarOperacion("Adminer", $url, "images/database.png", "Administar base de datos", "", "root", 0, "root", "adminer");
+
+	$bd->close();
+}
+
+
+//24-ene-2022: Acceso offline y mas....
+function sc3UpdateVersionSc3Varios2022()
+{
+	$bd = new BDObject();
+
+	$tabla = "sc_operaciones";
+	$query = "qoperaciones";
+	$field = "acceso_offline";
+	if (!sc3existeCampo($tabla, $field)) {
+		sc3agregarCampoBoolean($tabla, $field, false, "", 0);
+		sc3generateFieldsInfo($tabla);
+		sc3setGroup($tabla, $field, "estado");
+
+		$bd->execQuery("update $tabla set $field = 0");
+	}
+
+	$tabla = "sc_usuarios";
+	$field = "recibe_notificaciones";
+	if (!sc3existeCampo($tabla, $field)) {
+		sc3agregarCampoBoolean($tabla, $field, false, "", 0);
+		sc3generateFieldsInfo($tabla);
+		sc3setGroup($tabla, $field, "estado");
+
+		$bd->execQuery("update $tabla set $field = 0");
+	}
+
+	//sql para activar hora en el calendario antes del evento
+	$SQL = "UPDATE cal_options
+			SET opvalue = 'y'
+			WHERE opname = 'hours_24'";
+	$bd->execQuery($SQL);
+	$SQL = "UPDATE cal_options
+			SET opvalue = 'y'
+			WHERE opname = 'show_times'";
+	$bd->execQuery($SQL);
+
+	if (sc3existeCampo("gen_personas", "es_empleado"))
+		$bd->execQuery("alter table gen_personas 
+					modify column es_empleado tinyint(3) null");
+
+	if (sc3existeCampo("gen_personas", "es_juridica"))
+		$bd->execQuery("alter table gen_personas 
+						modify column es_juridica tinyint(3) null");
+
+	if (sc3existeCampo("gen_personas", "es_alumno"))
+		$bd->execQuery("alter table gen_personas 
+						modify column es_alumno tinyint(3) null");
+
+	if (sc3existeCampo("gen_personas", "es_propietario"))
+		$bd->execQuery("alter table gen_personas 
+						modify column es_propietario tinyint(3) null");
+
+	if (sc3existeCampo("gen_personas", "es_medico"))
+		$bd->execQuery("alter table gen_personas 
+						modify column es_medico tinyint(3) null");
+
+	$bd->execQuery("alter table gen_personas 
+					modify column fecha_alta datetime null");
+
+	// no gustó '#648D6A'
+	$sql = "update sc_menuconsola
+			set color = '#274051'
+			where color in('#607d8b', '#648D6A')";
+	//$bd->execQuery($sql);
 
 	$bd->close();
 }

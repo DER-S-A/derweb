@@ -148,7 +148,7 @@ if ($idtemplate != 0) {
 					<?php
 					global $SITIO;
 					echo (getSession("email"));
-
+					echo(" <small>enviarme copia:</small>");
 					$cboCc = new HtmlBoolean2("copiarme", 0);
 					echo ($cboCc->toHtml());
 					?>

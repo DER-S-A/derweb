@@ -1,5 +1,6 @@
 <?php
 include("funcionesSConsola.php");
+include_once("app-ema.php");
 include_once("app-wsp.php");
 checkUsuarioLogueado();
 
@@ -86,6 +87,7 @@ if (enviado()) {
 	if (array_key_exists("error", $aResult) && $aResult["error"] != "") {
 		$error = $aResult["error"];
 	} else {
+		emaLogEnvio("WHATSAPP", $tocelular, 0, "", "", $tema, $mensaje, implode(" ", $aAdjuntos));
 		$jscript = "window.close();";
 	}
 }
@@ -162,7 +164,7 @@ if (enviado()) {
 					$req->add("tocelular", "Destinatario");
 
 					$hlp = new HtmlHelp("Separe destinatarios con coma ','");
-					echo ($hlp->toHtml()); 
+					echo ($hlp->toHtml());
 					?>
 				</td>
 

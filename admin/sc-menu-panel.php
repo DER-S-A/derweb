@@ -7,9 +7,10 @@ $ajaxH = sc3GetAjaxHelper();
 $ajaxH->registerFunction("sc3UsuariosActivos");
 sc3SaveAjaxHelper($ajaxH);
 
+$pwa = getParameterInt("pwa-activo", 0);
+
 //arma logo.ico
 favIconBuild("app/logo.png");
-
 
 //arreglo con todas las operaciones que puede acceder el usuario
 $aOperaciones = [];
@@ -38,6 +39,7 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 
 	$i = 0;
 	while (!$rsTablas->EOF()) {
+
 		$url = new HtmlUrl("sc-selitems.php");
 		$url->add("query", $rsTablas->getValue("queryname"));
 		$url->add("fstack", "1");
@@ -77,6 +79,8 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 
 		$item = $rsTablas->getValue("nombre");
 		$icon = $rsTablas->getValue("icon");
+		$accesoOffline = $rsTablas->getValueInt("acceso_offline");
+
 		if (esVacio($icon))
 			$icon = "images/table.png";
 		$favicon = favIconBuild($icon, true);
@@ -91,6 +95,9 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 			//abre en ventana aparte, en otra pila
 			$url->add("stackname", "op_" . $target);
 		}
+
+		if ($accesoOffline == 1)
+			$url->add("pwacache", 1);
 
 		$itemShort = substr($item, 0, $ANCHO_MAX);
 		$str = span("<a href=\"" . $url->toUrl() . "\" target=\"$target\" class=\"td_toolbarIzq\">
@@ -128,8 +135,21 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 	<script type="text/javascript" src="<?php echo (sc3CacheButer("scripts/sc-menu-panel.js")); ?>"></script>
 
 	<script language="javascript">
+		//cuantas veces voy al server
+		let gAccesosServer = 0;
+
+		var aOperacionesOffline = [];
+
 		var ANCHO_CHICO = '60';
 		var ANCHO_GRANDE = '235';
+
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				var response = xmlhttp.responseText;
+				console.log('op cacheada');
+			}
+		}
 
 		//hides/shows the menu
 		function hideUnhideMenu() {
@@ -151,13 +171,19 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 				alert('\'divMenu\' no encontrado.');
 		}
 
-
 		/**
 		 * Invoca funcion del server para determina usuarios activos
 		 */
 		function checkUsuariosActivos() {
 			var params = [];
 			sc3InvokeServerFn('sc3UsuariosActivos', params, checkUsuariosActivosCB);
+			//cada 50 segundos * 50, aprox 40'
+			//visita todas las operaciones para que estén disponibles offline
+			if (aOperacionesOffline[gAccesosServer - 1] !== undefined) {
+				operacion = aOperacionesOffline[gAccesosServer - 1];
+				document.getElementById("iFrameSW").src = operacion;
+			}
+			gAccesosServer = (gAccesosServer + 1) % 60;
 		}
 
 		function checkUsuariosActivosCB(aResult) {
@@ -172,7 +198,6 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 					usuarios = usuarios + ausr[i].login + ' | ';
 					cantU++;
 				}
-
 				i++;
 			}
 
@@ -196,7 +221,7 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 		}
 
 		.fa.iconoOtraSolapa {
-			color: #cb769e;
+			color: #64668D;
 		}
 
 
@@ -255,6 +280,7 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 			justify-content: space-between;
 			padding: 1px;
 			background-color: #dfe6e9;
+			width: 230px;
 		}
 
 		.info_status {
@@ -281,18 +307,23 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 
 <body onload="checkUsuariosActivos();startMenuDesplegable('buscarop');document.getElementById('buscarop').focus();" class="body-menu">
 
+
+	<!-- IFRAME OCULTO PARA INICIAR EL SERVICE WORKER-->
+	<iframe src="" id="iFrameSW" style="display: none" frameborder="0"></iframe>
+
+
 	<div class="menu-fijo">
 
 		<div class="tabla-logo">
 
 			<div style="width: 70%;display: inline-block;">
 				<a href="hole.php?fstack=1" class='hover-white' target="contenido" title="Cerrar todas las ventanas y acceder al escritorio">
-					<img src="app/logo.png" alt="<?php echo ($SITIO); ?>" title="<?php echo ($SITIO); ?>" style="max-width: 100%; max-height: 66px;">
+					<img src="app/logo.png" alt="<?php echo ($SITIO); ?>" title="<?php echo ($SITIO); ?>" style="max-width: 100%; max-height: 66px; margin-left: 5px; border-radius: 2px;">
 				</a>
 			</div>
 
 			<div>
-				<a href="loginerror.php" target="_parent" title="Salir del sistema" class="boton_menu">
+				<a href="sc-loginerror.php" target="_parent" title="Salir del sistema" class="boton_menu">
 					<i class="fa fa-sign-out fa-2x"></i>
 				</a>
 			</div>
@@ -382,27 +413,34 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 				$target = "contenido";
 			} else {
 				$url = new HtmlUrl($rsTablas->getValue("queryname"));
+				//opid,favicon,stackname,pwa
 				$url->add("opid", $rsTablas->getValueInt("id"));
-				$item = $rsTablas->getValue("querydescription");
-				$icon = $rsTablas->getValue("icon");
-				$target = $rsTablas->getValue("target");
-				if (esVacio($target)) {
-					$target = "contenido";
-					$url->add("fstack", "1");
-				}
-
-				$stackname = "op_" . lcfirst(escapeJsNombreVar($item));
 			}
+
+			$item = $rsTablas->getValue("querydescription");
+			$icon = $rsTablas->getValue("icon");
+			$favicon = favIconBuild($icon, true);
+			$url->add("favicon", $favicon);
+			$target = $rsTablas->getValue("target");
+			if (esVacio($target)) {
+				$target = "contenido";
+				$url->add("fstack", "1");
+			} else {
+				//abre en ventana aparte, en otra pila
+				$url->add("stackname", "op_" . $target);
+			}
+
+			$accesoOffline = $rsTablas->getValueInt("acceso_offline");
+			if ($accesoOffline == 1)
+				$url->add("pwacache", 1);
 
 			//va al menu (restringe ancho 25)
 			$str = span(href(img($icon, $item) . " " .  substr($item, 0, 22), $url->toUrl(), $target, "", "td_toolbarIzq"), "menu-item-izq");
 
-			//abre en ventana aparte
-			$url->add("stackname", $stackname);
-			$url->add("fstack", "1");
-
-			$favicon = favIconBuild($icon, true);
-			$url->add("favicon", $favicon);
+			//los cuadrados de abrir en otra pestaña llevan tackname
+			if (esVacio($target) || sonIguales($target, "contenido")) {
+				$url->add("stackname", $stackname);
+			}
 
 			$str .= span("<a href=\"" . $url->toUrl() . "\" target=\"sel_" . escapeJsNombreVar($item) . "\">
 						<i class=\"fa fa-window-restore fa-lg iconoOtraSolapa\"></i>
@@ -449,6 +487,12 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 		let aOperaciones = [];
 		<?php
 
+/* 		
+		version php5.6
+		foreach ($aOperaciones as $i => $ops) {
+			echo ("\r\n aOperaciones.push(['" . $ops[0] . "', '" . $ops[1] . "', '" . $ops[2] . "', '" . $ops[3] . "', '" . $ops[4] . "']);");
+		}
+*/
 		foreach ($aOperaciones as $i => [$nombre, $icon, $url, $target, $ayuda]) {
 			echo ("\r\n aOperaciones.push(['$nombre', '$icon', '$url', '$target', '$ayuda']);");
 		}
@@ -472,7 +516,8 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 
 	$rsTablas->execQuery("update sc_querys set icon='images/table.png' where icon = ''");
 
-	$rsTablas = getRs("select distinct icon from sc_operaciones");
+	$rsTablas = getRs("select distinct icon 
+						from sc_operaciones");
 	while (!$rsTablas->EOF()) {
 		$icon = $rsTablas->getValue("icon");
 
@@ -483,6 +528,41 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 	}
 
 	$rsTablas->close();
+
+	// Operaciones marcadas como de acceso offline --------------------------------------------
+	$aOpsOffline = [];
+	if ($pwa == 1) {
+		$desk = getEscritorio();
+		$sec = new SecurityManager();
+		$rsOps = $sec->getRsOperacionesOffline();
+		$i = 0;
+		while (!$rsOps->EOF()) {
+
+			$url = new HtmlUrl($rsOps->getValue("url"));
+			$url->add("opid", $rsOps->getValueInt("id"));
+
+			$icon = $rsOps->getValue("icon");
+			$favicon = favIconBuild($icon, true);
+			$url->add("favicon", $favicon);
+
+			$item = $rsOps->getValue("querydescription");
+			$target = $rsOps->getValue("target");
+			//abre en ventana aparte
+			if (esVacio($target)) {
+				$target = "contenido";
+				$url->add("fstack", "1");
+			} else {
+				//abre en ventana aparte, en otra pila
+				$url->add("stackname", "op_" . $target);
+			}
+
+			$url->add("pwacache", 1);
+			$aOpsOffline[] = $url->toUrl();
+			$rsOps->Next();
+		}
+		$rsOps->close();
+	}
+
 	?>
 
 	<div title="Versi&oacute;n y usuarios" class="info-version">
@@ -493,6 +573,8 @@ function buildMenuExpanding($xid, $xAcordion, $xmenu)
 	</div>
 
 	<script type="text/javascript">
+		aOperacionesOffline = <?php echo (json_encode($aOpsOffline)); ?>;
+
 		//instala timer que recupera los usuarios activos
 		window.setInterval(checkUsuariosActivos, 50000);
 	</script>

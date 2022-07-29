@@ -6,13 +6,13 @@
  */
 class HtmlTable
 {
-	var $mtitulos = array();
+	var $mtitulos = [];
 	var $mtitulo = "";
-	var $mfooter = array();
-	var $mfilas = array();
+	var $mfooter = [];
+	var $mfilas = [];
 	var $mwidth = "";
 	var $mDefCellAlign = "right";
-	var $mcols = array();
+	var $mcols = [];
 	var $useFilters = false;
 	var $mclass = "data_table";
 	var $mcurrentRowColor = "#e5e5e5";
@@ -139,6 +139,16 @@ class HtmlTable
 		$this->mfilas[] = $xafila;
 	}
 	
+	/**
+	 * Toma un arreglo asociativo y lo agrega como filas
+	 */
+	function parseArray($xaArreglo) 
+	{
+		foreach ($xaArreglo as $index => $dato) {
+			$this->addFila([$index, $dato]);
+		}
+	}
+
 	function setFilas($xaFilas)
 	{
 		$this->mfilas = $xaFilas;
@@ -156,7 +166,7 @@ class HtmlTable
 	function addSeparador($xtitulo)
 	{
 		$celdaTit = array("class"=>"grid_grupo0", "align"=>"left", "valor"=>$xtitulo, "colspan"=>$this->mcantCols);
-		$rowTit = array();
+		$rowTit = [];
 		$rowTit[] = $celdaTit;
 		$this->addFila($rowTit);
 	}

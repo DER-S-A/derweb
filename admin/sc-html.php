@@ -279,11 +279,12 @@ function linkCerrar($anterior = 1, $xstackname = "", $xclass = "")
 }
 
 
-function linkImprimir()
+function linkImprimir($xclass = "")
 {
 	if (esExcel())
 		return "";
-	$str = "<a id=\"linkprint\" href=\"javascript:window.print()\" accesskey=\"i\" class=\"w3-hide-small\" >
+
+	$str = "<a id=\"linkprint\" href=\"javascript:window.print()\" accesskey=\"i\" class=\"w3-hide-small $xclass\" >
                 <i class=\"fa fa-print fa-lg\"></i>
             </a>";
 	return $str;
