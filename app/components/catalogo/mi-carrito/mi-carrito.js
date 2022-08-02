@@ -32,10 +32,6 @@ class MiCarritoModalComponent extends ComponentManager {
         document.getElementById(this.__idBotonCerrar).addEventListener("click", () => {
             document.getElementById(this.__idModal + "_fondo").style.display = "none";
         });
-
-        /*document.getElementById(this.__idModal + "_fondo").addEventListener("click", () => {
-            document.getElementById(this.__idModal + "_fondo").style.display = "none";
-        });*/
     }
 
     /**
@@ -102,11 +98,36 @@ class MiCarritoModalComponent extends ComponentManager {
      * Genera el footer del modal mi carrito.
      */
     __generarFooter() {
-        var objDivFooter = document.createElement("div");
-        var objBotonFinalizarPedido = document.createElement("button");
+        let objDivFooter = document.createElement("div");
+        let objBotonFinalizarPedido = document.createElement("button");
+        let objSelectSucursal = document.createElement("select");
+        let objLabel = document.createElement("label");
+        let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
+        
+        objSelectSucursal.id = "select-sucursales";
+        objSelectSucursal.name = "select-sucursales";
+        objSelectSucursal.classList.add("form-control");
+        objSelectSucursal.classList.add("select-suscursal");
+        objLabel.textContent = "Sucursal:";
+
+        fetch("services/entidades.php/getSucursalesByEntidad?id_entidad=" + aSesion["id_cliente"])
+            .then(xresponse => xresponse.json())
+            .then(xsucursales => {
+                xsucursales.forEach((xitem) => {
+                    let objOption = document.createElement("option");
+                    objOption.id = xitem["codigo_sucursal"];
+                    objOption.value = xitem["id"];
+                    objOption.textContent = xitem["codigo_sucursal"] + " - " + xitem["calle"] + " - " + xitem["ciudad"];
+                    objSelectSucursal.appendChild(objOption);
+                });
+            });
+
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
         objDivFooter.classList.add("modal-div-footer");
+
+        objDivFooter.appendChild(objLabel);
+        objDivFooter.appendChild(objSelectSucursal);
         
         objBotonFinalizarPedido.id = "btn-finalizar-pedido";
         objBotonFinalizarPedido.name = "btn-finalizar-pedido";
@@ -114,8 +135,37 @@ class MiCarritoModalComponent extends ComponentManager {
         objBotonFinalizarPedido.classList.add("btn");
         objBotonFinalizarPedido.classList.add("btn-primary");
 
+        // Agrego la funcionalidad del evento finalizar pedido.
+        objBotonFinalizarPedido.addEventListener("click", () => {
+            this.clearContainer(this.__idModal + "-contenido");
+        }, false);
+
         objDivFooter.appendChild(objBotonFinalizarPedido);
         this.__objDivModal.appendChild(objDivFooter);
+    }
+
+    /**
+     * Permite crear el formulario de finalizar pedido.
+     */
+    __crearFormularioConfirmarPedido() {
+        let objContenedor = this.__crearContenedorFormulario();
+    }
+
+    /**
+     * Permite crear el contenedor de mi carrito.
+     * @returns {DOMElement}
+     */
+    __crearContenedorFormulario() {
+        let objContenedor = document.createElement("div");
+        objContenedor.id = this.__idModal + "-form-confirmar-pedido";
+        return objContenedor;
+    }
+
+    __crearSelectorSucursales() {
+        let objLabel = document.createElement("label");
+        let objSelector = document.createElement("select");
+
+        // Esperar a tener datos cargados.
     }
 
     open() {

@@ -68,3 +68,7 @@
 .modal-div-footer button {
     width: 99%;
 }
+
+.modal-div-footer .select-suscursal {
+    margin-bottom: 20px;
+}
