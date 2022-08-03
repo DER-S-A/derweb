@@ -129,5 +129,23 @@ class EntidadesModel extends Model {
         $aCliente = getRs($sql, true)->getAsArray();
         return $aCliente;
     }
+    
+    /**
+     * getSucursalesByEntidad
+     * Obtiene el listado de sucursales por entidad.
+     * @param  int $xidEntidad
+     * @return array
+     */
+    public function getSucursalesByEntidad($xidEntidad) {
+        $sql = "SELECT
+                    *
+                FROM
+                    sucursales
+                WHERE
+                    sucursales.id_entidad = $xidEntidad
+                ORDER BY
+                    predeterminado DESC";
+        return getRs($sql, true)->getAsArray();
+    }
 }
 ?>

@@ -40,10 +40,19 @@ class CarritoGridComponent extends ComponentManager {
             .then(xresponse => xresponse.json())
             .then(xdata => {
                 if (xdata["items"].length != 0) {
+                    this.__grabarEnCache(xdata);
                     this.__crearListaItems(xdata["items"]);
                     this.__total = xdata["total_pedido"];
                 }
             });
+    }
+
+    /**
+     * Guardar el carrito en localStorage.
+     * @param {array} xdata 
+     */
+    __grabarEnCache(xdata) {
+        localStorage.setItem("derweb-mi-carrito", JSON.stringify(xdata));
     }
 
     /**
@@ -84,7 +93,7 @@ class CarritoGridComponent extends ComponentManager {
         if (xitem["archivo"] !== "")
             objImagen.setAttribute("src", xitem["archivo"]);
         else
-            objImagen.setAttribute("src", "../admin/ufiles/sinfoto.svg");
+            objImagen.setAttribute("src", "../admin/ufiles/sinfoto.jpeg");
 
         objColumnaContainer.classList.add("foto-container");
         objColumnaContainer.appendChild(objImagen);

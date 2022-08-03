@@ -1,0 +1,14 @@
+
+
+
+29-7-2022 12:15:22[select count(*) as cant_rows from entidades t1 
+ left join sc_adjuntos adj  on (t1.id = adj.iddato and adj.idquery = 727)
+ left join tipos_entidades t2 on (t1.id_tipoentidad = t2.id)
+ left join entidades t3 on (t1.id_identidad_comercial = t3.id)
+ left join listas_precios t4 on (t1.id_listaprecio = t4.id) where id_tipoentidad = 1 ], codigo=1052: Column 'id_tipoentidad' in where clause is ambiguous
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0
+  QUERY_STRING=query=entidades&fstack=1&todesktop=1&fmerge=1&top=20&filter=2753&filtername=Clientes
+  SCRIPT_FILENAME=/var/www/html/derweb/admin/sc-selitems.php
+  REMOTE_ADDR=127.0.0.1
+  SCRIPT_NAME=/derweb/admin/sc-selitems.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)
