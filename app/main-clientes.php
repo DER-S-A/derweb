@@ -108,7 +108,7 @@
                                         <li class="perfil-item"><a href="#" >Ultimos vistos<hr></a><li>
                                         <li class="perfil-item"><a href="#" >Favoritos<hr></a><li>
                                         <li class="perfil-item"><a href="#" >Presupuestos<hr></a><li>
-                                        <li class="perfil-item"><a href="derweb/app/" >Cerrar sesion <hr></a></li>
+                                        <li class="perfil-item"><a href="../index" id="cierreSession">Cerrar sesion <hr></a></li>
                                     </ul>
                                 </div>
                             </div>                                

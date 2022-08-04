@@ -271,6 +271,9 @@ function esconderHamburguesa() {
 
 }
 
+/*
+* DESPLIEGA MENU PERFIL
+*/
 let objBPerfil = document.getElementById("btn_perfil");
 let abrirCerrar=0;
 objBPerfil.addEventListener("click",()=> {
@@ -282,5 +285,9 @@ objBPerfil.addEventListener("click",()=> {
         objMPerfil.style.display = "none";
         abrirCerrar=0;
     }
+})
 
+let objCierreSession = document.getElementById("cierreSession");
+objCierreSession.addEventListener("click",()=> {
+    sessionStorage.removeItem("derweb_sesion");
 })
