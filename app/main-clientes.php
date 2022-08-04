@@ -99,7 +99,17 @@
                                     <button type="button" id="btn_perfil" name="btn_perfil" class="boton-perfil">
                                         <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
                                     </button>
-
+                                    <ul class="menu-perfil">
+                                        <li class="perfil-item"><a href="#" >Mi perfil<hr></a></li>
+                                        <li class="perfil-item"><a href="#" >Mis reclamos<hr></a></li>
+                                        <li class="perfil-item"><a href="#" >Garantias<hr></a></li>
+                                        <li class="perfil-item"><a href="#" >Cuenta corriente<hr></a></li>
+                                        <li class="perfil-item"><a href="#" >Mis ubicaciones<hr></a></li>
+                                        <li class="perfil-item"><a href="#" >Ultimos vistos<hr></a><li>
+                                        <li class="perfil-item"><a href="#" >Favoritos<hr></a><li>
+                                        <li class="perfil-item"><a href="#" >Presupuestos<hr></a><li>
+                                        <li class="perfil-item"><a href="../index" id="cierreSession">Cerrar sesion <hr></a></li>
+                                    </ul>
                                 </div>
                             </div>                                
                         </div>
@@ -185,7 +195,7 @@
         <script src="components/menus/menus.js" type="text/javascript"></script>
         <script src="components/lista-articulos/lista-articulos.js" type="text/javascript"></script>
         <script src="components/carrusel/carrusel.js" type="text/javascript"></script>
-
+        
         <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.js"></script>
         <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
         <script src="components/carrusel_footer/carruselfooter.js" type="text/javascript"></script>

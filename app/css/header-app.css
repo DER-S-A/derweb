@@ -96,9 +96,14 @@
     position: relative;
     float: right;
     margin-top: -60px;
-    width: 60px;
+    height:10px;
     padding:5px;
     align-content: center;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    align-items: center;
+    
 }
 
 .app-header .menu-perfil-container .boton-perfil {
@@ -111,11 +116,44 @@
     font-weight: bold;
     color: white;
     padding: 5px;
+    width:50px;
+    /*position: relative;
+    left:40px;*/
     
     /* Le agrego 2px de resplandor exterior*/
     -moz-box-shadow: 0px 0px 2px #ffffff;
     -webkit-box-shadow: 0px 0px 2px #ffffff;
     box-shadow: 0px 0px 2px #ffffff;     
+}
+
+.menu-perfil{
+    background-color: rgb(255, 255, 255);
+    display:none;
+    flex-direction: column;
+    align-items: flex-start;
+    list-style: none;
+    border-radius: 12px;
+    padding:0;
+    position: relative;
+    right: 80px;
+        
+    
+}
+
+.menu-perfil li {
+    margin: 0 10px;
+    font-size: 1.2em;
+    color:#00478d;
+    font-weight: 600;
+}
+
+.menu-perfil li a {
+    text-decoration: none;
+    color: #00478d;
+}
+
+.menu-perfil li a hr {
+    width: 160px;
 }
 
 @media screen and (max-width: 580px) {

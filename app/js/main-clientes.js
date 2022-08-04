@@ -271,3 +271,23 @@ function esconderHamburguesa() {
 
 }
 
+/*
+* DESPLIEGA MENU PERFIL
+*/
+let objBPerfil = document.getElementById("btn_perfil");
+let abrirCerrar=0;
+objBPerfil.addEventListener("click",()=> {
+    let objMPerfil = document.querySelector(".menu-perfil");
+    if(abrirCerrar===0){
+        objMPerfil.style.display = "flex";
+        abrirCerrar=1;
+    } else {
+        objMPerfil.style.display = "none";
+        abrirCerrar=0;
+    }
+})
+
+let objCierreSession = document.getElementById("cierreSession");
+objCierreSession.addEventListener("click",()=> {
+    sessionStorage.removeItem("derweb_sesion");
+})

@@ -3,7 +3,7 @@ $SITIO = "DERWEB - Administrador";
 
 $BD_SERVER = "localhost";
 $BD_USER = "root";
-$BD_PASSWORD = "l4ld81";
+$BD_PASSWORD = "";
 $BD_DATABASE = "db_derweb";
 
 $FTP_SERVER = "localhost";
