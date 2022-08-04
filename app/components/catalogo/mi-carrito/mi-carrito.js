@@ -161,13 +161,6 @@ class MiCarritoModalComponent extends ComponentManager {
         return objContenedor;
     }
 
-    __crearSelectorSucursales() {
-        let objLabel = document.createElement("label");
-        let objSelector = document.createElement("select");
-
-        // Esperar a tener datos cargados.
-    }
-
     open() {
         document.getElementById(this.__idModal + "_fondo").style.display = "block";       
     }
