@@ -100,15 +100,15 @@
                                         <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
                                     </button>
                                     <ul class="menu-perfil">
-                                        <li class="perfil-item"><a href="#" >Mi perfil<hr></a></li>
-                                        <li class="perfil-item"><a href="#" >Mis reclamos<hr></a></li>
-                                        <li class="perfil-item"><a href="#" >Garantias<hr></a></li>
-                                        <li class="perfil-item"><a href="#" >Cuenta corriente<hr></a></li>
-                                        <li class="perfil-item"><a href="#" >Mis ubicaciones<hr></a></li>
-                                        <li class="perfil-item"><a href="#" >Ultimos vistos<hr></a><li>
-                                        <li class="perfil-item"><a href="#" >Favoritos<hr></a><li>
-                                        <li class="perfil-item"><a href="#" >Presupuestos<hr></a><li>
-                                        <li class="perfil-item"><a href="../index.php" id="cierreSession">Cerrar sesion <hr></a></li>
+                                        <li class="perfil-item"><a href="javascript:miPerfil();" >Mi perfil<hr></a></li>
+                                        <li class="reclamos-item"><a href="#" >Mis reclamos<hr></a></li>
+                                        <li class="garantia-item"><a href="#" >Garantias<hr></a></li>
+                                        <li class="ctacte-item"><a href="#" >Cuenta corriente<hr></a></li>
+                                        <li class="ubicaciones-item"><a href="#" >Mis ubicaciones<hr></a></li>
+                                        <li class="ultimos-item"><a href="#" >Ultimos vistos<hr></a><li>
+                                        <li class="favoritos-item"><a href="#" >Favoritos<hr></a><li>
+                                        <li class="presupuestos-item"><a href="#" >Presupuestos<hr></a><li>
+                                        <li class="cierreSesion-item"><a href="../index.php" id="cierreSession">Cerrar sesion <hr></a></li>
                                     </ul>
                                 </div>
                             </div>                                
@@ -213,6 +213,7 @@
         <script src="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js" type="text/javascript"></script>
         <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
         <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>
+        <script src="components/menus/mi_perfil/mi_perfil.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>
 </html>

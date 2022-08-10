@@ -291,3 +291,8 @@ let objCierreSession = document.getElementById("cierreSession");
 objCierreSession.addEventListener("click",()=> {
     sessionStorage.removeItem("derweb_sesion");
 })
+
+function miPerfil() {
+    let objMiPerfil = new MiPerfil("app-container");
+    objMiPerfil.generateComponent();
+}
