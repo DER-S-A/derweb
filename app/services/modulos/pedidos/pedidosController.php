@@ -90,6 +90,32 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+    
+    /**
+     * confirmarPedido
+     * API que permite confirmar un pedido.
+     * @return void
+     */
+    public function confirmarPedido() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->usePutMethod()) {
+            try {
+                $sesion = $this->getURIParameters("sesion");
+                $idPedido = $this->getURIParameters("id_pedido");
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->confirmarPedido($sesion, $idPedido));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 
 ?>

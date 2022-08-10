@@ -397,6 +397,7 @@ class PedidosModel extends Model {
         $aResponse = [];
         $totalPedido = 0.00;
         $totalPedidoConIVA = 0.00;
+        $id_pedido = 0;
 
         // Recupero los datos que necesito del cliente.
         $objEntidad = new EntidadesModel();
@@ -408,6 +409,7 @@ class PedidosModel extends Model {
 
         $sql = "SELECT
                     items.id,
+                    items.id_pedido,
                     art.id AS id_articulo,
                     items.cantidad,
                     foto.archivo,
@@ -436,6 +438,7 @@ class PedidosModel extends Model {
         $rs = getRs($sql);
         $indice = 0;
         while (!$rs->EOF()) {
+            $id_pedido = $rs->getValueInt("id_pedido");
             $aResponse["items"][$indice]["id"] = $rs->getValueInt("id");
             $aResponse["items"][$indice]["id_articulo"] = $rs->getValueInt("id_articulo");
             $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
@@ -458,9 +461,59 @@ class PedidosModel extends Model {
             $rs->next();
         }
 
+        $aResponse["id_pedido"] = $id_pedido;
         $aResponse["total_pedido"] = $totalPedido;
         $aResponse["total_con_iva"] = $totalPedidoConIVA;
         $rs->close();
+
+        return $aResponse;
+    }
+    
+    /**
+     * confirmarPedido
+     * Confirma el pedido actual por su ID.
+     * @param  string $xsesion
+     * @param  int $xid_pedido
+     * @return array
+     */
+    public function confirmarPedido($xsesion, $xid_pedido) {
+        $idEstado = 0;
+        $ok = false;
+        $this->getClienteActual($xsesion);
+        
+        $aResponse = [];
+        $sql = "SELECT
+                    id
+                FROM
+                    estados_pedidos
+                WHERE
+                    estados_pedidos.estado_confirmado = 1";
+        $rsEstado = getRs($sql);
+        $idEstado = $rsEstado->getValueInt("id");
+        $rsEstado->close();
+
+        $sql = "UPDATE
+                    pedidos
+                SET
+                    pedidos.id_estado = $idEstado,
+                    pedidos.fecha_modificado = current_timestamp
+                WHERE
+                    pedidos.id = $xid_pedido AND
+                    pedidos.id_entidad = " . $this->idCliente;
+        
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        if ($bd->affectedRows > 0)
+            $ok = true;        
+        $bd->close();
+
+        if (!$ok) {
+            $aResponse["codigo"] = "BD_ERROR";
+            $aResponse["mensaje"] = "No se confirmó el pedido";
+        } else {
+            $aResponse["codigo"] = "OK";
+            $aResponse["mensaje"] = "Pedido confirmado satisfactoriamente";
+        }
 
         return $aResponse;
     }

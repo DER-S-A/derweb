@@ -145,23 +145,16 @@ class MiCarritoModalComponent extends ComponentManager {
     }
 
     /**
-     * Permite crear el formulario de finalizar pedido.
+     * Permite abrir el modal de mi carrito
      */
-    __crearFormularioConfirmarPedido() {
-        let objContenedor = this.__crearContenedorFormulario();
+    open() {
+        document.getElementById(this.__idModal + "_fondo").style.display = "block";       
     }
 
     /**
-     * Permite crear el contenedor de mi carrito.
-     * @returns {DOMElement}
+     * Permite cerrar le modal mi carrito.
      */
-    __crearContenedorFormulario() {
-        let objContenedor = document.createElement("div");
-        objContenedor.id = this.__idModal + "-form-confirmar-pedido";
-        return objContenedor;
-    }
-
-    open() {
-        document.getElementById(this.__idModal + "_fondo").style.display = "block";       
+    close() {
+        document.getElementById(this.__idModal + "_fondo").style.display = "none";
     }
 }

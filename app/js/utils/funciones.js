@@ -105,3 +105,4 @@ function validarTel() {
     }
     return true;
 }
+

@@ -161,7 +161,6 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 }
 
 function buscarPorFrase () {
-    
     let valor = document.getElementById("txtValorBuscado").value;
     if(valor.length>3){
         var objGUI = new CatalogoGUIComponent("app-container");
@@ -192,38 +191,38 @@ function buscarPorFrase () {
 
    const url_bannerPortada = "services/articulos-destacados.php/get";
    fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
-   .then(data => {
-       objCarruselFooter.generateComponent(data);
+        .then(data => {
+            objCarruselFooter.generateComponent(data);
 
-        new Glider(document.querySelector('.carousel__lista'), {
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            draggable: true,  //ESTO HACE Q EL CARRUSEL SEA ARRASTRABLE
-            dots: '.carousel__indicadores',
-            arrows: {
-                prev: '.carousel__anterior',
-                next: '.carousel__siguiente'
-            },
-            responsive: [
-                {
-                    // screens greater than >= 775px
-                    breakpoint: 450,
-                    settings: {
-                    // Set to `auto` and provide item width to adjust to viewport
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                    }
-                },{
-                    // screens greater than >= 1024px
-                    breakpoint: 800,
-                    settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 4
-                    }
-                }
-            ]
-        });
-   })
+                new Glider(document.querySelector('.carousel__lista'), {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    draggable: true,  //ESTO HACE Q EL CARRUSEL SEA ARRASTRABLE
+                    dots: '.carousel__indicadores',
+                    arrows: {
+                        prev: '.carousel__anterior',
+                        next: '.carousel__siguiente'
+                    },
+                    responsive: [
+                        {
+                            // screens greater than >= 775px
+                            breakpoint: 450,
+                            settings: {
+                            // Set to `auto` and provide item width to adjust to viewport
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                            }
+                        },{
+                            // screens greater than >= 1024px
+                            breakpoint: 800,
+                            settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 4
+                            }
+                        }
+                    ]
+                });
+        })
 }
 
 /**
@@ -251,6 +250,32 @@ function abrir_mi_carrito() {
     objGrillaMiCarrito.setEliminarFunctionName("eliminar_item_mi_carrito");
     objGrillaMiCarrito.generateComponent();
     objMiCarrito.open();
+
+    // Agrego el evento click de finalizar pedido
+    document.getElementById("btn-finalizar-pedido").addEventListener("click", () => {
+        // Mando a marcar el pedido como confirmado.
+        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+        let url =  "services/pedidos.php/confirmarPedido";
+        let parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") + "&id_pedido=" + parseInt(aPedidoActual["id_pedido"]);
+
+        objMiCarrito.close();
+        url = url + parametros;
+        console.log(url);
+        
+        fetch(url, {
+            method: "PUT",
+            headers: {
+                'content-type': 'applitacion/json'
+            }
+        }).then(xresponse => xresponse.json())
+            .then(xdata => {
+                if (xdata["codigo"] !== "OK")
+                    alert(xdata["mensaje"]);
+                else
+                    alert(xdata["mensaje"]);
+
+            });
+    }, false);
 }
 
 let objTxtValorBuscado = document.getElementById("txtValorBuscado");
@@ -276,6 +301,7 @@ function esconderHamburguesa() {
 */
 let objBPerfil = document.getElementById("btn_perfil");
 let abrirCerrar=0;
+
 objBPerfil.addEventListener("click",()=> {
     let objMPerfil = document.querySelector(".menu-perfil");
     if(abrirCerrar===0){
@@ -292,6 +318,9 @@ objCierreSession.addEventListener("click",()=> {
     sessionStorage.removeItem("derweb_sesion");
 })
 
+/**
+ * Esta función permite desplegar mi perfil.
+ */
 function miPerfil() {
     let objMiPerfil = new MiPerfil("app-container");
     objMiPerfil.generateComponent();
