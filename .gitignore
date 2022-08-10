@@ -4,6 +4,5 @@
 /admin/css/tmpcache/
 /admin/ufiles/
 
-app/services/configuracion.php
-admin/config.php
-admin/ufiles
+/admin/config.php
+/admin/ufiles
