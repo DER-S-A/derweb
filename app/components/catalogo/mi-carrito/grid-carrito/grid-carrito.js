@@ -39,7 +39,7 @@ class CarritoGridComponent extends ComponentManager {
         fetch(url)
             .then(xresponse => xresponse.json())
             .then(xdata => {
-                if (xdata["items"].length != 0) {
+                if ((xdata["items"] !== undefined) && (xdata["items"].length != 0)) {
                     this.__grabarEnCache(xdata);
                     this.__crearListaItems(xdata["items"]);
                     this.__total = xdata["total_pedido"];

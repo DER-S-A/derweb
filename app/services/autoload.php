@@ -11,8 +11,12 @@ include_once("../../admin/funcionesSConsola.php");
 include_once("../../admin/dbcommand.php");
 include_once("includes/funciones.inc.php");
 
+include("includes/apis/configuracion-sap.php");
 include("includes/apis/api-controller.php");
 include("includes/model.inc.php");
+
+// Incluyo la API para establecer la comunicación con SAP.
+include("includes/apis/api-sap.php");
 
 // Referencia al endpoint rubros
 include("modulos/articulos/rubros-model.inc.php");
@@ -41,6 +45,7 @@ include("modulos/articulos/articulosModel.inc.php");
 include("modulos/articulos/articulosController.php");
 include("modulos/articulos/articulos-destacadosModel.inc.php");
 include("modulos/articulos/articulos-destacadosController.php");
+include("modulos/pedidos/pedidos-sap.php");
 include("modulos/pedidos/pedidosModel.inc.php");
 include("modulos/pedidos/pedidosController.php");
 ?>

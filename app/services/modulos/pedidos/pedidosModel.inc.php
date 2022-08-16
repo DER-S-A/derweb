@@ -478,6 +478,12 @@ class PedidosModel extends Model {
         $this->getClienteActual($xsesion);
         
         $aResponse = [];
+
+        // Transfiero el pedido a SAP.
+        $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, $xid_pedido);
+        if ($aResponse["result-sap"] == null)
+            $aResponse["codigo-result-sap"] = "API_SAP_ERROR";
+
         $sql = "SELECT
                     id
                 FROM
@@ -512,6 +518,57 @@ class PedidosModel extends Model {
         }
 
         return $aResponse;
+    }
+    
+    /**
+     * enviarPedido_a_SAP
+     * Permite enviar un pedido a SAP.
+     * @param  mixed $xid_pedido
+     * @return void
+     */
+    public function enviarPedido_a_SAP($xsesion, $xid_pedido) {
+        $aBody = [];
+        $aPedidoEnviar = [];
+        $aItems = [];
+        $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
+        
+        // Establezco la comunicación con el ETL.
+        $this->getToken();
+        $objAPISap->setTestMode(); // Modo testing
+        
+        $aBody["connectorCode"] = CONNECTOR_CODE;
+        $aBody["functionalityCode"] = FUNCIONALITY_CODE;
+        
+        $aPedidoEnviar["DocDate"] = date("Y-m-d", time());
+        $aPedidoEnviar["DocDueDate"] = date("Y-m-d", time());
+        $aPedidoEnviar["CardCode"] = $this->idCliente;
+        $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
+
+        // Recupero el pedido actual
+        $aPedidoActual = $this->getPedidoActual($xsesion);
+        for ($i = 0; $i < sizeof($aPedidoActual["items"]); $i++) {
+            $aItems[$i]["ItemCode"] = $aPedidoActual["items"][$i]["codigo"];
+            $aItems[$i]["Quantity"] = doubleval($aPedidoActual["items"][$i]["cantidad"]);
+            $aItems[$i]["Price"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]);
+        }
+
+        $aPedidoEnviar["DocumentLines"] = json_encode($aItems);
+        $aBody["data"] = json_encode($aPedidoEnviar);
+
+        $objAPISap->setData($aBody);
+        $objAPISap->send();
+
+        return $objAPISap->getInfo();
+    }
+    
+    /**
+     * getToken
+     * Obtiene el token para enviar pedidos al ETL.
+     * @return void
+     */
+    private function getToken() {
+        $objAPI = new APISap(URL_LOGIN_ETL, "POST");
+        $objAPI->getTokenETL();
     }
 }
 
