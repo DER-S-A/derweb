@@ -27,6 +27,7 @@ class APISap {
         $this->ssl_verify = false;
         $this->aInfo = [];
         $this->output = "";
+        $this->testMode = false;
     }
     
     /**

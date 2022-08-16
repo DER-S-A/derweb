@@ -526,7 +526,7 @@ class PedidosModel extends Model {
      * @param  mixed $xid_pedido
      * @return void
      */
-    public function enviarPedido_a_SAP($xsesion, $xid_pedido) {
+    private function enviarPedido_a_SAP($xsesion, $xid_pedido) {
         $aBody = [];
         $aPedidoEnviar = [];
         $aItems = [];
@@ -567,8 +567,8 @@ class PedidosModel extends Model {
      * @return void
      */
     private function getToken() {
-        $objAPI = new APISap(URL_LOGIN_ETL, "POST");
-        $objAPI->getTokenETL();
+        $objAPISap = new APISap(URL_LOGIN_ETL, "POST");
+        $objAPISap->getTokenETL();
     }
 }
 
