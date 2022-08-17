@@ -45,7 +45,6 @@ include("modulos/articulos/articulosModel.inc.php");
 include("modulos/articulos/articulosController.php");
 include("modulos/articulos/articulos-destacadosModel.inc.php");
 include("modulos/articulos/articulos-destacadosController.php");
-include("modulos/pedidos/pedidos-sap.php");
 include("modulos/pedidos/pedidosModel.inc.php");
 include("modulos/pedidos/pedidosController.php");
 ?>
