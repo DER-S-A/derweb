@@ -14,6 +14,7 @@
         <link href="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">
+        <link href="components/menus/mi_perfil/mi_perfil_style.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
         <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
@@ -100,7 +101,7 @@
                                         <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
                                     </button>
                                     <ul class="menu-perfil">
-                                        <li class="perfil-item"><a href="javascript:miPerfil();" >Mi perfil<hr></a></li>
+                                        <li class="perfil-item"><a href="javascript:miPerfil(); cerrarAutogestion();" >Mi perfil<hr></a></li>
                                         <li class="reclamos-item"><a href="#" >Mis reclamos<hr></a></li>
                                         <li class="garantia-item"><a href="#" >Garantias<hr></a></li>
                                         <li class="ctacte-item"><a href="#" >Cuenta corriente<hr></a></li>

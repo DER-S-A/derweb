@@ -106,3 +106,11 @@ function validarTel() {
     return true;
 }
 
+/*
+* @param {cerrar menu autogestion cliente}
+*/
+function cerrarAutogestion() {
+    let objmenuPerfil = document.querySelector(".menu-perfil");
+    objmenuPerfil.style.display = "none";
+}
+

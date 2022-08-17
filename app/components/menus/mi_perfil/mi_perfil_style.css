@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  } 
+
+.container-miPerfil {
+    display: grid;
+    font-family: Futura Bold !important;
+    text-align: center;
+    font-size: 1.3em;
+    height: 700px;
+    grid-template-areas: 
+    "titulo-miPerfil titulo-miPerfil"
+    "fotoLocal-miPerfil info-miPerfil";
+
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 15% 55%;
+}
+
+.container-miPerfil h1 {
+    font-weight: bolder !important;
+    color: rgb(0, 61, 124);
+}
+
+.titulo-miPerfil {
+    grid-area: titulo-miPerfil;
+    margin: 0;
+}
+
+.fotoLocal-miPerfil {
+    grid-area: fotoLocal-miPerfil;
+    text-align: center;
+}
+
+.info-miPerfil {
+    grid-area: info-miPerfil;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    text-align: center;
+    align-items: center;
+}
+
+
+.fotoLocal-miPerfil img {
+    height: 90%;
+    width: 70%;
+}
+
+.info-miPerfil h2 {
+    font-size: 1.7em;
+    font-weight: bolder !important;
+    color: rgb(0, 61, 124);
+}
+
+.info-miPerfil ul {
+    padding: 0;
+}
+
+.info-miPerfil ul li {
+    padding: 3px 0;
+    border-bottom: 1px solid ;
+    
+    color: rgb(0, 61, 124);
+}
+
+.info-miPerfil ul li span {
+    font-weight: bolder;
+}
+
+.info-miPerfil button {
+    width: 40%;
+    font-size: 80%;
+    height: 10%;
+    background-color: #03aff8;
+    color: white;
+    font-weight: bolder;
+    font-family: arial;
+    margin: 2% 0;
+}
+
+@media screen and (max-width: 580px) {
+    .container-miPerfil {
+        display: grid;
+        font-family: Futura Bold !important;
+        text-align: center;
+        font-size: 1.3em;
+        height: 600px;
+        grid-template-areas: 
+        "titulo-miPerfil titulo-miPerfil"
+        "info-miPerfil info-miPerfil";
+    
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 15% 85%;
+    }
+
+    .fotoLocal-miPerfil {
+        display: none;
+    }
+
+    .info-miPerfil {
+        width: auto;
+    }
+    
+}
