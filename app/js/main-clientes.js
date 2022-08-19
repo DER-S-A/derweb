@@ -142,6 +142,8 @@ function generarBotonListaArticulos() {
  * @param {int} xidSubrubro Id. Subrubro seleccionado
  */
 function mostrar_articulos(xidRubro, xidSubrubro) {
+    let objAppContainer = document.getElementById("app-container");
+    objAppContainer.classList.remove("container-miPerfil");
     var objGUI = new CatalogoGUIComponent("app-container");
     var aParametros;
     objGUI.generateComponent();
