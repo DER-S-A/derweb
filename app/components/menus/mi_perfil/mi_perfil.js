@@ -21,7 +21,7 @@ class MiPerfil extends ComponentManager {
 
     // Aca uso el fetch para traerme toda la api
 
-    let xurlapi = "services/entidades.php/get";
+    let xurlapi = "services/entidades.php/get2";
     
     fetch(xurlapi).then(response => response.json()).then(data => {
 
