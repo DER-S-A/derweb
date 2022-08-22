@@ -7,6 +7,8 @@
 require("funcionesSConsola.php");
 require("sc-updversion-utils.php");
 require("sc-updversion-sc3.php");
+require("app/update-version/upd-version.php");
+require("app/update-version/upd-version-entidades.php");
 include("der-updversion-clientes-potenciales.php");
 
 // DERWEB Core
@@ -15,6 +17,9 @@ agregarOperGenerarEndPoint();
 // Clientes potenciales.
 agregarOperCliPot_CambiarEstado();
 agregarOperCliPot_AgregarNotas();
+
+// Actualización de entidades
+UpdateVersionEntidades::actualizarTablaSucursales();
 
 // Actualización de SPs.
 ejecutarSps("sp/");
