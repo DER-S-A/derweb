@@ -326,4 +326,9 @@ objCierreSession.addEventListener("click",()=> {
 function miPerfil() {
     let objMiPerfil = new MiPerfil("app-container");
     objMiPerfil.generateComponent();
+    let obj = document.getElementById("reset-pass");
+    obj.addEventListener("click",cambiarContraseña);
 }
+
+
+

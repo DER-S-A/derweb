@@ -114,3 +114,12 @@ function cerrarAutogestion() {
     objmenuPerfil.style.display = "none";
 }
 
+
+function getApifetch (xurl, xcallback) {
+    return fetch(xurl)
+    .then(response => response.json()).then(data => {
+        res = data;
+        xcallback(res);
+    })
+}
+
