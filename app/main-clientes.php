@@ -127,7 +127,7 @@
                 </div>
             </header>
 
-            <main class="container-fluid">
+            <main class="container-fluid main-miperfil">
                 <section id="app-container">
                     <div id="carrusel-container" class="carousel slide" data-bs-ride="carousel"></div>
 
