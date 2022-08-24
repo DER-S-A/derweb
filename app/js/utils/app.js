@@ -13,6 +13,7 @@ const bootstrapJS = [
 const aAPIs = [
     {"login"                                    : "services/entidades.php/loginCliente" },
     {"registrar-cliente"                        : "services/cliente-potencial.php/registrarCliente"},
+    {"app-operaciones-getByTipoEntidad"         : "services/lfw-operaciones.php/getByTipoEntidad"},
     {"app-banner-portada"                       : "services/banner_portada.php/get"},
     {"app-entidades-get"                        : "services/entidades.php/get"},
     {"app-entidades-getSucursalesByEntidad"     : "services/entidades.php/getSucursalesByEntidad"},

@@ -9,6 +9,7 @@ class MenuComponent {
      */
     constructor(xidContainer) {
         this.menuContainer = document.getElementById(xidContainer);
+        this.__objApp = new App();
     }
 
     /**
@@ -51,7 +52,8 @@ class MenuComponent {
 
         // Recupero las opciones de menú según el tipo de entidad para mostrar solo
         // a lo que puede acceder.
-        var aOperaciones = objAPIs.getFromAPI("services/lfw-operaciones.php/getByTipoEntidad?idTipoEntidad=" + idTipoEntidad);
+        var aOperaciones = objAPIs.getFromAPI(this.__objApp.getUrlApi("services/lfw-operaciones.php/getByTipoEntidad") 
+            + "?idTipoEntidad=" + idTipoEntidad);
 
         aOperaciones.forEach(xElement => {
             let objLink = document.createElement("a");
