@@ -127,7 +127,7 @@
                 </div>
             </header>
 
-            <main class="container-fluid">
+            <main class="container-fluid main-miperfil">
                 <section id="app-container">
                     <div id="carrusel-container" class="carousel slide" data-bs-ride="carousel"></div>
 
@@ -215,6 +215,7 @@
         <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
         <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>
         <script src="components/menus/mi_perfil/mi_perfil.js" type="text/javascript"></script>
+        <script src="components/menus/mi_perfil/cambiar_contraseña.js" type="text/javascript"></script>
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>
 </html>
