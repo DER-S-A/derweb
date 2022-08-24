@@ -10,6 +10,7 @@ class MiCarritoModalComponent extends ComponentManager {
         this.__objDivFondo = null;
         this.__objDivModal = null;
         this.__idBotonCerrar = "btn-" + this.__idModal;
+        this.__objApp = new App();
     }
 
     /**
@@ -110,7 +111,7 @@ class MiCarritoModalComponent extends ComponentManager {
         objSelectSucursal.classList.add("select-suscursal");
         objLabel.textContent = "Sucursal:";
 
-        fetch("services/entidades.php/getSucursalesByEntidad?id_entidad=" + aSesion["id_cliente"])
+        fetch(this.__objApp.getUrlApi("app-entidades-getSucursalesByEntidad") + "?id_entidad=" + aSesion["id_cliente"])
             .then(xresponse => xresponse.json())
             .then(xsucursales => {
                 xsucursales.forEach((xitem) => {

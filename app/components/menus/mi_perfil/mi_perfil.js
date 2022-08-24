@@ -3,6 +3,7 @@ class MiPerfil extends ComponentManager {
     super();
     this.idAppContainer = xidAppContainer;
     this.classMiPerfil = "container-miPerfil"
+    this.__objApp = new App();
   }
 
   /**
@@ -21,7 +22,7 @@ class MiPerfil extends ComponentManager {
 
     // Aca uso el fetch para traerme toda la api
 
-    let xurlapi = "services/entidades.php/get";
+    let xurlapi = this.__objApp.getUrlApi("app-entidades-get");
     
     fetch(xurlapi).then(response => response.json()).then(data => {
 

@@ -9,6 +9,26 @@ const bootstrapJS = [
     "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
 ];
 
+// Referencias a URL de APIs (Comunicación con el backend)
+const aAPIs = [
+    {"login"                                    : "services/entidades.php/loginCliente" },
+    {"registrar-cliente"                        : "services/cliente-potencial.php/registrarCliente"},
+    {"app-banner-portada"                       : "services/banner_portada.php/get"},
+    {"app-entidades-get"                        : "services/entidades.php/get"},
+    {"app-entidades-getSucursalesByEntidad"     : "services/entidades.php/getSucursalesByEntidad"},
+    {"catalogo-marcas-get"                      : "services/marcas.php/get"},
+    {"catalogo-rubros-get"                      : "services/rubros.php/get"},
+    {"catalogo-subrubros-get"                   : "services/subrubros.php/get"},
+    {"catalogo-subrubros-getByRubro"            : "services/subrubros.php/getSubrubrosPorRubro"},
+    {"catalogo-articulos-getByRubroAndSubrubro" : "services/articulos.php/getByRubroAndSubrubro"},
+    {"catalogo-articulos-getByFranse"           : "services/articulos.php/getByFrase"},
+    {"catalogo-articulos_destacados-get"        : "services/articulos-destacados.php/get"},
+    {"catalogo-articulos-get"                   : "services/articulos.php/get"},
+    {"catalogo-pedidos-getPedidoActual"         : "services/pedidos.php/getPedidoActual"},
+    {"catalogo-pedidos-agregarAlCarrito"        : "services/pedidos.php/agregarAlCarrito"},
+    {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"}
+]
+
 class App {
     /**
      * Inicializa la aplicación
@@ -27,5 +47,16 @@ class App {
         domScript.src = xelement;
         domScript.type = "text/javascript";
         document.head.appendChild(domScript);            
+    }
+
+    /**
+     * Permite recuperar la URL de una API desde el array de configuración
+     * @param {string} xkey 
+     * @returns 
+     */
+    getUrlApi(xkey) {
+        for (let i = 0; i < aAPIs.length; ++i)
+            if (aAPIs[i][xkey] !== undefined)
+                return aAPIs[i][xkey];
     }
 }

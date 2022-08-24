@@ -40,8 +40,9 @@ class Seguridad {
     loginCliente() {
         var usuario = document.getElementById("txtNroCliente").value;
         var clave = document.getElementById("txtPassword").value;
+        var objApp = new App();
         var aResultado;
-        getAPI("services/entidades.php/loginCliente?usuario=" + usuario + "&clave=" + clave, 
+        getAPI(objApp.getUrlApi("login") + "?usuario=" + usuario + "&clave=" + clave, 
             (xresponse) => {
                 let form = document.getElementById("frmLogin");
                 aResultado = JSON.parse(xresponse);

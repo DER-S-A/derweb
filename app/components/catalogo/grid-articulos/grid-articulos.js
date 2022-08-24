@@ -326,10 +326,11 @@ class CatalogoGridComponent extends ComponentManager {
  * @param {int} xidarticulo Id. del artículo a insertar
  */
 function agregarAlCarrito(xidarticulo) {
+    var objApp = new App();
     var parametros;
     var cantidad = document.getElementById("txtcantidad_" + xidarticulo).value;
-    var url_articulo = "services/articulos.php/get";
-    var url_carrito = "services/pedidos.php/agregarAlCarrito";
+    var url_articulo = objApp.getUrlApi("catalogo-articulos-get");
+    var url_carrito = objApp.getUrlApi("catalogo-pedidos-agregarAlCarrito");
     var aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
     var aArticulo = new Array();
 

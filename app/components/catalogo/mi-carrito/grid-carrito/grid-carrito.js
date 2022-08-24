@@ -16,6 +16,7 @@ class CarritoGridComponent extends ComponentManager {
         this.__idGrilla = xidGrilla;
         this.__total = "";
         this.__eliminarFunc = "";
+        this.__objApp = new App();
     }
 
     /**
@@ -32,7 +33,7 @@ class CarritoGridComponent extends ComponentManager {
      */
     generateComponent() {
         var strSesion = sessionStorage.getItem("derweb_sesion");
-        var url = "services/pedidos.php/getPedidoActual";
+        var url = this.__objApp.getUrlApi("catalogo-pedidos-getPedidoActual");
         this.clearContainer(this.__idContenedor);
 
         url = url + "?sesion=" + strSesion;

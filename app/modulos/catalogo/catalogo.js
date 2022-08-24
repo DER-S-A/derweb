@@ -3,6 +3,11 @@
  */
 
 class Catalogo {
+
+    constructor() {
+        this._objApp = new App();
+    }
+
     /**
      * Permite obtener las marcas de repuestos.
      * @param {string} xfilter Permite establecer la condición del where para filtrar registros
@@ -10,7 +15,7 @@ class Catalogo {
      */
     getMarcas(xfilter = "") {
         var objApi = new APIs();
-        var aMarcas = objApi.getFromAPI("services/marcas.php/get", xfilter);;
+        var aMarcas = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-marcas-get"), xfilter);;
         return aMarcas;
     }
 
@@ -21,7 +26,7 @@ class Catalogo {
      */
     getRubros(xfilter = "") {
         var objApi = new APIs();
-        var aRubros = objApi.getFromAPI("services/rubros.php/get", xfilter);;
+        var aRubros = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-rubros-get"), xfilter);;
         return aRubros;
     }
 
@@ -32,7 +37,7 @@ class Catalogo {
      */
     getSubrubros(xfilter = "") {
         var objApi = new APIs();
-        var aSubrubros = objApi.getFromAPI("services/subrubros.php/get", xfilter);
+        var aSubrubros = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-subrubros-get"), xfilter);
         return aSubrubros;
     }
 
@@ -44,8 +49,7 @@ class Catalogo {
     getSubrubrosByRubro(xid_rubro) {
         var objApi = new APIs();
         var filter = "id_rubro=" + xid_rubro;
-        var aSubrubros = objApi.getFromAPI("services/subrubros.php/getSubrubrosPorRubro?" + filter);
+        var aSubrubros = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-subrubros-getByRubro") + "?" + filter);
         return aSubrubros;
     }
-
 }

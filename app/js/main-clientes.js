@@ -129,7 +129,7 @@ function generarCarrusel() {
     const idComp = "carrusel-container"
      var objCarrusel = new CarruselComponent(idComp);
 
-    const url_bannerPortada = "services/banner_portada.php/get";
+    const url_bannerPortada = app.getUrlApi("app-banner-portada");
     fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
     .then(data => {
         objCarrusel.generateComponent(data, idComp);
@@ -151,7 +151,7 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
 
     // Armo el parámetro para buscar por rubro y subrubro.
     aParametros = {
-        "api_url": "services/articulos.php/getByRubroAndSubrubro",
+        "api_url": app.getUrlApi("catalogo-articulos-getByRubroAndSubrubro"),
         "values": { 
             "id_rubro": parseInt(xidRubro),
             "id_subrubro": parseInt(xidSubrubro)
@@ -173,7 +173,7 @@ function buscarPorFrase () {
         objGUI.generateComponent();
     
         aParametros = {
-            "api_url": "services/articulos.php/getByFrase",
+            "api_url": app.getUrlApi("catalogo-articulos-getByFranse"),
             "values": {
                 "frase": document.getElementById("txtValorBuscado").value
             }
@@ -193,7 +193,7 @@ function generarCarruselFotter() {
     let xId= 'carrusel-container-footer';
     var objCarruselFooter = new CarruselFooterComponent(xId);
 
-   const url_bannerPortada = "services/articulos-destacados.php/get";
+   const url_bannerPortada = app.getUrlApi("catalogo-articulos_destacados-get");
    fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
         .then(data => {
             objCarruselFooter.generateComponent(data);
@@ -259,7 +259,7 @@ function abrir_mi_carrito() {
     document.getElementById("btn-finalizar-pedido").addEventListener("click", () => {
         // Mando a marcar el pedido como confirmado.
         let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-        let url =  "services/pedidos.php/confirmarPedido";
+        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
         let parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") + "&id_pedido=" + parseInt(aPedidoActual["id_pedido"]);
 
         objMiCarrito.close();
