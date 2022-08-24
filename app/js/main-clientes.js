@@ -124,7 +124,7 @@ function generarBotonListaArticulos() {
 /**
  * Crea el componente Carrusel.
  */
- function generarCarrusel() {  
+function generarCarrusel() {  
      // ESTA FUNCION LA LLAMO DENTRO DE LA FUNCION WINDOW.ONLOAD Q ESTA EN LA LINEA 9
     const idComp = "carrusel-container"
      var objCarrusel = new CarruselComponent(idComp);
@@ -162,9 +162,12 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
     objGUI.getArticulosResultadoBusqueda(aParametros);
 }
 
+/**
+ * Permite la búsqueda por frase.
+ */
 function buscarPorFrase () {
     let valor = document.getElementById("txtValorBuscado").value;
-    if(valor.length>3){
+    if(valor.length > 3){
         var objGUI = new CatalogoGUIComponent("app-container");
         var aParametros;
         objGUI.generateComponent();
@@ -179,14 +182,13 @@ function buscarPorFrase () {
         objGUI.getArticulosResultadoBusqueda(aParametros, true);  
     } else {
         swal("Oops!", "Debe escribir al menos 4 caracteres", "error");
-    } 
-
+    }
 }
 
 /**
  * Crea el componente Carrusel footer.
  */
- function generarCarruselFotter() {  
+function generarCarruselFotter() {  
     // ESTA FUNCION LA LLAMO DENTRO DE LA FUNCION WINDOW.ONLOAD Q ESTA EN LA LINEA 19
     let xId= 'carrusel-container-footer';
     var objCarruselFooter = new CarruselFooterComponent(xId);
