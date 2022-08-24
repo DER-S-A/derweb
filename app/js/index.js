@@ -38,7 +38,6 @@ document.getElementById("txtPassword").addEventListener("keypress", (e) => {
     
 });
 
-
 // Agrego el evento para registrar un cliente potencial.
 document.getElementById("btnRegistrarse").addEventListener("click", () => {
     //console.log(validarForm());
