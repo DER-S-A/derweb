@@ -24,7 +24,7 @@
         <script src="js/utils/app.js" type="text/javascript"></script>
         <script src="js/utils/apis.js" type="text/javascript"></script>
         <script src="js/utils/cache-utils.js" type="text/javascript"></script>
-        <script src="modulos/catalogo/catalogo.js" type="text/javascript"></script>
+        <script src="components/catalogo/catalogo.js" type="text/javascript"></script>
         <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
     </head>
     <body id="page-container">
@@ -208,7 +208,7 @@
         <!-- Referencias al componente grilla -->
         <script src="components/catalogo/grid-articulos/grid-articulos.js" type="text/javascript"></script>
 
-        <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
+        <script src="components/seguridad/seguridad.js" type="text/javascript"></script>
 
         <!-- Componente botón mi carrito -->
         <script src="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js" type="text/javascript"></script>

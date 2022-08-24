@@ -25,8 +25,8 @@ class Seguridad {
         // Armo el array con la url donde están los formularios que se van
         // a mostrar en el tab.
         var contenidos = [
-            "modulos/seguridad/form-login.html", 
-            "modulos/seguridad/form-register.html"
+            "components/seguridad/form-login.html", 
+            "components/seguridad/form-register.html"
         ];
 
         // Creo el tab

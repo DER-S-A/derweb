@@ -9,7 +9,7 @@
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
         <script src="js/utils/apis.js" type="text/javascript"></script>
-        <script src="modulos/catalogo/catalogo.js" type="text/javascript"></script>
+        <script src="components/catalogo/catalogo.js" type="text/javascript"></script>
         <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
     </head>
     <body id="page-container">
@@ -87,8 +87,8 @@
         </div>
 
         <script src="components/tabs/tabs.js" type="text/javascript"></script>
-        <script src="modulos/seguridad/seguridad.js" type="text/javascript"></script>
-        <script src="modulos/seguridad/registrar-cliente-potencial.js"></script>
+        <script src="components/seguridad/seguridad.js" type="text/javascript"></script>
+        <script src="components/seguridad/registrar-cliente-potencial.js"></script>
         <script src="js/index.js" type="text/javascript"></script>
     </body>
 </html>
