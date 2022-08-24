@@ -150,7 +150,6 @@ class CatalogoGridComponent extends ComponentManager {
         });
 
         sessionStorage.removeItem(this._claveSessionStorage + "_" + xpagina);
-        console.log("Cargando página " + xpagina);
     }
 
     /**
@@ -306,8 +305,6 @@ class CatalogoGridComponent extends ComponentManager {
         var url = this._aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
             + "&frase=" + this._aParametros["values"]["frase"] + "&pagina=" + xpagina;
-        console.log(this._aParametros);
-        console.log(url_con_parametros);
         fetch (url_con_parametros)
             .then(xresponse => xresponse.json())
             .then(xdata  => {
