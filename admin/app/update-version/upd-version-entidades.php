@@ -5,7 +5,7 @@
  *  Permite realizar la actualización de entidades.
  */
 
-class UpdateVersionEntidades extends UpdateVersion {    
+class UpdateVersionEntidades extends UpdateVersion {
     /**
      * actualizarTablaSucursales
      * Permite actualizar la estructura de la tabla sucursales
@@ -61,6 +61,27 @@ class UpdateVersionEntidades extends UpdateVersion {
             self::ejecutarSQL($sql);
             sc3generateFieldsInfo($tabla);
             sc3updateField($query, $campo, "Mostrar transporte", 1, "0");
+        }
+    }
+    
+    /**
+     * agregarCamposTiposEntidades
+     * Agrega campos a la tabla tipos de entidades.
+     * @return void
+     */
+    public static function agregarCamposTiposEntidades() {
+        $tabla = "tipos_entidades";
+        $query = "tipos_entidades";
+
+        // Agrego el campo para poder identificar el tipo de entidad que se
+        // loguea en el DERWEB.
+        $campo = "tipo_login";
+        if (!sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla ADD $campo VARCHAR(1) NOT NULL DEFAULT 'C'";
+            self::ejecutarSQL($sql);
+            sc3generateFieldsInfo($tabla);
+            sc3updateField($query, $campo, "Tipo Login", 1, "C");
+            sc3updateFieldHelp($tabla, $campo, "C: Cliente | V: Vendedor | T: Televenta");
         }
     }
 }

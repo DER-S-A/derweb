@@ -106,7 +106,12 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
-
+    
+    /**
+     * getBySesion
+     * Obtiene los datos de una entidad filtrando por la sesión actualmente logueada.
+     * @return void
+     */
     public function getBySesion() {
         // Valido que la llamada venga por método GET o POST.
         if ($this->useGetMethod() || $this->usePostMethod()) {
@@ -126,7 +131,12 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
-
+    
+    /**
+     * getSucursalesByEntidad
+     * Obtiene las sucursales que contienen una entidad.
+     * @return void
+     */
     public function getSucursalesByEntidad() {
         // Valido que la llamada venga por método GET o POST.
         if ($this->useGetMethod() || $this->usePostMethod()) {
@@ -145,6 +155,30 @@ class EntidadesController extends APIController {
             $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
+    
+    /**
+     * getClientesByVenededor
+     * Obtiene la lista de clientes por vendedor.
+     * @return void
+     */
+    public function getClientesByVendedor() {
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $objModel = new EntidadesModel();
+                $id_vendedor = intval($this->getURIParameters("id_vendedor"));
+                $responseData = json_encode($objModel->getClientesByVendedor($id_vendedor));
+
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
 }
 

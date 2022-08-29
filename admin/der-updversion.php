@@ -21,6 +21,7 @@ agregarOperCliPot_AgregarNotas();
 // Actualización de entidades
 UpdateVersionEntidades::actualizarTablaSucursales();
 UpdateVersionEntidades::actualizarFormaEnvio();
+UpdateVersionEntidades::agregarCamposTiposEntidades();
 
 // Actualización de SPs.
 ejecutarSps("sp/");

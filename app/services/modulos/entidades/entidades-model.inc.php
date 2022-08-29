@@ -28,13 +28,15 @@ class EntidadesModel extends Model {
     public function verificarUsuarioYClaveCliente($xusuario, $xclave) {
         $aResult = array();
         $sql = "SELECT 
-                    id, 
+                    entidades.id, 
                     cliente_cardcode, 
                     usuario, 
                     clave,
-                    id_tipoentidad
+                    id_tipoentidad,
+                    tipo_login
                 FROM 
-                    entidades 
+                    entidades
+                        INNER JOIN tipos_entidades On tipos_entidades.id = entidades.id_tipoentidad
                 WHERE 
                     usuario = '$xusuario'";
         $aDatos = $this->getQuery($sql);
@@ -47,6 +49,7 @@ class EntidadesModel extends Model {
                 $aResult["id_cliente"] = intval($aDatos[0]["id"]);
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
                 $aResult["id_tipoentidad"] = intval($aDatos[0]["id_tipoentidad"]);
+                $aResult["tipo_login"] = $aDatos[0]["tipo_login"];
             } else {
                 $aResult["result"] = "ERR_CLAVE";
                 $aResult["mensaje"] = "Contraseña inválida.";
@@ -145,6 +148,32 @@ class EntidadesModel extends Model {
                     sucursales.id_entidad = $xidEntidad
                 ORDER BY
                     predeterminado DESC";
+        return getRs($sql, true)->getAsArray();
+    }
+    
+    /**
+     * getClientesByVendedor
+     * Obtiene la lista de clientes filtrando por vendedor.
+     * Solo recupera los clientes que están habilitados.
+     * @param  int $xidVendedor
+     * @return array
+     */
+    public function getClientesByVendedor($xidVendedor) {
+        $sql = "SELECT
+                    e.id,
+                    s.codigo_sucursal AS 'codsuc',
+                    e.nombre,
+                    e.nro_cuit AS 'cuit'
+                FROM
+                    entidades e
+                        INNER JOIN tipos_entidades t ON t.id = e.id_tipoentidad
+                        INNER JOIN sucursales s ON s.id_entidad = e.id
+                WHERE
+                    t.tipo_login = 'C' AND
+                    s.id_vendedor = $xidVendedor AND
+                    e.habilitado = 1
+                ORDER BY
+                    nombre";
         return getRs($sql, true)->getAsArray();
     }
 }

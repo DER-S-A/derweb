@@ -1,0 +1,25 @@
+.lfw-datagrid {
+    font-family: Verdana,sans-serif;
+    font-size: 13px;
+}
+
+.lfw-datagridHeader th {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 2px;
+    background-color: #009ada;
+    color: white;
+}
+
+.lfw-dataGridBody td {
+    border: none;
+}
+
+.lfw-input-filters {
+    font-family: arial;
+    font-size: 10px;
+    background-color: #f5f5f5 !important;
+}

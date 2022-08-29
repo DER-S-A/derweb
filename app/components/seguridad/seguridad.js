@@ -48,7 +48,7 @@ class Seguridad {
                 aResultado = JSON.parse(xresponse);
                 if (aResultado.result == "OK") {
                     sessionStorage.setItem("derweb_sesion", JSON.stringify(aResultado));
-                    form.action = "main-clientes.php";
+                    form.action = this.sendToMainPage(aResultado["tipo_login"]);
                     form.method = "POST";
                     form.submit();
                 }
@@ -56,5 +56,23 @@ class Seguridad {
                     alert(aResultado.mensaje);
                 }
             });
+    }
+
+    /**
+     * En base al tipo de login devuelve rutea al script que corresponde.
+     * @param {string} xtipoLogin 
+     * @returns 
+     */
+    sendToMainPage(xtipoLogin) {
+        let page = "";
+        switch (xtipoLogin) {
+            case 'C':
+                page = "main-clientes.php";
+                break;
+            case 'V':
+                page = "main-vendedores.php";
+        }
+
+        return page;
     }
 }
