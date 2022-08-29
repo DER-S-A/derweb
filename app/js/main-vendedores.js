@@ -288,7 +288,7 @@ function getClientes() {
     objGrid.setIconEditButton("fa-arrow-right-to-bracket");
     objGrid.setEditButtonTitle("Entrar al cliente");
 
-    objGrid.agregarColumna("N° Cliente", "id", "numeric", 100);
+    objGrid.agregarColumna("N° Cliente", "id", "numeric", 100, false);
     objGrid.agregarColumna("Cód. Suc.", "codsuc", "string", 100);
     objGrid.agregarColumna("Razón Social", "nombre", "string");
     objGrid.agregarColumna("C.U.I.T", "cuit", "string", 200);

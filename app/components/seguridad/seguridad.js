@@ -10,6 +10,10 @@ class Seguridad {
      * Dependencia: components/tabs/tabs-v2.js
      */
 
+     constructor() {
+        this.__objApp = new App();
+    }
+
     /**
      * Permite generar el tab con los formularios para loguearse o registrarse.
      */
@@ -74,5 +78,19 @@ class Seguridad {
         }
 
         return page;
+    }
+
+    /**
+    * Permite cambiar la clave en la base de datos mediante
+    * la API correspondiente.
+    */
+    cambiarClave(xIDcliente,xClaveNueva) {
+        let xurlapi = this.__objApp.getUrlApi("app-entidades-cambiarClave") + "?reset-pass=" + JSON.stringify(xClaveNueva) + "&id=" + JSON.stringify(xIDcliente);
+        let objAPI = new APIs();
+        objAPI.put(xurlapi, (xResponse) => {
+            this.aResponse = JSON.parse(xResponse);
+        });
+
+        return this.aResponse;
     }
 }

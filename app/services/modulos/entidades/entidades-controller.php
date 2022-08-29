@@ -180,6 +180,25 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+
+    public function cambiarPassword() {
+        if ($this->usePutMethod()) {
+            try {
+                $reset = $this->getURIParameters("reset-pass");
+                $id = $this->getURIParameters("id");
+                $objModel = new entidadesModel();
+                $responseData = json_encode($objModel->cambiarClave($reset,$id));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 }
 
 ?>

@@ -176,5 +176,37 @@ class EntidadesModel extends Model {
                     nombre";
         return getRs($sql, true)->getAsArray();
     }
+
+    public function cambiarClave($xreset, $xid) {
+        $aResult = array();
+
+        $bd = new BDObject();
+        $bd->beginT();
+        try {
+            $sql = "UPDATE entidades SET clave = $xreset
+            WHERE id = $xid";
+            $bd->execInsert($sql);
+
+            // Recorro los rubros de venta seleccionado y grabo los datos en la tabla
+            // clipot_subrubros.
+
+            // Actualizo el checksum de la tabla.
+            sc3UpdateTableChecksum("entidades", $bd);
+
+            $bd->commitT();
+
+            $aResult["result_code"] = "OK";
+            $aResult["result_message"] = "Contraseña cambiada satisfactoriamente.";            
+        } catch (Exception $e) {
+            $bd->rollbackT();
+            $aResult["result_code"] = "BD_ERROR";
+            $aResult["result_message"] = $e->getMessage();
+        } finally {
+            $bd->close();
+        }
+
+        return $aResult;
+    }
+
 }
 ?>
