@@ -33,7 +33,6 @@ function cambiarContraseña() {
    objInputConf.placeholder = "Repita Contraseña";
    objInputConf.type = "password"; 
    objDivButtons.className = "botones";
-   //objAncla.href = "./index.php";
    objButton1.id = "confirmar-pass";
    objButton1.type = "button";
    objButton2.id = "cerrar-pass";
@@ -55,20 +54,28 @@ function cambiarContraseña() {
    
    
 
-   /**
-   * Genero el contenido de los nodos.
-   */
+    /**
+    * Genero el contenido de los nodos.
+    */
    
     objH2Pass.innerHTML = "CAMBIAR CONTRASEÑA";
     objButton1.innerHTML = "Confirmar";
     objButton2.innerHTML = "Cerrar";
+
+    /**
+    * Evento para cerrar form.
+    */
 
     let bandera = 0;
     objButton2.addEventListener("click", () => {
       if(bandera) {
         location.href = "./index.php";
       } else objDivTrans.style.display = "none";
-      })
+      });
+
+    /**
+    * Evento para confirmar cambio de password.
+    */
     
       objButton1.addEventListener("click", () => {
         objCambiarPass = new Seguridad();

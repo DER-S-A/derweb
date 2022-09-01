@@ -323,13 +323,13 @@ objCierreSession.addEventListener("click",()=> {
 })
 
 /**
- * Esta función permite desplegar mi perfil.
+ * Esta función permite mostrar la pantalla mi perfil.
  */
 function miPerfil() {
     let objMiPerfil = new MiPerfil("app-container");
     objMiPerfil.generateComponent();
     let obj = document.getElementById("reset-pass");
-    obj.addEventListener("click",cambiarContraseña);
+    obj.addEventListener("click",cambiarContraseña);  // ESTE EVENTO GENERA EL FORM DE CAMBIO DE CLAVE.
 }
 
 

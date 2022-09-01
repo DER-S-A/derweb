@@ -177,6 +177,15 @@ class EntidadesModel extends Model {
         return getRs($sql, true)->getAsArray();
     }
 
+    /**
+    * cambiarClave
+    * Cambia el password del cliente.
+    * Solo recupera los clientes que están habilitados.
+    * @param  int $xid (este es el id de entidades, osea el id del cliente).
+    * @param  string $xreset (esta es la clave nuevva q pone el cliente).
+    * @return array
+    */
+
     public function cambiarClave($xreset, $xid) {
         $aResult = array();
 
@@ -186,9 +195,6 @@ class EntidadesModel extends Model {
             $sql = "UPDATE entidades SET clave = $xreset
             WHERE id = $xid";
             $bd->execInsert($sql);
-
-            // Recorro los rubros de venta seleccionado y grabo los datos en la tabla
-            // clipot_subrubros.
 
             // Actualizo el checksum de la tabla.
             sc3UpdateTableChecksum("entidades", $bd);
