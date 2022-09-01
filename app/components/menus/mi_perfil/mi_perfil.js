@@ -48,6 +48,7 @@ class MiPerfil extends ComponentManager {
     objDiv3.className = "info-miPerfil";
     objButton.name = "reset-pass";
     objButton.type = "button";
+    objButton.className = "btn";
     objButton.id = "reset-pass";
     //objButton.setAttribute("onclick","cambiarContraseña()");
     

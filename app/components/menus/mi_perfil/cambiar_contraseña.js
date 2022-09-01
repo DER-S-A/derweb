@@ -35,8 +35,10 @@ function cambiarContraseña() {
    objDivButtons.className = "botones";
    objButton1.id = "confirmar-pass";
    objButton1.type = "button";
+   objButton1.className = "btn";
    objButton2.id = "cerrar-pass";
    objButton2.type = "button";
+   objButton2.className = "btn";
 
    /**
    * Hago los appendChild.

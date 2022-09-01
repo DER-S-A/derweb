@@ -72,11 +72,12 @@
     width: 40%;
     font-size: 80%;
     height: 10%;
-    background-color: #03aff8;
-    color: white;
+    background-color: #009ada;
+    color: #fff;
     font-weight: bolder;
-    font-family: arial;
+    font-family: futura;
     margin: 2% 0;
+    border-radius: 1em;
 }
 
 .main-miperfil {
@@ -121,11 +122,12 @@
 
 .cambiar-pass button {
     margin: auto 2%;
-    background-color: #03aff8;
-    color: white;
+    background-color: #009ada;
+    color: #fff;
     font-weight: bolder;
-    font-family: arial;
-    padding: 1%;
+    font-family: futura;
+    padding: 1% 3%;
+    border-radius: 1em;
 }
 
 .cambiar-pass .botones {
