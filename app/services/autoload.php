@@ -47,4 +47,6 @@ include("modulos/articulos/articulos-destacadosModel.inc.php");
 include("modulos/articulos/articulos-destacadosController.php");
 include("modulos/pedidos/pedidosModel.inc.php");
 include("modulos/pedidos/pedidosController.php");
+include("modulos/forma-envio/formas-enviosModel.inc.php");
+include("modulos/forma-envio/formas-enviosController.php");
 ?>

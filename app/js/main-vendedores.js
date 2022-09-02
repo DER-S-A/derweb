@@ -294,12 +294,12 @@ function getClientes() {
     objGrid.agregarColumna("C.U.I.T", "cuit", "string", 200);
 
     aSesion = objCacheUtils.get("sesion");
-    url = objApp.getUrlApi("app-entidades-getClientesByVendedor") + "?id_vendedor=" + aSesion["id_cliente"];
+    url = objApp.getUrlApi("app-entidades-getClientesByVendedor") + "?id_vendedor=" + aSesion["id_vendedor"];
     getApifetch(url, xresponse => {
         xresponse.forEach(xelement => {
             objGrid.agregarFila(xelement);
-        });
 
+        });
         objGrid.refresh();
     });
 }
