@@ -298,8 +298,8 @@ function getClientes() {
     getApifetch(url, xresponse => {
         xresponse.forEach(xelement => {
             objGrid.agregarFila(xelement);
-        });
 
+        });
         objGrid.refresh();
     });
 }
