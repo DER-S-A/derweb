@@ -36,7 +36,7 @@ class EntidadesModel extends Model {
                     tipo_login
                 FROM 
                     entidades
-                        INNER JOIN tipos_entidades On tipos_entidades.id = entidades.id_tipoentidad
+                        INNER JOIN tipos_entidades ON tipos_entidades.id = entidades.id_tipoentidad
                 WHERE 
                     usuario = '$xusuario'";
         $aDatos = $this->getQuery($sql);
@@ -45,11 +45,20 @@ class EntidadesModel extends Model {
             if (strcmp($aDatos[0]["clave"], $xclave) == 0) {
                 $aResult["result"] = "OK";
                 $aResult["usuario"] = $aDatos[0]["usuario"];
-                $aResult["clave"] = $aDatos[0]["clave"];
-                $aResult["id_cliente"] = intval($aDatos[0]["id"]);
+                // $aResult["clave"] = $aDatos[0]["clave"];
+                if (sonIguales($aDatos[0]["tipo_login"], "V")) {
+                    $aResult["id_vendedor"] = intval($aDatos[0]["id"]);
+                    $aResult["id_cliente"] = null;
+                }
+                else {
+                    $aResult["id_vendedor"] = null;
+                    $aResult["id_cliente"] = intval($aDatos[0]["id"]);
+                }
+
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
                 $aResult["id_tipoentidad"] = intval($aDatos[0]["id_tipoentidad"]);
                 $aResult["tipo_login"] = $aDatos[0]["tipo_login"];
+
             } else {
                 $aResult["result"] = "ERR_CLAVE";
                 $aResult["mensaje"] = "Contraseña inválida.";

@@ -304,3 +304,19 @@ function getClientes() {
     });
 }
 
+/**
+ * Permite entrar al cliente seleccionado para hacer pedidos..
+ * @param {int} xid Id. de cliente.
+ */
+function entrar_al_cliente(xid) {
+    let objCache = new CacheUtils("derweb");
+    let aSesion = objCache.get("sesion");
+    console.log(aSesion);
+    aSesion["id_cliente"] = xid;
+    objCache.set("sesion", aSesion);
+
+    // Abro el derweb con el cliente seleccionado en una pestaña
+    // a parte.
+    window.open("main-clientes.php", "_blank");
+}
+
