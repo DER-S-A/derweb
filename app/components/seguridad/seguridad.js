@@ -84,13 +84,12 @@ class Seguridad {
     * Permite cambiar la clave en la base de datos mediante
     * la API correspondiente.
     */
-    cambiarClave(xIDcliente,xClaveNueva) {
-        let xurlapi = this.__objApp.getUrlApi("app-entidades-cambiarClave") + "?reset-pass=" + JSON.stringify(xClaveNueva) + "&id=" + JSON.stringify(xIDcliente);
+    cambiarClave(xIDcliente,xClaveNueva,xClaveActual) {
+        let xurlapi = this.__objApp.getUrlApi("app-entidades-cambiarClave") + "?reset-pass=" + JSON.stringify(xClaveNueva) + "&id=" + JSON.stringify(xIDcliente) + "&pass-actual=" + JSON.stringify(xClaveActual);
         let objAPI = new APIs();
         objAPI.put(xurlapi, (xResponse) => {
             this.aResponse = JSON.parse(xResponse);
         });
-
         return this.aResponse;
     }
 }

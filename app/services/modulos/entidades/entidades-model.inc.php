@@ -195,31 +195,43 @@ class EntidadesModel extends Model {
     * @return array
     */
 
-    public function cambiarClave($xreset, $xid) {
+    public function cambiarClave($xreset, $xid, $xActual) {
         $aResult = array();
 
         $bd = new BDObject();
-        $bd->beginT();
-        try {
-            $sql = "UPDATE entidades SET clave = $xreset
-            WHERE id = $xid";
-            $bd->execInsert($sql);
 
-            // Actualizo el checksum de la tabla.
-            sc3UpdateTableChecksum("entidades", $bd);
+        $sql = "SELECT clave FROM entidades WHERE id = $xid";
 
-            $bd->commitT();
+        $aDatos = $this->getQuery($sql);
 
-            $aResult["result_code"] = "OK";
-            $aResult["result_message"] = "Contraseña cambiada satisfactoriamente.";            
-        } catch (Exception $e) {
-            $bd->rollbackT();
-            $aResult["result_code"] = "BD_ERROR";
-            $aResult["result_message"] = $e->getMessage();
-        } finally {
-            $bd->close();
+        if($aDatos[0][0] == json_decode($xActual,true)){
+
+            $bd->beginT();
+            try {
+                $sql = "UPDATE entidades SET clave = $xreset
+                WHERE id = $xid";
+                $bd->execInsert($sql);
+
+                // Actualizo el checksum de la tabla.
+                sc3UpdateTableChecksum("entidades", $bd);
+
+                $bd->commitT();
+
+                $aResult["result_code"] = "OK";
+                $aResult["result_message"] = "Contraseña cambiada satisfactoriamente.";            
+            } catch (Exception $e) {
+                $bd->rollbackT();
+                $aResult["result_code"] = "BD_ERROR";
+                $aResult["result_message"] = $e->getMessage();
+            } finally {
+                $bd->close();
+            }
+
+            //return $aResult;
+        } else {
+            $aResult["result_code"] = "NO";
+            $aResult["result_message"] = "Contraseña actual incorrecta.";
         }
-
         return $aResult;
     }
 
