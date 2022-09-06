@@ -165,7 +165,13 @@ class PedidosModel extends Model {
     private function generarInsertCabecera($xaCabecera) {
         $sql = "INSERT INTO pedidos (
                     id_entidad,
+                    id_tipoentidad,
                     id_estado,
+                    id_vendedor,
+                    id_sucursal,
+                    codigo_sucursal,
+                    id_transporte,
+                    codigo_transporte,
                     descuento_1,
                     descuento_2,
                     subtotal,
@@ -175,7 +181,13 @@ class PedidosModel extends Model {
                     fecha_alta)
                 VALUES (
                     xidentidad,
+                    xidtipoentidad,
                     xidestado,
+                    xidvendedor,
+                    xidsucursal,
+                    xcodSucursal,
+                    xidTransporte,
+                    xcodigoTransporte,
                     xdescuento1,
                     xdescuento2,
                     xsubtotal,
@@ -184,7 +196,13 @@ class PedidosModel extends Model {
                     0,
                     current_timestamp)";
         $this->setParameter($sql, "xidentidad", intval($xaCabecera["id_entidad"]));
+        $this->setParameter($sql, "xidtipoentidad", intval($xaCabecera["id_tipoentidad"]));
         $this->setParameter($sql, "xidestado", intval($xaCabecera["id_estado"]));
+        $this->setParameter($sql, "xidvendedor", intval($xaCabecera["id_vendedor"]));
+        $this->setParameter($sql, "xidsucursal", intval($xaCabecera["id_sucursal"]));
+        $this->setParameter($sql, "xcodSucursal", $xaCabecera["codigo_sucursal"]);
+        $this->setParameter($sql, "xidTransporte", intval($xaCabecera["id_transporte"]));
+        $this->setParameter($sql, "xcodigoTransporte", intval($xaCabecera["codigo_transporte"]));
         $this->setParameter($sql, "xdescuento1", doubleval($xaCabecera["descuento_1"]));
         $this->setParameter($sql, "xdescuento2", doubleval($xaCabecera["descuento_2"]));
         $this->setParameter($sql, "xsubtotal", doubleval($xaCabecera["subtotal"]));

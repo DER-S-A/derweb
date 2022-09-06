@@ -323,56 +323,44 @@ class CatalogoGridComponent extends ComponentManager {
  * @param {int} xidarticulo Id. del artículo a insertar
  */
 function agregarAlCarrito(xidarticulo) {
-    var objApp = new App();
-    var parametros;
-    var cantidad = document.getElementById("txtcantidad_" + xidarticulo).value;
-    var url_articulo = objApp.getUrlApi("catalogo-articulos-get");
-    var url_carrito = objApp.getUrlApi("catalogo-pedidos-agregarAlCarrito");
-    var aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
-    var aArticulo = new Array();
-
-    url_articulo += "?sesion=" + JSON.stringify(aSesion);
-    url_articulo += "&pagina=0&filter=\"art.id = " + xidarticulo + "\"";
+    let cantidad = document.getElementById("txtcantidad_" + xidarticulo).value;
+    let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
+    let objCatalogo = new Catalogo();
 
     if (cantidad == "") {
         alert("Cargar cantidad");
         return;
     }
 
-    // Recupero los datos del artículo desde la API.
-    getAPI(url_articulo, xresponse => {
-        aArticulo = JSON.parse(xresponse);
-    });
+    // Recupero los datos de la sucursal predeterminada
+    objCatalogo.getSucursalPredeterminadaByCliente(aSesion["id_cliente"], (xaSucursal) => {
+        let acabecera = {
+            "id_cliente": parseInt(aSesion["id_cliente"]),
+            "id_tipoentidad": parseInt(aSesion["id_tipoentidad"]),
+            "id_vendedor": parseInt(xaSucursal[0]["id_vendedor"]),
+            "id_sucursal": parseInt(xaSucursal[0]["id"]),
+            "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
+            "id_transporte": xaSucursal[0]["id_transporte"],
+            "codigo_transporte": "" // Poner cuando tenga el API de transportes.
+        };
 
-    // Armo la estructura de JSON para enviar al API.
-    parametros = {
-        "cabecera": {
-            "_comment": "Los campos subtotal, importe_iva y total los dejo en cero porque se calculan en el API. Solo necesito la definición.",
-            "id_entidad": aSesion["id_cliente"],
-            "id_estado" : 1,
-            "descuento_1": 0.00,
-            "descuento_2": 0.00,
-            "subtotal": 0.00,
-            "importe_iva": 0.00,
-            "total": 0.00
-        },
-        "item": {
-            "id_articulo": xidarticulo,
-            "cantidad": parseFloat(cantidad),
-            "porcentaje_oferta": 0.00,
-            "precio_lista": parseFloat(aArticulo["values"][0]["prlista"]),
-            "costo_unitario": 0,
-            "alicuota_iva": parseFloat(aArticulo["values"][0]["iva"])
+        if (xaSucursal === undefined) {
+            alert("Usted no tiene sucursal asignada, por favor comuníquese con sistemas para resolver este problema");
+            return;
         }
-    };
-    
-    // Envío el pedido al API para grabarlo en la base de datos.
-    url_carrito += "?sesion=" + JSON.stringify(aSesion) + "&" + "datos=" + JSON.stringify(parametros);
-    fetch(url_carrito, {
-        method: "PUT"
-        })
-        .then(xresponse => xresponse.json())
-        .then(xdata => {
-            alert(xdata.mensaje);
-        });
-}
+        
+        // Recupero los datos del artículo que necesito.
+        objCatalogo.getArticuloById(aSesion, xidarticulo, (xarticulo) => {
+            let aArticulo = {
+                "id_articulo": parseInt(xidarticulo),
+                "cantidad": parseFloat(cantidad),
+                "procentaje_oferta": 0.00,
+                "precio_lista": xarticulo["values"][0]["prlista"],
+                "costo_unitario": 0,
+                "alicuota_iva": xarticulo["values"][0]["iva"]
+            };
+
+            objCatalogo.grabarArticuloEnCarrito(aSesion, acabecera, aArticulo);
+        });      
+    });
+ }

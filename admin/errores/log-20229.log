@@ -1,0 +1,19 @@
+
+
+
+5-9-2022 15:5:13[ALTER TABLE pedidos ADD CONSTRAINT FK_pedidos_sucursales_id_sucursal FOREIGN KEY FK_pedidos_sucursales_id_sucursal (id_sucursal) REFERENCES sucursales (id) ON DELETE RESTRICT ON UPDATE RESTRICT], codigo=1005: Can't create table `db_derweb`.`pedidos` (errno: 150 "Foreign key constraint is incorrectly formed")
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=/home/leonardo/public_html/desa/derweb/admin/der-updversion.php
+  REMOTE_ADDR=::1
+  SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)
+
+
+5-9-2022 15:25:6[ALTER TABLE pedidos ADD id_tipoentidad NOT NULL AFTER id_entidad], codigo=4161: Unknown data type: 'NOT'
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=/home/leonardo/public_html/desa/derweb/admin/der-updversion.php
+  REMOTE_ADDR=::1
+  SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)

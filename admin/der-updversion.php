@@ -10,6 +10,7 @@ require("sc-updversion-sc3.php");
 require("app/update-version/upd-version.php");
 require("app/update-version/upd-version-entidades.php");
 include("der-updversion-clientes-potenciales.php");
+require("app/update-version/upd-version-pedidos.php");
 
 // DERWEB Core
 agregarOperGenerarEndPoint();
@@ -23,6 +24,9 @@ UpdateVersionEntidades::actualizarTablaSucursales();
 UpdateVersionEntidades::actualizarFormaEnvio();
 UpdateVersionEntidades::agregarCamposTiposEntidades();
 
+// Actualizo la versión del módulo de pedidos.
+UPDVersionPedidos::actualizar();
+
 // Actualización de SPs.
 ejecutarSps("sp/");
 echo("<br>");
@@ -30,7 +34,6 @@ Sc3FileUtils::borrarArchivos("tmp/");
 Sc3FileUtils::borrarArchivos("tmpcache/");
 Sc3FileUtils::borrarArchivos("scripts/tmpcache/");
 Sc3FileUtils::borrarArchivos("css/tmpcache/");
-
 
 /**
  * agregarOperGenerarEndPoint

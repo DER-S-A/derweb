@@ -49,4 +49,6 @@ include("modulos/pedidos/pedidosModel.inc.php");
 include("modulos/pedidos/pedidosController.php");
 include("modulos/forma-envio/formas-enviosModel.inc.php");
 include("modulos/forma-envio/formas-enviosController.php");
+include("modulos/entidades/sucursalesModel.inc.php");
+include("modulos/entidades/sucursalesController.php");
 ?>

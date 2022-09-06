@@ -18,7 +18,7 @@ class Model {
      * @return array $result
      */
     protected function getQuery($xstrsql) {
-        $rs = getRs($xstrsql);
+        $rs = getRs($xstrsql, true);
         $result = $rs->getAsArray();
         $rs->close();
         return $result;
