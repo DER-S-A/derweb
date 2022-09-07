@@ -193,8 +193,9 @@ class EntidadesController extends APIController {
             try {
                 $reset = $this->getURIParameters("reset-pass");
                 $id = $this->getURIParameters("id");
+                $passActual = $this->getURIParameters("pass-actual");
                 $objModel = new entidadesModel();
-                $responseData = json_encode($objModel->cambiarClave($reset,$id));
+                $responseData = json_encode($objModel->cambiarClave($reset,$id,$passActual));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
