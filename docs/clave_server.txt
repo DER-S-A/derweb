@@ -2,3 +2,31 @@ Clave para hacer push y pull en respositorio remoto:
 
 clave: uBVOHihb1YUN
 
+Acceso SSH
+
+--------------------------------------------
+
+IP: 179.43.114.82
+
+Puerto: 4225
+
+Usuario: root
+
+Contraseña: uBVOHihb1YUN
+
+ 
+
+ 
+
+FTP:
+
+ 
+
+Protocolo SFTP
+179.43.114.82 Puerto: 4225
+
+usuario
+
+root
+
+uBVOHihb1YUN
