@@ -4,8 +4,8 @@
  */
 
 // URLs para consumir APIs de SAP.
-define ("URL_LOGIN_ETL", "https://181.119.112.208:5444/dev/api/ETL/GetToken", true);
-define ("URL_ENVIAR_PEDIDO", "https://181.119.112.208:5444/dev/api/ETL/GetAndProcessNews", true); 
+define ("URL_LOGIN_ETL", "https://181.119.112.208:5444/dev/api/ETL/GetToken");
+define ("URL_ENVIAR_PEDIDO", "https://181.119.112.208:5444/dev/api/ETL/GetAndProcessNews"); 
 
 // Establece la configuración de logueo al ETL.
 define ("BODY_LOGIN_ETL", array(
