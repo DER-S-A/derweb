@@ -13,6 +13,6 @@ define ("BODY_LOGIN_ETL", array(
     "password" => "1234"));
 
 // Parametros de conexión para enviar en el body de las APIs del ETL
-define ("CONNECTOR_CODE", "DercliWeb", true);
-define ("FUNCIONALITY_CODE", "SalesQuotation", true);
+define ("CONNECTOR_CODE", "DercliWeb");
+define ("FUNCIONALITY_CODE", "SalesQuotation");
 ?>
