@@ -418,8 +418,8 @@ class PedidosModel extends Model {
         $aCliente = $objEntidad->getBySesion($xsesion);
         $id_cliente = intval($aCliente[0]["id"]);
         $id_precio_lista = intval($aCliente[0]["id_listaprecio"]);
-        $descuento_p1 = doubleval($aCliente[0]["descuento_p1"]);
-        $descuento_p2 = doubleval($aCliente[0]["descuento_p2"]);
+        $descuento_p1 = doubleval($aCliente[0]["descuento_1"]);
+        $descuento_p2 = doubleval($aCliente[0]["descuento_2"]);
 
         $sql = "SELECT
                     items.id,
@@ -549,6 +549,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar = [];
         $aItems = [];
         $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
+        $aPedidoActual = [];
         
         // Establezco la comunicación con el ETL.
         $this->getToken();
