@@ -59,15 +59,13 @@ class Catalogo {
      * @param {callback} xcallback Función callback para recibir los datos.
      */
     getSucursalPredeterminadaByCliente(xidCliente, xcallback) {
-        let responseData;
         let objApp = new App();
         let urlSuc = objApp.getUrlApi("app-entidades-sucursales");
-        let filtros = "id_entidad = " + parseInt(xidCliente)
-                + " AND predeterminado = 1";
-        urlSuc += "?filter=" + filtros;
+        let filtros = "\"id_entidad = " + parseInt(xidCliente)
+                + " AND predeterminado = 1\"";
 
-        getApifetch(urlSuc, (xdata) => {
-            xcallback(xdata);
+        (new APIs()).call(urlSuc, "filter=" + filtros, "GET", (xdatos) => {
+            xcallback(xdatos);
         });
     }
 
@@ -80,11 +78,10 @@ class Catalogo {
     getArticuloById(xaSesion, xidarticulo, xcallback) {
         let objApp = new App();
         let url_articulo = objApp.getUrlApi("catalogo-articulos-get");
-    
-        url_articulo += "?sesion=" + JSON.stringify(xaSesion);
-        url_articulo += "&pagina=0&filter=\"art.id = " + xidarticulo + "\"";
-    
-        getApifetch(url_articulo, (xdatos) => {
+        let filtros = "sesion=" + JSON.stringify(xaSesion);
+        filtros += "&pagina=0&filter=\"art.id = " + xidarticulo + "\"";
+        
+        (new APIs()).call(url_articulo, filtros, "GET", (xdatos) => {
             xcallback(xdatos);
         });
     }
@@ -128,16 +125,11 @@ class Catalogo {
                 "alicuota_iva": xarticulo["alicuota_iva"]
             }
         };
-        console.log(parametros);
     
-        // Envío el pedido al API para grabarlo en la base de datos.
-        url_carrito += "?sesion=" + JSON.stringify(xaSesion) + "&" + "datos=" + JSON.stringify(parametros);
-        fetch(url_carrito, {
-            method: "PUT"
-            })
-            .then(xresponse => xresponse.json())
-            .then(xdata => {
-                alert(xdata.mensaje);
+        // Envío el pedido al API para grabarlo en la( base de datos.
+        let argumentos = "sesion=" + JSON.stringify(xaSesion) + "&" + "datos=" + JSON.stringify(parametros);
+        (new APIs()).call(url_carrito, argumentos, "PUT", (xdatos) => {
+            alert(xdatos.mensaje);
         });
     }    
 }
