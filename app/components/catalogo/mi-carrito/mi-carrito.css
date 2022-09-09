@@ -65,10 +65,15 @@
     margin-right: 0;
 }
 
-.modal-div-footer button {
-    width: 99%;
+.modal-div-footer label {
+    padding: 0 0;
 }
 
-.modal-div-footer .select-suscursal {
-    margin-bottom: 20px;
+.modal-div-footer button {
+    width: 99%;
+    margin: 2% auto;
+}
+
+.modal-div-footer select {
+    margin: 4% auto;
 }

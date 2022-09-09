@@ -131,14 +131,17 @@ class MiCarritoModalComponent extends ComponentManager {
         objSelectFormaEnvio.classList.add("form-control", "select-formasEnvios");
         let obj2Label = document.createElement("label");
         obj2Label.innerHTML = "Forma de envio:";
-        let objOption = document.createElement("option");
-        objOption.innerHTML = "Retira cliente";
-        objOption.id = "forma-envio-ID_1";
-        objSelectFormaEnvio.appendChild(objOption);
-        objOption = document.createElement("option");
-        objOption.innerHTML = "Entrega DER";
-        objOption.id = "forma-envio-ID_3";
-        objSelectFormaEnvio.appendChild(objOption);
+
+        (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), "", "GET", (xdatos) => {
+            console.log(xdatos);
+            xdatos.forEach((xitem) => {
+                let objOption = document.createElement("option");
+                objOption.innerHTML = xitem.descripcion;
+                objOption.id = "forma-envio_"+xitem.id;
+                objOption.value = xitem.id;
+                objSelectFormaEnvio.appendChild(objOption);
+            });
+        });
 
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
