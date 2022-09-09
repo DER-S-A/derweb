@@ -60,7 +60,6 @@ class Catalogo {
      */
     getSucursalPredeterminadaByCliente(xidCliente, xcallback) {
         let objApp = new App();
-        let objAPI = new APIs();
         let urlSuc = objApp.getUrlApi("app-entidades-sucursales");
         let filtros = "\"id_entidad = " + parseInt(xidCliente)
                 + " AND predeterminado = 1\"";
