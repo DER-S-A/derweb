@@ -206,8 +206,10 @@
         <script src="components/catalogo/catalogo-gui.js" type="text/javascript"></script>
 
         <!-- Referencias al componente grilla -->
+        <script src="components/catalogo/catalogo-funciones.js" type="text/javascript"></script>
         <script src="components/catalogo/grid-articulos/grid-articulos.js" type="text/javascript"></script>
 
+        <!-- Componente de seguridad -->
         <script src="components/seguridad/seguridad.js" type="text/javascript"></script>
 
         <!-- Componente botón mi carrito -->

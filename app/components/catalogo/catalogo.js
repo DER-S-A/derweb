@@ -87,12 +87,36 @@ class Catalogo {
     }
 
     /**
+     * Agrega el artículo al pedido recuperando los datos que se requieren del mismo.
+     * @param {array} xaSesion Array con los datos de la sesión actual.
+     * @param {int} xidarticulo Id. del artículo seleccionado.
+     * @param {float} xcantidad Cantidad pedida del artículo seleccionado.
+     * @param {array} xaCabecera Array con la cabecera.
+     */
+    agregarArticuloEnCarrito(xaSesion, xidarticulo, xcantidad, xaCabecera) {
+        // Recupero los datos del artículo que necesito.
+        let objCatalogo = new Catalogo();
+        objCatalogo.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {
+            let aArticulo = {
+                "id_articulo": parseInt(xidarticulo),
+                "cantidad": parseFloat(xcantidad),
+                "procentaje_oferta": 0.00,
+                "precio_lista": xarticulo["values"][0]["prlista"],
+                "costo_unitario": 0,
+                "alicuota_iva": xarticulo["values"][0]["iva"]
+            };
+
+            this.__grabarArticuloEnCarrito(xaSesion, xaCabecera, aArticulo);
+        });
+    }
+
+    /**
      * Permite grabar un artículo en el carrito de compras.
      * @param {array} xaSesion Datos de sesión actual.
      * @param {array} xaCabecera Regitro de cabecera.
      * @param {array} xarticulo Registro de artículo
      */
-    grabarArticuloEnCarrito(xaSesion, xaCabecera, xarticulo) {
+    __grabarArticuloEnCarrito(xaSesion, xaCabecera, xarticulo) {
         let objApp = new App();
         let url_carrito = objApp.getUrlApi("catalogo-pedidos-agregarAlCarrito");
         let parametros = new Array();
@@ -131,5 +155,5 @@ class Catalogo {
         (new APIs()).call(url_carrito, argumentos, "PUT", (xdatos) => {
             alert(xdatos.mensaje);
         });
-    }    
+    }
 }
