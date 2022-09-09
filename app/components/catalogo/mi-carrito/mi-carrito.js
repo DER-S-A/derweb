@@ -123,12 +123,31 @@ class MiCarritoModalComponent extends ComponentManager {
                 });
             });
 
+        // GENERO LA OPCION DE FORMA DE ENVIO
+
+        let objSelectFormaEnvio = document.createElement("select");
+        objSelectFormaEnvio.id = "select-formasEnvios";
+        objSelectFormaEnvio.name = "select-formasEnvios";
+        objSelectFormaEnvio.classList.add("form-control", "select-formasEnvios");
+        let obj2Label = document.createElement("label");
+        obj2Label.innerHTML = "Forma de envio:";
+        let objOption = document.createElement("option");
+        objOption.innerHTML = "Retira cliente";
+        objOption.id = "forma-envio-ID_1";
+        objSelectFormaEnvio.appendChild(objOption);
+        objOption = document.createElement("option");
+        objOption.innerHTML = "Entrega DER";
+        objOption.id = "forma-envio-ID_3";
+        objSelectFormaEnvio.appendChild(objOption);
+
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
         objDivFooter.classList.add("modal-div-footer");
 
         objDivFooter.appendChild(objLabel);
         objDivFooter.appendChild(objSelectSucursal);
+        objDivFooter.appendChild(obj2Label);
+        objDivFooter.appendChild(objSelectFormaEnvio);
         
         objBotonFinalizarPedido.id = "btn-finalizar-pedido";
         objBotonFinalizarPedido.name = "btn-finalizar-pedido";
