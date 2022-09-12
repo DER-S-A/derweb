@@ -130,51 +130,23 @@ class MiCarritoModalComponent extends ComponentManager {
                     objOption.textContent = xitem["codigo_sucursal"] + " - " + xitem["calle"] + " - " + xitem["ciudad"];
                     objSelectSucursal.appendChild(objOption);
                 });
-                let xselec = document.getElementById("select-sucursales").value;
-                let xparametrosxUrl = "?id_sucursales=1"/* + JSON.stringify(xselec)*/; 
-                
-                fetch(this.__objApp.getUrlApi("app-forma-envio") + "?id_sucursales=" + xselec)
-                    .then(xres => xres.json())
-                    .then(xdatos =>{console.log(xdatos);
-                        xdatos.forEach((xitem) => {
-                            let objOption = document.createElement("option");
-                            objOption.innerHTML = xitem.descripcion;
-                            objOption.id = "forma-envio_"+xitem.id;
-                            objOption.value = xitem.id;
-                            objSelectFormaEnvio.appendChild(objOption);
-                        });
-                    })
-                
-                /*
 
-                (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), "", "GET", (xdatos) => {
+                // Me traigo la id de la sucursal para mandarla por parametro en la url.
+                let xselec = document.getElementById("select-sucursales").value;
+                let xparametrosxUrl = "id_sucursales=" + xselec; 
+
+                (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
                     console.log(xdatos);
                     xdatos.forEach((xitem) => {
+                        // Completo los option con el resultado de json q traigo con el fetch call.
                         let objOption = document.createElement("option");
                         objOption.innerHTML = xitem.descripcion;
                         objOption.id = "forma-envio_"+xitem.id;
                         objOption.value = xitem.id;
                         objSelectFormaEnvio.appendChild(objOption);
                     });
-                });*/
-
-                
-                //let selec = document.getElementById("select-sucursales").value;
-                //console.log(selec);
+                });
             });
-
-        
-
-        /*(new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), "", "GET", (xdatos) => {
-            console.log(xdatos);
-            xdatos.forEach((xitem) => {
-                let objOption = document.createElement("option");
-                objOption.innerHTML = xitem.descripcion;
-                objOption.id = "forma-envio_"+xitem.id;
-                objOption.value = xitem.id;
-                objSelectFormaEnvio.appendChild(objOption);
-            });
-        });*/
 
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");

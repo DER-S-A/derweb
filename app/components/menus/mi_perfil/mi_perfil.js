@@ -66,20 +66,22 @@ class MiPerfil extends ComponentManager {
     
     // Aca uso el fetch para traerme toda la api
 
-    let xurlapi = this.__objApp.getUrlApi("app-entidades-get");
+    let xurlapi = this.__objApp.getUrlApi("app-entidades-get") + "?filter=id=" + xIdCliente;
     
     function dataApi(done) {
       fetch(xurlapi).then(response => response.json()).then(data => {
       done(data); //dentro de done estoy mandando el data
       });
     }
-    dataApi(data =>{
-      for (let i = 0; i < data.length; i++) {
+    dataApi(data =>{ console.log(data);
+      /*for (let i = 0; i < data.length; i++) {
         if (xIdCliente == data[i].id) {
           xIdCliente = data[i];
           break;
         }
-      }
+      }*/
+
+      xIdCliente = data[0];
 
       /**
       * Genero el contenido de los nodos.
