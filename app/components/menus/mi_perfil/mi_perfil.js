@@ -90,7 +90,7 @@ class MiPerfil extends ComponentManager {
       let valorli = ["NÚMERO DE CLIENTE: ", "DIRECCIÓN: ", "TELÉFONO: ", "MAIL: ", "VENDEDOR: ",
         "BENEFICIO VIGENTE: ", "ENTREGA PREDETERMINADA: "
       ];
-      //let valorspan = ["10028","MORENO 1240","11 4764-0463","CASAJORGEREP@GMAIL.COM","AGUSTIN","50%","RETIRA VIAJANTE"];
+      
       let valorspan = [xIdCliente.cliente_cardcode, "MORENO 1240", xIdCliente.telefono, xIdCliente.email, "AGUSTIN", xIdCliente.descuento_1, "RETIRA VIAJANTE"];
 
       for (let i = 0; i < 7; i++) {
