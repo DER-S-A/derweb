@@ -41,6 +41,26 @@ class Formas_enviosController extends APIController {
     }
 
     // TODO: Desarrollar métodos extras acá abajo.
+
+    public function getMiCarrito() {
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $filter = $this->getURIParameters("filter");
+                $id = $this->getURIParameters("id_sucursales");
+                $iid = 4;
+                $objModel = new Formas_enviosModel();
+                $responseData = json_encode($objModel->getFormasEnviosMiCarrito($filter, $id));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 }
 
 ?>

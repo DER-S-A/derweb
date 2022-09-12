@@ -51,4 +51,6 @@ include("modulos/forma-envio/formas-enviosModel.inc.php");
 include("modulos/forma-envio/formas-enviosController.php");
 include("modulos/entidades/sucursalesModel.inc.php");
 include("modulos/entidades/sucursalesController.php");
+include("modulos/transportes/transportesModel.inc.php");
+include("modulos/transportes/transportesController.php");
 ?>

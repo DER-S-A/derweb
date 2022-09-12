@@ -234,6 +234,5 @@ class EntidadesModel extends Model {
         }
         return $aResult;
     }
-
 }
 ?>

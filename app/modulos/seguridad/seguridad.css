@@ -1,0 +1,158 @@
+/**
+ * Estilos de los formularios correspondiente al módulo de seguridad.
+ * En este archivo se encuentran las clases de estilo tanto para el formulario
+ * de login y registrarse.
+*/
+
+/* Este estilo tengo que ver si me conviene dejarlo así o subirlo
+un nivel más para arriba para que sea más genérico.
+ */
+.login-form-container {
+    width: 400px;
+}
+
+.login-form-container label {
+    font-family: futura;
+    font-size: 10pt;
+    width: 380px;
+    text-align: left;
+}
+
+.login-form-container input {
+    font-family: futura;
+    font-size: 9pt;    
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-color: gray;
+}
+
+@media (max-width: 640px) {
+    .login-form-container {
+        width: 200px;
+        max-height: 200px;
+    }  
+    #cboRubro {
+        width: 175px;
+        max-height: 200px;
+    }
+}
+
+
+
+.login-form-container button {
+    font-family: futura;
+    font-size: 10pt;
+    font-weight: bold;
+    width: 380px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    background-color: #009ada;
+    color: #fff;
+}
+
+.login-form-container a {
+    font-family: futura;
+    font-size: 10pt;
+    font-weight: bold;
+    color: #003d7c;
+    text-decoration: none;
+}
+
+#btnRegistrarse {
+    width: 185px;
+    margin-top: 30px;
+}
+
+/* Combo con checkbox (Pasar a componente select multiple */
+/*.multiselect {
+    width: 380px;
+}*/
+
+.selectBox {
+    position: relative;
+}
+
+.selectBox select {
+    font-weight: bold;
+    font-family: futura;
+    font-size: 9pt;    
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border: thin solid gray;
+}
+
+#btnRegistrarse {
+    width: 185px;
+    margin-top: 30px;
+}
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#checkboxes {
+    display: none;
+    border: 1px #dadada solid;
+    width: 100%;
+    padding: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100px;
+}
+
+#checkboxes label {
+    display: block;
+}
+
+#checkboxes label:hover {
+    background-color: #1e90ff;
+}
+
+#checkboxes label span {
+    padding: 5px;
+    font-family: futura;
+    font-size: 9pt;    
+}
+
+
+@media screen and (max-width: 1100px) {
+  
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 580px) {
+    .login-form-container {
+        /*overflow-y: auto;
+        overflow-x: hidden;*/
+        width: 100%;
+        max-height: 400px;
+        padding-bottom: 30px;
+    }
+
+    .form-select {
+        max-width: 300px;
+    }
+
+    #checkboxes {
+        width: 200px;
+    }    
+
+    /*.container-fluid {
+        margin-bottom:160px;
+    }*/
+}
