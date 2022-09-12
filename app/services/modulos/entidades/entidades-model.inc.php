@@ -234,21 +234,5 @@ class EntidadesModel extends Model {
         }
         return $aResult;
     }
-
-    public function getByCliente($id_cliente){
-        $aResult = array();
-
-        $bd = new BDObject();
-
-        $sql = "SELECT clave FROM entidades WHERE id = $id_cliente";
-
-        $aDatos = $this->getQuery($sql);
-        if ($aDatos == ''){
-            return echo json_encode("NoCliente");
-        }else{
-            return $aDatos;
-        }
-        
-    }
 }
 ?>

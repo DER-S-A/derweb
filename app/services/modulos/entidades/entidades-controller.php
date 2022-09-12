@@ -207,26 +207,6 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
-
-    public function getCliente($id_cliente){
-        if ($this->useGetMethod() || $this->usePostMethod()) {
-            try {
-                $objModel = new EntidadesModel();
-                $id_cliente = intval($this->getCliente("id_cliente"));
-                $responseData = json_encode($objModel->($id_cl));
-
-            } catch (Exception $ex) {
-                $this->setErrorFromException($ex);
-            }
-        }else {
-            $this->setErrorMetodoNoSoportado();
-
-        if ($this->isOK())
-            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
-        else
-            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
-        }
-    }
 }
 
 ?>
