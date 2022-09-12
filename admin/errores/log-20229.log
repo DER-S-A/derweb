@@ -1,0 +1,35 @@
+
+
+
+3-9-2022 9:35:17[SELECT distinct 'Q' as tipo, q.id, q.querydescription, q.queryname, 
+					q.icon, '' as target, pref.valor2, 0 as acceso_offline
+				FROM sc_querys q
+					inner join sc_perfiles_querys pq on (pq.idquery = q.id)
+					inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop' and 
+																pref.idusuario = 2	and 
+																pref.valor1 = q.queryname)   inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil) where up.idusuario = 2 and 
+					q.idmenu is not null union SELECT distinct 'O' as tipo, o.id, o.nombre, o.url, 
+					o.icon, o.target, o.ayuda, o.acceso_offline FROM sc_operaciones o   inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop-op'												and pref.idusuario = 2												and pref.valor1 = o.id)   inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil) where up.idusuario = 2], codigo=1054: Unknown column 'o.acceso_offline' in 'field list'
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
+  QUERY_STRING=
+  SCRIPT_FILENAME=C:/Users/BBianculli/Documents/Proyectos/derweb/admin/hole.php
+  REMOTE_ADDR=10.0.0.157
+  SCRIPT_NAME=/derweb/admin/hole.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
+
+
+3-9-2022 9:35:17[SELECT distinct 'Q' as tipo, q.id, q.querydescription, q.queryname, 
+					q.icon, '' as target, pref.valor2, 0 as acceso_offline
+				FROM sc_querys q
+					inner join sc_perfiles_querys pq on (pq.idquery = q.id)
+					inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop' and 
+																pref.idusuario = 2	and 
+																pref.valor1 = q.queryname)   inner join sc_usuarios_perfiles up on (pq.idperfil = up.idperfil) where up.idusuario = 2 and 
+					q.idmenu is not null union SELECT distinct 'O' as tipo, o.id, o.nombre, o.url, 
+					o.icon, o.target, o.ayuda, o.acceso_offline FROM sc_operaciones o   inner join sc_perfiles_operaciones po on (po.idoperacion = o.id)   inner join sc_usuarios_preferencias pref on (pref.atributo = 'desktop-op'												and pref.idusuario = 2												and pref.valor1 = o.id)   inner join sc_usuarios_perfiles up on (po.idperfil = up.idperfil) where up.idusuario = 2], codigo=1054: Unknown column 'o.acceso_offline' in 'field list'
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36
+  QUERY_STRING=cols=1&innercols=1
+  SCRIPT_FILENAME=C:/Users/BBianculli/Documents/Proyectos/derweb/admin/sc-menu-panel.php
+  REMOTE_ADDR=10.0.0.157
+  SCRIPT_NAME=/derweb/admin/sc-menu-panel.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
