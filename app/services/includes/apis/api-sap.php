@@ -70,7 +70,7 @@ class APISap {
     public function setData($xdata) {
         $this->data = json_encode($xdata);
         if ($this->testMode)
-            file_put_contents("test/enviado-" . str_replace("/", "_", $this->url) . "json", $this->data);
+            file_put_contents("test/enviado-" . date("Ymd", time()) . "json", $this->data);
     }
     
     /**
@@ -115,7 +115,7 @@ class APISap {
 
         $this->output = json_encode($this->aInfo);
         if ($this->testMode)
-            file_put_contents("test/recibido-" . str_replace("/", "_", $this->url) . "json", $this->output);
+            file_put_contents("test/recibido-" . date("Ymd", time()) . "json", $this->output);
     }
     
     /**

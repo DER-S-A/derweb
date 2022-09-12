@@ -1,6 +1,7 @@
 
 
 
+<<<<<<< HEAD
 3-9-2022 9:35:17[SELECT distinct 'Q' as tipo, q.id, q.querydescription, q.queryname, 
 					q.icon, '' as target, pref.valor2, 0 as acceso_offline
 				FROM sc_querys q
@@ -32,4 +33,39 @@
   SCRIPT_FILENAME=C:/Users/BBianculli/Documents/Proyectos/derweb/admin/sc-menu-panel.php
   REMOTE_ADDR=10.0.0.157
   SCRIPT_NAME=/derweb/admin/sc-menu-panel.php
+=======
+5-9-2022 15:5:13[ALTER TABLE pedidos ADD CONSTRAINT FK_pedidos_sucursales_id_sucursal FOREIGN KEY FK_pedidos_sucursales_id_sucursal (id_sucursal) REFERENCES sucursales (id) ON DELETE RESTRICT ON UPDATE RESTRICT], codigo=1005: Can't create table `db_derweb`.`pedidos` (errno: 150 "Foreign key constraint is incorrectly formed")
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=/home/leonardo/public_html/desa/derweb/admin/der-updversion.php
+  REMOTE_ADDR=::1
+  SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)
+
+
+5-9-2022 15:25:6[ALTER TABLE pedidos ADD id_tipoentidad NOT NULL AFTER id_entidad], codigo=4161: Unknown data type: 'NOT'
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=/home/leonardo/public_html/desa/derweb/admin/der-updversion.php
+  REMOTE_ADDR=::1
+  SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)
+
+
+7-9-2022 16:14:7[ALTER TABLE pedidos ADD CONSTRAINT FK_pedidos_tipos_entidades_id_tipoentidad FOREIGN KEY FK_pedidos_tipos_entidades_id_tipoentidad (id_tipoentidad) REFERENCES tipos_entidades (id) ON DELETE RESTRICT ON UPDATE RESTRICT], codigo=1452: Cannot add or update a child row: a foreign key constraint fails (`db_derweb`.`#sql-3018_795c`, CONSTRAINT `FK_pedidos_tipos_entidades_id_tipoentidad` FOREIGN KEY (`id_tipoentidad`) REFERENCES `tipos_entidades` (`id`))
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.70
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=C:/Users/rursi/Proyectos/derweb/admin/der-updversion.php
+  REMOTE_ADDR=10.0.0.31
+  SCRIPT_NAME=/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
+
+
+7-9-2022 16:14:49[ALTER TABLE pedidos ADD CONSTRAINT FK_pedidos_entidades_id_vendedor FOREIGN KEY FK_pedidos_entidades_id_vendedor (id_vendedor) REFERENCES entidades (id) ON DELETE RESTRICT ON UPDATE RESTRICT], codigo=1452: Cannot add or update a child row: a foreign key constraint fails (`db_derweb`.`#sql-3018_79ac`, CONSTRAINT `FK_pedidos_entidades_id_vendedor` FOREIGN KEY (`id_vendedor`) REFERENCES `entidades` (`id`))
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 Edg/104.0.1293.70
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=C:/Users/rursi/Proyectos/derweb/admin/der-updversion.php
+  REMOTE_ADDR=10.0.0.31
+  SCRIPT_NAME=/derweb/admin/der-updversion.php
+>>>>>>> f251e938b80e50a3a8ebd79b858bd552440ca5a1
   SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
