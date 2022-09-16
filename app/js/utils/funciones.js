@@ -123,3 +123,9 @@ function getApifetch (xurl, xcallback) {
     })
 }
 
+function cerrarSession(bandera=true) {
+    if(bandera){alert("sesion cerrada");}
+    sessionStorage.removeItem("derweb_sesion");
+    location.href = "./index.php";
+}
+
