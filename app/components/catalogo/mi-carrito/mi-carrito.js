@@ -120,6 +120,15 @@ class MiCarritoModalComponent extends ComponentManager {
         let obj2Label = document.createElement("label");
         obj2Label.innerHTML = "Forma de envio:";
 
+        // GENERO LA OPCION DE TRANSPORTE
+
+        let objSelectTransporte = document.createElement("select");
+        objSelectTransporte.id = "select-transportes";
+        objSelectTransporte.name = "select-transportes";
+        objSelectTransporte.classList.add("form-control", "select-transportes");
+        let obj3Label = document.createElement("label");
+        obj3Label.innerHTML = "Transportes:";
+
         fetch(this.__objApp.getUrlApi("app-entidades-getSucursalesByEntidad") + "?id_entidad=" + aSesion["id_cliente"])
             .then(xresponse => xresponse.json())
             .then(xsucursales => {
@@ -136,17 +145,43 @@ class MiCarritoModalComponent extends ComponentManager {
                 let xparametrosxUrl = "id_sucursales=" + xselec; 
 
                 (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
-                    console.log(xdatos);
                     xdatos.forEach((xitem) => {
                         // Completo los option con el resultado de json q traigo con el fetch call.
                         let objOption = document.createElement("option");
                         objOption.innerHTML = xitem.descripcion;
                         objOption.id = "forma-envio_"+xitem.id;
-                        objOption.value = xitem.id;
+                        objOption.value = xitem.codigo;
                         objSelectFormaEnvio.appendChild(objOption);
                     });
-                });
-            });
+
+                    // Me traigo la lista de transporte para pegar en el selector de transportes.
+
+                    (new APIs()).call(this.__objApp.getUrlApi("app-transportes"), "", "GET", (xdatos) => {
+                        console.log(xdatos);
+                        xdatos.forEach((xitem) => {
+                            // Completo los option con el resultado de json q traigo con el fetch call.
+                            let objOption = document.createElement("option");
+                            objOption.innerHTML = xitem.descripcion;
+                            objOption.id = "transporteId_"+xitem.id;
+                            objOption.value = xitem.codigo;
+                            objSelectTransporte.appendChild(objOption);
+                        });
+                    }); 
+
+
+                    let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
+                    // CON ESTA FUNCION REALIZO EL DISPLAY NONE DEL SELECTOR Q MUESTRA TODOS LOS TRANSPORTES.
+                    displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, objSelectTransporte); 
+                    // 1RA VAR ES EL CODIGO DE LA FORMA DE ENVIO Q TIENE EL SELECTOR
+                    // EL 6 ES EL CODIGO DE FORMA DE ENVIO TRANSPORTE
+                    // Y LA 3RA VAR ES EL LABEL QUE DICE TRANSPORTES
+                    // 4TA VAR ES OBJETO NODO SELECTOR DE TRANSPORTE
+                    addEventListener("change",() => {  // Aca genero evento de cambio de opcion de select
+                        let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
+                        displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, objSelectTransporte, true);
+                    });
+                });                                                                      
+            });                                                                       
 
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
@@ -156,6 +191,8 @@ class MiCarritoModalComponent extends ComponentManager {
         objDivFooter.appendChild(objSelectSucursal);
         objDivFooter.appendChild(obj2Label);
         objDivFooter.appendChild(objSelectFormaEnvio);
+        objDivFooter.appendChild(obj3Label);
+        objDivFooter.appendChild(objSelectTransporte);
         
         objBotonFinalizarPedido.id = "btn-finalizar-pedido";
         objBotonFinalizarPedido.name = "btn-finalizar-pedido";
