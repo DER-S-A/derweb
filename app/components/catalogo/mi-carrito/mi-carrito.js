@@ -52,7 +52,7 @@ class MiCarritoModalComponent extends ComponentManager {
     __generarDivModal() {
         this.__objDivModal = document.createElement("div");
         this.__objDivModal.id = this.__idModal;
-        this.__objDivModal.classList.add("modal");
+        this.__objDivModal.classList.add("modal","mc-modal");
     }
 
     /**
@@ -167,7 +167,6 @@ class MiCarritoModalComponent extends ComponentManager {
                             objSelectTransporte.appendChild(objOption);
                         });
                     }); 
-
 
                     let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
                     // CON ESTA FUNCION REALIZO EL DISPLAY NONE DEL SELECTOR Q MUESTRA TODOS LOS TRANSPORTES.

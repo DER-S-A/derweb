@@ -12,7 +12,7 @@
     display: none;
 }
 
-.modal {
+.mc-modal {
     background-color: #f5f5f5;
     position: relative;
     float: right;
