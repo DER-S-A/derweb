@@ -123,3 +123,27 @@ function getApifetch (xurl, xcallback) {
     })
 }
 
+function cerrarSession(bandera=true) {
+    if(bandera){alert("sesion cerrada");}
+    sessionStorage.removeItem("derweb_sesion");
+    location.href = "./index.php";
+}
+
+function displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, objSelectTransporte, change = false) {
+    console.log(opcionElegidaDeEnvio);
+    if(change) {
+        if(opcionElegidaDeEnvio != xcodigo){
+            objSelectTransporte.style.display = "none";
+            objLabelTransporte.style.display = "none";
+        } else {
+            objSelectTransporte.style.display = "block";
+            objLabelTransporte.style.display = "inline-block";
+        } 
+    } else {
+        if(opcionElegidaDeEnvio != xcodigo){
+            objSelectTransporte.style.display = "none";
+            objLabelTransporte.style.display = "none";
+        }
+    }   
+}
+

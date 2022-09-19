@@ -88,7 +88,8 @@ function cambiarContraseña() {
       let respuesta = objCambiarPass.cambiarClave(xIdCliente,objInputConf.value,objInputActual.value);
       if (respuesta["result_code"] === "OK") {
         swal("WOW!", respuesta["result_message"],"success");
-        sessionStorage.removeItem("derweb_sesion");
+        //sessionStorage.removeItem("derweb_sesion");
+        setTimeout(cerrarSession, 5000);
         bandera = 1;
       } else {
           swal("Oops", respuesta["result_message"],"error");

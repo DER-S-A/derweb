@@ -203,8 +203,9 @@ class EntidadesModel extends Model {
         $sql = "SELECT clave FROM entidades WHERE id = $xid";
 
         $aDatos = $this->getQuery($sql);
+        $xActual = json_decode($xActual,true);
 
-        if($aDatos[0][0] == json_decode($xActual,true)){
+        if($aDatos[0]["clave"] == $xActual){
 
             $bd->beginT();
             try {

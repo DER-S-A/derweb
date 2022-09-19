@@ -29,6 +29,7 @@ window.onload = () => {
     generarBotonMiCarrito();
     iniciarlizarComponenteMiCarrito();
     esconderHamburguesa();
+    setInterval(cerrarSession, 720000);
 }
 
 /**
@@ -318,9 +319,7 @@ objBPerfil.addEventListener("click",()=> {
 })
 
 let objCierreSession = document.getElementById("cierreSession");
-objCierreSession.addEventListener("click",()=> {
-    sessionStorage.removeItem("derweb_sesion");
-})
+objCierreSession.addEventListener("click",cerrarSession);
 
 /**
  * Esta función permite mostrar la pantalla mi perfil.
@@ -331,6 +330,12 @@ function miPerfil() {
     let obj = document.getElementById("reset-pass");
     obj.addEventListener("click",cambiarContraseña);  // ESTE EVENTO GENERA EL FORM DE CAMBIO DE CLAVE.
 }
+
+// PRUEBA
+
+//setInterval(cerrarSession, 30000);
+
+
 
 
 
