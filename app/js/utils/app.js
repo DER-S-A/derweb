@@ -32,7 +32,8 @@ const aAPIs = [
     {"catalogo-articulos-get"                   : "services/articulos.php/get"},
     {"catalogo-pedidos-getPedidoActual"         : "services/pedidos.php/getPedidoActual"},
     {"catalogo-pedidos-agregarAlCarrito"        : "services/pedidos.php/agregarAlCarrito"},
-    {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"}
+    {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"},
+    {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"}
 ]
 
 class App {

@@ -144,7 +144,8 @@ class PedidosModel extends Model {
                         INNER JOIN estados_pedidos ON estados_pedidos.id = pedidos.id_estado
                 WHERE
                     estados_pedidos.estado_inicial = 1 AND
-                    pedidos.id_entidad = " . $this->idCliente;
+                    pedidos.id_entidad = " . $this->idCliente . " AND 
+                    pedidos.id_tipoentidad = " . $this->idTipoEntidad;
         $rs = $this->getQuery2($sql);
         $this->idPedido = $rs->getValueInt("id");
         $rs->close();
@@ -415,6 +416,8 @@ class PedidosModel extends Model {
 
         // Recupero los datos que necesito del cliente.
         $objEntidad = new EntidadesModel();
+        $aSesion = json_decode($xsesion, true);
+        $this->idTipoEntidad = intval($aSesion["id_tipoentidad"]);
         $aCliente = $objEntidad->getBySesion($xsesion);
         $id_cliente = intval($aCliente[0]["id"]);
         $id_precio_lista = intval($aCliente[0]["id_listaprecio"]);
@@ -447,8 +450,9 @@ class PedidosModel extends Model {
                     estado.estado_inicial = 1 AND
                     (foto.predeterminada = 1 OR foto.predeterminada IS NULL) AND
                     ped.id_entidad = $id_cliente AND
-                    lpre.id = $id_precio_lista";
-
+                    lpre.id = $id_precio_lista AND
+                    ped.id_tipoentidad = " . $this->idTipoEntidad;
+        
         $rs = getRs($sql);
         $indice = 0;
         while (!$rs->EOF()) {
@@ -588,6 +592,69 @@ class PedidosModel extends Model {
     private function getToken() {
         $objAPISap = new APISap(URL_LOGIN_ETL, "POST");
         $objAPISap->getTokenETL();
+    }
+    
+    /**
+     * getPedidosPendientesByVendedor
+     * Obtiene los pedidos actuales pendientes de confirmar por vendedor.
+     * @param  string $xsesion
+     * @return array
+     */
+    public function getPedidosPendientesByVendedor($xsesion) {
+        $aSesion = json_decode($xsesion, true);
+        $idVendedor = intval($aSesion["id_vendedor"]);
+        $idTipoEntidad = intval($aSesion["id_tipoentidad"]);
+        $aResponse = [];
+
+        $sql = "SELECT
+                    p.id,
+                    p.fecha_alta,
+                    ent.cliente_cardcode,
+                    ent.nombre,
+                    p.codigo_sucursal,
+                    p.total
+                FROM
+                    pedidos p
+                        INNER JOIN estados_pedidos est ON est.id = p.id_estado
+                        INNER JOIN entidades ent ON ent.id = p.id_entidad
+                WHERE
+                    p.id_vendedor = $idVendedor AND
+                    est.estado_inicial = 1 AND
+                    p.id_tipoentidad = $idTipoEntidad";
+        $rs = getRs($sql, true);
+        $i = 0;
+        while(!$rs->EOF()) {
+            $aResponse[$i]["id"] = $rs->getValueInt("id");
+            $aResponse[$i]["fecha_alta"] = $rs->getValueFechaFormateada("fecha_alta");
+            $aResponse[$i]["cliente_cardcode"] = $rs->getValue("cliente_cardcode");
+            $aResponse[$i]["nombre"] = $rs->getValue("nombre");
+            $aResponse[$i]["codigo_sucursal"] = $rs->getValue("codigo_sucursal");
+            $aResponse[$i]["total"] = $rs->getValueFloat("total");
+
+            $sql = "SELECT
+                        item.id,
+                        item.id_pedido,
+                        item.cantidad,
+                        art.codigo,
+                        art.descripcion,
+                        item.precio_lista,
+                        item.costo_unitario,
+                        item.subtotal,
+                        item.total
+                    FROM
+                        pedidos_items item
+                            INNER JOIN articulos art ON art.id = item.id_articulo
+                    WHERE
+                        item.id_pedido = " . $rs->getValueInt("id");
+            $aResponse[$i]["items"] = getRs($sql, true)->getAsArray();
+
+            $i++;
+            $rs->next();
+        }
+
+        $rs->close();
+
+        return $aResponse;
     }
 }
 

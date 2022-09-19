@@ -6,5 +6,6 @@
 
 /admin/config.php
 /admin/ufiles
+/admin/errores/
 /app/services/test/
 /backups/

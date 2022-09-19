@@ -12,8 +12,9 @@
         <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
         <link href="components/catalogo/grid-articulos/grid-articulos.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.css" rel="stylesheet">
-        <link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
-        <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">
+        <!--<link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
+        <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">-->
+        <link href="components/catalogo/vendedores/pedidos-vendedores-gui.css" rel="stylesheet">
         <link href="components/menus/mi_perfil/mi_perfil_style.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
@@ -33,7 +34,7 @@
             <header>
                 <div class="row app-header">
                     <div class="col-md-1">
-                        <a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
+                        <a href="main-vendedores.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
                     </div>
                     <div class="col-md-11">
                         <div class="row">
@@ -113,11 +114,13 @@
 
             <main class="container-fluid">
                 <section id="app-container">
-                    <form id="form-seleccion-clientes">
+                    <form id="formulario">
                         <div class="row">
-                            <div class="col-md-12" id="grid_clientes"></div>
+                            <div class="col-md-12" id="app_grid_container"></div>
                         </div>
                     </form>
+
+                    <div id="modal-pedidos"></div>
                 </section>
             </main>
 
@@ -183,8 +186,11 @@
 
         <!-- Componente botón mi carrito -->
         <script src="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js" type="text/javascript"></script>
-        <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
-        <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>
+        <!--<script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
+        <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>-->
+
+        <script src="components/catalogo/vendedores/pedidos-vendedores-gui.js" type="text/javascript"></script>
+
         <script src="components/menus/mi_perfil/mi_perfil.js" type="text/javascript"></script>
         <script src="components/menus/mi_perfil/cambiar_contraseña.js" type="text/javascript"></script>
         <script src="terceros/lfw-datagrid/lfwdatagrid.js" type="text/javascript"></script>

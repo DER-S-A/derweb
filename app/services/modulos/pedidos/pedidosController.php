@@ -97,13 +97,39 @@ class PedidosController extends APIController {
      * @return void
      */
     public function confirmarPedido() {
-        // Valido que la llamada venga por método GET o POST.
+        // Valido que la llamada venga por método PUT.
         if ($this->usePutMethod()) {
             try {
                 $sesion = $this->getURIParameters("sesion");
                 $idPedido = $this->getURIParameters("id_pedido");
                 $objModel = new PedidosModel();
                 $responseData = json_encode($objModel->confirmarPedido($sesion, $idPedido));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
+
+    
+    /**
+     * getPedidosPendientesByVendedor
+     * API que obtiene los pedidos pendientes de confirmar por vendedor.
+     * @return void
+     */
+    public function getPedidosPendientesByVendedor() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $sesion = $this->getURIParameters("sesion");
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->getPedidosPendientesByVendedor($sesion));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

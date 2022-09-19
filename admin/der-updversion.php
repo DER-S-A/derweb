@@ -7,6 +7,7 @@
 require("funcionesSConsola.php");
 require("sc-updversion-utils.php");
 require("sc-updversion-sc3.php");
+require("app/upd-version-derwebapp/upd-version-derweb-utils.php");
 require("app/update-version/upd-version.php");
 require("app/update-version/upd-version-entidades.php");
 include("der-updversion-clientes-potenciales.php");
@@ -26,6 +27,9 @@ UpdateVersionEntidades::agregarCamposTiposEntidades();
 
 // Actualizo la versión del módulo de pedidos.
 UPDVersionPedidos::actualizar();
+
+// DERWEB APP Vendedores
+UpdateVersion::instalarOpPedidosPendientes();
 
 // Actualización de SPs.
 ejecutarSps("sp/");

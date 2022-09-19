@@ -25,9 +25,7 @@ window.onload = () => {
     generarMenuOperaciones();
     generarBotonListaArticulos();
     generarBotonMiCarrito();
-    iniciarlizarComponenteMiCarrito();
     getClientes();
-    //esconderHamburguesa();
 }
 
 /**
@@ -177,50 +175,6 @@ function generarBotonMiCarrito() {
     objBtnMiCarrito.generateComponent();
 }
 
-/**
- * Crea el componente mi carrito pero lo deja oculto.
- */
-function iniciarlizarComponenteMiCarrito() {
-    objMiCarrito = new MiCarritoModalComponent("mi-carrito");
-    objMiCarrito.generateComponent();
-}
-
-/**
- * Abre el modal para mostrar el pedido actual (mi carrito)
- */
-function abrir_mi_carrito() {
-    var objGrillaMiCarrito = new CarritoGridComponent("grd-pedido", "mi-carrito-contenido");
-    objGrillaMiCarrito.setEliminarFunctionName("eliminar_item_mi_carrito");
-    objGrillaMiCarrito.generateComponent();
-    objMiCarrito.open();
-
-    // Agrego el evento click de finalizar pedido
-    document.getElementById("btn-finalizar-pedido").addEventListener("click", () => {
-        // Mando a marcar el pedido como confirmado.
-        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
-        let parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") + "&id_pedido=" + parseInt(aPedidoActual["id_pedido"]);
-
-        objMiCarrito.close();
-        url = url + parametros;
-        console.log(url);
-        
-        fetch(url, {
-            method: "PUT",
-            headers: {
-                'content-type': 'applitacion/json'
-            }
-        }).then(xresponse => xresponse.json())
-            .then(xdata => {
-                if (xdata["codigo"] !== "OK")
-                    alert(xdata["mensaje"]);
-                else
-                    alert(xdata["mensaje"]);
-
-            });
-    }, false);
-}
-
 let objTxtValorBuscado = document.getElementById("txtValorBuscado");
 objTxtValorBuscado.addEventListener("keypress",(e) => {
     if(e.keyCode === 13) {
@@ -239,28 +193,6 @@ function esconderHamburguesa() {
 
 }
 
-/*
-* DESPLIEGA MENU PERFIL
-*/
-/*let objBPerfil = document.getElementById("btn_perfil");
-let abrirCerrar=0;
-
-objBPerfil.addEventListener("click",()=> {
-    let objMPerfil = document.querySelector(".menu-perfil");
-    if(abrirCerrar===0){
-        objMPerfil.style.display = "flex";
-        abrirCerrar=1;
-    } else {
-        objMPerfil.style.display = "none";
-        abrirCerrar=0;
-    }
-})
-
-let objCierreSession = document.getElementById("cierreSession");
-objCierreSession.addEventListener("click",()=> {
-    sessionStorage.removeItem("derweb_sesion");
-})*/
-
 /**
  * Esta función permite desplegar mi perfil.
  */
@@ -275,12 +207,12 @@ function miPerfil() {
  * Obtiene la lista de clientes del venededor actualmente logueado.
  */
 function getClientes() {
-    let objGrid = new LFWDataGrid("grid_clientes", "id");
+    let objGrid = new LFWDataGrid("app_grid_container", "id");
     let objApp = new App();
     let objCacheUtils = new CacheUtils("derweb", false);
     let url = "";
 
-    objGrid.setAsociatedFormId("form-seleccion-clientes");
+    objGrid.setAsociatedFormId("formulario");
     objGrid.setPermitirOrden(true);
     objGrid.setPermitirFiltros(true);
     objGrid.setPermitirEditarRegistro(true);
@@ -320,3 +252,20 @@ function entrar_al_cliente(xid) {
     window.open("main-clientes.php", "_blank");
 }
 
+/**
+ * Permite mostrar la pantalla de los pedidos pendientes de confirmar
+ * por clientes a los vendedores.
+ */
+function ver_pedidos_pendientes() {
+    let objPedidos = new PedidosVendedoresGUI();
+    objPedidos.getPedidosPendientes();
+}
+
+/**
+ * Permite mostrar los ítems del pedido.
+ * @param {int} xidpedido 
+ */
+function entrar_al_pedido(xidpedido) {
+    let objPedidos = new PedidosVendedoresGUI();
+    objPedidos.entrarAlPedido(xidpedido);
+}

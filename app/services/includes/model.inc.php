@@ -8,6 +8,7 @@
 
 class Model {
     protected $idCliente = 0;
+    protected $idTipoEntidad = 0;
 
     /**
      * ejecutar_comando
@@ -119,12 +120,14 @@ class Model {
      */
     protected function getClienteActual($xsesion) {
         $objEndidadesModel = new EntidadesModel();
+        $aSesion = json_decode($xsesion, true);
         $aCliente = $objEndidadesModel->getBySesion($xsesion);
         $this->id_listaprecio = intval($aCliente[0]["id_listaprecio"]);
         $this->descuento_p1 = doubleval($aCliente[0]["descuento_1"]);
         $this->descuento_p2 = doubleval($aCliente[0]["descuento_2"]);
         $this->rentabilidad = doubleval($aCliente[0]["rentabilidad_1"]);
         $this->idCliente = intval($aCliente[0]["id"]);
+        $this->idTipoEntidad = $aSesion["id_tipoentidad"];
     }
 }
 ?>
