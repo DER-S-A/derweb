@@ -29,7 +29,7 @@ window.onload = () => {
     generarBotonMiCarrito();
     iniciarlizarComponenteMiCarrito();
     esconderHamburguesa();
-    setInterval(cerrarSession, 720000);
+    setInterval(cerrarSession, 7200000);
 }
 
 /**
@@ -255,6 +255,14 @@ function abrir_mi_carrito() {
     objGrillaMiCarrito.setEliminarFunctionName("eliminar_item_mi_carrito");
     objGrillaMiCarrito.generateComponent();
     objMiCarrito.open();
+
+    // Agrego el evento click para vaciar carrito.
+    document.getElementById("vaciarCarrito").addEventListener("click", () => {
+        let idPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+        let url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");
+        let objCarrito = new MiCarritoModalComponent;
+        objCarrito.vaciarMiCarrito(url, idPedidoActual.id_pedido);
+    })
 
     // Agrego el evento click de finalizar pedido
     document.getElementById("btn-finalizar-pedido").addEventListener("click", () => {

@@ -486,6 +486,71 @@ class PedidosModel extends Model {
 
         return $aResponse;
     }
+
+    /**
+     * vaciarPedido
+     * vacia el pedido actual por su ID.
+     * @param  int $xid_pedido
+     * @return array
+     */
+    public function vaciarPedido($xid_pedido) {
+        /* $aResponse = [];
+        $ok = false;
+
+        $sql = "DELETE
+                FROM pedidos_items
+                WHERE
+                    id_pedido = $xid_pedido";
+
+        $sql2 = "DELETE
+                FROM pedidos
+                WHERE
+                id = $xid_pedido";
+        
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        $bd->execQuery($sql2);
+        $aResponse["codigo"] = "OK";
+        $aResponse["mensaje"] = "Se vacio el carrito";
+                
+        $bd->close();
+
+        return $aResponse; */
+
+        //$aResult = array();
+
+        $bd = new BDObject();
+        $bd->beginT();
+        try {
+            $sql = "DELETE
+                FROM pedidos_items
+                WHERE
+                    id_pedido = $xid_pedido";
+
+             $sql2 = "DELETE
+                    FROM pedidos
+                    WHERE
+                    id = $xid_pedido"; 
+            $bd->execInsert($sql);
+            $bd->execInsert($sql2);
+
+            // Actualizo el checksum de la tabla.
+            sc3UpdateTableChecksum("pedidos_items", $bd);
+            //sc3UpdateTableChecksum("pedidos", $bd);
+
+            $bd->commitT();
+
+            $aResult["codigo"] = "OK";
+            $aResult["mensaje"] = "Se vacio el carrito.";            
+        } catch (Exception $e) {
+            $bd->rollbackT();
+            $aResult["codigo"] = "BD_ERROR";
+            $aResult["mensaje"] = "No se vacio el carrito";
+        } finally {
+            $bd->close();
+        }
+        return json_encode($aResult);
+    }
     
     /**
      * confirmarPedido

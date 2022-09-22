@@ -90,6 +90,32 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+
+    /**
+     * vaciarCarrito
+     * API que permite vaciar carrito.
+     * @return void
+     */
+    public function vaciarCarrito() {
+        // Valido que la llamada venga por método PUT.
+        if ($this->usePutMethod()) {
+            try {
+                $idPedido = $this->getURIParameters("id_pedido");
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->vaciarPedido($idPedido));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+    
     
     /**
      * confirmarPedido

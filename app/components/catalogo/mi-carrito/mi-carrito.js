@@ -99,12 +99,15 @@ class MiCarritoModalComponent extends ComponentManager {
      * Genera el footer del modal mi carrito.
      */
     __generarFooter() {
+        let objAnchor = document.createElement("a");
         let objDivFooter = document.createElement("div");
         let objBotonFinalizarPedido = document.createElement("button");
         let objSelectSucursal = document.createElement("select");
         let objLabel = document.createElement("label");
         let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
         
+        objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
+        objAnchor.id = "vaciarCarrito";
         objSelectSucursal.id = "select-sucursales";
         objSelectSucursal.name = "select-sucursales";
         objSelectSucursal.classList.add("form-control");
@@ -186,6 +189,8 @@ class MiCarritoModalComponent extends ComponentManager {
         objDivFooter.classList.add("row");
         objDivFooter.classList.add("modal-div-footer");
 
+        objAnchor.innerHTML = "   VACIAR CARRITO"
+        objDivFooter.appendChild(objAnchor);
         objDivFooter.appendChild(objLabel);
         objDivFooter.appendChild(objSelectSucursal);
         objDivFooter.appendChild(obj2Label);
@@ -221,4 +226,24 @@ class MiCarritoModalComponent extends ComponentManager {
     close() {
         document.getElementById(this.__idModal + "_fondo").style.display = "none";
     }
+
+    vaciarMiCarrito(xUrl, xIdPed) {
+        let xparametros = "id_pedido=" + xIdPed;
+        console.log(xUrl);
+        console.log(xIdPed);
+        /* xUrl = xUrl + "?id_pedido=" + JSON.stringify(xIdPed);
+        let objAPI = new APIs();
+        objAPI.put(xUrl, (xResponse) => {
+            this.aResponse = JSON.parse(xResponse);
+        });
+        console.log(this.aResponse);
+        alert(this.aResponse.mensaje);
+        return this.aResponse; */
+        (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
+            xdatos = JSON.parse(xdatos);
+            alert(xdatos.mensaje);
+        });
+    } 
 }
+
+

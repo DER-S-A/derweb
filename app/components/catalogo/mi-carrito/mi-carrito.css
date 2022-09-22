@@ -77,3 +77,9 @@
 .modal-div-footer select {
     margin: 4% auto;
 }
+
+.modal-div-footer a {
+    text-decoration: auto;
+    margin: 3% auto;
+    text-align: center;
+}
