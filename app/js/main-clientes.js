@@ -260,6 +260,7 @@ function abrir_mi_carrito() {
     document.getElementById("vaciarCarrito").addEventListener("click", () => {
         let idPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
         let url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");
+        objMiCarrito.close();
         let objCarrito = new MiCarritoModalComponent;
         objCarrito.vaciarMiCarrito(url, idPedidoActual.id_pedido);
     })
