@@ -597,15 +597,26 @@ class PedidosModel extends Model {
         $codigoSucursal = $rsSucursal->getValue("codigo_sucursal");
         $rsSucursal->close();
 
-        $sql = "SELECT
-                    codigo_transporte
-                FROM
-                    transportes
-                WHERE
-                    id = " . intval($aPedidoConfirmar["id_transporte"]);
-        $rsTransporte = getRs($sql, true);
-        $codigoTransporte = $rsTransporte->getValue("codigo_transporte");
-        $rsTransporte->close();
+        $sql = "SELECT mostrar_transporte FROM formas_envios WHERE id = " . intval($aPedidoConfirmar["id_formaenvio"]);
+        $rsFormaEnvio = getRs($sql, true);
+        $grabar_transporte = $rsFormaEnvio->getValueInt("mostrar_transporte") == 1 ? true : false;
+        $rsFormaEnvio->close();
+
+        if ($grabar_transporte) {
+            $id_transporte = intval($aPedidoConfirmar["id_transporte"]);
+            $sql = "SELECT
+                        codigo_transporte
+                    FROM
+                        transportes
+                    WHERE
+                        id = " . $id_transporte;
+            $rsTransporte = getRs($sql, true);
+            $codigoTransporte = "'" . $rsTransporte->getValue("codigo_transporte") . "'";
+            $rsTransporte->close();
+        } else {
+            $id_transporte = "NULL";
+            $codigoTransporte = "NULL";
+        }
 
         $sql = "UPDATE
                     pedidos
@@ -614,8 +625,8 @@ class PedidosModel extends Model {
                     pedidos.id_sucursal = $idSucursal,
                     pedidos.codigo_sucursal = '$codigoSucursal',
                     pedidos.id_formaenvio = " . intval($aPedidoConfirmar["id_formaenvio"]) . ",
-                    pedidos.id_transporte = " . intval($aPedidoConfirmar["id_transporte"]) . ",
-                    pedidos.codigo_transporte = '$codigoTransporte', 
+                    pedidos.id_transporte = $id_transporte,
+                    pedidos.codigo_transporte = $codigoTransporte, 
                     pedidos.fecha_modificado = current_timestamp
                 WHERE
                     pedidos.id = " . intval($aPedidoConfirmar["id_pedido"]) . " AND
