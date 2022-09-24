@@ -1,7 +1,7 @@
 // Inicio la aplicación
 var app = new App();
 var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
-var objMiCarrito = null;
+var objMiCarrito = new MiCarritoModalComponent("mi-carrito");
 
 app.init();
 
@@ -243,7 +243,7 @@ function generarBotonMiCarrito() {
  * Crea el componente mi carrito pero lo deja oculto.
  */
 function iniciarlizarComponenteMiCarrito() {
-    objMiCarrito = new MiCarritoModalComponent("mi-carrito");
+    objMiCarrito.setFunctionNameVaciarCarrito("vaciar_carrito");    
     objMiCarrito.generateComponent();
 
     // Establezco el callback con la función a ejecutar cuando se haga
@@ -278,6 +278,17 @@ function confirmarPedido() {
 }
 
 /**
+ * Permite vaciar mi carrito al hacer clic en "Vaciar mi carrito"
+ */
+function vaciar_carrito() {
+    let idPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+    let url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");
+    objMiCarrito.close();
+    let objCarrito = new MiCarritoModalComponent;
+    objCarrito.vaciarMiCarrito(url, idPedidoActual.id_pedido);
+}
+
+/**
  * Abre el modal para mostrar el pedido actual (mi carrito)
  */
 function abrir_mi_carrito() {
@@ -285,15 +296,6 @@ function abrir_mi_carrito() {
     objGrillaMiCarrito.setEliminarFunctionName("eliminar_item_mi_carrito");
     objGrillaMiCarrito.generateComponent();
     objMiCarrito.open();
-
-    // Agrego el evento click para vaciar carrito.
-    document.getElementById("vaciarCarrito").addEventListener("click", () => {
-        let idPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-        let url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");
-        objMiCarrito.close();
-        let objCarrito = new MiCarritoModalComponent;
-        objCarrito.vaciarMiCarrito(url, idPedidoActual.id_pedido);
-    })
 }
 
 let objTxtValorBuscado = document.getElementById("txtValorBuscado");

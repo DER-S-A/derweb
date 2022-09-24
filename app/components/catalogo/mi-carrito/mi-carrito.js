@@ -12,6 +12,7 @@ class MiCarritoModalComponent extends ComponentManager {
         this.__idBotonCerrar = "btn-" + this.__idModal;
         this.__objApp = new App();
         this.__callbackFinalizarPedidoButton = null;
+        this.__functionNameVaciarCarrito = null;
     }
 
     /**
@@ -20,6 +21,14 @@ class MiCarritoModalComponent extends ComponentManager {
      */
     setCallbackFinalizarPedidoButton(xcallback) {
         this.__callbackFinalizarPedidoButton = xcallback;
+    }
+
+    /**
+     * Establece la función que se ejecuta al hacer clic en vaciar carrito.
+     * @param {string} xvalue
+     */
+    setFunctionNameVaciarCarrito(xvalue) {
+        this.__functionNameVaciarCarrito = xvalue;
     }
 
     /**
@@ -117,6 +126,7 @@ class MiCarritoModalComponent extends ComponentManager {
         
         objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
         objAnchor.id = "vaciarCarrito";
+        objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
         objSelectSucursal.id = "select-sucursales";
         objSelectSucursal.name = "select-sucursales";
         objSelectSucursal.classList.add("form-control");
@@ -239,16 +249,7 @@ class MiCarritoModalComponent extends ComponentManager {
 
     vaciarMiCarrito(xUrl, xIdPed) {
         let xparametros = "id_pedido=" + xIdPed;
-        console.log(xUrl);
-        console.log(xIdPed);
-        /* xUrl = xUrl + "?id_pedido=" + JSON.stringify(xIdPed);
-        let objAPI = new APIs();
-        objAPI.put(xUrl, (xResponse) => {
-            this.aResponse = JSON.parse(xResponse);
-        });
-        console.log(this.aResponse);
-        alert(this.aResponse.mensaje);
-        return this.aResponse; */
+        
         (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
             xdatos = JSON.parse(xdatos);
             alert(xdatos.mensaje);
