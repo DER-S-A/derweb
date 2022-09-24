@@ -289,7 +289,7 @@ class PedidosModel extends Model {
      */
     private function generarInsertItem($xaItem) {
         $this->calcularCostoUnitario($xaItem);
-        $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100);
+        $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100) * doubleval($xaItem["cantidad"]);
         $subtotal = doubleval($xaItem["cantidad"]) * doubleval($xaItem["costo_unitario"]);
         $total = $subtotal + $importeIVA;      
 
