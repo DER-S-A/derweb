@@ -245,6 +245,36 @@ function generarBotonMiCarrito() {
 function iniciarlizarComponenteMiCarrito() {
     objMiCarrito = new MiCarritoModalComponent("mi-carrito");
     objMiCarrito.generateComponent();
+
+    // Establezco el callback con la función a ejecutar cuando se haga
+    // clic en el botón finalizar pedido.
+    objMiCarrito.setCallbackFinalizarPedidoButton(confirmarPedido);
+}
+
+/**
+ * Permite confirmar el pedido al hacer clic en Finalizar Pedido.
+ */
+function confirmarPedido() {
+        // Mando a marcar el pedido como confirmado.
+        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
+        let parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") + "&id_pedido=" + parseInt(aPedidoActual["id_pedido"]);
+
+        objMiCarrito.close();
+        url = url + parametros;
+        
+        fetch(url, {
+            method: "PUT",
+            headers: {
+                'content-type': 'applitacion/json'
+            }
+        }).then(xresponse => xresponse.json())
+            .then(xdata => {
+                if (xdata["codigo"] !== "OK")
+                    alert(xdata["mensaje"]);
+                else
+                    alert(xdata["mensaje"]);
+            });
 }
 
 /**
@@ -264,32 +294,6 @@ function abrir_mi_carrito() {
         let objCarrito = new MiCarritoModalComponent;
         objCarrito.vaciarMiCarrito(url, idPedidoActual.id_pedido);
     })
-
-    // Agrego el evento click de finalizar pedido
-    document.getElementById("btn-finalizar-pedido").addEventListener("click", () => {
-        // Mando a marcar el pedido como confirmado.
-        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
-        let parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") + "&id_pedido=" + parseInt(aPedidoActual["id_pedido"]);
-
-        objMiCarrito.close();
-        url = url + parametros;
-        console.log(url);
-        
-        fetch(url, {
-            method: "PUT",
-            headers: {
-                'content-type': 'applitacion/json'
-            }
-        }).then(xresponse => xresponse.json())
-            .then(xdata => {
-                if (xdata["codigo"] !== "OK")
-                    alert(xdata["mensaje"]);
-                else
-                    alert(xdata["mensaje"]);
-
-            });
-    }, false);
 }
 
 let objTxtValorBuscado = document.getElementById("txtValorBuscado");
@@ -307,7 +311,6 @@ function esconderHamburguesa() {
         console.log(document.querySelector(".fa-xmark"))
         document.querySelector("#botonHambur").className = "fas fa-bars";
     })
-
 }
 
 /*

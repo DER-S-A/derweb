@@ -11,6 +11,15 @@ class MiCarritoModalComponent extends ComponentManager {
         this.__objDivModal = null;
         this.__idBotonCerrar = "btn-" + this.__idModal;
         this.__objApp = new App();
+        this.__callbackFinalizarPedidoButton = null;
+    }
+
+    /**
+     * Establece la función que se ejecutará al hacer clic en finalizar pedido.
+     * @param {function} xcallback 
+     */
+    setCallbackFinalizarPedidoButton(xcallback) {
+        this.__callbackFinalizarPedidoButton = xcallback;
     }
 
     /**
@@ -206,6 +215,7 @@ class MiCarritoModalComponent extends ComponentManager {
 
         // Agrego la funcionalidad del evento finalizar pedido.
         objBotonFinalizarPedido.addEventListener("click", () => {
+            this.__callbackFinalizarPedidoButton();
             this.clearContainer(this.__idModal + "-contenido");
         }, false);
 
