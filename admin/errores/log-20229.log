@@ -69,3 +69,21 @@
   SCRIPT_NAME=/derweb/admin/der-updversion.php
 >>>>>>> f251e938b80e50a3a8ebd79b858bd552440ca5a1
   SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
+
+
+24-9-2022 12:27:45[ALTER TABLE pedidos ADD id_formaenvio INT NOT NULL AFTER 'codigo_sucursal'], codigo=1064: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''codigo_sucursal'' at line 1
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=/home/leonardo/public_html/desa/derweb/admin/der-updversion.php
+  REMOTE_ADDR=::1
+  SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)
+
+
+24-9-2022 12:28:28[ALTER TABLE pedidos ADD CONSTRAINT FK_pedidos_formas_envio_id_formaenvio FOREIGN KEY FK_pedidos_formas_envio_id_formaenvio (id_formaenvio) REFERENCES formas_envio (id) ON DELETE RESTRICT ON UPDATE RESTRICT], codigo=1005: Can't create table `db_derweb`.`pedidos` (errno: 150 "Foreign key constraint is incorrectly formed")
+  HTTP_USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=/home/leonardo/public_html/desa/derweb/admin/der-updversion.php
+  REMOTE_ADDR=::1
+  SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)

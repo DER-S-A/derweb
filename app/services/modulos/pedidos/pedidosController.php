@@ -127,9 +127,9 @@ class PedidosController extends APIController {
         if ($this->usePutMethod()) {
             try {
                 $sesion = $this->getURIParameters("sesion");
-                $idPedido = $this->getURIParameters("id_pedido");
+                $pedido = $this->getURIParameters("pedido");
                 $objModel = new PedidosModel();
-                $responseData = json_encode($objModel->confirmarPedido($sesion, $idPedido));
+                $responseData = json_encode($objModel->confirmarPedido($sesion, $pedido));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

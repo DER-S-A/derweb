@@ -173,6 +173,7 @@ class PedidosModel extends Model {
                     codigo_sucursal,
                     id_transporte,
                     codigo_transporte,
+                    id_formaenvio,
                     descuento_1,
                     descuento_2,
                     subtotal,
@@ -189,6 +190,7 @@ class PedidosModel extends Model {
                     xcodSucursal,
                     xidTransporte,
                     xcodigoTransporte,
+                    xidFormaEnvio,
                     xdescuento1,
                     xdescuento2,
                     xsubtotal,
@@ -204,6 +206,7 @@ class PedidosModel extends Model {
         $this->setParameter($sql, "xcodSucursal", $xaCabecera["codigo_sucursal"]);
         $this->setParameter($sql, "xidTransporte", intval($xaCabecera["id_transporte"]));
         $this->setParameter($sql, "xcodigoTransporte", intval($xaCabecera["codigo_transporte"]));
+        $this->setParameter($sql, "xidFormaEnvio", intval($xaCabecera["id_formaenvio"]));
         $this->setParameter($sql, "xdescuento1", doubleval($xaCabecera["descuento_1"]));
         $this->setParameter($sql, "xdescuento2", doubleval($xaCabecera["descuento_2"]));
         $this->setParameter($sql, "xsubtotal", doubleval($xaCabecera["subtotal"]));
@@ -555,19 +558,20 @@ class PedidosModel extends Model {
     /**
      * confirmarPedido
      * Confirma el pedido actual por su ID.
-     * @param  string $xsesion
-     * @param  int $xid_pedido
+     * @param  string $xsesion JSON con la sesión
+     * @param  string $xid_pedido JSON con los datos del pedido a confirmar.
      * @return array
      */
-    public function confirmarPedido($xsesion, $xid_pedido) {
+    public function confirmarPedido($xsesion, $xpedido) {
         $idEstado = 0;
         $ok = false;
         $this->getClienteActual($xsesion);
+        $aPedidoConfirmar = json_decode($xpedido, true);
         
         $aResponse = [];
 
         // Transfiero el pedido a SAP.
-        $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, $xid_pedido);
+        $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, intval($aPedidoConfirmar["id_pedido"]));
         if ($aResponse["result-sap"] == null)
             $aResponse["codigo-result-sap"] = "API_SAP_ERROR";
 
@@ -581,13 +585,40 @@ class PedidosModel extends Model {
         $idEstado = $rsEstado->getValueInt("id");
         $rsEstado->close();
 
+        $sql = "SELECT 
+                    id, 
+                    codigo_sucursal
+                FROM
+                    sucursales
+                WHERE
+                    sucursales.id = " . intval($aPedidoConfirmar["id_sucursal"]);
+        $rsSucursal = getRs($sql, true);
+        $idSucursal = $rsSucursal->getValueInt("id");
+        $codigoSucursal = $rsSucursal->getValue("codigo_sucursal");
+        $rsSucursal->close();
+
+        $sql = "SELECT
+                    codigo_transporte
+                FROM
+                    transportes
+                WHERE
+                    id = " . intval($aPedidoConfirmar["id_transporte"]);
+        $rsTransporte = getRs($sql, true);
+        $codigoTransporte = $rsTransporte->getValue("codigo_transporte");
+        $rsTransporte->close();
+
         $sql = "UPDATE
                     pedidos
                 SET
                     pedidos.id_estado = $idEstado,
+                    pedidos.id_sucursal = $idSucursal,
+                    pedidos.codigo_sucursal = '$codigoSucursal',
+                    pedidos.id_formaenvio = " . intval($aPedidoConfirmar["id_formaenvio"]) . ",
+                    pedidos.id_transporte = " . intval($aPedidoConfirmar["id_transporte"]) . ",
+                    pedidos.codigo_transporte = '$codigoTransporte', 
                     pedidos.fecha_modificado = current_timestamp
                 WHERE
-                    pedidos.id = $xid_pedido AND
+                    pedidos.id = " . intval($aPedidoConfirmar["id_pedido"]) . " AND
                     pedidos.id_entidad = " . $this->idCliente;
         
         $bd = new BDObject();
