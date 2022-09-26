@@ -6,6 +6,10 @@
  */
 
 class PedidosVendedoresGUI {
+    constructor() {
+        this.__rows_cache_name = "";
+    }
+
     /**
      * Obtiene los pedidos pendientes del vendedor actuamente logueado.
      */
@@ -15,7 +19,6 @@ class PedidosVendedoresGUI {
         let parametros = "sesion=" + sessionStorage.getItem("derweb_sesion");
     
         (new APIs()).call(url, parametros, "GET", xresponse => {
-            /*localStorage.setItem("derweb-pedpend-vendedores", JSON.stringify(xresponse));*/
             document.getElementById("app_grid_container").innerHTML = "";
             let objGrid = new LFWDataGrid("app_grid_container", "id");
     
@@ -32,13 +35,14 @@ class PedidosVendedoresGUI {
             objGrid.agregarColumna("Cliente", "cliente_cardcode", "numeric");
             objGrid.agregarColumna("Razón Social", "nombre");
             objGrid.agregarColumna("Total", "total", "numeric");
-            
-            xresponse.forEach(xelement => {
-                objGrid.agregarFila(xelement);
-            });
-    
-            objGrid.refresh();
-        });        
+
+            if (xresponse.length !== 0) {
+                xresponse.forEach(xelement => {
+                    objGrid.agregarFila(xelement);
+                });
+                objGrid.refresh();
+            }
+        });      
     }
 
     /**
@@ -77,6 +81,7 @@ class PedidosVendedoresGUI {
         });
         
         objGrid.refresh();
+        this.__rows_cache_name = objGrid.getCacheName();
     }
 
     /**
@@ -119,5 +124,54 @@ class PedidosVendedoresGUI {
         objDivCabecera.appendChild(objLayoutRow);
 
         return objDivCabecera;
+    }
+
+    /**
+     * Abre le modal para editar un ítem de la grilla
+     * @param {int} xidpedido_item 
+     */
+    editarItem(xidpedido_item) {
+        let objModal = new LFWModalBS("modal-edit-item", "Editar ítem", this.__crearFormEdit(xidpedido_item) , "Grabar", () => {
+            alert("Grabar");
+        });
+        objModal.open();
+
+        // Programo el callback que se ejecuta al hacer clic en el botón
+        // personalizado.
+        objModal.__callbackCustomButton = () => {
+            alert("Programar la grabación de los cambios");
+        }
+    }
+
+    /**
+     * Crea el formulario de edición de ítems.
+     * @param {int} xidpedido_item Id. del ítem seleccionado
+     * @returns 
+     */
+    __crearFormEdit(xidpedido_item) {
+        let items = JSON.parse(sessionStorage.getItem(this.__rows_cache_name));
+        let articulos = items.rows;
+        let objForm = document.createElement("div");
+        let objCampoCodigo = new HTMLInput("txtCodigo", "Código");
+        let objCampoDescripcion = new HTMLInput("txtDescripcion", "Descripción");
+        let objCampoCantidad = new HTMLInput("txtCantidad", "Cantidad");
+        
+        objCampoCodigo.setReadOnly();
+        objCampoDescripcion.setReadOnly();
+        objCampoCantidad.setDataType("float");
+
+        // Recupero el artículo seleccionado.
+        let articulo = articulos.filter(xelement => {
+            if (parseInt(xelement.id) === parseInt(xidpedido_item))
+                return true;
+        });
+        objCampoCodigo.setValue(articulo[0]["codigo"]);
+        objCampoDescripcion.setValue(articulo[0]["descripcion"]);
+        objCampoCantidad.setValue(articulo[0]["cantidad"]);
+        
+        objForm.appendChild(objCampoCodigo.toHtml());
+        objForm.appendChild(objCampoDescripcion.toHtml());
+        objForm.appendChild(objCampoCantidad.toHtml());
+        return objForm;
     }
 }

@@ -729,6 +729,7 @@ class PedidosModel extends Model {
                     est.estado_inicial = 1 AND
                     p.id_tipoentidad = $idTipoEntidad";
         $rs = getRs($sql, true);
+        
         $i = 0;
         while(!$rs->EOF()) {
             $aResponse[$i]["id"] = $rs->getValueInt("id");
