@@ -60,6 +60,11 @@ class MenuComponent {
             objLink.href = xElement.url;
             objLink.innerHTML = "<i class='" + xElement.icono + "'></i>&nbsp;" + xElement.nombre;
             objMenuOptions.appendChild(objLink);
+
+            objLink.addEventListener("click", () => {
+                objMenuOptions.setAttribute("style", "display: none");
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+            });
         });
     }
 }
