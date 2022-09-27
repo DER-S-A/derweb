@@ -2,6 +2,8 @@
  * Clase principal de la aplicación
  */
 
+const _APPNAME = "derweb";
+
 // Referencias a javascript de bootstrap
 const bootstrapJS = [
     "node_modules/@popperjs/core/dist/umd/popper.js",
@@ -34,7 +36,8 @@ const aAPIs = [
     {"catalogo-pedidos-agregarAlCarrito"        : "services/pedidos.php/agregarAlCarrito"},
     {"catalogo-pedidos-vaciarCarrito"           : "services/pedidos.php/vaciarCarrito"},
     {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"},
-    {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"}
+    {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"},
+    {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"}
 ]
 
 class App {

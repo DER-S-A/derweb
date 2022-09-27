@@ -353,10 +353,13 @@ class PedidosModel extends Model {
      * @param  array $xaItem Array con el ítem a incorporar.
      * @return string
      */
-    private function generarUpdateItem($xaItem) {
+    private function generarUpdateItem($xaItem, $sumar = true) {
         // Recupero la cantidad grabada y la sumo a la nueva cantidad ingresada. Luego
         // recalculo los importes en base a la nueva cantidad.
-        $cantidad = $this->obtenerCantidadItemActual($xaItem) + $xaItem["cantidad"];
+        if ($sumar)
+            $cantidad = $this->obtenerCantidadItemActual($xaItem) + doubleval($xaItem["cantidad"]);
+        else
+            $cantidad = doubleval($xaItem["cantidad"]);
 
         $this->calcularCostoUnitario($xaItem);     
         $importeIVA = doubleval($xaItem["costo_unitario"]) * ($xaItem["alicuota_iva"] / 100) * $cantidad;
@@ -712,55 +715,91 @@ class PedidosModel extends Model {
         $idVendedor = intval($aSesion["id_vendedor"]);
         $idTipoEntidad = intval($aSesion["id_tipoentidad"]);
         $aResponse = [];
-
-        $sql = "SELECT
-                    p.id,
-                    p.fecha_alta,
-                    ent.cliente_cardcode,
-                    ent.nombre,
-                    p.codigo_sucursal,
-                    p.total
-                FROM
-                    pedidos p
-                        INNER JOIN estados_pedidos est ON est.id = p.id_estado
-                        INNER JOIN entidades ent ON ent.id = p.id_entidad
-                WHERE
-                    p.id_vendedor = $idVendedor AND
-                    est.estado_inicial = 1 AND
-                    p.id_tipoentidad = $idTipoEntidad";
-        $rs = getRs($sql, true);
-        
-        $i = 0;
-        while(!$rs->EOF()) {
-            $aResponse[$i]["id"] = $rs->getValueInt("id");
-            $aResponse[$i]["fecha_alta"] = $rs->getValueFechaFormateada("fecha_alta");
-            $aResponse[$i]["cliente_cardcode"] = $rs->getValue("cliente_cardcode");
-            $aResponse[$i]["nombre"] = $rs->getValue("nombre");
-            $aResponse[$i]["codigo_sucursal"] = $rs->getValue("codigo_sucursal");
-            $aResponse[$i]["total"] = $rs->getValueFloat("total");
-
+        try {
             $sql = "SELECT
-                        item.id,
-                        item.id_pedido,
-                        item.cantidad,
-                        art.codigo,
-                        art.descripcion,
-                        item.precio_lista,
-                        item.costo_unitario,
-                        item.subtotal,
-                        item.total
+                        p.id,
+                        p.fecha_alta,
+                        ent.cliente_cardcode,
+                        ent.nombre,
+                        p.codigo_sucursal,
+                        p.total
                     FROM
-                        pedidos_items item
-                            INNER JOIN articulos art ON art.id = item.id_articulo
+                        pedidos p
+                            INNER JOIN estados_pedidos est ON est.id = p.id_estado
+                            INNER JOIN entidades ent ON ent.id = p.id_entidad
                     WHERE
-                        item.id_pedido = " . $rs->getValueInt("id");
-            $aResponse[$i]["items"] = getRs($sql, true)->getAsArray();
+                        p.id_vendedor = $idVendedor AND
+                        est.estado_inicial = 1 AND
+                        p.id_tipoentidad = $idTipoEntidad";
+            $rs = getRs($sql, true);
+            
+            $i = 0;
+            while(!$rs->EOF()) {
+                $aResponse[$i]["id"] = $rs->getValueInt("id");
+                $aResponse[$i]["fecha_alta"] = $rs->getValueFechaFormateada("fecha_alta");
+                $aResponse[$i]["cliente_cardcode"] = $rs->getValue("cliente_cardcode");
+                $aResponse[$i]["nombre"] = $rs->getValue("nombre");
+                $aResponse[$i]["codigo_sucursal"] = $rs->getValue("codigo_sucursal");
+                $aResponse[$i]["total"] = $rs->getValueFloat("total");
 
-            $i++;
-            $rs->next();
+                $sql = "SELECT
+                            item.id,
+                            item.id_pedido,
+                            item.cantidad,
+                            item.id_articulo,
+                            art.codigo,
+                            art.descripcion,
+                            item.precio_lista,
+                            item.costo_unitario,
+                            item.subtotal,
+                            item.alicuota_iva,
+                            item.importe_iva,
+                            item.total
+                        FROM
+                            pedidos_items item
+                                INNER JOIN articulos art ON art.id = item.id_articulo
+                        WHERE
+                            item.id_pedido = " . $rs->getValueInt("id");
+                $aResponse[$i]["items"] = getRs($sql, true)->getAsArray();
+
+                $i++;
+                $rs->next();
+            }
+
+            $rs->close();
+        }
+        catch(Exception $ex) {
+            $aResponse["codigo"] = "API_ERROR";
+            $aResponse["mensaje"] = $ex->getMessage();
         }
 
-        $rs->close();
+        return $aResponse;
+    }
+    
+    /**
+     * modificar_item
+     * Permite modificar un artículo dentro de un pedido.
+     * @param  string $xjsonData
+     * @return void
+     */
+    public function modificar_item($xjsonData) {
+        $aResponse = [];
+        try {
+            $bd = new BDObject();
+            $aItem = json_decode($xjsonData, true);
+            $this->idPedido = intval($aItem["id_pedido"]);
+            $sql = $this->generarUpdateItem($aItem, false);
+            $bd->execQuery2($sql);
+            $aResponse["codigo"] = "OK";
+            $aResponse["mensaje"] = "Artículo modificado satisfactoriamente";
+            $aResponse["sucefull"] = $bd->sucefull;
+        }
+        catch (Exception $ex) {
+            $aResponse["codigo"] = "API_ERROR";
+            $aResponse["mensaje"] = $ex->getMessage();
+        } finally {
+            $bd->close();
+        }
 
         return $aResponse;
     }

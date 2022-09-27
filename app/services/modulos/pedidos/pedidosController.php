@@ -168,6 +168,29 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
+
+    /**
+     * Permite modificar un ítem de un pedido.
+     */
+    public function modificarItem() {
+        // Valido que la llamada venga por método PUT.
+        if ($this->usePutMethod()) {
+            try {
+                $jsonData = $this->getURIParameters("data");
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->modificar_item($jsonData));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 
 ?>

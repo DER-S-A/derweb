@@ -11,9 +11,9 @@ class LFWModalBS {
      * @param {string} xtitle Título del modal para mostrar en el header.
      * @param {mixed} xBodyContent Contenido del modal, puede ser un DOM o un HTML.
      * @param {string} xbuttonFooterTitle Título del botón del footer. Default null.
-     * @param {callback} xcallback Define la función callback del evento click del botón personalizado.
+     * @param {callback} cb_clicCustomButton Define la función callback del evento click del botón personalizado.
      */
-    constructor(xid, xtitle, xBodyContent, xbuttonFooterTitle = null, xcallback = null) {
+    constructor(xid, xtitle, xBodyContent, xbuttonFooterTitle = null, cb_clicCustomButton = null) {
         // Defino las propiedades privadas.
         this.__idModal = xid;
         this.__idBody = "body-" + this.__idModal;
@@ -29,12 +29,13 @@ class LFWModalBS {
         this.__bodyContent = xBodyContent;
         this.__objButtonFooter = null;
         this.__buttonFooterTitle = xbuttonFooterTitle;
-        this.__callbackCustomButton = xcallback;
+        //this.__callbackCustomButton = xcallback;
 
         this.__createModal();
 
         document.getElementById(this.__idCustomButton).addEventListener("click", () => {
-            this.__callbackCustomButton();
+            cb_clicCustomButton();
+            this.close();
         });
     }
 
@@ -176,5 +177,13 @@ class LFWModalBS {
         });
 
         objModal.show();
+    }
+
+    /**
+     * Permite cerrar la ventana modal.
+     */
+    close() {
+        document.body.removeChild(document.getElementById(this.__idModal));
+        document.body.removeChild(document.getElementsByClassName("modal-backdrop")[0]);
     }
 }
