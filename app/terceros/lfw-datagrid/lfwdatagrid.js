@@ -315,7 +315,6 @@ class LFWDataGrid {
 
             tr.id = this.__idControl + "_row_" + this.__rowCount;
 
-
             // Recorro las columnas para ir completando las filas del grid con los datos
             // a mostrar.
             for (var i = 0; i < this.__columns.length; i++) {

@@ -152,9 +152,9 @@ class PedidosController extends APIController {
         if ($this->usePutMethod()) {
             try {
                 $sesion = $this->getURIParameters("sesion");
-                $idPedido = $this->getURIParameters("id_pedido");
+                $pedido = $this->getURIParameters("pedido");
                 $objModel = new PedidosModel();
-                $responseData = json_encode($objModel->confirmarPedido($sesion, $idPedido));
+                $responseData = json_encode($objModel->confirmarPedido($sesion, $pedido));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
@@ -181,6 +181,29 @@ class PedidosController extends APIController {
                 $sesion = $this->getURIParameters("sesion");
                 $objModel = new PedidosModel();
                 $responseData = json_encode($objModel->getPedidosPendientesByVendedor($sesion));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
+
+    /**
+     * Permite modificar un ítem de un pedido.
+     */
+    public function modificarItem() {
+        // Valido que la llamada venga por método PUT.
+        if ($this->usePutMethod()) {
+            try {
+                $jsonData = $this->getURIParameters("data");
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->modificar_item($jsonData));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

@@ -194,6 +194,8 @@
         <script src="components/menus/mi_perfil/mi_perfil.js" type="text/javascript"></script>
         <script src="components/menus/mi_perfil/cambiar_contraseña.js" type="text/javascript"></script>
         <script src="terceros/lfw-datagrid/lfwdatagrid.js" type="text/javascript"></script>
+        <script src="terceros/lfw-modal-bs/lfw-modal-bs.js" type="text/javascript"></script>
+        <script src="terceros/lfw-controls-bs/html-input.js" type="text/javascript"></script>
         <script src="js/main-vendedores.js" type="text/javascript"></script>
     </body>
 </html>

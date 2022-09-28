@@ -30,7 +30,9 @@
             "id_sucursal": parseInt(xaSucursal[0]["id"]),
             "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
             "id_transporte": xaSucursal[0]["id_transporte"],
-            "codigo_transporte": "" // Poner cuando tenga el API de transportes.
+            "codigo_transporte": xaSucursal[0]["codigo_transporte"],
+            "id_formaenvio": xaSucursal[0]["id_formaenvio"],
+            "codigo_forma_envio": xaSucursal[0]["codigo_forma_envio"]
         };
 
         if (xaSucursal === undefined) {

@@ -184,8 +184,8 @@ class MiCarritoModalComponent extends ComponentManager {
                             // Completo los option con el resultado de json q traigo con el fetch call.
                             let objOption = document.createElement("option");
                             objOption.innerHTML = xitem.descripcion;
-                            objOption.id = "transporteId_"+xitem.id;
-                            objOption.value = xitem.codigo;
+                            objOption.id = "transporteId_" + xitem.id;
+                            objOption.value = xitem.id;
                             objSelectTransporte.appendChild(objOption);
                         });
                     }); 

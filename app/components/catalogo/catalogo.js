@@ -134,6 +134,8 @@ class Catalogo {
                 "id_televenta": 0,
                 "id_transporte": xaCabecera["id_transporte"],
                 "codigo_transporte": xaCabecera["codigo_transporte"],
+                "id_formaenvio": xaCabecera["id_formaenvio"],
+                "codigo_forma_envio": xaCabecera["codigo_forma_envio"],
                 "descuento_1": 0.00,
                 "descuento_2": 0.00,
                 "subtotal": 0.00,

@@ -54,10 +54,17 @@
             self::ejecutarSQL($sql);
         }
 
+        $campo = "id_formaenvio";
+        if (!sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla ADD $campo INT NOT NULL AFTER codigo_sucursal";
+            self::ejecutarSQL($sql);
+            sc3addFk($tabla, $campo, "formas_envios");
+        }
+
         // Agrego campo transportes
         $campo = "id_transporte";
         if (!sc3existeCampo($tabla, $campo)) {
-            $sql = "ALTER TABLE $tabla ADD $campo INT NULL AFTER codigo_sucursal";
+            $sql = "ALTER TABLE $tabla ADD $campo INT NULL AFTER id_formaenvio";
             self::ejecutarSQL($sql);
             sc3addFk($tabla, $campo, "transportes");
         }

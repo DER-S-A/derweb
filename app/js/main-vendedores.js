@@ -2,6 +2,7 @@
 var app = new App();
 var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
 var objMiCarrito = null;
+let objPedidos = null;
 
 app.init();
 
@@ -9,7 +10,8 @@ app.init();
  * Evento onLoad de la página.
  * Este evento se ejecuta al cargar la página.
  */
-window.onload = () => {   
+window.onload = () => {
+    objPedidos = new PedidosVendedoresGUI();   
     // Si la sesión no está en cache entonces vuelvo al login.
     if (!validarSession()) {
         location.href = "index.php";
@@ -257,7 +259,6 @@ function entrar_al_cliente(xid) {
  * por clientes a los vendedores.
  */
 function ver_pedidos_pendientes() {
-    let objPedidos = new PedidosVendedoresGUI();
     objPedidos.getPedidosPendientes();
 }
 
@@ -266,6 +267,13 @@ function ver_pedidos_pendientes() {
  * @param {int} xidpedido 
  */
 function entrar_al_pedido(xidpedido) {
-    let objPedidos = new PedidosVendedoresGUI();
     objPedidos.entrarAlPedido(xidpedido);
+}
+
+/**
+ * Permite editiar un ítem del pedido seleccionado actualmente.
+ * @param {int} xidpedido_item 
+ */
+function editar_pedido(xidpedido_item) {
+    objPedidos.editarItem(xidpedido_item);
 }
