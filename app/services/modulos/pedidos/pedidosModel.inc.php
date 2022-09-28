@@ -488,36 +488,45 @@ class PedidosModel extends Model {
     }
 
     /**
+     * eliminarArt
+     * vacia el pedido actual por su ID.
+     * @param  int $xid_pedido
+     * @return array
+     */
+    public function eliminarArt($xid_pedidos_items) {
+        $ok = false;
+        
+        $aResponse = [];
+        $sql = "DELETE
+                FROM
+                    pedidos_items
+                WHERE
+                    id = $xid_pedidos_items";
+        
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        if ($bd->affectedRows > 0)
+            $ok = true;        
+        $bd->close();
+
+        if (!$ok) {
+            $aResponse["codigo"] = "BD_ERROR";
+            $aResponse["mensaje"] = "No se elimino el item";
+        } else {
+            $aResponse["codigo"] = "OK";
+            $aResponse["mensaje"] = "item eliminado";
+        }
+
+        return json_encode($aResponse);
+    }
+
+    /**
      * vaciarPedido
      * vacia el pedido actual por su ID.
      * @param  int $xid_pedido
      * @return array
      */
     public function vaciarPedido($xid_pedido) {
-        /* $aResponse = [];
-        $ok = false;
-
-        $sql = "DELETE
-                FROM pedidos_items
-                WHERE
-                    id_pedido = $xid_pedido";
-
-        $sql2 = "DELETE
-                FROM pedidos
-                WHERE
-                id = $xid_pedido";
-        
-        $bd = new BDObject();
-        $bd->execQuery($sql);
-        $bd->execQuery($sql2);
-        $aResponse["codigo"] = "OK";
-        $aResponse["mensaje"] = "Se vacio el carrito";
-                
-        $bd->close();
-
-        return $aResponse; */
-
-        //$aResult = array();
 
         $bd = new BDObject();
         $bd->beginT();

@@ -133,7 +133,7 @@ class MiCarritoModalComponent extends ComponentManager {
         objSelectSucursal.classList.add("select-suscursal");
         objLabel.textContent = "Sucursal:";
 
-        // GENERO LA OPCION DE FORMA DE ENVIO
+        // Genero la opcion de forma de envio.
 
         let objSelectFormaEnvio = document.createElement("select");
         objSelectFormaEnvio.id = "select-formasEnvios";
@@ -142,7 +142,7 @@ class MiCarritoModalComponent extends ComponentManager {
         let obj2Label = document.createElement("label");
         obj2Label.innerHTML = "Forma de envio:";
 
-        // GENERO LA OPCION DE TRANSPORTE
+        // Genero la opcion de transporte.
 
         let objSelectTransporte = document.createElement("select");
         objSelectTransporte.id = "select-transportes";
@@ -191,12 +191,12 @@ class MiCarritoModalComponent extends ComponentManager {
                     }); 
 
                     let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
-                    // CON ESTA FUNCION REALIZO EL DISPLAY NONE DEL SELECTOR Q MUESTRA TODOS LOS TRANSPORTES.
+                    // Con esta funcion realizo el display-none del selector q muestra todos los transportes.
                     displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, objSelectTransporte); 
-                    // 1RA VAR ES EL CODIGO DE LA FORMA DE ENVIO Q TIENE EL SELECTOR
-                    // EL 6 ES EL CODIGO DE FORMA DE ENVIO TRANSPORTE
-                    // Y LA 3RA VAR ES EL LABEL QUE DICE TRANSPORTES
-                    // 4TA VAR ES OBJETO NODO SELECTOR DE TRANSPORTE
+                    // 1RA variable es el codigo de la forma de envio q tiene el selector.
+                    // El 6  es el codigo de forma de envio transporte.
+                    // Y la 3RA variable es el label q dice transportes.
+                    // 4TA variable es objeto nodo selector de transporte.
                     addEventListener("change",() => {  // Aca genero evento de cambio de opcion de select
                         let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
                         displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, objSelectTransporte, true);
@@ -245,6 +245,16 @@ class MiCarritoModalComponent extends ComponentManager {
      */
     close() {
         document.getElementById(this.__idModal + "_fondo").style.display = "none";
+    }
+
+    eliminar_item_carrito(xUrl, xId) {
+        let xparametros = "id_pedidos_items=" + xId;
+        console.log(xUrl);
+        console.log(xId);
+        (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
+            xdatos = JSON.parse(xdatos);
+            alert(xdatos.mensaje);
+        });
     }
 
     vaciarMiCarrito(xUrl, xIdPed) {

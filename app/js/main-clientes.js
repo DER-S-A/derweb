@@ -280,6 +280,16 @@ function confirmarPedido() {
 /**
  * Permite vaciar mi carrito al hacer clic en "Vaciar mi carrito"
  */
+function eliminar_item_mi_carrito(xId) {
+    let url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
+    objMiCarrito.close();
+    let objCarrito = new MiCarritoModalComponent;
+    objCarrito.eliminar_item_carrito(url, xId);
+ }
+
+/**
+ * Permite vaciar mi carrito al hacer clic en "Vaciar mi carrito"
+ */
 function vaciar_carrito() {
     let idPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
     let url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");

@@ -147,3 +147,7 @@ function displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, ob
     }   
 }
 
+/*function eliminar_item_mi_carrito(){
+    alert ("hola");
+}*/
+
