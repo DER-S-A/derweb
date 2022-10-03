@@ -210,7 +210,6 @@ function miPerfil() {
  */
 function getClientes() {
     let objGrid = new LFWDataGrid("app_grid_container", "id");
-    let objApp = new App();
     let objCacheUtils = new CacheUtils("derweb", false);
     let url = "";
 
@@ -227,15 +226,22 @@ function getClientes() {
     objGrid.agregarColumna("Razón Social", "nombre", "string");
     objGrid.agregarColumna("C.U.I.T", "cuit", "string", 200);
 
+    // Llamo a la API que devuelve la lista de clientes del vendedor y 
+    // lleno la grilla.
     aSesion = objCacheUtils.get("sesion");
-    url = objApp.getUrlApi("app-entidades-getClientesByVendedor") + "?id_vendedor=" + aSesion["id_vendedor"];
-    getApifetch(url, xresponse => {
-        xresponse.forEach(xelement => {
-            objGrid.agregarFila(xelement);
-
-        });
-        objGrid.refresh();
-    });
+    url = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
+    (new APIs()).call(
+        url, 
+        "id_vendedor=" + aSesion["id_vendedor"], 
+        "GET", 
+        response => {
+            response.forEach(element => {
+                objGrid.agregarFila(element);
+    
+            });
+            objGrid.refresh();    
+        }
+    );
 }
 
 /**

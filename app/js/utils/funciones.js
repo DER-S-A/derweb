@@ -114,21 +114,27 @@ function cerrarAutogestion() {
     objmenuPerfil.style.display = "none";
 }
 
+/**
+ * Cierra la sesión.
+ * Se utiliza en main_clientes.js
+ * @param {boolean} bandera Si es true presionando el botón cerrar sesión en caso contrario se cierra por intervalo de tiempo
+ */
+function cerrarSession(bandera = true) {
+    if (bandera)
+        alert("sesion cerrada");
 
-function getApifetch (xurl, xcallback) {
-    return fetch(xurl)
-    .then(response => response.json()).then(data => {
-        res = data;
-        xcallback(res);
-    })
-}
-
-function cerrarSession(bandera=true) {
-    if(bandera){alert("sesion cerrada");}
     sessionStorage.removeItem("derweb_sesion");
     location.href = "./index.php";
 }
 
+/**
+ * Muestra o esconde el campo transporte de Mi Carrito.
+ * @param {*} opcionElegidaDeEnvio 
+ * @param {*} xcodigo 
+ * @param {*} objLabelTransporte 
+ * @param {*} objSelectTransporte 
+ * @param {*} change 
+ */
 function displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, objSelectTransporte, change = false) {
     console.log(opcionElegidaDeEnvio);
     if(change) {
@@ -146,8 +152,4 @@ function displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, ob
         }
     }   
 }
-
-/*function eliminar_item_mi_carrito(){
-    alert ("hola");
-}*/
 

@@ -7,7 +7,7 @@
         
         <link href="css/app-style.css" rel="stylesheet">
         <link href="components/menus/menus.css" rel="stylesheet">
-        <link href="components/lista-articulos/lista-articulos.css" rel="stylesheet">
+        <link href="components/catalogo/lista-articulos/lista-articulos.css" rel="stylesheet">
         <link href="components/catalogo/catalogo-gui.css" rel="stylesheet">
         <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
         <link href="components/catalogo/grid-articulos/grid-articulos.css" rel="stylesheet">
@@ -194,7 +194,7 @@
         <script src="components/utilities/component-manager.js" type="text/javascript"></script>
         <script src="components/tabs/tabs.js" type="text/javascript"></script>
         <script src="components/menus/menus.js" type="text/javascript"></script>
-        <script src="components/lista-articulos/lista-articulos.js" type="text/javascript"></script>
+        <script src="components/catalogo/lista-articulos/lista-articulos.js" type="text/javascript"></script>
         <script src="components/carrusel/carrusel.js" type="text/javascript"></script>
         
         <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.js"></script>

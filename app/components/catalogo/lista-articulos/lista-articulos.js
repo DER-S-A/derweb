@@ -198,4 +198,3 @@ function desplegar_subrubros(xid_rubro) {
     document.body.appendChild(objDivSubrubrosContainer);
     window.scrollTo(0, 0);
 }
-

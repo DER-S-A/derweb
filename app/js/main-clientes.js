@@ -126,15 +126,7 @@ function generarBotonListaArticulos() {
  * Crea el componente Carrusel.
  */
 function generarCarrusel() {  
-     // ESTA FUNCION LA LLAMO DENTRO DE LA FUNCION WINDOW.ONLOAD Q ESTA EN LA LINEA 9
-    const idComp = "carrusel-container"
-     var objCarrusel = new CarruselComponent(idComp);
-
-    const url_bannerPortada = app.getUrlApi("app-banner-portada");
-    fetch(url_bannerPortada).then(xresponse => xresponse.json()) 
-    .then(data => {
-        objCarrusel.generateComponent(data, idComp);
-    })
+    (new CarruselComponent("carrusel-container")).generarCarrusel();
 }
 
 /**
@@ -373,8 +365,3 @@ function miPerfil() {
 // PRUEBA
 
 //setInterval(cerrarSession, 30000);
-
-
-
-
-
