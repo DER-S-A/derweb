@@ -87,3 +87,12 @@
   REMOTE_ADDR=::1
   SCRIPT_NAME=/desa/derweb/admin/der-updversion.php
   SERVER_SOFTWARE=Apache/2.4.52 (Ubuntu)
+
+
+29-9-2022 11:39:36[ALTER TABLE pedidos ADD CONSTRAINT FK_pedidos_formas_envios_id_formaenvio FOREIGN KEY FK_pedidos_formas_envios_id_formaenvio (id_formaenvio) REFERENCES formas_envios (id) ON DELETE RESTRICT ON UPDATE RESTRICT], codigo=1452: Cannot add or update a child row: a foreign key constraint fails (`db_derweb`.`#sql-3300_b1be`, CONSTRAINT `FK_pedidos_formas_envios_id_formaenvio` FOREIGN KEY (`id_formaenvio`) REFERENCES `formas_envios` (`id`))
+  HTTP_USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.33
+  QUERY_STRING=opid=887&favicon=ico%2Fwip.ico&fstack=1
+  SCRIPT_FILENAME=C:/Users/rursi/Proyectos/derweb/admin/der-updversion.php
+  REMOTE_ADDR=10.0.0.31
+  SCRIPT_NAME=/DERweb/admin/der-updversion.php
+  SERVER_SOFTWARE=Apache/2.4.51 (Win64) PHP/7.4.26
