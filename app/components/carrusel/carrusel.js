@@ -6,16 +6,15 @@ class CarruselComponent {
     constructor(xidContainer) {
         this.idContainer = xidContainer;
         this.objContainerCarrusel = document.getElementById(this.idContainer);
-        //this.idContainer = xidContainer;
     }
 
     /**
      * Creo los div que necesito para el carrusel    
      */
-    generateComponent(xImagenes) {
+    __generateComponent(xImagenes) {
         var objDiv2CarruselInner = document.createElement("div");
         objDiv2CarruselInner.classList.add("carousel-inner");
-        ////////////////////////////////////////////////////////////////
+        
         var objbuttonPrevCarrusel = document.createElement("button");
         objbuttonPrevCarrusel.classList.add("carousel-control-prev");
         objbuttonPrevCarrusel.setAttribute("type","button");
@@ -26,7 +25,7 @@ class CarruselComponent {
         objSpan1ButtonCarrusel.setAttribute("aria-hidden","true");
         var objSpan2ButtonCarrusel = document.createElement("span");
         objSpan2ButtonCarrusel.classList.add("visually-hidden");
-        /////////////////////////////////////////////////////////////////
+        
         var objbuttonNextCarrusel = document.createElement("button");
         objbuttonNextCarrusel.classList.add("carousel-control-next");
         objbuttonNextCarrusel.setAttribute("type","button");
@@ -40,18 +39,16 @@ class CarruselComponent {
         
         objSpan2ButtonCarrusel.innerHTML = "Previous";
         objSpan2ButtonNextCarrusel.innerHTML = "Next";
-        //////////////////////////////////////////////////////////////////
 
         xImagenes.forEach((array, i) => {
             var objDiv3CarruselItem = document.createElement("div");
             var objImg = new Image();
             objImg.src = "../admin/ufiles/" + array.imagen;
         
-            if (i == 1) {
+            if (i == 1)
                 objDiv3CarruselItem.classList.add("carousel-item", "active");
-            } else {
+            else
                 objDiv3CarruselItem.classList.add("carousel-item");
-            }
             
             objImg.setAttribute("class","d-block w-100");
             
@@ -66,5 +63,15 @@ class CarruselComponent {
         this.objContainerCarrusel.appendChild(objDiv2CarruselInner);   
         this.objContainerCarrusel.appendChild(objbuttonPrevCarrusel);  
         this.objContainerCarrusel.appendChild(objbuttonNextCarrusel);    
+    }
+
+    /**
+     * Genera el componente carrusel de banner-portada.
+     */
+    generarCarrusel() {
+        const url_bannerPortada = app.getUrlApi("app-banner-portada");
+        (new APIs()).call(url_bannerPortada, "", "GET", response => {
+            this.__generateComponent(response, this.idContainer);
+        });
     }
 }

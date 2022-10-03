@@ -3,19 +3,13 @@
  */
 
 class Catalogo {
-
-    constructor() {
-        this._objApp = new App();
-    }
-
     /**
      * Permite obtener las marcas de repuestos.
      * @param {string} xfilter Permite establecer la condición del where para filtrar registros
      * @returns {array}
      */
     getMarcas(xfilter = "") {
-        var objApi = new APIs();
-        var aMarcas = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-marcas-get"), xfilter);;
+        var aMarcas = (new APIs()).getFromAPI((new App()).getUrlApi("catalogo-marcas-get"), xfilter);;
         return aMarcas;
     }
 
@@ -25,8 +19,7 @@ class Catalogo {
      * @returns {array}
      */
     getRubros(xfilter = "") {
-        var objApi = new APIs();
-        var aRubros = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-rubros-get"), xfilter);;
+        var aRubros = (new APIs()).getFromAPI((new App()).getUrlApi("catalogo-rubros-get"), xfilter);;
         return aRubros;
     }
 
@@ -36,8 +29,7 @@ class Catalogo {
      * @returns {array}
      */
     getSubrubros(xfilter = "") {
-        var objApi = new APIs();
-        var aSubrubros = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-subrubros-get"), xfilter);
+        var aSubrubros = (new APIs()).getFromAPI((new App()).getUrlApi("catalogo-subrubros-get"), xfilter);
         return aSubrubros;
     }
 
@@ -47,9 +39,8 @@ class Catalogo {
      * @returns {array}
      */
     getSubrubrosByRubro(xid_rubro) {
-        var objApi = new APIs();
         var filter = "id_rubro=" + xid_rubro;
-        var aSubrubros = objApi.getFromAPI(this._objApp.getUrlApi("catalogo-subrubros-getByRubro") + "?" + filter);
+        var aSubrubros = (new APIs()).getFromAPI((new App()).getUrlApi("catalogo-subrubros-getByRubro") + "?" + filter);
         return aSubrubros;
     }
 
@@ -59,29 +50,11 @@ class Catalogo {
      * @param {callback} xcallback Función callback para recibir los datos.
      */
     getSucursalPredeterminadaByCliente(xidCliente, xcallback) {
-        let objApp = new App();
-        let urlSuc = objApp.getUrlApi("app-entidades-sucursales");
+        let urlSuc = (new App()).getUrlApi("app-entidades-sucursales");
         let filtros = "\"id_entidad = " + parseInt(xidCliente)
                 + " AND predeterminado = 1\"";
 
         (new APIs()).call(urlSuc, "filter=" + filtros, "GET", (xdatos) => {
-            xcallback(xdatos);
-        });
-    }
-
-    /**
-     * Obtiene los datos de un artículo por su Id.
-     * @param {array} xaSesion Sesión iniciada
-     * @param {int} xidarticulo Id. de artículo
-     * @param {callback} xcallback Función para recibir los datos.
-     */
-    getArticuloById(xaSesion, xidarticulo, xcallback) {
-        let objApp = new App();
-        let url_articulo = objApp.getUrlApi("catalogo-articulos-get");
-        let filtros = "sesion=" + JSON.stringify(xaSesion);
-        filtros += "&pagina=0&filter=\"art.id = " + xidarticulo + "\"";
-        
-        (new APIs()).call(url_articulo, filtros, "GET", (xdatos) => {
             xcallback(xdatos);
         });
     }
@@ -95,8 +68,7 @@ class Catalogo {
      */
     agregarArticuloEnCarrito(xaSesion, xidarticulo, xcantidad, xaCabecera) {
         // Recupero los datos del artículo que necesito.
-        let objCatalogo = new Catalogo();
-        objCatalogo.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {
+        this.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {
             let aArticulo = {
                 "id_articulo": parseInt(xidarticulo),
                 "cantidad": parseFloat(xcantidad),
@@ -111,14 +83,29 @@ class Catalogo {
     }
 
     /**
+     * Obtiene los datos de un artículo por su Id.
+     * @param {array} xaSesion Sesión iniciada
+     * @param {int} xidarticulo Id. de artículo
+     * @param {callback} xcallback Función para recibir los datos.
+     */
+     getArticuloById(xaSesion, xidarticulo, xcallback) {
+        let url_articulo = (new App()).getUrlApi("catalogo-articulos-get");
+        let filtros = "sesion=" + JSON.stringify(xaSesion);
+        filtros += "&pagina=0&filter=\"art.id = " + xidarticulo + "\"";
+        
+        (new APIs()).call(url_articulo, filtros, "GET", (xdatos) => {
+            xcallback(xdatos);
+        });
+    }
+
+    /**
      * Permite grabar un artículo en el carrito de compras.
      * @param {array} xaSesion Datos de sesión actual.
      * @param {array} xaCabecera Regitro de cabecera.
      * @param {array} xarticulo Registro de artículo
      */
     __grabarArticuloEnCarrito(xaSesion, xaCabecera, xarticulo) {
-        let objApp = new App();
-        let url_carrito = objApp.getUrlApi("catalogo-pedidos-agregarAlCarrito");
+        let url_carrito = (new App()).getUrlApi("catalogo-pedidos-agregarAlCarrito");
         let parametros = new Array();
     
         // Armo la estructura de JSON para enviar al API.
