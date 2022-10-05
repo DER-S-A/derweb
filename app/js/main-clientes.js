@@ -362,6 +362,3 @@ function miPerfil() {
     obj.addEventListener("click",cambiarContraseña);  // ESTE EVENTO GENERA EL FORM DE CAMBIO DE CLAVE.
 }
 
-// PRUEBA
-
-//setInterval(cerrarSession, 30000);
