@@ -15,6 +15,7 @@ class CarritoGridComponent extends ComponentManager {
         this.__idContenedor = xidContainer;
         this.__idGrilla = xidGrilla;
         this.__total = "";
+        this.__editarFunc = "editar_carrito";
         this.__eliminarFunc = "";
         this.__objApp = new App();
     }
@@ -149,16 +150,22 @@ class CarritoGridComponent extends ComponentManager {
         var objCostoLabel = document.createElement("label");
         var objCosto = document.createElement("span");
         var objBotonEliminar = document.createElement("a");
+        objBotonEliminar.className = "px-1";
+        var objBotonEditar = document.createElement("a");
+        objBotonEditar.className = "px-1";
 
+        objBotonEditar.href = "javascript:" + this.__editarFunc + "(" + xitem["id"] + ");";
         objBotonEliminar.href = "javascript:" + this.__eliminarFunc + "(" + xitem["id"] + ");";
 
         objCostoLabel.innerText = "PRECIO COSTO";
         objCosto.innerHTML = "<br>" +  xitem["costo"] + "<br>";
 
+        objBotonEditar.innerHTML = "<i class='fa-solid fa-pen-to-square'></i>";
         objBotonEliminar.innerHTML = "<i class=\"fa-solid fa-trash\"></i>";
 
         objColumnaContainer.appendChild(objCostoLabel);
         objColumnaContainer.appendChild(objCosto);
+        objColumnaContainer.appendChild(objBotonEditar);
         objColumnaContainer.appendChild(objBotonEliminar);
 
         objColumnaContainer.classList.add("info-precio");
