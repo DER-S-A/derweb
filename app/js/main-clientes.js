@@ -332,6 +332,27 @@ function esconderHamburguesa() {
     })
 }
 
+/**
+ * Genera el input para poner el nuevo valor cantidad a cambiar. el parametro q recibe es el id item
+ */
+function editar_carrito(xId_pedItems){
+    swal({
+        content: {
+          element: "input",
+          attributes: {
+            placeholder: "CANTIDAD",
+            type: "number",
+            id: "cambiar_cantidad"
+          },
+        },
+    });
+    let objbotonCambiarCdad = document.querySelector(".swal-button--confirm");
+    objbotonCambiarCdad.addEventListener ("click", () => {
+        let xCantidad = document.getElementById("cambiar_cantidad").value;
+        (new MiCarritoModalComponent).editarCarrito(xCantidad, xId_pedItems);
+    })
+}
+
 /*
 * DESPLIEGA MENU PERFIL
 */

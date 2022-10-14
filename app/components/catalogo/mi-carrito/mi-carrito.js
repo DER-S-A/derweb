@@ -247,6 +247,36 @@ class MiCarritoModalComponent extends ComponentManager {
         document.getElementById(this.__idModal + "_fondo").style.display = "none";
     }
 
+    /**
+     * Envio el editar carrito al php y espero la respuesta, fin de la parte del fronted.
+     */
+    editarCarrito(xcantidad, xid_pedidoItems) {
+        // Preparo el json q se va a mandar por parametro por url.
+        let datos = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+        let dat = datos["items"].filter(datos => datos.id == xid_pedidoItems);
+        let Ojson = dat;
+        Ojson[0].id_pedido = datos.id_pedido;
+        Ojson[0].cantidad = xcantidad;
+        Ojson[0].costo_unitario = dat[0]["costo"];
+        Ojson[0].total = dat[0].subtotal_final;
+        delete Ojson[0].costo;
+        delete Ojson[0].subtotal_final;
+        console.log(Ojson);
+        // Preparo el api para enviar al php.
+        let objApp = new App();
+        let urlAPI = objApp.getUrlApi("catalogo-pedidos-modificar-items");
+        let objAPI = new APIs();
+        objAPI.call(urlAPI, "data=" + JSON.stringify(Ojson[0]), "PUT", (response) => {
+            console.log(response);
+            sweetalert_editarCarrito_icon(response.mensaje);
+            let objMiCarrito = new MiCarritoModalComponent("mi-carrito");
+            document.querySelector(".boton_alert_editarCarrito").addEventListener("click", () => {
+                objMiCarrito.close();
+                setTimeout(funcion_abrir_modalCarrito, 800);
+            })
+        });
+    }
+
     eliminar_item_carrito(xUrl, xId) {
         let xparametros = "id_pedidos_items=" + xId;
         console.log(xUrl);
@@ -292,6 +322,11 @@ class MiCarritoModalComponent extends ComponentManager {
             }
         }   
     }
+}
+
+function funcion_abrir_modalCarrito () {
+    let objMiCarrito = new MiCarritoModalComponent("mi-carrito");
+    objMiCarrito.open();
 }
 
 
