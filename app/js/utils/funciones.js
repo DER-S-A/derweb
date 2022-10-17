@@ -127,3 +127,19 @@ function cerrarSession(bandera = true) {
     location.href = "./index.php";
 }
 
+function capturarInput_swal() {
+    let capturar = document.getElementById("cambiar_cantidad").value;
+    console.log(capturar);
+    //return capturar;
+}
+
+function sweetalert_editarCarrito_icon(xtext) {
+    swal({
+        icon: "success",
+        text: xtext,
+        button: {
+            text: "ok",
+            className: "boton_alert_editarCarrito", 
+        }
+      });
+}
