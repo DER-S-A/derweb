@@ -9,3 +9,8 @@
     border-bottom: solid thin gray;
     margin-bottom: 5px;
 }
+
+.div-total-pedido-seleccionado {
+    position: relative;
+    float: right;
+}

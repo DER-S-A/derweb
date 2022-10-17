@@ -17,6 +17,7 @@ class HTMLInput {
         this.__readOnly = false;
         this.__dataType = "text";
         this.__value = null;
+        this.__width = 100;
 
         this.__objFieldContainer = null;
         this.__objLabel = null;
@@ -51,8 +52,16 @@ class HTMLInput {
      * Establece el valor del campo.
      * @param {mixed} xvalue 
      */
-     setValue(xvalue) {
+    setValue(xvalue) {
         this.__value = xvalue;
+    }
+
+    /**
+     * Establece el ancho del control en pixeles.
+     * @param {int} xvalue 
+     */
+    setWidth(xvalue) {
+        this.__width = xvalue;
     }
 
     /**
@@ -97,7 +106,6 @@ class HTMLInput {
         if (this.__esNumerico()) {
             this.__objInput.type = "numeric";
             this.__objInput.style.textAlign = "right";
-            this.__objInput.style.width = "100px";
         } else {
             this.__objInput.type = this.__dataType;
         }
@@ -108,6 +116,7 @@ class HTMLInput {
         if (this.__value !== null)
             this.__objInput.value = this.__value;
 
+        this.__objInput.style.width = this.__width + "px";
         this.__objFieldContainer.appendChild(this.__objInput);
     }
 

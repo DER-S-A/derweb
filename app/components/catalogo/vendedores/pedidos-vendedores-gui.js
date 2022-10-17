@@ -5,8 +5,9 @@
  *  para televentas.
  */
 
-class PedidosVendedoresGUI {
+class PedidosVendedoresGUI extends ComponentManager {
     constructor() {
+        super();
         this.__rows_cache_name = "";
     }
 
@@ -33,6 +34,8 @@ class PedidosVendedoresGUI {
      */
     __mostrarGrillaPedidosPendientes(xdatos) {
         document.getElementById("app_grid_container").innerHTML = "";
+        this.__eliminarFooter();
+
         let objGrid = new LFWDataGrid("app_grid_container", "id");
     
         objGrid.setAsociatedFormId("formulario");
@@ -71,6 +74,20 @@ class PedidosVendedoresGUI {
      * @param {int} xidpedido 
      */
     entrarAlPedido(xidpedido) {
+        let pedidoSeleccionado = this.__getPedidoSeleccionado(xidpedido);
+        let items = pedidoSeleccionado[0]["items"];
+        document.getElementById("app_grid_container").innerHTML = "";
+        document.getElementById("app_grid_container").appendChild(this.__mostrarCabeceraPedido(pedidoSeleccionado));
+        this.__mostrarGridItemsPedidoSeleccionado(items);
+        this.__mostrarPiePedidoSeleccionado(xidpedido);
+    }
+
+    /**
+     * Obtiene el pedido actualmente seleccionado por Id.
+     * @param {int} xidpedido 
+     * @returns 
+     */
+    __getPedidoSeleccionado(xidpedido) {
         let objCache = new CacheUtils(_APPNAME, false);
         let pedidosPendientesCached = objCache.get("pedido-actual");
         let pedidos = [];
@@ -81,10 +98,7 @@ class PedidosVendedoresGUI {
             else
                 return false;
         });
-        let items = pedidoSeleccionado[0]["items"];
-        document.getElementById("app_grid_container").innerHTML = "";
-        document.getElementById("app_grid_container").appendChild(this.__mostrarCabeceraPedido(pedidoSeleccionado));
-        this.__mostrarGridItemsPedidoSeleccionado(items);
+        return pedidoSeleccionado;
     }
 
     /**
@@ -159,6 +173,92 @@ class PedidosVendedoresGUI {
     }
 
     /**
+     * Permite mostrar el pié del pedido seleccionado.
+     * @param {int} xidpedido Id. del pedido seleccionado
+     */
+    __mostrarPiePedidoSeleccionado(xidpedido) {
+        let objContainer = document.getElementById("app-container");
+        let objDivTotal = document.createElement("div");
+        let txtTotal = new HTMLInput("txtTotal", "Total:");
+        let pedidoSeleccionado = this.__getPedidoSeleccionado(xidpedido);
+        let objRow = this.__addBootstrapRow();
+        let objCol = this.__addBoostralColumn(["col-m-6"]);
+
+        objRow.id = "pedsel-row-footer";
+        objContainer.innerHTML += "<hr>";
+
+        objDivTotal.id = "contenedor-totales";
+        objDivTotal.classList.add("div-total-pedido-seleccionado");
+
+        objRow.appendChild(this.__crearBotoneraFooter());
+
+        txtTotal.setReadOnly();
+        txtTotal.setDataType("float");
+        txtTotal.setWidth(300);
+        txtTotal.setValue(pedidoSeleccionado[0]["total"]);
+        objDivTotal.appendChild(txtTotal.toHtml());
+        objCol.appendChild(objDivTotal);
+        objRow.appendChild(objCol);
+
+        objContainer.appendChild(objRow);
+
+        // Agrego los eventos de los botones confirmar y volver:
+
+        document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+            // Programar función confirmar pedido.
+        });
+
+        document.getElementById("btnVolver").addEventListener("click", () => {
+            // Programar función volver.
+        })
+    }
+
+    /**
+     * Crea la botonoera del footer.
+     * @returns {DOM Element}
+     */
+    __crearBotoneraFooter() {
+        let objDivBotoneraFooter = document.createElement("div");
+        let btnConfirmarPedido = document.createElement("button");
+        let btnVolver = document.createElement("button");
+        let objCol = this.__addBoostralColumn(["col-m-6"]);
+        
+        objDivBotoneraFooter.id = "pedsel-botonera-footer";
+        
+        btnConfirmarPedido.id = "btnConfirmarPedido";
+        btnConfirmarPedido.name = "btnConfirmarPedido";
+        btnConfirmarPedido.type = "button";
+        btnConfirmarPedido.classList.add("btn");
+        btnConfirmarPedido.classList.add("btn-primary");
+        btnConfirmarPedido.classList.add("mt-1");
+        btnConfirmarPedido.innerHTML = "<i class=\"fa-regular fa-circle-check\"></i> Confirmar";
+        objDivBotoneraFooter.appendChild(btnConfirmarPedido);
+
+        btnVolver.id = "btnVolver";
+        btnVolver.name = "btnVolver";
+        btnVolver.type = "button";
+        btnVolver.classList.add("btn");
+        btnVolver.classList.add("btn-secondary");
+        btnVolver.classList.add("ms-1");
+        btnVolver.classList.add("mt-1");
+        btnVolver.innerHTML = "<i class=\"fa-solid fa-arrow-left\"></i> Volver";
+        objDivBotoneraFooter.appendChild(btnVolver);
+
+        objCol.appendChild(objDivBotoneraFooter);
+
+        return objCol;
+    }
+
+    /**
+     * Elimina el footer
+     */
+    __eliminarFooter() {
+        console.log(document.getElementById("pedsel-row-footer"));
+        if (document.getElementById("pedsel-row-footer") !== null)
+            document.getElementById("app-container").removeChild(document.getElementById("pedsel-row-footer"));
+    }
+
+    /**
      * Abre le modal para editar un ítem de la grilla
      * @param {int} xidpedido_item 
      */
@@ -166,7 +266,7 @@ class PedidosVendedoresGUI {
         let objModal = new LFWModalBS(
             "modal-edit-item", 
             "Editar ítem", 
-            this.__crearFormEdit(xidpedido_item) , 
+            this.__crearFormEdit(xidpedido_item), 
             "Grabar", 
             () => {
                 // Grabo las modifiacaciones del ítem.
@@ -204,8 +304,11 @@ class PedidosVendedoresGUI {
         let articulo = this.__getItemById(xidpedido_item);
         
         objCampoCodigo.setReadOnly();
+        objCampoCodigo.setWidth(300);
         objCampoDescripcion.setReadOnly();
+        objCampoDescripcion.setWidth(450);
         objCampoCantidad.setDataType("float");
+        objCampoCantidad.setWidth(100);
 
         objCampoCodigo.setValue(articulo[0]["codigo"]);
         objCampoDescripcion.setValue(articulo[0]["descripcion"]);
