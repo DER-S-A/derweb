@@ -271,8 +271,7 @@ class MiCarritoModalComponent extends ComponentManager {
             sweetalert_editarCarrito_icon(response.mensaje);
             let objMiCarrito = new MiCarritoModalComponent("mi-carrito");
             document.querySelector(".boton_alert_editarCarrito").addEventListener("click", () => {
-                objMiCarrito.close();
-                setTimeout(funcion_abrir_modalCarrito, 800);
+                setTimeout(funcion_abrir_modalCarrito, 400);
             })
         });
     }
@@ -325,8 +324,9 @@ class MiCarritoModalComponent extends ComponentManager {
 }
 
 function funcion_abrir_modalCarrito () {
-    let objMiCarrito = new MiCarritoModalComponent("mi-carrito");
-    objMiCarrito.open();
+    /*let objMiCarrito = new MiCarritoModalComponent("mi-carrito");
+    objMiCarrito.open();*/
+    abrir_mi_carrito();
 }
 
 
