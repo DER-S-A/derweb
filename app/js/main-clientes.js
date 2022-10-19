@@ -240,7 +240,9 @@ function iniciarlizarComponenteMiCarrito() {
 
     // Establezco el callback con la función a ejecutar cuando se haga
     // clic en el botón finalizar pedido.
-    objMiCarrito.setCallbackFinalizarPedidoButton(confirmarPedido);
+    //objMiCarrito.setCallbackFinalizarPedidoButton(confirmarPedido);
+    //let objprueba = new ConfirmacionPedido();
+    //objprueba.setCallbackFinalizarPedidoButton(confirmarPedido);
 }
 
 /**

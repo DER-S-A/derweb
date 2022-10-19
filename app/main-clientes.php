@@ -212,6 +212,8 @@
         <!-- Componente de seguridad -->
         <script src="components/seguridad/seguridad.js" type="text/javascript"></script>
 
+        <script src="components/catalogo/confirmacion-pedido/confirmacion-pedido.js" type="text/javascript"></script>
+
         <!-- Componente botón mi carrito -->
         <script src="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js" type="text/javascript"></script>
         <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
