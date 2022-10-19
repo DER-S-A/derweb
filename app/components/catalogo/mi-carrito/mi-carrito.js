@@ -43,7 +43,9 @@ class MiCarritoModalComponent extends ComponentManager {
         this.__generarDivModal();
         this.__generarHeader();
         this.__objDivModal.appendChild(objContainer);       
-        this.__generarFooter();
+        //this.__generarFooter();  //ACA USAS LA FORMA ESTATICA
+        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", this.__idModal, this.__objDivModal);
+        objConfirmarPedido.generarFooterPedido();
         this.__objDivFondo.appendChild(this.__objDivModal);
         document.body.appendChild(this.__objDivFondo);
 
@@ -151,58 +153,8 @@ class MiCarritoModalComponent extends ComponentManager {
         let obj3Label = document.createElement("label");
         obj3Label.innerHTML = "Transportes:";
 
-        fetch(this.__objApp.getUrlApi("app-entidades-getSucursalesByEntidad") + "?id_entidad=" + aSesion["id_cliente"])
-            .then(xresponse => xresponse.json())
-            .then(xsucursales => {
-                xsucursales.forEach((xitem) => {
-                    let objOption = document.createElement("option");
-                    objOption.id = xitem["codigo_sucursal"];
-                    objOption.value = xitem["id"];
-                    objOption.textContent = xitem["codigo_sucursal"] + " - " + xitem["calle"] + " - " + xitem["ciudad"];
-                    objSelectSucursal.appendChild(objOption);
-                });
-
-                // Me traigo la id de la sucursal para mandarla por parametro en la url.
-                let xselec = document.getElementById("select-sucursales").value;
-                let xparametrosxUrl = "id_sucursales=" + xselec; 
-
-                (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
-                    xdatos.forEach((xitem) => {
-                        // Completo los option con el resultado de json q traigo con el fetch call.
-                        let objOption = document.createElement("option");
-                        objOption.innerHTML = xitem.descripcion;
-                        objOption.id = "forma-envio_"+xitem.id;
-                        objOption.value = xitem.codigo;
-                        objSelectFormaEnvio.appendChild(objOption);
-                    });
-
-                    // Me traigo la lista de transporte para pegar en el selector de transportes.
-
-                    (new APIs()).call(this.__objApp.getUrlApi("app-transportes"), "", "GET", (xdatos) => {
-                        console.log(xdatos);
-                        xdatos.forEach((xitem) => {
-                            // Completo los option con el resultado de json q traigo con el fetch call.
-                            let objOption = document.createElement("option");
-                            objOption.innerHTML = xitem.descripcion;
-                            objOption.id = "transporteId_" + xitem.id;
-                            objOption.value = xitem.id;
-                            objSelectTransporte.appendChild(objOption);
-                        });
-                    }); 
-
-                    let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
-                    // Con esta funcion realizo el display-none del selector q muestra todos los transportes.
-                    this.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, objSelectTransporte); 
-                    // 1RA variable es el codigo de la forma de envio q tiene el selector.
-                    // El 6  es el codigo de forma de envio transporte.
-                    // Y la 3RA variable es el label q dice transportes.
-                    // 4TA variable es objeto nodo selector de transporte.
-                    addEventListener("change",() => {  // Aca genero evento de cambio de opcion de select
-                        let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
-                        this.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, objSelectTransporte, true);
-                    });
-                });                                                                      
-            });                                                                       
+        let objConfirmacionPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", aSesion, objSelectSucursal, objSelectFormaEnvio, objSelectTransporte, obj3Label);
+        objConfirmacionPedido.llenarBoxes2();                                                    
 
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
