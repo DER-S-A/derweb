@@ -44,7 +44,9 @@ class MiCarritoModalComponent extends ComponentManager {
         this.__generarHeader();
         this.__objDivModal.appendChild(objContainer);       
         //this.__generarFooter();  //ACA USAS LA FORMA ESTATICA
-        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", this.__idModal, this.__objDivModal);
+        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad");
+        objConfirmarPedido.setIdModal(this.__idModal);
+        objConfirmarPedido.setDivModal(this.__objDivModal);
         objConfirmarPedido.generarFooterPedido();
         this.__objDivFondo.appendChild(this.__objDivModal);
         document.body.appendChild(this.__objDivFondo);
@@ -113,76 +115,6 @@ class MiCarritoModalComponent extends ComponentManager {
         objHeaderContainer.appendChild(objTituloContainer);
         objHeaderContainer.appendChild(objBotonCerrarContainer);
         this.__objDivModal.appendChild(objHeaderContainer);
-    }
-
-    /**
-     * Genera el footer del modal mi carrito.
-     */
-    __generarFooter() {
-        let objAnchor = document.createElement("a");
-        let objDivFooter = document.createElement("div");
-        let objBotonFinalizarPedido = document.createElement("button");
-        let objSelectSucursal = document.createElement("select");
-        let objLabel = document.createElement("label");
-        let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
-        
-        objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
-        objAnchor.id = "vaciarCarrito";
-        objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
-        objSelectSucursal.id = "select-sucursales";
-        objSelectSucursal.name = "select-sucursales";
-        objSelectSucursal.classList.add("form-control");
-        objSelectSucursal.classList.add("select-suscursal");
-        objLabel.textContent = "Sucursal:";
-
-        // Genero la opcion de forma de envio.
-
-        let objSelectFormaEnvio = document.createElement("select");
-        objSelectFormaEnvio.id = "select-formasEnvios";
-        objSelectFormaEnvio.name = "select-formasEnvios";
-        objSelectFormaEnvio.classList.add("form-control", "select-formasEnvios");
-        let obj2Label = document.createElement("label");
-        obj2Label.innerHTML = "Forma de envio:";
-
-        // Genero la opcion de transporte.
-
-        let objSelectTransporte = document.createElement("select");
-        objSelectTransporte.id = "select-transportes";
-        objSelectTransporte.name = "select-transportes";
-        objSelectTransporte.classList.add("form-control", "select-transportes");
-        let obj3Label = document.createElement("label");
-        obj3Label.innerHTML = "Transportes:";
-
-        let objConfirmacionPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", aSesion, objSelectSucursal, objSelectFormaEnvio, objSelectTransporte, obj3Label);
-        objConfirmacionPedido.llenarBoxes2();                                                    
-
-        objDivFooter.id = this.__idModal + "_footer";
-        objDivFooter.classList.add("row");
-        objDivFooter.classList.add("modal-div-footer");
-
-        objAnchor.innerHTML = "   VACIAR CARRITO"
-        objDivFooter.appendChild(objAnchor);
-        objDivFooter.appendChild(objLabel);
-        objDivFooter.appendChild(objSelectSucursal);
-        objDivFooter.appendChild(obj2Label);
-        objDivFooter.appendChild(objSelectFormaEnvio);
-        objDivFooter.appendChild(obj3Label);
-        objDivFooter.appendChild(objSelectTransporte);
-        
-        objBotonFinalizarPedido.id = "btn-finalizar-pedido";
-        objBotonFinalizarPedido.name = "btn-finalizar-pedido";
-        objBotonFinalizarPedido.innerHTML = "<span>Finalizar Pedido</span>";
-        objBotonFinalizarPedido.classList.add("btn");
-        objBotonFinalizarPedido.classList.add("btn-primary");
-
-        // Agrego la funcionalidad del evento finalizar pedido.
-        objBotonFinalizarPedido.addEventListener("click", () => {
-            this.__callbackFinalizarPedidoButton();
-            this.clearContainer(this.__idModal + "-contenido");
-        }, false);
-
-        objDivFooter.appendChild(objBotonFinalizarPedido);
-        this.__objDivModal.appendChild(objDivFooter);
     }
 
     /**

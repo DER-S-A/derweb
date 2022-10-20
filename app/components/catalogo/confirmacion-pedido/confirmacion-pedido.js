@@ -1,11 +1,34 @@
 class ConfirmacionPedido {
-    constructor(xurlApi, xIdModal,xDivModal) {
+    constructor(xurlApi) {
         this.urlApi = xurlApi;
         this.__objApp = new App();        
-        this.__idModal = xIdModal;
+        this.__idModal = null;
         this.__functionNameVaciarCarrito = null;
-        this.__objDivModal = xDivModal;
+        this.__objDivModal = null;
+    }
 
+    /**
+     * Permite setear el Id. de modal asociado
+     * @param {string} xvalue 
+     */
+    setIdModal(xvalue) {
+        this.__idModal = xvalue;
+    }
+
+    /**
+     * Setea el Div del modal asociado.
+     * @param {DOM Element} xvalue 
+     */
+    setDivModal(xvalue) {
+        this.__objDivModal = xvalue;
+    }
+
+    /**
+     * Permite devolver el DOM con el footer de pedidos.
+     * @returns {DOM Element}
+     */
+    getFooter() {
+        return this.__objDivModal;
     }
 
     /**

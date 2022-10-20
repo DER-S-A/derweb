@@ -205,7 +205,10 @@ class PedidosVendedoresGUI extends ComponentManager {
         // Agrego los eventos de los botones confirmar y volver:
 
         document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-            // Programar función confirmar pedido.
+            let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad");
+            objConfirmarPedido.generarFooterPedido();    
+            let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido", objConfirmarPedido.getFooter());
+            objModal.open();
         });
 
         document.getElementById("btnVolver").addEventListener("click", () => {

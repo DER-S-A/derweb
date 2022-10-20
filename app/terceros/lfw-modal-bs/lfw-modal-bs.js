@@ -7,7 +7,7 @@
 class LFWModalBS {
     /**
      * 
-     * @param {int} xid Id. que identifica al modal dentro del HTML
+     * @param {string} xid Id. que identifica al modal dentro del HTML
      * @param {string} xtitle Título del modal para mostrar en el header.
      * @param {mixed} xBodyContent Contenido del modal, puede ser un DOM o un HTML.
      * @param {string} xbuttonFooterTitle Título del botón del footer. Default null.

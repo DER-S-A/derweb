@@ -28,6 +28,7 @@
         <script src="js/utils/cache-utils.js" type="text/javascript"></script>
         <script src="components/catalogo/catalogo.js" type="text/javascript"></script>
         <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
+        <script src="components/catalogo/confirmacion-pedido/confirmacion-pedido.js"></script>
     </head>
     <body id="page-container">
         <div id="content-wrap">
