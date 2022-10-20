@@ -13,7 +13,7 @@ class LFWModalBS {
      * @param {string} xbuttonFooterTitle Título del botón del footer. Default null.
      * @param {callback} cb_clicCustomButton Define la función callback del evento click del botón personalizado.
      */
-    constructor(xid, xtitle, xBodyContent, xbuttonFooterTitle = null, cb_clicCustomButton = null) {
+    constructor(xid, xtitle, xBodyContent = null, xbuttonFooterTitle = null, cb_clicCustomButton = null) {
         // Defino las propiedades privadas.
         this.__idModal = xid;
         this.__idBody = "body-" + this.__idModal;
@@ -29,14 +29,30 @@ class LFWModalBS {
         this.__bodyContent = xBodyContent;
         this.__objButtonFooter = null;
         this.__buttonFooterTitle = xbuttonFooterTitle;
-        //this.__callbackCustomButton = xcallback;
-
+        
         this.__createModal();
 
-        document.getElementById(this.__idCustomButton).addEventListener("click", () => {
-            cb_clicCustomButton();
-            this.close();
-        });
+        if (document.getElementById(this.__idCustomButton) !== null)
+            document.getElementById(this.__idCustomButton).addEventListener("click", () => {
+                cb_clicCustomButton();
+                this.close();
+            });
+    }
+
+     /**
+      * Devuelve el Id. del modal
+      * @returns {string}
+      */
+    getIdModal() {
+        return this.__idModal;
+    }
+
+    /**
+     * Retorna div correspondiente al cuerpo del modal.
+     * @returns {DOM Element}
+     */
+    getModalBody() {
+        return this.__objModalBody;
     }
 
     /**
@@ -119,12 +135,15 @@ class LFWModalBS {
     __createModalBody() {
         this.__objModalBody = document.createElement("div");
         this.__objModalBody.classList.add("modal-body");
+        this.__objModalBody.id = this.__idModal + "-body";
         
         // Verifico si usa DOM o HTML
-        if (typeof(this.__bodyContent) === "object")
-            this.__objModalBody.appendChild(this.__bodyContent);
-        else
-            this.__objModalBody.innerHTML = this.__bodyContent;
+        if (this.__bodyContent !== null) {
+            if (typeof(this.__bodyContent) === "object")
+                this.__objModalBody.appendChild(this.__bodyContent);
+            else
+                this.__objModalBody.innerHTML = this.__bodyContent;
+        }
 
         this.__objModalContent.appendChild(this.__objModalBody);
     }

@@ -206,8 +206,10 @@ class PedidosVendedoresGUI extends ComponentManager {
 
         document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
             let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad");
-            objConfirmarPedido.generarFooterPedido();    
-            let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido", objConfirmarPedido.getFooter());
+            let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido");
+            objConfirmarPedido.setIdModal(objModal.getIdModal());
+            objConfirmarPedido.setDivModal(objModal.getModalBody());
+            objConfirmarPedido.generarFooterPedido();
             objModal.open();
         });
 
