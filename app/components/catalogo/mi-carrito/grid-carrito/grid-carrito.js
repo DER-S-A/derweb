@@ -78,7 +78,10 @@ class CarritoGridComponent extends ComponentManager {
             this.__objContenedorGrilla.appendChild(objContenedorFila);
             document.getElementById(this.__idContenedor).appendChild(this.__objContenedorGrilla);
         });
-                
+        let objAnchor = document.createElement("a");
+        objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
+        objAnchor.id = "vaciarCarrito";
+        objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
     }
 
     /**

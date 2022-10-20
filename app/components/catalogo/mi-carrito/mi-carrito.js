@@ -36,13 +36,13 @@ class MiCarritoModalComponent extends ComponentManager {
      */
     generateComponent() {
         var objContainer = document.createElement("div");
-
         objContainer.id = this.__idModal + "-contenido";
 
         this.__generarDivFondo();
         this.__generarDivModal();
         this.__generarHeader();
-        this.__objDivModal.appendChild(objContainer);       
+        this.__objDivModal.appendChild(objContainer); 
+        this.generarAnchorVaciarCarrito();      
         //this.__generarFooter();  //ACA USAS LA FORMA ESTATICA
         let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad");
         objConfirmarPedido.setIdModal(this.__idModal);
@@ -204,6 +204,17 @@ class MiCarritoModalComponent extends ComponentManager {
                 objLabelTransporte.style.display = "none";
             }
         }   
+    }
+    generarAnchorVaciarCarrito() {
+        let objAnchor = document.createElement("a");
+        let objDivAnchor = document.createElement("div");
+        objDivAnchor.className = "div-anchor-vaciar-carrito";
+        objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
+        objAnchor.id = "vaciarCarrito";
+        objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
+        objAnchor.innerHTML = "   VACIAR CARRITO";
+        objDivAnchor.appendChild(objAnchor);
+        this.__objDivModal.appendChild(objDivAnchor);
     }
 }
 

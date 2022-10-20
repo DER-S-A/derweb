@@ -235,7 +235,8 @@ function generarBotonMiCarrito() {
  * Crea el componente mi carrito pero lo deja oculto.
  */
 function iniciarlizarComponenteMiCarrito() {
-    objMiCarrito.setFunctionNameVaciarCarrito("vaciar_carrito");    
+    objMiCarrito.setFunctionNameVaciarCarrito("vaciar_carrito");
+    //(new ConfirmacionPedido).setFunctionNameVaciarCarrito("vaciar_carrito");    
     objMiCarrito.generateComponent();
 
     // Establezco el callback con la función a ejecutar cuando se haga

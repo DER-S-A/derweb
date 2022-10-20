@@ -79,12 +79,16 @@
     margin: 4% auto;
 }
 
-.modal-div-footer a {
+.div-anchor-vaciar-carrito {
+    text-align: center;
+}
+
+.div-anchor-vaciar-carrito a {
     text-decoration: auto;
     margin: 3% auto;
-    text-align: center;
 }
 
 .swal-modal {
     z-index: 1000;
 }
+

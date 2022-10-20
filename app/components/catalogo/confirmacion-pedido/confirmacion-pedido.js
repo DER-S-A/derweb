@@ -31,22 +31,23 @@ class ConfirmacionPedido {
         return this.__objDivModal;
     }
 
+
     /**
      * Genera el footer del modal mi pedido.
      */
 
     generarFooterPedido() {
         
-        let objAnchor = document.createElement("a");
+        //let objAnchor = document.createElement("a");
         let objDivFooter = document.createElement("div");
         let objBotonFinalizarPedido = document.createElement("button");
         let objSelectSucursal = document.createElement("select");
         let objLabel = document.createElement("label");
         let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
         
-        objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
-        objAnchor.id = "vaciarCarrito";
-        objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
+        //objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
+        //objAnchor.id = "vaciarCarrito";
+        //objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
         objSelectSucursal.id = "select-sucursales";
         objSelectSucursal.name = "select-sucursales";
         objSelectSucursal.classList.add("form-control", "select-suscursal");
@@ -77,8 +78,8 @@ class ConfirmacionPedido {
         objDivFooter.classList.add("row");
         objDivFooter.classList.add("modal-div-footer");
 
-        objAnchor.innerHTML = "   VACIAR CARRITO"
-        objDivFooter.appendChild(objAnchor);
+        //objAnchor.innerHTML = "   VACIAR CARRITO";
+        //objDivFooter.appendChild(objAnchor);
         objDivFooter.appendChild(objLabel);
         objDivFooter.appendChild(objSelectSucursal);
         objDivFooter.appendChild(obj2Label);
