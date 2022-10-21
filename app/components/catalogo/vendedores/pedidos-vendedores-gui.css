@@ -14,3 +14,19 @@
     position: relative;
     float: right;
 }
+
+.select-suscursal {
+    margin-top: 2px;
+}
+
+.select-formasEnvios {
+    margin-top: 2px;
+}
+
+.select-transportes {
+    margin-top: 2px;
+}
+
+#btn-finalizar-pedido {
+    margin-top: 5px;
+}

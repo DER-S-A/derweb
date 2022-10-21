@@ -219,7 +219,7 @@ function generarCarruselFotter() {
                         }
                     ]
                 });
-        })
+        });
 }
 
 /**
@@ -236,55 +236,7 @@ function generarBotonMiCarrito() {
  */
 function iniciarlizarComponenteMiCarrito() {
     objMiCarrito.setFunctionNameVaciarCarrito("vaciar_carrito");
-    //(new ConfirmacionPedido).setFunctionNameVaciarCarrito("vaciar_carrito");    
     objMiCarrito.generateComponent();
-
-    // Establezco el callback con la función a ejecutar cuando se haga
-    // clic en el botón finalizar pedido.
-    //objMiCarrito.setCallbackFinalizarPedidoButton(confirmarPedido);
-    //let objprueba = new ConfirmacionPedido();
-    //objprueba.setCallbackFinalizarPedidoButton(confirmarPedido);
-}
-
-/**
- * Permite confirmar el pedido al hacer clic en Finalizar Pedido.
- */
-function confirmarPedido() {
-        // Recupero los parámetros de envío
-        let idsucursal = document.getElementById("select-sucursales").value;
-        let idformaenvio = document.getElementById("select-formasEnvios").value;
-        let idtransporte = document.getElementById("select-transportes").value;
-        // Mando a marcar el pedido como confirmado.
-        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
-        let parametros = "";
-
-        let aParametrosConfirmacion = {
-            "id_pedido": parseInt(aPedidoActual["id_pedido"]),
-            "id_sucursal": parseInt(idsucursal),
-            "id_formaenvio": parseInt(idformaenvio),
-            "id_transporte": parseInt(idtransporte)
-        };
-
-        // Armo los parámetros para pasarle al API.
-        parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") 
-            + "&pedido=" + JSON.stringify(aParametrosConfirmacion);
-
-        objMiCarrito.close();
-        url = url + parametros;
-        
-        fetch(url, {
-            method: "PUT",
-            headers: {
-                'content-type': 'applitacion/json'
-            }
-        }).then(xresponse => xresponse.json())
-            .then(xdata => {
-                if (xdata["codigo"] !== "OK")
-                    alert(xdata["mensaje"]);
-                else
-                    alert(xdata["mensaje"]);
-            });
 }
 
 /**

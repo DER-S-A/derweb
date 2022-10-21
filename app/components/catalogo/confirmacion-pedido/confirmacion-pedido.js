@@ -97,7 +97,7 @@ class ConfirmacionPedido {
         objBotonFinalizarPedido.addEventListener("click", () => {
             let objMiCarrito = new MiCarritoModalComponent();
             //this.__callbackFinalizarPedidoButton();
-            confirmarPedido();
+            this.confirmarPedido();
             //objMiCarrito.__callbackFinalizarPedidoButton();
             objMiCarrito.clearContainer(this.__idModal + "-contenido");
         }, false);
@@ -105,7 +105,47 @@ class ConfirmacionPedido {
         objDivFooter.appendChild(objBotonFinalizarPedido);
         this.__objDivModal.appendChild(objDivFooter);
         console.log(this.__objDivModal);
+    }
 
+    /**
+     * Permite confirmar un pedido.
+     */
+    confirmarPedido() {
+        // Recupero los parámetros de envío
+        let idsucursal = document.getElementById("select-sucursales").value;
+        let idformaenvio = document.getElementById("select-formasEnvios").value;
+        let idtransporte = document.getElementById("select-transportes").value;
+        // Mando a marcar el pedido como confirmado.
+        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
+        let parametros = "";
+
+        let aParametrosConfirmacion = {
+            "id_pedido": parseInt(aPedidoActual["id_pedido"]),
+            "id_sucursal": parseInt(idsucursal),
+            "id_formaenvio": parseInt(idformaenvio),
+            "id_transporte": parseInt(idtransporte)
+        };
+
+        // Armo los parámetros para pasarle al API.
+        parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") 
+            + "&pedido=" + JSON.stringify(aParametrosConfirmacion);
+
+        objMiCarrito.close();
+        url = url + parametros;
+        
+        fetch(url, {
+            method: "PUT",
+            headers: {
+                'content-type': 'applitacion/json'
+            }
+        }).then(xresponse => xresponse.json())
+            .then(xdata => {
+                if (xdata["codigo"] !== "OK")
+                    alert(xdata["mensaje"]);
+                else
+                    alert(xdata["mensaje"]);
+            });        
     }
 
     llenarBoxes(xaSesion, xobjSelectSucursal, xobjSelectFormaEnvio, xobjSelectTransporte, obj3Label) {
