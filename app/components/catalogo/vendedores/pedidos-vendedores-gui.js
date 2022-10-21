@@ -80,6 +80,9 @@ class PedidosVendedoresGUI extends ComponentManager {
         document.getElementById("app_grid_container").appendChild(this.__mostrarCabeceraPedido(pedidoSeleccionado));
         this.__mostrarGridItemsPedidoSeleccionado(items);
         this.__mostrarPiePedidoSeleccionado(xidpedido);
+
+        // Agrego el id de pedido seleccionado a session storage para mantener el valor.
+        (new CacheUtils("derven", false)).set("id_pedido_sel", xidpedido);
     }
 
     /**
@@ -205,7 +208,7 @@ class PedidosVendedoresGUI extends ComponentManager {
         // Agrego los eventos de los botones confirmar y volver:
 
         document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-            let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad");
+            let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
             let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido");
             objConfirmarPedido.setIdModal(objModal.getIdModal());
             objConfirmarPedido.setDivModal(objModal.getModalBody());

@@ -1,10 +1,16 @@
 class ConfirmacionPedido {
-    constructor(xurlApi) {
+    /**
+     * Clase de confirmación de pedidos.
+     * @param {string} xurlApi Establece la URL de la api que se utilizará para confirmar un pedido.
+     * @param {boolean} xconfirmaVenedor Establece true si se confirma desde el sistema de vendedores.
+     */
+    constructor(xurlApi, xconfirmaVenedor = false) {
         this.urlApi = xurlApi;
         this.__objApp = new App();        
         this.__idModal = null;
         this.__functionNameVaciarCarrito = null;
         this.__objDivModal = null;
+        this.__confirmaVendedor = xconfirmaVenedor;
     }
 
     /**
@@ -72,8 +78,7 @@ class ConfirmacionPedido {
         obj3Label.innerHTML = "Transportes:";
 
         this.llenarBoxes(aSesion, objSelectSucursal, objSelectFormaEnvio, objSelectTransporte, obj3Label);
-
-
+        
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
         objDivFooter.classList.add("modal-div-footer");
@@ -95,11 +100,10 @@ class ConfirmacionPedido {
 
         // Agrego la funcionalidad del evento finalizar pedido.
         objBotonFinalizarPedido.addEventListener("click", () => {
-            let objMiCarrito = new MiCarritoModalComponent();
-            //this.__callbackFinalizarPedidoButton();
-            this.confirmarPedido();
-            //objMiCarrito.__callbackFinalizarPedidoButton();
-            objMiCarrito.clearContainer(this.__idModal + "-contenido");
+            if (!this.__confirmaVendedor)
+                this.__confirmarPedidoCliente();
+            else
+                this.__confirmarPedidoVendedor();
         }, false);
 
         objDivFooter.appendChild(objBotonFinalizarPedido);
@@ -108,18 +112,44 @@ class ConfirmacionPedido {
     }
 
     /**
+     * Confirma el pedido desde el sistema de clientes.
+     */
+    __confirmarPedidoCliente() {
+        let objMiCarrito = new MiCarritoModalComponent();
+        this.__confirmarPedido();
+        objMiCarrito.close();
+        objMiCarrito.clearContainer(this.__idModal + "-contenido");
+    }
+
+    /**
+     * Confirma el pedido desde el sistema de vendedores.
+     */
+    __confirmarPedidoVendedor() {
+        this.__confirmarPedido();
+    }
+
+    /**
      * Permite confirmar un pedido.
      */
-    confirmarPedido() {
+    __confirmarPedido() {
         // Recupero los parámetros de envío
+        let aPedidoActual = [];
         let idsucursal = document.getElementById("select-sucursales").value;
         let idformaenvio = document.getElementById("select-formasEnvios").value;
         let idtransporte = document.getElementById("select-transportes").value;
-        // Mando a marcar el pedido como confirmado.
-        let aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-        let url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
+        let url = "";
         let parametros = "";
 
+        // Verifico desde qué sistema se invoca la confirmación de pedidos.
+        if (!this.__confirmaVendedor)
+            aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+        else
+            aPedidoActual["id_pedido"] = parseInt(sessionStorage.getItem("derven_id_pedido_sel"));
+
+        // Mando a confirmar el pedido.
+        url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
+        
+        // Armo un JSON con los parámetros a invocar.
         let aParametrosConfirmacion = {
             "id_pedido": parseInt(aPedidoActual["id_pedido"]),
             "id_sucursal": parseInt(idsucursal),
@@ -131,9 +161,9 @@ class ConfirmacionPedido {
         parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") 
             + "&pedido=" + JSON.stringify(aParametrosConfirmacion);
 
-        objMiCarrito.close();
         url = url + parametros;
         
+        // Llamo a la API que permite confirmar el pedido.
         fetch(url, {
             method: "PUT",
             headers: {
@@ -191,8 +221,9 @@ class ConfirmacionPedido {
 
                     let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
                     // Con esta funcion realizo el display-none del selector q muestra todos los transportes.
-                    //(new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte);
-                    objMiCarrito.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte);
+                    
+                    if (objMiCarrito !== null)
+                        objMiCarrito.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte);
                     //this.displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte); 
                     // 1RA variable es el codigo de la forma de envio q tiene el selector.
                     // El 6  es el codigo de forma de envio transporte.
