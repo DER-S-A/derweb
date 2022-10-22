@@ -212,6 +212,14 @@ class PedidosVendedoresGUI extends ComponentManager {
             let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido");
             objConfirmarPedido.setIdModal(objModal.getIdModal());
             objConfirmarPedido.setDivModal(objModal.getModalBody());
+
+            // Agrego funcionalidad extra al finalizar el pedido
+            objConfirmarPedido.setCallbackFinalizarPedido(() => {
+                objModal.close();
+
+                // Volver a la pantalla de pedidos pendientes.
+            });
+            
             objConfirmarPedido.generarFooterPedido();
             objModal.open();
         });

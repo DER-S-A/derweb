@@ -11,6 +11,7 @@ class ConfirmacionPedido {
         this.__functionNameVaciarCarrito = null;
         this.__objDivModal = null;
         this.__confirmaVendedor = xconfirmaVenedor;
+        this.__cb_finalizar_pedido = null;
     }
 
     /**
@@ -27,6 +28,14 @@ class ConfirmacionPedido {
      */
     setDivModal(xvalue) {
         this.__objDivModal = xvalue;
+    }
+
+    /**
+     * Establece el callback para anexar funcionalidad extra al finalizar el pedido.
+     * @param {function} xfunction 
+     */
+    setCallbackFinalizarPedido(xfunction) {
+        this.__cb_finalizar_pedido = xfunction;
     }
 
     /**
@@ -104,11 +113,16 @@ class ConfirmacionPedido {
                 this.__confirmarPedidoCliente();
             else
                 this.__confirmarPedidoVendedor();
+                
+            // Si viene una función ejecuta callback con funcionalidad
+            // extra
+            if (this.__cb_finalizar_pedido !== null)
+                this.__cb_finalizar_pedido();
+
         }, false);
 
         objDivFooter.appendChild(objBotonFinalizarPedido);
         this.__objDivModal.appendChild(objDivFooter);
-        console.log(this.__objDivModal);
     }
 
     /**
