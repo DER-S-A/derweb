@@ -116,8 +116,7 @@ class ConfirmacionPedido {
      */
     __confirmarPedidoCliente() {
         let objMiCarrito = new MiCarritoModalComponent();
-        this.__confirmarPedido();
-        objMiCarrito.close();
+        this.__confirmarPedido(true);
         objMiCarrito.clearContainer(this.__idModal + "-contenido");
     }
 
@@ -131,7 +130,7 @@ class ConfirmacionPedido {
     /**
      * Permite confirmar un pedido.
      */
-    __confirmarPedido() {
+    __confirmarPedido(EsCarritoCliente = false) {
         // Recupero los parámetros de envío
         let aPedidoActual = [];
         let idsucursal = document.getElementById("select-sucursales").value;
@@ -175,7 +174,8 @@ class ConfirmacionPedido {
                     alert(xdata["mensaje"]);
                 else
                     alert(xdata["mensaje"]);
-            });        
+            });
+            if(!EsCarritoCliente) objMiCarrito.close();            
     }
 
     llenarBoxes(xaSesion, xobjSelectSucursal, xobjSelectFormaEnvio, xobjSelectTransporte, obj3Label) {
