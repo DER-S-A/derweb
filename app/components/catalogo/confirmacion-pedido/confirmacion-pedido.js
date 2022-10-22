@@ -46,7 +46,6 @@ class ConfirmacionPedido {
         return this.__objDivModal;
     }
 
-
     /**
      * Genera el footer del modal mi pedido.
      */
