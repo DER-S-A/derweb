@@ -175,7 +175,7 @@ class ConfirmacionPedido {
                 else
                     alert(xdata["mensaje"]);
             });
-            if(!EsCarritoCliente) objMiCarrito.close();            
+            if(EsCarritoCliente) objMiCarrito.close();            
     }
 
     llenarBoxes(xaSesion, xobjSelectSucursal, xobjSelectFormaEnvio, xobjSelectTransporte, obj3Label) {
