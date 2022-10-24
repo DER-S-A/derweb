@@ -25,7 +25,7 @@ class PedidosVendedoresGUI extends ComponentManager {
             this.__guardarPedidosPendientesEnCache(response);
             if (typeof xcallback === "function")
                 xcallback(response);
-        });      
+        });
     }
 
     /**
@@ -215,7 +215,7 @@ class PedidosVendedoresGUI extends ComponentManager {
             // Agrego funcionalidad extra al finalizar el pedido
             objConfirmarPedido.setCallbackFinalizarPedido(() => {
                 objModal.close();
-                
+
                 // Volver a la pantalla de pedidos pendientes.
                 this.getPedidosPendientes();
             });
