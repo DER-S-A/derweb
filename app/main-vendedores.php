@@ -117,7 +117,7 @@
                 <section id="app-container">
                     <form id="formulario">
                         <div class="row">
-                            <div class="col-md-12" id="app_grid_container"></div>
+                            <div class="col-md-12 detalle-pedido-row" id="app_grid_container"></div>
                         </div>
                     </form>
 
