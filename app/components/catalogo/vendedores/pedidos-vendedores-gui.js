@@ -25,7 +25,7 @@ class PedidosVendedoresGUI extends ComponentManager {
             this.__guardarPedidosPendientesEnCache(response);
             if (typeof xcallback === "function")
                 xcallback(response);
-        });      
+        });
     }
 
     /**
@@ -188,7 +188,7 @@ class PedidosVendedoresGUI extends ComponentManager {
         let objCol = this.__addBoostralColumn(["col-m-6"]);
 
         objRow.id = "pedsel-row-footer";
-        objContainer.innerHTML += "<hr>";
+        //objContainer.innerHTML += "<hr>";
 
         objDivTotal.id = "contenedor-totales";
         objDivTotal.classList.add("div-total-pedido-seleccionado");
@@ -206,7 +206,6 @@ class PedidosVendedoresGUI extends ComponentManager {
         objContainer.appendChild(objRow);
 
         // Agrego los eventos de los botones confirmar y volver:
-
         document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
             let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
             let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido");
@@ -218,6 +217,7 @@ class PedidosVendedoresGUI extends ComponentManager {
                 objModal.close();
 
                 // Volver a la pantalla de pedidos pendientes.
+                this.getPedidosPendientes();
             });
             
             objConfirmarPedido.generarFooterPedido();
@@ -225,7 +225,8 @@ class PedidosVendedoresGUI extends ComponentManager {
         });
 
         document.getElementById("btnVolver").addEventListener("click", () => {
-            // Programar función volver.
+            document.getElementById("app_grid_container").innerHTML = "";
+            this.getPedidosPendientes();
         })
     }
 
