@@ -242,11 +242,11 @@ function iniciarlizarComponenteMiCarrito() {
 /**
  * Permite vaciar mi carrito al hacer clic en "Vaciar mi carrito"
  */
-function eliminar_item_mi_carrito(xId) {
+function eliminar_item_mi_carrito(xidpedido, xId) {
     let url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
     objMiCarrito.close();
     let objCarrito = new MiCarritoModalComponent;
-    objCarrito.eliminar_item_carrito(url, xId);
+    objCarrito.eliminar_item_carrito(url, xidpedido, xId);
  }
 
 /**

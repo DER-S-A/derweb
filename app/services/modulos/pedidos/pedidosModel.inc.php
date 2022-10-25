@@ -499,7 +499,7 @@ class PedidosModel extends Model {
      * @param  int $xid_pedido
      * @return array
      */
-    public function eliminarArt($xid_pedidos_items) {
+    /*public function eliminarArt2($xid_pedidos_items) {
         $ok = false;
         
         $aResponse = [];
@@ -522,6 +522,49 @@ class PedidosModel extends Model {
             $aResponse["codigo"] = "OK";
             $aResponse["mensaje"] = "item eliminado";
         }
+
+        return json_encode($aResponse);
+    }*/
+
+    public function eliminarArt($xidpedido, $xid_pedidos_items) {
+        $ok = false;
+        $res = [];
+        $res["mensaje"] = "VACIO";
+        $aResponse = [];
+        $sql = "DELETE
+                FROM
+                    pedidos_items
+                WHERE
+                    id = $xid_pedidos_items";
+        
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        if ($bd->affectedRows > 0)
+            $ok = true;        
+        //$bd->close();
+
+        if (!$ok) {
+            $aResponse["codigo"] = "BD_ERROR";
+            $aResponse["mensaje"] = "No se elimino el item";
+        } else {
+            $aResponse["codigo"] = "OK";
+            $aResponse["mensaje"] = "item eliminado";
+        }
+
+        $que = "SELECT id, subtotal, importe_iva, total
+                FROM pedidos_items WHERE id_pedido= $xidpedido";
+        $xdatos = $this->getQuery($que);
+        
+        for($i=0;$i<count($xdatos);$i++){
+           $subtotal += $xdatos[$i]["subtotal"];
+           $importe_iva += $xdatos[$i]["importe_iva"]; 
+           $total += $xdatos[$i]["total"]; 
+        }
+
+        $sql2 = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total
+        WHERE id = $xidpedido";
+        $bd->execQuery($sql2);
+        $bd->close();
 
         return json_encode($aResponse);
     }

@@ -100,9 +100,10 @@ class PedidosController extends APIController {
         // Valido que la llamada venga por método PUT.
         if ($this->usePutMethod()) {
             try {
+                $idPedido = $this->getURIParameters("id_pedido");
                 $idPedidosItems = $this->getURIParameters("id_pedidos_items");
                 $objModel = new PedidosModel();
-                $responseData = json_encode($objModel->eliminarArt($idPedidosItems));
+                $responseData = json_encode($objModel->eliminarArt($idPedido, $idPedidosItems));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

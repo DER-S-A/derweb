@@ -43,7 +43,7 @@ class CarritoGridComponent extends ComponentManager {
             .then(xdata => {
                 if ((xdata["items"] !== undefined) && (xdata["items"].length != 0)) {
                     this.__grabarEnCache(xdata);
-                    this.__crearListaItems(xdata["items"]);
+                    this.__crearListaItems(xdata.id_pedido, xdata["items"]);
                     this.__total = xdata["total_pedido"];
                 }
             });
@@ -61,7 +61,7 @@ class CarritoGridComponent extends ComponentManager {
      * Permite generar la lista a partir de los items obtenidos desde la API.
      * @param {array} xdatos Items de pedidos a mostrar
      */
-    __crearListaItems(xdatos) {
+    __crearListaItems(xidpedido, xdatos) {
         xdatos.forEach(xItem => {
             var objContenedorFila = document.createElement("div");    
             var objLista = document.createElement("ul");
@@ -71,7 +71,7 @@ class CarritoGridComponent extends ComponentManager {
     
             objLista.appendChild(this.__agregarColumnaFoto(xItem));
             objLista.appendChild(this.__agregarColumnaInfoArticulo(xItem));
-            objLista.appendChild(this.__agregarColumnaPrecioYOperaciones(xItem));
+            objLista.appendChild(this.__agregarColumnaPrecioYOperaciones(xidpedido, xItem));
             objContenedorFila.append(objLista);
 
             objContenedorFila.classList.add("fila-container");
@@ -147,7 +147,7 @@ class CarritoGridComponent extends ComponentManager {
      * @param {array} xitem Item
      * @returns {DOMElement}
      */
-    __agregarColumnaPrecioYOperaciones(xitem) {
+    __agregarColumnaPrecioYOperaciones(xidpedido, xitem) {
         var objColumna = document.createElement("li");
         var objColumnaContainer = document.createElement("div");
         var objCostoLabel = document.createElement("label");
@@ -158,7 +158,7 @@ class CarritoGridComponent extends ComponentManager {
         objBotonEditar.className = "px-1";
 
         objBotonEditar.href = "javascript:" + this.__editarFunc + "(" + xitem["id"] + ");";
-        objBotonEliminar.href = "javascript:" + this.__eliminarFunc + "(" + xitem["id"] + ");";
+        objBotonEliminar.href = "javascript:" + this.__eliminarFunc + "(" + xidpedido + "," + xitem["id"] + ");";
 
         objCostoLabel.innerText = "PRECIO COSTO";
         objCosto.innerHTML = "<br>" +  xitem["costo"] + "<br>";
