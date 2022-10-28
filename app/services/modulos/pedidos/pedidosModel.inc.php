@@ -815,6 +815,9 @@ class PedidosModel extends Model {
             $this->idPedido = intval($aItem["id_pedido"]);
             $sql = $this->generarUpdateItem($aItem, false);
             $bd->execQuery2($sql);
+
+            $this->recalcular_cabecera($this->idPedido);
+            
             $aResponse["codigo"] = "OK";
             $aResponse["mensaje"] = "Artículo modificado satisfactoriamente";
             $aResponse["sucefull"] = $bd->sucefull;
@@ -826,14 +829,21 @@ class PedidosModel extends Model {
             $bd->close();
         }
 
-        $this->recalcular_cabecera($this->idPedido);
-
         return $aResponse;
     }
-
+    
+    /**
+     * recalcular_cabecera
+     *
+     * @param  int $xidpedido
+     * @return void
+     */
     public function recalcular_cabecera($xidpedido) {
+        $subtotal = 0.00;
+        $importe_iva = 0.00;
+        $total = 0.00;
+
         $bd = new BDObject();
-        
         $sql = "SELECT id, subtotal, importe_iva, total
                 FROM pedidos_items WHERE id_pedido= $xidpedido";
         $xdatos = $this->getQuery($sql);
@@ -844,9 +854,9 @@ class PedidosModel extends Model {
            $total += $xdatos[$i]["total"]; 
         }
 
-        $sql2 = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total
+        $sql = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total
         WHERE id = $xidpedido";
-        $bd->execQuery($sql2);
+        $bd->execQuery($sql);
         $bd->close();
     }
 }
