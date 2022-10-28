@@ -244,9 +244,17 @@ function iniciarlizarComponenteMiCarrito() {
  */
 function eliminar_item_mi_carrito(xidpedido, xId) {
     let url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
+    let pedidoStorage = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+    console.log(pedidoStorage.items.length);
     objMiCarrito.close();
-    let objCarrito = new MiCarritoModalComponent;
-    objCarrito.eliminar_item_carrito(url, xidpedido, xId);
+    if(pedidoStorage.items.length>1) {
+        let objCarrito = new MiCarritoModalComponent;
+        objCarrito.eliminar_item_carrito(url, xidpedido, xId);
+    } else {
+        vaciar_carrito();
+    }
+    // let objCarrito = new MiCarritoModalComponent;
+    // objCarrito.eliminar_item_carrito(url, xidpedido, xId);
  }
 
 /**
