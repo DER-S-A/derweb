@@ -312,7 +312,13 @@ function editar_carrito(xId_pedItems){
     let objbotonCambiarCdad = document.querySelector(".swal-button--confirm");
     objbotonCambiarCdad.addEventListener ("click", () => {
         let xCantidad = document.getElementById("cambiar_cantidad").value;
-        (new MiCarritoModalComponent).editarCarrito(xCantidad, xId_pedItems);
+        if(xCantidad >0) {
+            (new MiCarritoModalComponent).editarCarrito(xCantidad, xId_pedItems);
+        } else swal({
+            icon: "error",
+            text: "Cantidad Invalida",
+          });
+        
     })
 }
 
