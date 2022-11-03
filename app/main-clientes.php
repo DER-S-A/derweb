@@ -90,7 +90,7 @@
 
                                         <li>
                                             <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
-                                                <i class="fa-solid fa-magnifying-glass"></i> BUSCAR
+                                                <i class="fa-solid fa-magnifying-glass"></i> 
                                             </button>
                                         </li>
                                     </ul>

@@ -82,12 +82,11 @@
 }
 
 .app-home-barra-opciones .app-header-btnbuscar {
-    background-color: #009ada;
+    background-color: transparent;
     border: none;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
     font-family: "futura";
-    font-size: 12px;
     font-weight: bold;
     color: white;
 }

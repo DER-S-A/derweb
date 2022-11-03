@@ -113,6 +113,10 @@
     padding-bottom: 5%;
 }
 
+.img-fluid {
+    max-width: 80% !important;
+}
+
 /* Armo los media query para cuando cambia la resolución de pantalla se adapte. 
     Esto soluciona el problema de que en modo celu el footer tapaba el formulario.
 */
