@@ -524,21 +524,6 @@ class PedidosModel extends Model {
 
         $this->recalcular_cabecera($xidpedido);
 
-        // $que = "SELECT id, subtotal, importe_iva, total
-        //         FROM pedidos_items WHERE id_pedido= $xidpedido";
-        // $xdatos = $this->getQuery($que);
-        
-        // for($i=0;$i<count($xdatos);$i++){
-        //    $subtotal += $xdatos[$i]["subtotal"];
-        //    $importe_iva += $xdatos[$i]["importe_iva"]; 
-        //    $total += $xdatos[$i]["total"]; 
-        // }
-
-        // $sql2 = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total
-        // WHERE id = $xidpedido";
-        // $bd->execQuery($sql2);
-        // $bd->close();
-
         return json_encode($aResponse);
     }
 
@@ -854,7 +839,7 @@ class PedidosModel extends Model {
            $total += $xdatos[$i]["total"]; 
         }
 
-        $sql = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total
+        $sql = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total, fecha_modificado = CURRENT_TIMESTAMP
         WHERE id = $xidpedido";
         $bd->execQuery($sql);
         $bd->close();
