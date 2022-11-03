@@ -44,4 +44,25 @@ function agregarOperCliPot_AgregarNotas() {
 		0, 
 		"clipot_registros");
 }
+
+/**
+ * agregarCpoCliPotRegistro
+ * Agrego campos a la tabla clipot_registros.
+ * @return void
+ */
+function agregarCpoCliPotRegistro() {
+	$tabla = "clipot_registros";
+	$query = "clipot_registros";
+	$campo = "comentarios";
+
+	if (!sc3existeCampo($tabla, $campo)) {
+		echo "<br>Agregando campo $campo a la tabla $tabla...";
+		$sql = "ALTER TABLE $tabla ADD $campo TEXT NULL";
+		$objBd = new BDObject();
+		$objBd->execQuery($sql);
+		$objBd->close();
+		sc3generateFieldsInfo($tabla);
+		sc3updateField($query, $campo, "Comentarios", 0);
+	}
+}
 ?>
