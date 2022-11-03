@@ -16,6 +16,7 @@ window.onload = () => {
         return;
     }
 
+    mostrarNumCliente();
     llenarMarcasRepuesto();
     llenarSubrubros();
     llenarMarcasVehiculos();
@@ -31,6 +32,17 @@ window.onload = () => {
     esconderHamburguesa();
     setInterval(cerrarSession, 7200000);
 }
+
+
+function mostrarNumCliente() {
+    let storage = sessionStorage.getItem("derweb_sesion");
+    console.log(storage);
+    storage = JSON.parse(storage);
+    console.log(storage.codigo);
+    let objDivNumCli = document.getElementById("num-cliente");
+    objDivNumCli.innerHTML = "<span>" + storage.codigo + "</span>";
+}
+
 
 /**
  * Valida si la sesión está activa.

@@ -122,7 +122,8 @@
                     <ul>
                         <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
                         <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
-                        <li class="toolbar-col-3"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
+                        <li class="toolbar-col-3"><div id="num-cliente" class="num-cliente"></div></li>
+                        <li class="toolbar-col-4"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
                 </div>
             </header>
