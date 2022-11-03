@@ -19,6 +19,7 @@ agregarOperGenerarEndPoint();
 // Clientes potenciales.
 agregarOperCliPot_CambiarEstado();
 agregarOperCliPot_AgregarNotas();
+agregarCpoCliPotRegistro();
 
 // Actualización de entidades
 UpdateVersionEntidades::actualizarTablaSucursales();
