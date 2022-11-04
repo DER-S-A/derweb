@@ -63,7 +63,7 @@ class ListaArticuloComponent {
         objButton.id = "btnPushListaArticulo";
         objButton.name = "btnPushListaArticulo";
         objButton.type = "button";
-        objButton.innerHTML = "<i class='fa-solid fa-list'></i> LISTA DE ARTICULOS";
+        objButton.innerHTML = /*<i class='fa-solid fa-list'></i>*/ "LISTA DE ARTICULOS";
         objButton.classList.add("btn");
         objButton.classList.add("lista-articulos-button");
                 
