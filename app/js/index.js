@@ -47,6 +47,7 @@ document.getElementById("btnRegistrarse").addEventListener("click", () => {
         objRegistro.razonSocial = document.getElementById("txtRazSoc").value;
         objRegistro.telefono = document.getElementById("txtTelefono").value;
         objRegistro.ubicacion = document.getElementById("txtUbicacion").value;
+        objRegistro.comentario = document.getElementById("comentario").value;
         var rubrosSeleccionados = new Array();
         
         objCheckBoxes = getCheckBoxes();

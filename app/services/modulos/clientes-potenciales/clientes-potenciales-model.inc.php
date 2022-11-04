@@ -56,18 +56,21 @@ class ClientesPotencialesModel extends Model
                 apenom,
                 telefono,
                 email,
-                ubicacion)
+                ubicacion,
+                comentarios)
             VALUES (
                 xidEstado,
                 xApeNom,
                 xTelefono,
                 xEmail,
-                xUbicacion)";
+                xUbicacion,
+                xcomentarios)";
             $this->setParameter($sql, "xidEstado", $idEstado);
             $this->setParameter($sql, "xApeNom", $aRegistro["apenom"]);
             $this->setParameter($sql, "xTelefono", $aRegistro["telefono"]);
             $this->setParameter($sql, "xEmail", $aRegistro["email"]);
             $this->setParameter($sql, "xUbicacion", $aRegistro["ubicacion"]);
+            $this->setParameter($sql, "xcomentarios", $aRegistro["comentarios"]);
             $ultimoID = $bd->execInsert($sql);
 
             // Recorro los rubros de venta seleccionado y grabo los datos en la tabla

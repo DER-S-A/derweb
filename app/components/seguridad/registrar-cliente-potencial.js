@@ -15,6 +15,7 @@ class RegistrarClientePotencial {
         this.ubicacion = "";
         this.aIdsRubrosSeleccioandos = new Array();
         this.aResponse = new Array();
+        this.comentario = "";
     }
 
     /**
@@ -75,7 +76,8 @@ class RegistrarClientePotencial {
             "telefono": this.telefono, 
             "email": this.eMail, 
             "ubicacion": this.ubicacion, 
-            "rubros" : aRubrosSeleccionados
+            "rubros" : aRubrosSeleccionados,
+            "comentarios" : this.comentario
         }
         console.warn(JSON.stringify(aRegistro));
 
