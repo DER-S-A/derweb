@@ -40,7 +40,7 @@ function mostrarNumCliente() {
     storage = JSON.parse(storage);
     console.log(storage.codigo);
     let objDivNumCli = document.getElementById("num-cliente");
-    objDivNumCli.innerHTML = "<span>" + storage.codigo + "</span>";
+    objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + storage.codigo + "</span></a>";
 }
 
 

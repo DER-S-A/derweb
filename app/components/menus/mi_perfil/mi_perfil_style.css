@@ -135,6 +135,10 @@
     margin-top: 3%;
 }
 
+.num-cliente a {
+    text-decoration: none;
+}
+
 @media screen and (max-width: 580px) {
     .container-miPerfil {
         display: grid;
