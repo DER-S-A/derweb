@@ -3,7 +3,7 @@
  * principal del App correspondiente al main.
 */
 
-#content-wrap header {
+.clientes-header {
     position: fixed;
     z-index: 2;
     top: 0;

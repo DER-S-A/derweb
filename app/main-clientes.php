@@ -29,7 +29,7 @@
     </head>
     <body id="page-container">
         <div id="content-wrap">
-            <header>
+            <header class="clientes-header">
                 <div class="row app-header">
                     <div class="col-md-1">
                         <a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
