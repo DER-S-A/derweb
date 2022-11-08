@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
         <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
         <link rel="stylesheet" href="terceros/lfw-datagrid/lfwdatagrid.css">
+        <link rel="stylesheet" href="components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapido.css">
 
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
@@ -28,6 +29,7 @@
         <script src="js/utils/cache-utils.js" type="text/javascript"></script>
         <script src="components/catalogo/catalogo.js" type="text/javascript"></script>
         <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
+        <script src="terceros/lfw-datalist-bs/lfw-datalist-bs.js" type="text/javascript"></script>
         <script src="components/catalogo/confirmacion-pedido/confirmacion-pedido.js"></script>
     </head>
     <body id="page-container">
@@ -191,6 +193,9 @@
         <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>-->
 
         <script src="components/catalogo/vendedores/pedidos-vendedores-gui.js" type="text/javascript"></script>
+        <script src="components/catalogo/vendedores/pedidos-pendientes/pedidos-pendientes.js" type="text/javascript"></script>
+        <script src="components/catalogo/vendedores/pedidos-pendientes/edicion-pedidos-pendientes.js" type="text/javascript"></script>
+        <script src="components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapidos-gui.js" type="text/javascript"></script>
 
         <script src="components/menus/mi_perfil/mi_perfil.js" type="text/javascript"></script>
         <script src="components/menus/mi_perfil/cambiar_contraseña.js" type="text/javascript"></script>

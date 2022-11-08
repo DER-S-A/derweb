@@ -273,7 +273,7 @@ function ver_pedidos_pendientes() {
  * @param {int} xidpedido 
  */
 function entrar_al_pedido(xidpedido) {
-    objPedidos.entrarAlPedido(xidpedido);
+    (new EdicionPedidosPendientes()).entrarAlPedido(xidpedido);
 }
 
 /**
@@ -281,5 +281,13 @@ function entrar_al_pedido(xidpedido) {
  * @param {int} xidpedido_item 
  */
 function editar_pedido(xidpedido_item) {
-    objPedidos.editarItem(xidpedido_item);
+    //objPedidos.editarItem(xidpedido_item);
+    (new EdicionPedidosPendientes()).editarItem(xidpedido_item);
+}
+
+/**
+ * Permite ingresar a la operación de pedidos rápidos.
+ */
+function ingresar_pedidos_rapido() {
+    objPedidos.ingresar_pedidos_rapidos();
 }

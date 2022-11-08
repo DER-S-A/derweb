@@ -41,6 +41,14 @@ const aAPIs = [
     {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"}
 ]
 
+// El siguiente array contiene los templates html que se utilizan en el sistema para dibujar
+// la interfaz de usuario.
+const aTemplates = [
+    {"terceros-autocomplete"                    : "terceros/lfw-datalist-bs/template.html"},
+    {"oper-pedidos-pendientes"                  : "components/catalogo/vendedores/pedidos-pendientes/template.html"},
+    {"ingreso-pedido-rapido"                    : "components/catalogo/ingreso-pedidos-rapidos/template.html"}
+]
+
 class App {
     /**
      * Inicializa la aplicación
@@ -70,5 +78,16 @@ class App {
         for (let i = 0; i < aAPIs.length; ++i)
             if (aAPIs[i][xkey] !== undefined)
                 return aAPIs[i][xkey];
+    }
+
+    /**
+     * Obtiene la url del template a leer.
+     * @param {string} xkey Nombre del template definido en el array.
+     * @returns 
+     */
+    getUrlTemplate(xkey) {
+        for (let i = 0; i < aTemplates.length; ++i)
+            if (aTemplates[i][xkey] !== undefined)
+                return aTemplates[i][xkey];
     }
 }

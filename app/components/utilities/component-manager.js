@@ -53,7 +53,41 @@ class ComponentManager {
             return true;
     }
 
+    /**
+     * Limpia el contenido de un contenedor div.
+     * @param {string} xidContainer Id de contenedor
+     */
     clearContainer(xidContainer) {
         document.getElementById(xidContainer).innerHTML = "";
+    }
+
+    /**
+     * Permite obtener un template HTML.
+     * @param {string} xurl URL donde se ubica el template
+     * @param {string} xcb_funcion Función callback para procesar el template.
+     */
+    getTemplate(xurl, xcb_funcion) {
+        fetch(xurl, {
+            method: "GET",
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "text/html"
+            }
+        }).then(response => response.text())
+            .then(html => {
+                xcb_funcion(html);
+            });
+    }
+
+    /**
+     * Permite reemplazar los parámetros de un template HTML.
+     * @param {string} xhtml Establece el código html obtenido de un template a procesar.
+     * @param {string} xname Establece el nombre del parámetro.
+     * @param {string} xvalue Establece el valor del parámetro.
+     */
+    setTemplateParameters(xhtml, xname, xvalue) {
+        if (typeof(xhtml) === 'object')
+            return null;
+        return xhtml.replaceAll("{" + xname + "}", xvalue);
     }
 }
