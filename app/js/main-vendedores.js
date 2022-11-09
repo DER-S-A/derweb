@@ -2,7 +2,6 @@
 var app = new App();
 var objListaArticulo = new ListaArticuloComponent("lista-articulos-container");
 var objMiCarrito = null;
-let objPedidos = null;
 
 app.init();
 
@@ -11,7 +10,6 @@ app.init();
  * Este evento se ejecuta al cargar la página.
  */
 window.onload = () => {
-    objPedidos = new PedidosVendedoresGUI();   
     // Si la sesión no está en cache entonces vuelvo al login.
     if (!validarSession()) {
         location.href = "index.php";
@@ -265,7 +263,10 @@ function entrar_al_cliente(xid) {
  * por clientes a los vendedores.
  */
 function ver_pedidos_pendientes() {
-    objPedidos.getPedidosPendientes();
+    let objPedidosPendientes = new PedidosPendientes();
+    objPedidosPendientes.getPedidosPendientes(response => {
+        objPedidosPendientes.mostrarGrillaPedidosPendientes(response);        
+    });
 }
 
 /**
@@ -289,5 +290,6 @@ function editar_pedido(xidpedido_item) {
  * Permite ingresar a la operación de pedidos rápidos.
  */
 function ingresar_pedidos_rapido() {
-    objPedidos.ingresar_pedidos_rapidos();
+    let objIngresoPedidosRapido = new IngresoPedidosRapidoGUI("app-container");
+    objIngresoPedidosRapido.generateComponent();
 }

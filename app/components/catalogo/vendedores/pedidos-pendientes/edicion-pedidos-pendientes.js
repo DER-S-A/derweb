@@ -84,11 +84,8 @@ class EdicionPedidosPendientes extends ComponentManager {
         objLayoutCol[2].appendChild(objCampoClienteNombre);
         objLayoutRow.appendChild(objLayoutCol[2]);
 
-        console.log(objLayoutRow);
-
         objDivCabecera.appendChild(objLayoutRow);
-
-            return objDivCabecera;
+        return objDivCabecera;
     }
 
     /**
@@ -230,21 +227,20 @@ class EdicionPedidosPendientes extends ComponentManager {
             this.__crearFormEdit(xidpedido_item), 
             "Grabar", 
             () => {
-                // Grabo las modifiacaciones del ítem.
-                let objApp = new App();
-                let urlAPI = objApp.getUrlApi("catalogo-pedidos-modificar-items")
-                let objAPI = new APIs();
-                let articulo = this.__getItemById(xidpedido_item);
-                articulo[0]["cantidad"] = parseFloat(document.getElementById("txtCantidad").value);
-                
-                objAPI.call(urlAPI, "data=" + JSON.stringify(articulo[0]), "PUT", (response) => {
+                // El siguiente código permite realizar la modificación del ítem en la base de datos
+                // al hacer click en el botón grabar del modal.
+
+                let aArticulo = this.__getItemByIdFromCache(xidpedido_item);
+                aArticulo[0]["cantidad"] = parseFloat(document.getElementById("txtCantidad").value);
+
+                (new PedidosAPI).modificarItem(aArticulo, (response) => {
                         // Cuando refresco la cache de los pedidos pendientes, para refrescar la grilla
                         // de los ítems modificados lo hago en callback por un tema de asincornicidad de
                         // javascript.
                         let objPedidosPendientes = new PedidosPendientes();
                         objPedidosPendientes.getPedidosPendientes((result) => {
-                        this.entrarAlPedido(parseInt(articulo[0]["id_pedido"]));
-                    });
+                        this.entrarAlPedido(parseInt(aArticulo[0]["id_pedido"]));
+                    });                
                 });
             });
 
@@ -261,7 +257,7 @@ class EdicionPedidosPendientes extends ComponentManager {
         let objCampoCodigo = new HTMLInput("txtCodigo", "Código");
         let objCampoDescripcion = new HTMLInput("txtDescripcion", "Descripción");
         let objCampoCantidad = new HTMLInput("txtCantidad", "Cantidad");
-        let articulo = this.__getItemById(xidpedido_item);
+        let articulo = this.__getItemByIdFromCache(xidpedido_item);
         
         objCampoCodigo.setReadOnly();
         objCampoCodigo.setWidth(300);
@@ -285,7 +281,7 @@ class EdicionPedidosPendientes extends ComponentManager {
      * @param {int} xidpedido_item 
      * @returns {array}
      */
-    __getItemById(xidpedido_item) {
+     __getItemByIdFromCache(xidpedido_item) {
         let items = JSON.parse(sessionStorage.getItem((new CacheUtils("derweb", false)).get("grid-items-cache-name")));
         let articulos = items.rows;
         return articulos.filter(xelement => {

@@ -20,10 +20,7 @@ class PedidosPendientes extends ComponentManager {
      * @param {callback} xcallback 
      */
     getPedidosPendientes(xcallback) {
-        let url = (new App()).getUrlApi("catalogo-pedidos-getPendientesByVendedor");
-        let parametros = "sesion=" + sessionStorage.getItem("derweb_sesion");
-    
-        (new APIs()).call(url, parametros, "GET", response => {
+        (new PedidosAPI()).getPendientesByVendedor((response) => {
             this.__guardarPedidosPendientesEnCache(response);
             xcallback(response);
         });

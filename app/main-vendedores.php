@@ -178,6 +178,9 @@
         <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
         <script src="components/carrusel_footer/carruselfooter.js" type="text/javascript"></script>
 
+        <!-- Referencias a las clases APIs. -->
+        <script src="derweb-apis-library/pedidos-api.js" type="text/javascript"></script>
+
         <!-- Referencias para generar la página de catálogo -->
         <script src="components/catalogo/panel-opciones/panel-opciones.js" type="text/javascript"></script>
         <script src="components/catalogo/catalogo-gui.js" type="text/javascript"></script>
@@ -192,7 +195,7 @@
         <!--<script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
         <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>-->
 
-        <script src="components/catalogo/vendedores/pedidos-vendedores-gui.js" type="text/javascript"></script>
+
         <script src="components/catalogo/vendedores/pedidos-pendientes/pedidos-pendientes.js" type="text/javascript"></script>
         <script src="components/catalogo/vendedores/pedidos-pendientes/edicion-pedidos-pendientes.js" type="text/javascript"></script>
         <script src="components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapidos-gui.js" type="text/javascript"></script>
