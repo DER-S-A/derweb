@@ -728,6 +728,7 @@ class PedidosModel extends Model {
         try {
             $sql = "SELECT
                         p.id,
+                        p.id_entidad,
                         p.fecha_alta,
                         ent.cliente_cardcode,
                         ent.nombre,
@@ -746,6 +747,7 @@ class PedidosModel extends Model {
             $i = 0;
             while(!$rs->EOF()) {
                 $aResponse[$i]["id"] = $rs->getValueInt("id");
+                $aResponse[$i]["id_entidad"] = $rs->getValueInt("id_entidad");
                 $aResponse[$i]["fecha_alta"] = $rs->getValueFechaFormateada("fecha_alta");
                 $aResponse[$i]["cliente_cardcode"] = $rs->getValue("cliente_cardcode");
                 $aResponse[$i]["nombre"] = $rs->getValue("nombre");

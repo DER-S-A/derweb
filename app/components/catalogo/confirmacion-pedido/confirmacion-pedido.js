@@ -196,7 +196,13 @@ class ConfirmacionPedido {
 
     llenarBoxes(xaSesion, xobjSelectSucursal, xobjSelectFormaEnvio, xobjSelectTransporte, obj3Label) {
 
-        fetch(this.__objApp.getUrlApi(this.urlApi) + "?id_entidad=" + xaSesion["id_cliente"])
+        let id_entidad = xaSesion["id_cliente"];
+        if(id_entidad == null) {
+            let Sesionpedidoactual = JSON.parse(sessionStorage.getItem("derweb_pedido-actual"));
+            id_entidad = Sesionpedidoactual[0]["id_entidad"];
+        }
+
+        fetch(this.__objApp.getUrlApi(this.urlApi) + "?id_entidad=" + id_entidad)
             .then(xresponse => xresponse.json())
             .then(xsucursales => {
                 xsucursales.forEach((xitem) => {
