@@ -192,8 +192,8 @@
 
         <!-- Componente botón mi carrito -->
         <script src="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js" type="text/javascript"></script>
-        <!--<script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
-        <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script>-->
+        <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script>
+        <!-- <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script> -->
 
 
         <script src="components/catalogo/vendedores/pedidos-pendientes/pedidos-pendientes.js" type="text/javascript"></script>
