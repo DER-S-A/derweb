@@ -27,6 +27,11 @@ class EdicionPedidosPendientes extends ComponentManager {
     
             // Agrego el id de pedido seleccionado a session storage para mantener el valor.
             (new CacheUtils("derven", false)).set("id_pedido_sel", xidpedido);
+
+            // Piso el id del cliente en la sesión.
+            let aSesion = (new CacheUtils("derweb", false).get("sesion"));
+            aSesion["id_cliente"] = parseInt(pedidoSeleccionado[0]["id_entidad"]);
+            (new CacheUtils("derweb", false).set("sesion", aSesion));
         });
     }
 
@@ -157,10 +162,18 @@ class EdicionPedidosPendientes extends ComponentManager {
 
             // Agrego funcionalidad extra al finalizar el pedido
             objConfirmarPedido.setCallbackFinalizarPedido(() => {
+                let objPedidosPendientes = new PedidosPendientes();
                 objModal.close();
 
                 // Volver a la pantalla de pedidos pendientes.
-                this.getPedidosPendientes();
+                //this.getPedidosPendientes();
+                this.getTemplate((new App()).getUrlTemplate("oper-pedidos-pendientes"), html => {
+                    document.getElementById("app_grid_container").innerHTML = html;
+                    objPedidosPendientes.getPedidosPendientes(response => {
+                        objPedidosPendientes.mostrarGrillaPedidosPendientes(response);
+                    });    
+                });
+    
             });
             
             objConfirmarPedido.generarFooterPedido();

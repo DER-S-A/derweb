@@ -64,7 +64,7 @@ class ComponentManager {
     /**
      * Permite obtener un template HTML.
      * @param {string} xurl URL donde se ubica el template
-     * @param {string} xcb_funcion Función callback para procesar el template.
+     * @param {Callback function} xcb_funcion Función callback para procesar el template.
      */
     getTemplate(xurl, xcb_funcion) {
         fetch(xurl, {

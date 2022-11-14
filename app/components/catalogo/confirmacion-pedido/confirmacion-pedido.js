@@ -157,7 +157,7 @@ class ConfirmacionPedido {
             aPedidoActual = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
         else
             aPedidoActual["id_pedido"] = parseInt(sessionStorage.getItem("derven_id_pedido_sel"));
-
+        
         // Mando a confirmar el pedido.
         url =  app.getUrlApi("catalogo-pedidos-confirmarPedido");
         
@@ -174,6 +174,7 @@ class ConfirmacionPedido {
             + "&pedido=" + JSON.stringify(aParametrosConfirmacion);
 
         url = url + parametros;
+        console.log(url);
         
         // Llamo a la API que permite confirmar el pedido.
         fetch(url, {
