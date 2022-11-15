@@ -160,7 +160,8 @@ class EdicionPedidosPendientes extends ComponentManager {
                 objModal.close();
 
                 // Volver a la pantalla de pedidos pendientes.
-                this.getPedidosPendientes();
+                //this.getPedidosPendientes();
+                (new PedidosPendientes).getPedidosPendientes();
             });
             
             objConfirmarPedido.generarFooterPedido();
