@@ -245,16 +245,18 @@ class ConfirmacionPedido {
                     let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
                     // Con esta funcion realizo el display-none del selector q muestra todos los transportes.
                     
-                    if (objMiCarrito !== null)
-                        objMiCarrito.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte);
-                    //this.displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte); 
+                    //console.log(objMiCarrito);
+                    //if (objMiCarrito !== null)
+                    this.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label/*this.obj3Label*/, xobjSelectTransporte/*this.objSelectTransporte*/); 
+                        //objMiCarrito.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte);
                     // 1RA variable es el codigo de la forma de envio q tiene el selector.
                     // El 6  es el codigo de forma de envio transporte.
                     // Y la 3RA variable es el label q dice transportes.
                     // 4TA variable es objeto nodo selector de transporte.
                     addEventListener("change",() => {  // Aca genero evento de cambio de opcion de select
                         let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
-                        (new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte, true);
+                        //(new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte, true);
+                        this.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte, true);
                     });
                 });                                                                      
             });
@@ -303,19 +305,49 @@ class ConfirmacionPedido {
 
                 let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
                 // Con esta funcion realizo el display-none del selector q muestra todos los transportes.
-                (new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte);
-                //this.displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte); 
+
+                //(new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte);
+
+                this.displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte); 
                 // 1RA variable es el codigo de la forma de envio q tiene el selector.
                 // El 6  es el codigo de forma de envio transporte.
                 // Y la 3RA variable es el label q dice transportes.
                 // 4TA variable es objeto nodo selector de transporte.
                 addEventListener("change",() => {  // Aca genero evento de cambio de opcion de select
                     let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
-                    (new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte, true);
+                    //(new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte, true);
+                    this.displayTransporte(opcionElegidaDeEnvio, 6, this.obj3Label, this.objSelectTransporte, true);
                 });
             });                                                                      
         });
     }
 
+    /**
+     * Muestra o esconde el campo transporte de Mi Carrito.
+     * @param {*} opcionElegidaDeEnvio 
+     * @param {*} xcodigo 
+     * @param {*} objLabelTransporte 
+     * @param {*} objSelectTransporte 
+     * @param {*} change 
+     */
+
+     displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, objSelectTransporte, change = false) {
+        console.log(opcionElegidaDeEnvio);
+        console.log(objSelectTransporte);
+        if(change) {
+            if(opcionElegidaDeEnvio != xcodigo){
+                objSelectTransporte.style.display = "none";
+                objLabelTransporte.style.display = "none";
+            } else {
+                objSelectTransporte.style.display = "block";
+                objLabelTransporte.style.display = "inline-block";
+            } 
+        } else {
+            if(opcionElegidaDeEnvio != xcodigo){
+                objSelectTransporte.style.display = "none";
+                objLabelTransporte.style.display = "none";
+            }
+        }   
+    }
 
 }
