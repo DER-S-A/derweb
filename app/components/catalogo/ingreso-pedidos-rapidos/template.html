@@ -1,5 +1,19 @@
 <form id="frm-ingreso-pedido-rapido" name="frm-ingreso-pedido-rapido">
+    <header class="row ipr-header">
+        <div class="col-md-13">
+            <h5>Ingreso de pedidos rápido</h5>
+        </div>
+    </header>
+
     <section id="ipr-cabecera" class="row ipr-cabecera">
         <div class="col-md-4">{lfw-datalist-bs}</div>
+    </section>
+
+    <hr>
+    <section id="ipr-items" class="row ipr-items-container">
+        <div class="col-md-3">{input-codigo-articulo}</div>
+        <div class="col-md-5">{input-descripcion-articulo}</div>
+        <div class="col-md-2">{input-cantidad}</div>
+        <div class="col-md-2">{btnAgregar}</div>
     </section>
 </form>

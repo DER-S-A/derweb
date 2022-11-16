@@ -4,6 +4,19 @@
 */
 
 .ipr-cabecera {
-    /* Nada por ahora */
+    padding: 5px;
 }
 
+.ipr-items-container {
+    padding: 5px;
+}
+
+.ipr-header {
+    padding:5px;
+    background-color: #003d7c;
+    color: #f5f5f5;
+}
+
+.ipr-header h5 {
+    text-align: center;
+}

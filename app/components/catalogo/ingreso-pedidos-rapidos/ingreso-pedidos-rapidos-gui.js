@@ -33,6 +33,9 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     
             // Recupero los clientes para el vendedor actual y armo el selector.
             (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {
+                let txtCodArt = new HTMLInput("txtCodArt", "Artículo");
+                let txtDescripcion = new HTMLInput("txtDescripcion", "Descripción");
+                let txtCantidad = new HTMLInput("txtCantidad", "Cantidad");
                 let objDataList = new LFWDataListBS();
                 objDataList.setIdSelector("sel-cliente");
                 objDataList.setIdDataListOptions("sel-cliente-options");
@@ -47,27 +50,18 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     document.getElementById(objDataList.idSelector).addEventListener("change", () => {
                         console.log(objDataList.getSelectedValue());
                     });
-                })
+                });
+
+                // Agrego los controles input para cargar artículos.
+                txtCodArt.setWidth(300);
+                htmlResponse = this.setTemplateParameters(htmlResponse, "input-codigo-articulo", txtCodArt.toHtml().outerHTML);
+                txtDescripcion.setWidth(500);
+                txtDescripcion.setReadOnly();
+                htmlResponse = this.setTemplateParameters(htmlResponse, "input-descripcion-articulo", txtDescripcion.toHtml().outerHTML);
+                txtCantidad.setWidth(100);
+                txtCantidad.setDataType("int");
+                htmlResponse = this.setTemplateParameters(htmlResponse, "input-cantidad", txtCantidad.toHtml().outerHTML);
             });
         });
-    }
-
-    /**
-     * Permite crear la lista de datos a seleccionar para el autocomplete.
-     * @param {array} xdatos Clientes del vendedor.
-     * @returns {DOM Element} Retorna el objeto datalistOptions.
-     */
-    __crearDataListOptionClientes(xdatos) {
-        let objDataListOption = document.createElement("datalist");
-        let optionsValues = "";
-
-        objDataListOption.id = this.__idSelectorClientes + "-datalistOptions";
-        this.__idSelectorClientesDataList = objDataListOption.id;
-        xdatos.forEach(element => {
-            optionsValues += "<option value='" + element["codsuc"] + " - " + element["nombre"] + "'>";
-        });
-
-        objDataListOption.innerHTML = optionsValues;
-        return objDataListOption;
     }
 }
