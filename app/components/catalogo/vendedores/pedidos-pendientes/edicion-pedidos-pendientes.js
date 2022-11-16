@@ -27,6 +27,11 @@ class EdicionPedidosPendientes extends ComponentManager {
     
             // Agrego el id de pedido seleccionado a session storage para mantener el valor.
             (new CacheUtils("derven", false)).set("id_pedido_sel", xidpedido);
+
+            // Piso el id del cliente en la sesión.
+            let aSesion = (new CacheUtils("derweb", false).get("sesion"));
+            aSesion["id_cliente"] = parseInt(pedidoSeleccionado[0]["id_entidad"]);
+            (new CacheUtils("derweb", false).set("sesion", aSesion));
         });
     }
 
