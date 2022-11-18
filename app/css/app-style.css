@@ -15,6 +15,10 @@
     src: url("../assets/fuentes/fl.ttf");
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .app-container {
     position: relative;
     background-color: #f5f5f5;
