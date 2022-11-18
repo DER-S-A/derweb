@@ -35,7 +35,35 @@ class Seguridad {
 
         // Creo el tab
         tabs = new HTMLTabsV2("tab-login", titulos, contenidos);
-        tabs.toHtml();        
+        tabs.toHtml();
+
+        // Agrego el evento blur en donde se ingresa el usuario para detectar
+        // si tengo que mostrar sucursales o no.
+        document.getElementById("txtNroCliente").addEventListener("blur", () => {
+            let url = (new App()).getUrlApi("app-entidades-get");
+            let filter = "filter=\"cliente_cardcode = '" + document.getElementById("txtNroCliente").value + "'\"";
+            
+            (new APIs).call(url, filter, "GET", (response) => {
+
+                // Me fijo si tengo alguna sucursal asiganda
+                if (response[0]["sucursales"].length !== 0) {
+                    document.getElementById("selector-sucursales-container").style = "display:block";
+                    
+                    // Cargo el select de sucursales.
+                    response[0]["sucursales"].forEach(element => {
+                        let opciones = document.createElement("option");
+                        opciones.value = element["id"];
+                        opciones.textContent = element["nombre"];
+
+                        if (element["predeterminado"] === 1)
+                            opciones.selected = true;
+
+                        document.getElementById("cboSucursales").appendChild(opciones);
+                    });
+                }
+                
+            });
+        });    
     }
 
     /**
@@ -46,11 +74,14 @@ class Seguridad {
         var clave = document.getElementById("txtPassword").value;
         var objApp = new App();
         var aResultado;
+
         getAPI(objApp.getUrlApi("login") + "?usuario=" + usuario + "&clave=" + clave, 
             (xresponse) => {
                 let form = document.getElementById("frmLogin");
                 aResultado = JSON.parse(xresponse);
+
                 if (aResultado.result == "OK") {
+                    aResultado["id_sucursal"] = parseInt(document.getElementById("cboSucursales").value);
                     sessionStorage.setItem("derweb_sesion", JSON.stringify(aResultado));
                     form.action = this.sendToMainPage(aResultado["tipo_login"]);
                     form.method = "POST";
@@ -59,6 +90,7 @@ class Seguridad {
                 else {
                     alert(aResultado.mensaje);
                 }
+                
             });
     }
 

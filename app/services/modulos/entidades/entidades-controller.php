@@ -5,7 +5,6 @@
  * Contiene el controlador del end point de la tabla entidades.
  */
 class EntidadesController extends APIController {
-   
     /**
      * listarPorId
      * Recupera registros de rubros.
@@ -17,8 +16,10 @@ class EntidadesController extends APIController {
         // Valido que la llamada venga por método GET o POST.
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {
+                $objEntidadesModel = new EntidadesModel();
                 $filter = $this->getURIParameters("filter");
-                $responseData = $this->ejecutarMetodoGet($filter);
+                $aEntidades = $objEntidadesModel->get($filter);
+                $responseData = json_encode($this->leerRegistros($aEntidades));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
@@ -30,6 +31,42 @@ class EntidadesController extends APIController {
             $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+    
+    /**
+     * leerRegistros
+     * Carga los registros completos de una entidad.
+     * @param  array $xrecord
+     * @return array
+     */
+    private function leerRegistros($xrecord) {
+        $aRegistro = [];
+        $objSucursalesModel = new SucursalesModel();
+        for ($i = 0; $i < sizeof($xrecord); $i++) {
+            $aRegistro[$i]["id"] = $xrecord[$i]["id"];
+            $aRegistro[$i]["id_tipoentidad"] = $xrecord[$i]["id_tipoentidad"];
+            $aRegistro[$i]["cliente_cardcode"] = $xrecord[$i]["cliente_cardcode"];
+            $aRegistro[$i]["sales_employee_code"] = $xrecord[$i]["sales_employee_code"];
+            $aRegistro[$i]["nro_cuit"] = $xrecord[$i]["nro_cuit"];
+            $aRegistro[$i]["nombre"] = $xrecord[$i]["nombre"];
+            $aRegistro[$i]["direccion"] = $xrecord[$i]["direccion"];
+            $aRegistro[$i]["email"] = $xrecord[$i]["email"];
+            $aRegistro[$i]["telefono"] = $xrecord[$i]["telefono"];
+            $aRegistro[$i]["usuario"] = $xrecord[$i]["usuario"];
+            $aRegistro[$i]["clave"] = $xrecord[$i]["clave"];
+            $aRegistro[$i]["habilitado"] = $xrecord[$i]["habilitado"];
+            $aRegistro[$i]["descuento_1"] = $xrecord[$i]["descuento_1"];
+            $aRegistro[$i]["descuento_2"] = $xrecord[$i]["descuento_2"];
+            $aRegistro[$i]["rentabilidad_1"] = $xrecord[$i]["rentabilidad_1"];
+            $aRegistro[$i]["rentabilidad_2"] = $xrecord[$i]["rentabilidad_2"];
+            $aRegistro[$i]["fecha_alta"] = $xrecord[$i]["fecha_alta"];
+            $aRegistro[$i]["fecha_modificado"] = $xrecord[$i]["fecha_modificado"];
+            $aRegistro[$i]["fecha_baja"] = $xrecord[$i]["fecha_baja"];
+            $aRegistro[$i]["id_listaprecio"] = $xrecord[$i]["id_listaprecio"];
+            $aRegistro[$i]["sucursales"] = $objSucursalesModel->get("id_entidad = " . $xrecord[$i]["id"]);
+        }
+
+        return $aRegistro;
     }
     
     /**
