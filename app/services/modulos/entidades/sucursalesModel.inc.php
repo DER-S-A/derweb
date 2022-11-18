@@ -13,7 +13,6 @@ class SucursalesModel extends Model {
      * @param  string $xfilter Permite establecer el condicional del WHERE para filtrar datos.
      * @return array $result
      */
-
     public function get($xfilter) {
         $aResponse = [];
         // Armado de la sentencia SQL.
@@ -29,6 +28,7 @@ class SucursalesModel extends Model {
             $aResponse[$i]["id_vendedor"] = $rsSuc->getValueInt("id_vendedor");
             $aResponse[$i]["id_transporte"] = $rsSuc->getValueInt("id_transporte");
             $aResponse[$i]["codigo_sucursal"] = $rsSuc->getValue("codigo_sucursal");
+            $aResponse[$i]["nombre"] = $rsSuc->getValue("nombre");
             $aResponse[$i]["calle"] = $rsSuc->getValue("calle");
             $aResponse[$i]["numero"] = $rsSuc->getValue("numero");
             $aResponse[$i]["departamento"] = $rsSuc->getValue("departamento");

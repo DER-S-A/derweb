@@ -1,0 +1,1 @@
+SELECT * FROM sucursales WHERE id_entidad = 

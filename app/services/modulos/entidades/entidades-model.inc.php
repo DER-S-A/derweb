@@ -13,7 +13,10 @@ class EntidadesModel extends Model {
      * @return array
      */
     public function get($filter) {
-        $sql = "SELECT * FROM entidades ";
+        $sql = "SELECT 
+                    * 
+                FROM 
+                    entidades ";
         $this->setWhere($sql, $filter);
         return $this->getQuery($sql);
     }
