@@ -364,3 +364,7 @@ function miPerfil() {
     obj.addEventListener("click",cambiarContraseña);  // ESTE EVENTO GENERA EL FORM DE CAMBIO DE CLAVE.
 }
 
+function crearFicha() {
+    let objFichaArt = new FichaArticulo();
+    objFichaArt.generateComponent();
+}

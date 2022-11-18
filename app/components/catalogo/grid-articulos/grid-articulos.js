@@ -185,9 +185,11 @@ class CatalogoGridComponent extends ComponentManager {
         var objTituloCodigo = document.createElement("h4");
         var objSpanCodigo = document.createElement("span");
         var objTituloAplicaciones = document.createElement("h4");
+        var objAnchorCodigo = document.createElement("a");
 
         objContenedorGeneral.id = "info-articulo-general";
         objContenedorGeneral.classList.add("info-articulo-general");
+        objAnchorCodigo.href = "javascript:crearFicha()";
 
         objSpanDescripcion.textContent = xdescripcion;
         objSpanDescripcion.classList.add("descripcion");
@@ -196,7 +198,8 @@ class CatalogoGridComponent extends ComponentManager {
         objTituloCodigo.textContent = "CODIGO";
         objSpanCodigo.textContent = xcodigo;
         objInfoCodigo.appendChild(objTituloCodigo);
-        objInfoCodigo.appendChild(objSpanCodigo);
+        
+        objInfoCodigo.appendChild(objAnchorCodigo).appendChild(objSpanCodigo);
 
         objTituloAplicaciones.textContent = "APLICACIONES";
         objInfoAplicaciones.appendChild(objTituloAplicaciones);

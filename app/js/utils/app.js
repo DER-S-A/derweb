@@ -46,7 +46,8 @@ const aAPIs = [
 const aTemplates = [
     {"terceros-autocomplete"                    : "terceros/lfw-datalist-bs/template.html"},
     {"oper-pedidos-pendientes"                  : "components/catalogo/vendedores/pedidos-pendientes/template.html"},
-    {"ingreso-pedido-rapido"                    : "components/catalogo/ingreso-pedidos-rapidos/template.html"}
+    {"ingreso-pedido-rapido"                    : "components/catalogo/ingreso-pedidos-rapidos/template.html"},
+    {"ficha-articulo"                           : "components/catalogo/ficha-articulo/template.html"}
 ]
 
 class App {
