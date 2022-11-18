@@ -48,7 +48,7 @@ class Seguridad {
                 // Me fijo si tengo alguna sucursal asiganda
                 if (response[0]["sucursales"].length !== 0) {
                     document.getElementById("selector-sucursales-container").style = "display:block";
-                    
+
                     // Cargo el select de sucursales.
                     response[0]["sucursales"].forEach(element => {
                         let opciones = document.createElement("option");
@@ -60,7 +60,8 @@ class Seguridad {
 
                         document.getElementById("cboSucursales").appendChild(opciones);
                     });
-                }
+                } else
+                    document.getElementById("selector-sucursales-container").style = "display:none";
                 
             });
         });    
@@ -90,7 +91,7 @@ class Seguridad {
                 else {
                     alert(aResultado.mensaje);
                 }
-                
+
             });
     }
 
