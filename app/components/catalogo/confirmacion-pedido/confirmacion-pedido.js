@@ -52,16 +52,15 @@ class ConfirmacionPedido {
 
     generarFooterPedido() {
         
-        //let objAnchor = document.createElement("a");
         let objDivFooter = document.createElement("div");
+        let objDivSuc = document.createElement("div");
+        objDivSuc.id = "suc-deselecylabel";
+        objDivSuc.style.padding = "0";
         let objBotonFinalizarPedido = document.createElement("button");
         let objSelectSucursal = document.createElement("select");
         let objLabel = document.createElement("label");
         let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
         
-        //objAnchor.classList.add("fa-sharp", "fa-solid", "fa-trash-can");
-        //objAnchor.id = "vaciarCarrito";
-        //objAnchor.href = "javascript:" + this.__functionNameVaciarCarrito + "();";
         objSelectSucursal.id = "select-sucursales";
         objSelectSucursal.name = "select-sucursales";
         objSelectSucursal.classList.add("form-control", "select-suscursal");
@@ -85,16 +84,16 @@ class ConfirmacionPedido {
         let obj3Label = document.createElement("label");
         obj3Label.innerHTML = "Transportes:";
 
-        this.llenarBoxes(aSesion, objSelectSucursal, objSelectFormaEnvio, objSelectTransporte, obj3Label);
+        // this.__confirmaVendedor identifica si es vendedor o no. si es vendedor necesitamos seleccionar la sucursal.
+        this.llenarBoxes(aSesion, objSelectSucursal, objSelectFormaEnvio, objSelectTransporte, obj3Label,this.__confirmaVendedor);
         
         objDivFooter.id = this.__idModal + "_footer";
         objDivFooter.classList.add("row");
         objDivFooter.classList.add("modal-div-footer");
 
-        //objAnchor.innerHTML = "   VACIAR CARRITO";
-        //objDivFooter.appendChild(objAnchor);
-        objDivFooter.appendChild(objLabel);
-        objDivFooter.appendChild(objSelectSucursal);
+        objDivSuc.appendChild(objLabel);
+        objDivSuc.appendChild(objSelectSucursal);
+        objDivFooter.appendChild(objDivSuc);
         objDivFooter.appendChild(obj2Label);
         objDivFooter.appendChild(objSelectFormaEnvio);
         objDivFooter.appendChild(obj3Label);
@@ -195,7 +194,7 @@ class ConfirmacionPedido {
                 objMiCarrito.close();
     }
 
-    llenarBoxes(xaSesion, xobjSelectSucursal, xobjSelectFormaEnvio, xobjSelectTransporte, obj3Label) {
+    llenarBoxes(xaSesion, xobjSelectSucursal, xobjSelectFormaEnvio, xobjSelectTransporte, obj3Label, mostrarSuc) {
 
         let id_entidad = xaSesion["id_cliente"];
         if(id_entidad == null) {
@@ -215,8 +214,17 @@ class ConfirmacionPedido {
                 });
 
                 // Me traigo la id de la sucursal para mandarla por parametro en la url.
-                let xselec = document.getElementById("select-sucursales").value;
-                let xparametrosxUrl = "id_sucursales=" + xselec; 
+                if(mostrarSuc) {
+                    var xselec = document.getElementById("select-sucursales").value;
+                    console.log("vendedor");
+                } else {
+                    var xselec = JSON.parse(sessionStorage.getItem("derweb_sesion"));
+                    xselec = xselec.id_sucursal;
+                    let objOption = document.getElementById("suc-deselecylabel");
+                    console.log("comprador");
+                    objOption.style.display = "none";
+                } 
+                let xparametrosxUrl = "id_sucursales=" + xselec;
 
                 (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
                     xdatos.forEach((xitem) => {
