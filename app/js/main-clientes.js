@@ -40,7 +40,18 @@ function mostrarNumCliente() {
     storage = JSON.parse(storage);
     console.log(storage.codigo);
     let objDivNumCli = document.getElementById("num-cliente");
-    objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + storage.codigo + "</span></a>";
+    //objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + storage.id_sucursal + "</span></a>";
+
+    let objApp = new App();
+    (new APIs()).call(objApp.getUrlApi("app-entidades-getSucursalesByEntidad"), "id_entidad=" + storage.id_cliente, "GET", (xdatos) => {
+        console.log(xdatos);
+        xdatos.forEach((xitem) => {
+            if(storage.id_sucursal==xitem.id){
+                objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + xitem.nombre + "</span></a>";
+            }
+        });
+    }); 
+
 }
 
 
