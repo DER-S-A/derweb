@@ -1,0 +1,33 @@
+.cuerpo-ficha p {
+    margin-bottom: 0;
+}
+
+.logo-marca {
+    height: 10%;
+    width: 30%;
+}
+
+.logo-marca img {
+    width: 100%;
+    height: 100%;
+}
+
+.informacion h6 {
+    background-color: #ccc6c6;
+    border-radius: 5px;
+    padding: 1%;
+}
+
+.info {
+    border: 2px solid #acacac;
+    border-radius: 5px;
+    list-style: none;
+}
+
+.info ul {
+    list-style: none;
+}
+
+.info ul span {
+    font-weight: 700;
+}

@@ -11,6 +11,7 @@
         <link href="components/catalogo/catalogo-gui.css" rel="stylesheet">
         <link href="components/catalogo/panel-opciones/panel-opciones.css" rel="stylesheet">
         <link href="components/catalogo/grid-articulos/grid-articulos.css" rel="stylesheet">
+        <link href="components/catalogo/ficha-articulo/ficha.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">
