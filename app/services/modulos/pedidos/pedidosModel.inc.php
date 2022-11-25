@@ -137,6 +137,7 @@ class PedidosModel extends Model {
      */
     private function verificarPendiente() {
         $result = false;
+
         $sql = "SELECT 
                     pedidos.id
                 FROM 
@@ -145,7 +146,11 @@ class PedidosModel extends Model {
                 WHERE
                     estados_pedidos.estado_inicial = 1 AND
                     pedidos.id_entidad = " . $this->idCliente . " AND 
-                    pedidos.id_tipoentidad = " . $this->idTipoEntidad;
+                    pedidos.id_tipoentidad = " . $this->idTipoEntidad . " ";
+
+        if (sonIguales($this->tipoLogin, "C"))
+            $sql .= "AND pedidos.id_sucursal = " . $this->idSucursal;
+
         $rs = $this->getQuery2($sql);
         $this->idPedido = $rs->getValueInt("id");
         $rs->close();
@@ -429,6 +434,8 @@ class PedidosModel extends Model {
         $id_precio_lista = intval($aCliente[0]["id_listaprecio"]);
         $descuento_p1 = doubleval($aCliente[0]["descuento_1"]);
         $descuento_p2 = doubleval($aCliente[0]["descuento_2"]);
+        $idSucursal = intval($aSesion["id_sucursal"]);
+        $tipoLogin = $aSesion["tipo_login"];
 
         $sql = "SELECT
                     items.id,
@@ -457,8 +464,11 @@ class PedidosModel extends Model {
                     (foto.predeterminada = 1 OR foto.predeterminada IS NULL) AND
                     ped.id_entidad = $id_cliente AND
                     lpre.id = $id_precio_lista AND
-                    ped.id_tipoentidad = " . $this->idTipoEntidad;
+                    ped.id_tipoentidad = " . $this->idTipoEntidad . " ";
         
+        if (sonIguales($tipoLogin, "C"))
+            $sql .= "AND ped.id_sucursal = " . $idSucursal;
+
         $rs = getRs($sql);
         $indice = 0;
         while (!$rs->EOF()) {
