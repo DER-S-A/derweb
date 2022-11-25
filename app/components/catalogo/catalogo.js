@@ -116,7 +116,7 @@ class Catalogo {
                 "id_tipoentidad": xaCabecera["id_tipoentidad"],
                 "id_estado" : 1,
                 "id_vendedor": xaCabecera["id_vendedor"],
-                "id_sucursal": xaCabecera["id_sucursal"],
+                "id_sucursal": this.__getIdSucursal(xaSesion, xaCabecera),
                 "codigo_sucursal": xaCabecera["codigo_sucursal"],
                 "id_televenta": 0,
                 "id_transporte": xaCabecera["id_transporte"],
@@ -144,5 +144,18 @@ class Catalogo {
         (new APIs()).call(url_carrito, argumentos, "PUT", (xdatos) => {
             alert(xdatos.mensaje);
         });
+    }
+
+    /**
+     * Obtiene el Id. de Sucursal en base a quién esté logueado.
+     * @param {array} $xaSesion Array de inicio de sesión.
+     * @param {array} xaCabecera Array de cabecera.
+     * @returns {int} Devuelve el Id. de sucursal.
+     */
+    __getIdSucursal($xaSesion, xaCabecera) {
+        if ($xaSesion["tipo_login"] === 'C')
+            return parseInt($xaSesion["id_sucursal"]);
+        else
+            return parseInt(xaCabecera["id_sucursal"]);
     }
 }

@@ -9,6 +9,12 @@
 class Model {
     protected $idCliente = 0;
     protected $idTipoEntidad = 0;
+    protected $id_listaprecio = 0;
+    protected $descuento_p1 = 0.00;
+    protected $descuento_p2 = 0.00;
+    protected $rentabilidad = 0.00;
+    protected $idSucursal = 0;
+    protected $tipoLogin = "";
 
     /**
      * ejecutar_comando
@@ -127,7 +133,9 @@ class Model {
         $this->descuento_p2 = doubleval($aCliente[0]["descuento_2"]);
         $this->rentabilidad = doubleval($aCliente[0]["rentabilidad_1"]);
         $this->idCliente = intval($aCliente[0]["id"]);
-        $this->idTipoEntidad = $aSesion["id_tipoentidad"];
+        $this->idTipoEntidad = intval($aSesion["id_tipoentidad"]);
+        $this->idSucursal = intval($aSesion["id_sucursal"]);
+        $this->tipoLogin = $aSesion["tipo_login"];
     }
 }
 ?>
