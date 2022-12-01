@@ -62,9 +62,14 @@ class Seguridad {
                     });
                 } else
                     document.getElementById("selector-sucursales-container").style = "display:none";
-                
             });
-        });    
+
+            // Prendo el input clave.
+            if (document.getElementById("txtNroCliente").value === "")
+                document.getElementById("txtPassword").setAttribute("readonly", "true");
+            else
+                document.getElementById("txtPassword").removeAttribute("readonly");
+        });
     }
 
     /**
