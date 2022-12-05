@@ -2,6 +2,10 @@
     font-family: 'futura';
 }
 
+.header-template-ficha i {
+    font-size: 1.5em;
+}
+
 .ficha-articulo .carousel-indicators button {
 
     background-color: #003d7c;
@@ -92,6 +96,17 @@
     font-family: "futura";
     font-weight: bold;
 } 
+
+.equivalencias .contenedor-arrow {
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.equivalencias .contenedor-arrow i {
+    font-size: 1.5em;
+}
+
 
 .efecto-sombra {
     box-shadow: 3px 2px 5px black;
