@@ -9,6 +9,7 @@ class FichaArticulo extends ComponentManager {
         });
     }
     generateComponent() {
-        alert("hola");
+      alert("hola");
     }
 }
+

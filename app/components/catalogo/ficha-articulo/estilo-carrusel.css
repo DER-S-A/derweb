@@ -1,0 +1,22 @@
+.equivalencias {
+  text-align: center;
+} 
+
+.contenedor-carrusel-equivalencias {
+  text-align: center;
+}
+
+.contenedor-carrusel-equivalencias .descrip {
+  font-size: 0.7em;
+  margin-bottom: 0;
+}
+
+.contenedor-carrusel-equivalencias .importe {
+  font-weight: bold;
+  line-height: 0.8;
+  font-size: 1.2em;
+}
+
+.contenedor-carrusel-equivalencias .contenedor-pagina {
+  justify-content: center;
+}

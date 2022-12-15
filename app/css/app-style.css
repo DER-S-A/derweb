@@ -27,8 +27,8 @@ body {
 
 /*Es para organizar el ViewPort asi el footer queda abajo del contenido, cuando lo haya*/
 #page-container {
-    position: relative;
-    /*min-height: 100vh;*/
+    /*position: relative;
+    min-height: 100vh;*/
 }
 
 #boton_volver {

@@ -177,7 +177,8 @@ class ConfirmacionPedido {
         
         // Llamo a la API que permite confirmar el pedido.
         fetch(url, {
-            method: "PUT",
+            //method: "PUT",
+            method:"POST",
             headers: {
                 'content-type': 'applitacion/json'
             }

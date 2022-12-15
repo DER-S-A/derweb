@@ -16,9 +16,10 @@
         <link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
         <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">
         <link href="components/menus/mi_perfil/mi_perfil_style.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
+        <link rel="stylesheet" href="terceros/Glider-js/css/normalize.css">
+        <link rel="stylesheet" href="terceros/Glider-js/css/glider.css">
         <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
+        <link href="components/catalogo/ficha-articulo/estilo-carrusel.css" rel="stylesheet">
 
         <title>DER WEB</title>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
@@ -27,6 +28,7 @@
         <script src="js/utils/cache-utils.js" type="text/javascript"></script>
         <script src="components/catalogo/catalogo.js" type="text/javascript"></script>
         <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
+        <script src="terceros/Glider-js/js/glider.js" type="text/javascript"></script>
     </head>
     <body id="page-container">
         <div id="content-wrap">
@@ -152,7 +154,7 @@
                 </section>
             </main>
 
-            <footer class="app-footer" style="bottom: 0; position:fixed;">
+            <footer class="app-footer">
                 <div class="app-footer-container container">
                     <div class="row">
                         <div class="col-lg-3">
@@ -199,7 +201,7 @@
         <script src="components/catalogo/lista-articulos/lista-articulos.js" type="text/javascript"></script>
         <script src="components/carrusel/carrusel.js" type="text/javascript"></script>
         
-        <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.js"></script> -->
         <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
         <script src="components/carrusel_footer/carruselfooter.js" type="text/javascript"></script>
 
@@ -225,6 +227,7 @@
 
         <script src="components/menus/mi_perfil/mi_perfil.js" type="text/javascript"></script>
         <script src="components/menus/mi_perfil/cambiar_contraseña.js" type="text/javascript"></script>
+        
         <script src="js/main-clientes.js" type="text/javascript"></script>
     </body>
 </html>

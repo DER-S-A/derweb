@@ -376,6 +376,23 @@ function miPerfil() {
 }
 
 function crearFicha() {
-    let objFichaArt = new FichaArticulo();
-    objFichaArt.generateComponent();
+    new FichaArticulo().generateComponent();
 }
+
+function carruselFicha() {
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 7,
+        spaceBetween: 30,
+        slidesPerGroup: 1,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+} 
