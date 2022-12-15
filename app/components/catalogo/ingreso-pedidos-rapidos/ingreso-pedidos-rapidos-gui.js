@@ -37,18 +37,30 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 let txtDescripcion = new HTMLInput("txtDescripcion", "Descripción");
                 let txtCantidad = new HTMLInput("txtCantidad", "Cantidad");
                 let objDataList = new LFWDataListBS();
+
                 objDataList.setIdSelector("sel-cliente");
                 objDataList.setIdDataListOptions("sel-cliente-options");
                 objDataList.setEtiqueta("Cliente:");
                 objDataList.setPlaceholderText("Tipee el nombre del cliente...");
                 objDataList.setData(response);
                 objDataList.setColumns(["codsuc", "nombre"]);
+                objDataList.setColumnsKey(["id", "id_sucursal"]);
                 objDataList.toHtml(html => {
                     htmlResponse = this.setTemplateParameters(htmlResponse, "lfw-datalist-bs", html);
                     document.getElementById(this.__idContainer).innerHTML = htmlResponse;
 
-                    document.getElementById(objDataList.idSelector).addEventListener("change", () => {
-                        console.log(objDataList.getSelectedValue());
+                    // Agrego el evento blur del selector.
+                    document.getElementById(objDataList.idSelector).addEventListener("blur", (event) => {
+                        objDataList.getSelectedValue(event.target.value);
+                    });
+                    
+                    // Agrego el evento blur de txtCodArt
+                    document.getElementById("txtCodArt").addEventListener("blur", () => {
+                        // Al salirse del foco realizo una búsqueda inicial.
+                        if (!this.__validarSeleccionCliente())
+                            return;
+    
+                        this.__buscarArticuloPorCodigo();
                     });
                 });
 
@@ -64,4 +76,48 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             });
         });
     }
+
+    /**
+     * Valida que el cliente haya sido seleccionado.
+     * @returns {bool}
+     */
+    __validarSeleccionCliente() {
+        if (document.getElementById("sel-cliente").value === "") {
+            swal("Atención!!!", "Tenés que seleccionar un cliente");
+            document.getElementById("sel-cliente").focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Busca un artículo por frase.
+     */
+    __buscarArticuloPorCodigo() {
+        let txtCodArt = document.getElementById("txtCodArt").value;
+        let url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
+        let aClienteSeleccionado;
+        let aSesion = (new CacheUtils("derweb")).get("sesion");
+        let sesion;
+        let filter = "frase=" + txtCodArt;
+        
+        aClienteSeleccionado = JSON.parse(document.getElementById("sel-cliente").dataset.value);
+        aSesion["id_cliente"] = aClienteSeleccionado["id"];
+        aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
+        sesion = "sesion=" + JSON.stringify(aSesion);
+
+        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response => {
+            if (response.values.length === 1) {
+                document.getElementById("txtCodArt").value = response.values[0]["codigo"];
+                document.getElementById("txtDescripcion").value = response.values[0]["desc"];
+                document.getElementById("txtCantidad").focus();
+            }
+        });
+    }
+
+    __crearGridItems() {
+
+    }
+
 }

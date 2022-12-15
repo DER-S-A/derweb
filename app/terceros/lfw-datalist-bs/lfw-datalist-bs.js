@@ -18,6 +18,7 @@ class LFWDataListBS {
         this.html = "";
         this.dataSet = [];
         this.aColumns = [];
+        this.aColumnsKey = [];
     }
 
     /**
@@ -69,6 +70,14 @@ class LFWDataListBS {
     }
 
     /**
+     * Establece las columnas que corresponden a los campos claves.
+     * @param {array} xaValues 
+     */
+    setColumnsKey(xaValues) {
+        this.aColumnsKey = xaValues
+    }
+
+    /**
      * Genera el código HTML a dibujar en pantalla.
      * @param {callback} xcb_function Función que permite procesar el html generado.
      */
@@ -99,11 +108,12 @@ class LFWDataListBS {
         objDataListOption.id = this.idDataListOptions;
         this.__idSelectorClientesDataList = objDataListOption.id;
         this.dataSet.forEach(element => {
+            let jsonValues = this.__getValuesKey(element);
             this.aColumns.forEach((column, index) => {
                 if (index < this.aColumns.length - 1)
-                    optionsValues += "<option value='" + element[column] + " - ";
+                    optionsValues += "<option data-value='" + jsonValues + "'>" + element[column] + " - ";
                 else
-                    optionsValues += element[column] + "'>";
+                    optionsValues += element[column] + "</option>";
             });
         });
 
@@ -112,10 +122,30 @@ class LFWDataListBS {
     }
 
     /**
-     * Obtiene el registro seleccionado actualmente.
+     * Devuelve un array JSON con los valores claves para poner en el data-value
+     * @param {array} xelement 
+     * @returns {string}
+     */
+    __getValuesKey(xelement) {
+        let aValues = {};
+
+        this.aColumnsKey.forEach(column => {
+            aValues[column] = parseInt(xelement[column]);
+        });
+
+        return JSON.stringify(aValues);
+    }
+
+    /**
+     * Obtiene el registro seleccionado actualmente y pone el valor en el atributo data-value.
+     * @param {string} xSelectedValue Viene del event.target.value que obtiene el texto seleccionado.
      * @returns {Array}
      */
-    getSelectedValue() {
-        return document.getElementById(this.idSelector).value.split("-");
+    getSelectedValue(xSelectedValue) {
+        let options = document.getElementById(this.idDataListOptions).childNodes;
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === xSelectedValue)
+                document.getElementById(this.idSelector).dataset.value = options[i].dataset.value;
+        }
     }
 }
