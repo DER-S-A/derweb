@@ -60,6 +60,41 @@ class SucursalesModel extends Model {
 
         return $aResponse;
     }
+    /** 
+     * getSucursales 
+     * Obtengo la direccion de la sucursal de la session
+     * @param  string $xsesion JSON con los datos de la sesión actual.
+     * @return direccion del envío 
+     */
+    public function getNombreSucursal($xsesion){
+
+        $session = json_decode($xsesion, true);
+        // $idCliente = intval($session[0]["id_cliente"]);
+        $codigoSucursal = intval($session["id_sucursal"]);
+        $sql = "SELECT * FROM sucursales WHERE id =" . $codigoSucursal;
+        $rs = getRs($sql, true);
+        $aNombre = $rs->getValue("nombre");
+        $rs->close();
+
+        return $aNombre;
+        
+    }
+     /** 
+     * getVendedor 
+     * Obtengo el numero de vendedor del cliente
+     * @param  string $xsesion JSON con los datos de la sesión actual.
+     * @return numero vendedor
+     */
+    public function getVendedorSucursal($xsesion){
+        $session = json_encode($xsesion,true);
+        $codigoSucursal = intval($session["id_sucursal"]);
+        $sql = "SELECT replace(entidades.cliente_cardcode, 'v', '')as cliente_cardcode ,sucursales.* FROM sucursales inner join entidades on entidades.id = id_vendedor where sucursales.id =". $codigoSucursal;   
+        $rs = getRs($sql, true);
+        $aVendedor = $rs->getValue("cliente_cardcode");
+        $rs->close();
+
+        return $aVendedor;
+    }
 }
 
 ?>
