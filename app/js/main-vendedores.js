@@ -282,7 +282,6 @@ function entrar_al_pedido(xidpedido) {
  * @param {int} xidpedido_item 
  */
 function editar_pedido(xidpedido_item) {
-    //objPedidos.editarItem(xidpedido_item);
     (new EdicionPedidosPendientes()).editarItem(xidpedido_item);
 }
 

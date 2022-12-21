@@ -1,19 +1,42 @@
 <form id="frm-ingreso-pedido-rapido" name="frm-ingreso-pedido-rapido">
-    <header class="row ipr-header">
-        <div class="col-md-13">
-            <h5>Ingreso de pedidos rápido</h5>
-        </div>
-    </header>
 
-    <section id="ipr-cabecera" class="row ipr-cabecera">
-        <div class="col-md-4">{lfw-datalist-bs}</div>
-    </section>
+    <main id="main" class="container">
+        <header class="row ipr-header">
+            <div class="col-md-13">
+                <h5>Ingreso de pedidos rápido</h5>
+            </div>
+        </header>
 
-    <hr>
-    <section id="ipr-items" class="row ipr-items-container">
-        <div class="col-md-3">{input-codigo-articulo}</div>
-        <div class="col-md-5">{input-descripcion-articulo}</div>
-        <div class="col-md-2">{input-cantidad}</div>
-        <div class="col-md-2">{btnAgregar}</div>
-    </section>
+        <section id="ipr-cabecera" class="row ipr-cabecera">
+            <div class="col-md-4">{lfw-datalist-bs}</div>
+        </section>
+
+        <hr>
+        <section id="ipr-items" class="row ipr-items-container">
+            <div class="col-md-2">
+                <label for="txtCodArt" class="form-label">Artículo</label>
+                <input id="txtCodArt" name="txtCodArt" class="form-control" type="text">
+            </div>
+
+            <div class="col-md-8">
+                <label for="txtDescripcion" class="form-label">Descripción</label>
+                <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" readonly>
+            </div>
+
+            <div class="col-md-2">
+                <label for="txtCantidad" class="form-label">Cantidad</label>
+                <input id="txtCantidad" name="txtCantidad" class="form-control" type="number" style="text-align: right;">
+            </div>
+
+            <div id="ipr_grid_items" class="contenedor-grid-items"></div>
+        </section>
+
+        <footer class="ipr-footer">
+            <div class="div-total">
+                <label for="txtTotal" class="form-label">Total</label>
+                <input type="numeric" id="txtTotal" name="txtTotal" class="form-control" style="text-align: right;" readonly>
+            </div>
+        </footer>
+        
+    </main>
 </form>

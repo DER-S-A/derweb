@@ -173,6 +173,8 @@ class EntidadesModel extends Model {
     public function getClientesByVendedor($xidVendedor) {
         $sql = "SELECT
                     e.id,
+                    s.id AS 'id_sucursal',
+                    e.cliente_cardcode,
                     s.codigo_sucursal AS 'codsuc',
                     e.nombre,
                     e.nro_cuit AS 'cuit'
@@ -197,7 +199,6 @@ class EntidadesModel extends Model {
     * @param  string $xreset (esta es la clave nuevva q pone el cliente).
     * @return array
     */
-
     public function cambiarClave($xreset, $xid, $xActual) {
         $aResult = array();
 
