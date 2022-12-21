@@ -1,6 +1,6 @@
 from packages.catalogo.catalogo import Catalogo
 
-print('prueba')
+
 oCatalogo = Catalogo()
 oCatalogo.updatePaises()
 oCatalogo.updateProvincias()
