@@ -38,7 +38,8 @@ const aAPIs = [
     {"catalogo-pedidos-vaciarCarrito"           : "services/pedidos.php/vaciarCarrito"},
     {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"},
     {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"},
-    {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"}
+    {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"},
+    {"ficha-articulos"                          : "services/articulos.php/getFicha"}
 ]
 
 // El siguiente array contiene los templates html que se utilizan en el sistema para dibujar

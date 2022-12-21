@@ -314,6 +314,52 @@ class ArticulosModel extends Model {
                     "art.descripcion, ' ') LIKE '%";
         }
     }
+    public function generarFichaArt($codigo) {
+        
+        // $sql = "SELECT 
+        //         articulos.id, articulos.descripcion, 
+        //         articulos_precios.precio_lista,
+        //         articulos.codigo,
+        //         articulos.informacion_general,
+        //         ori.codigo,
+        //         articulos.datos_tecnicos,
+        //         articulos.diametro
+        //         FROM articulos
+        //         INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+        //         inner join art_codigos_originales AS ori ON ori.id_articulo = articulos.id
+        //         WHERE articulos.codigo = '316708SAC'"
+        //     ;
+        
+        $sql = "SELECT 
+                articulos.id AS ID_Articulo,
+                articulos.descripcion AS Descripcion,
+                (SELECT round(precio_lista * (100-(SELECT descuento_1 FROM entidades WHERE cliente_cardcode = 'c23900') )/100,2) AS precio_costo
+                FROM articulos_precios WHERE id_articulo = (SELECT id FROM articulos WHERE codigo = '316708sac')) AS Precio_costo,
+                articulos_precios.precio_lista AS Precio_lista,
+                (SELECT round(precio_lista * (100+(SELECT rentabilidad_1 FROM entidades WHERE cliente_cardcode = 'c23900') )/100,2) AS precio_venta
+                FROM articulos_precios WHERE id_articulo = (SELECT id FROM articulos WHERE codigo = '316708sac')) AS Precio_venta,
+                articulos.existencia_stock AS Stock,
+                articulos.codigo AS Codigo,
+                articulos.informacion_general AS Informacion_general,
+                articulos.datos_tecnicos AS Datos_tecnicos,
+                articulos.diametro AS Diametro,
+                art_unidades_ventas.unidad_venta AS Unidades_de_venta
+                FROM articulos
+                INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+                CROSS JOIN art_unidades_ventas ON art_unidades_ventas.id_articulo = articulos.id
+                WHERE articulos.codigo = '316708SAC'"
+            ;
+
+        $sql2 = "SELECT art_codigos_originales.codigo FROM art_codigos_originales 
+                INNER JOIN articulos ON articulos.id = art_codigos_originales.id_articulo  
+                WHERE articulos.codigo = '316708SAC'"
+            ;
+
+        $prueba = [];
+        $prueba ["informacion"]= getRs($sql, true)->getAsArray();
+        $prueba ["codigo originales"]= getRs($sql2, true)->getAsArray();
+        return $prueba;
+    }
 }
 
 ?>
