@@ -52,15 +52,16 @@ class ArticulosModel extends Model {
         $bd = new BDObject();
         $procesar = false;
         try {
-            $rubro_cod = $aRegistro["U_ONESL_RubroCod"];
-            $subrubro_cod = $aRegistro["U_ONESL_SubRubroCod"];
-            $marca_cod = $aRegistro["U_ONESL_MarcaCod"];
+            $rubro_cod = $aRegistro["RubroCod"];
+            $subrubro_cod = $aRegistro["SubRubroCod"];
+            $marca_cod = $aRegistro["MarcaCod"];
             $codigo = $aRegistro["ItemCode"];
             $codigo_original = "";
             $descripcion = $aRegistro["ItemName"];
-            $alicuota_iva = 21;
+            $alicuota_iva = $aRegistro["IvaRate"];
             $existencia_stock = 0.00;
             $stock_minimo = 0.00;
+            $habilitado = $aRegistro["Habilitado"];
 
             // Valido que los datos que se requieren estén cargados en el JSON.
             $procesar = true;
@@ -97,15 +98,17 @@ class ArticulosModel extends Model {
             // Si los datos están correctos, entonces, envío a procesar.
             if ($procesar) {
                 $sql = "CALL sp_articulos_upgrade (
-                        xrubroCod,
-                        xsubrubroCod,
-                        xmarcaCod,
-                        xcodigo,
-                        xcodOriginal,
-                        xdescripcion,
-                        xalicuotaIVA,
-                        xexistencia,
-                        xstockMinimo)";
+                    xrubroCod,
+                    xsubrubroCod,
+                    xmarcaCod,
+                    xcodigo,
+                    xcodOriginal,
+                    xdescripcion,
+                    xalicuotaIVA,
+                    xexistencia,
+                    xstockMinimo,
+                    xhabilitado
+                    )";
                 $this->setParameter($sql, "xrubroCod", $rubro_cod);
                 $this->setParameter($sql, "xsubrubroCod", $subrubro_cod);
                 $this->setParameter($sql, "xmarcaCod", $marca_cod);
@@ -115,6 +118,7 @@ class ArticulosModel extends Model {
                 $this->setParameter($sql, "xalicuotaIVA", $alicuota_iva);
                 $this->setParameter($sql, "xexistencia", $existencia_stock);
                 $this->setParameter($sql, "xstockMinimo", $stock_minimo);
+                $this->setParameter($sql, "xhabilitado", $habilitado);
                 $bd->execQuery($sql);
 
                 $aResult["result_code"] = "OK";
@@ -313,6 +317,52 @@ class ArticulosModel extends Model {
                     "rub.descripcion, ' ', " .
                     "art.descripcion, ' ') LIKE '%";
         }
+    }
+    public function generarFichaArt($codigo) {
+        
+        // $sql = "SELECT 
+        //         articulos.id, articulos.descripcion, 
+        //         articulos_precios.precio_lista,
+        //         articulos.codigo,
+        //         articulos.informacion_general,
+        //         ori.codigo,
+        //         articulos.datos_tecnicos,
+        //         articulos.diametro
+        //         FROM articulos
+        //         INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+        //         inner join art_codigos_originales AS ori ON ori.id_articulo = articulos.id
+        //         WHERE articulos.codigo = '316708SAC'"
+        //     ;
+        
+        $sql = "SELECT 
+                articulos.id AS ID_Articulo,
+                articulos.descripcion AS Descripcion,
+                (SELECT round(precio_lista * (100-(SELECT descuento_1 FROM entidades WHERE cliente_cardcode = 'c23900') )/100,2) AS precio_costo
+                FROM articulos_precios WHERE id_articulo = (SELECT id FROM articulos WHERE codigo = '316708sac')) AS Precio_costo,
+                articulos_precios.precio_lista AS Precio_lista,
+                (SELECT round(precio_lista * (100+(SELECT rentabilidad_1 FROM entidades WHERE cliente_cardcode = 'c23900') )/100,2) AS precio_venta
+                FROM articulos_precios WHERE id_articulo = (SELECT id FROM articulos WHERE codigo = '316708sac')) AS Precio_venta,
+                articulos.existencia_stock AS Stock,
+                articulos.codigo AS Codigo,
+                articulos.informacion_general AS Informacion_general,
+                articulos.datos_tecnicos AS Datos_tecnicos,
+                articulos.diametro AS Diametro,
+                art_unidades_ventas.unidad_venta AS Unidades_de_venta
+                FROM articulos
+                INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+                CROSS JOIN art_unidades_ventas ON art_unidades_ventas.id_articulo = articulos.id
+                WHERE articulos.codigo = '316708SAC'"
+            ;
+
+        $sql2 = "SELECT art_codigos_originales.codigo FROM art_codigos_originales 
+                INNER JOIN articulos ON articulos.id = art_codigos_originales.id_articulo  
+                WHERE articulos.codigo = '316708SAC'"
+            ;
+
+        $prueba = [];
+        $prueba ["informacion"]= getRs($sql, true)->getAsArray();
+        $prueba ["codigo originales"]= getRs($sql2, true)->getAsArray();
+        return $prueba;
     }
 }
 

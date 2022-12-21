@@ -590,9 +590,7 @@ class PedidosModel extends Model {
         $ok = false;
         $this->getClienteActual($xsesion);
         $aPedidoConfirmar = json_decode($xpedido, true);
-        
         $aResponse = [];
-
         // Transfiero el pedido a SAP.
         $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, intval($aPedidoConfirmar["id_pedido"]));
         if ($aResponse["result-sap"] == null)
@@ -682,15 +680,16 @@ class PedidosModel extends Model {
         $aBody = [];
         $aPedidoEnviar = [];
         $aItems = [];
-        $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
+        $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "PUT");
         $aPedidoActual = [];
         $objSucursal = new SucursalesModel();
         $sucursalGet = [];
         $aDireccionEnvio = [];
+        $aSesion = json_decode($xsesion, true);
         
         // Establezco la comunicación con el ETL.
         $this->getToken();
-       // $objAPISap->setTestMode(); // Modo testing
+        $objAPISap->setTestMode(); // Modo testing
         /* // ! METODO SIN USO
          
         $aBody["connectorCode"] = CONNECTOR_CODE;
@@ -702,9 +701,10 @@ class PedidosModel extends Model {
         $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
+        var_dump($aSesion);
 
 
-        $aPedidoEnviar["CardCode"] = $this->idCliente; // Agrego el numero cliente
+        $aPedidoEnviar["CardCode"] = $aSesion["usuario"]; // Agrego el numero cliente
         $aPedidoEnviar["NumAtCard"] = "DERWEB-". $xid_pedido; // Agrego el numero de Pedido
         $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
         $aPedidoEnviar["DocDate"] = date("Y-m-d", time()); // Agrego Fecha
@@ -712,8 +712,8 @@ class PedidosModel extends Model {
         $aPedidoEnviar["TaxDate"] = date("Y-m-d",time()); // Agrego Fecha
         $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
         $aPedidoEnviar["DocCurrency"] = "ARS"; // Agrego Tipo Moneda
-        
 
+       
         // * Recupero el pedido actual
         $aPedidoActual = $this->getPedidoActual($xsesion);
         for ($i = 0; $i < sizeof($aPedidoActual["items"]); $i++) { 
@@ -723,22 +723,22 @@ class PedidosModel extends Model {
         }
 
         $aPedidoEnviar["DocumentLines"] = json_encode($aItems); // Hago JSON la parte de Items y lo coloco con todo el pedido
-
+        
         // * Recupero la direccion de envío
-        $sucursalGet = $objSucursal->get($xsesion);
-        $aDireccionEnvio["ShipToState"] = $sucursalGet["id_provincia"]; //Numero Provincia
+        $sucursalGet = $objSucursal->getDireccionSucursal($xsesion);
+        $aDireccionEnvio["ShipToState"] = $sucursalGet["ShipToState"]; //Numero Provincia
         $aDireccionEnvio["ShipToCountry"] = "AR"; // Pais
-        $aDireccionEnvio["ShipToStreet"] = $sucursalGet["calle"]; // Direccion de envío 1
+        $aDireccionEnvio["ShipToStreet"] = $sucursalGet["ShipToStreet"]; // Direccion de envío 1
         $aDireccionEnvio["ShipToStreetNo"] = ""; //  ! Direccion de envío 2
         $aDireccionEnvio["ShipToBlock"] = ""; // ! ??????
         $aDireccionEnvio["ShipToBuilding"] = ""; // ! ??????
-        $aDireccionEnvio["ShipToCity"] = $sucursalGet["ciudad"];
-        $aDireccionEnvio["ShipToZipCode"] = $sucursalGet["codigo_postal"];
+        $aDireccionEnvio["ShipToCity"] = $sucursalGet["ShipToCity"];
+        $aDireccionEnvio["ShipToZipCode"] = $sucursalGet["ShipToZipCode"];
         $aDireccionEnvio["ShipToCounty"] = ""; // ! ????????
-
+              
         // * Agrego al JSON General el Adress
         $aPedidoEnviar["AddressExtension"] = json_encode( ($aDireccionEnvio));
-
+   
 
 
         $aBody["data"] = json_encode($aPedidoEnviar);

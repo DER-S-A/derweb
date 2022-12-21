@@ -1,8 +1,8 @@
 {
     "body": {
-        "CompanyDB": "SBODEMOAR",
-        "Password": "1234",
-        "UserName": "manager"
+            "CompanyDB": "ZARTESTDER",
+            "Password": "1234",
+            "UserName": "manager"
     },
     "urls": {
         "login": "https://181.119.123.148:50000/b1s/v1/Login",
@@ -10,7 +10,7 @@
         "clientes": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Clientes_B1SLQuery",
         "formas_envios": "https://181.119.123.148:50000/b1s/v1/ShippingTypes",
         "empleados": "https://181.119.123.148:50000/b1s/v1/SalesPersons",
-        "articulos": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Productos_B1SLQuery",
+        "articulos": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Articulos_B1SLQuery",
         "rubros": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Rubro_B1SLQuery",
         "subrubros": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_SubRubro_B1SLQuery",
         "marcas": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Marca_B1SLQuery",
@@ -21,7 +21,7 @@
     "mysql": {
         "host": "localhost",
         "username": "root",
-        "password": "l4ld81",
+        "password":"",
         "database": "db_derweb"
     }
 }

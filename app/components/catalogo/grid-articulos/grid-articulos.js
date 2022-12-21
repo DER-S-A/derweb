@@ -113,6 +113,7 @@ class CatalogoGridComponent extends ComponentManager {
                     xpagina += 40;
                     this.__getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage);
                     this.__crearListaArticulos(xpagina - 40);
+
                 }
             });
     }
@@ -135,8 +136,9 @@ class CatalogoGridComponent extends ComponentManager {
 
             objRowLista.classList.add("row-lista");
 
+            
             objItemCol1.appendChild(this.__crearColumnaFoto());
-            objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"]));
+            objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"]));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
             objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"]));
 
@@ -176,7 +178,7 @@ class CatalogoGridComponent extends ComponentManager {
      * @param {string} xcodigo Código del artículo.
      * @returns {DOMElement}
      */
-    __crearColumnaDescripcion(xdescripcion, xcodigo) {
+    __crearColumnaDescripcion(xdescripcion, xcodigo, xid) {
         var objContenedorGeneral = document.createElement("div");
         var objInfoTitulo = document.createElement("div");
         var objInfoCodigo = document.createElement("div");
@@ -189,7 +191,7 @@ class CatalogoGridComponent extends ComponentManager {
 
         objContenedorGeneral.id = "info-articulo-general";
         objContenedorGeneral.classList.add("info-articulo-general");
-        objAnchorCodigo.href = "javascript:crearFicha()";
+        objAnchorCodigo.href = "javascript:crearFicha("+ xid + ")";
 
         objSpanDescripcion.textContent = xdescripcion;
         objSpanDescripcion.classList.add("descripcion");
@@ -207,6 +209,8 @@ class CatalogoGridComponent extends ComponentManager {
         objContenedorGeneral.appendChild(objInfoTitulo);
         objContenedorGeneral.appendChild(objInfoCodigo);
         objContenedorGeneral.appendChild(objInfoAplicaciones);
+
+        
         
         return objContenedorGeneral;
     }

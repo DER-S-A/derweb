@@ -4,7 +4,13 @@
 
 .header-template-ficha i {
     font-size: 1.5em;
+    color: #003d7c;
 }
+
+/* #carousel-ficha img:hover {
+    transform: scale(2);
+    z-index: 100;
+} */
 
 .ficha-articulo .carousel-indicators button {
 
@@ -56,6 +62,10 @@
     width: 15%;
 }
 
+.input-mas-carro a i {
+    color: #003d7c;
+}
+
 .carrito-ficha {
     font-size: 2.2em;
 }
@@ -68,10 +78,10 @@
 
 
 
-.informacion h6 {
+.informacion h5 {
     background-color: #f0f0f0;
     color: #003d7c;
-    font-weight: bolder;
+    font-weight: 700;
     border-radius: 5px;
     padding: 1%;
 }
@@ -97,14 +107,8 @@
     font-weight: bold;
 } 
 
-.equivalencias .contenedor-arrow {
-    display:flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.equivalencias .contenedor-arrow i {
-    font-size: 1.5em;
+.footer-template h4 {
+    color: #003d7c;
 }
 
 
@@ -112,3 +116,22 @@
     box-shadow: 3px 2px 5px black;
 }
 
+.foto-grande-ficha {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: rgb(0,0,0,.5);
+}
+
+.foto-grande-ficha img {
+    width: 80%;
+    height: 80%;
+    margin: 8% 10% 12% 10%;
+}
+
+#carousel-ficha img {
+    transition: transform .2s;
+    cursor: pointer;
+}
+
+#carousel-ficha img:hover {transform: scale(1.5); }

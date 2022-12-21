@@ -375,24 +375,8 @@ function miPerfil() {
     obj.addEventListener("click",cambiarContraseña);  // ESTE EVENTO GENERA EL FORM DE CAMBIO DE CLAVE.
 }
 
-function crearFicha() {
-    new FichaArticulo().generateComponent();
+function crearFicha(xid) {
+    console.log();
+    new FichaArticulo().generateComponent(xid);
 }
 
-function carruselFicha() {
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 7,
-        spaceBetween: 30,
-        slidesPerGroup: 1,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-} 

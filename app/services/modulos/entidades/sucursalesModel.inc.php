@@ -13,12 +13,12 @@ class SucursalesModel extends Model {
      * @param  string $xfilter Permite establecer el condicional del WHERE para filtrar datos.
      * @return array $result
      */
-    public function get($xfilter) {
+    public function get($xfilter){
         $aResponse = [];
         // Armado de la sentencia SQL.
         $sql = "SELECT * FROM sucursales ";
         $this->setWhere($sql, $xfilter);
-        $rsSuc = $this->getQuery2($sql);
+        $rsSuc = $this->getQuery2($sql);  
         $i = 0;
         while (!$rsSuc->EOF()) {
             $aResponse[$i]["id"] = $rsSuc->getValueInt("id");
@@ -86,7 +86,7 @@ class SucursalesModel extends Model {
      * @return numero vendedor
      */
     public function getVendedorSucursal($xsesion){
-        $session = json_encode($xsesion,true);
+        $session = json_decode($xsesion,true);
         $codigoSucursal = intval($session["id_sucursal"]);
         $sql = "SELECT replace(entidades.cliente_cardcode, 'v', '')as cliente_cardcode ,sucursales.* FROM sucursales inner join entidades on entidades.id = id_vendedor where sucursales.id =". $codigoSucursal;   
         $rs = getRs($sql, true);
@@ -94,6 +94,28 @@ class SucursalesModel extends Model {
         $rs->close();
 
         return $aVendedor;
+    }
+/** 
+     * getDireccionSucursal 
+     * Obtengo la direccion completa de la sucursal
+     * @param  string $xsesion JSON con los datos de la sesión actual.
+     * @return array datos rs
+     */
+    public function getDireccionSucursal($xsesion){
+        $aDireccion = [];
+        $session = json_decode($xsesion,true);
+        $sql = "SELECT 
+                        sucursales.* 
+                FROM
+                        sucursales
+                WHERE 
+                        sucursales.id = ". $session["id_sucursal"];
+         $rsSuc = $this->getQuery2($sql);
+            $aDireccion["ShipToState"] = $rsSuc->getValueInt("id_provincia");
+            $aDireccion["ShipToStreet"] = $rsSuc->getValue("calle");
+            $aDireccion["ShipToCity"] = $rsSuc->getValue("ciudad");
+            $aDireccion["ShipToZipCode"] = $rsSuc->getValue("codigo_postal");
+        return $aDireccion;
     }
 }
 
