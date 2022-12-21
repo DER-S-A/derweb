@@ -7,9 +7,13 @@ class FichaArticulo extends ComponentManager {
     }
     generateComponent(xid) {
         this.getTemplate((new App()).getUrlTemplate("ficha-articulo"), html => {
+            let xxprueba = 'hola';
+            console.log(xxprueba);
+            console.log(typeof(xxprueba));
+            this.setTemplateParameters(html, "imp", xxprueba);
             document.getElementById("app-container").innerHTML = html;
-            let objtituloArt = document.querySelector(".cuerpo-ficha h3");
-            console.log(objtituloArt);
+            
+            //this.setTemplateParameters(html, "kit", xxprueba);
 
             let url = (new App()).getUrlApi("ficha-articulos"); 
             (new APIs()).call(url, "", "GET", (xdatos) => {

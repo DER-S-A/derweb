@@ -354,9 +354,8 @@ class ArticulosModel extends Model {
                 WHERE articulos.id = '10748'"
             ;
 
-        $sql2 = "SELECT art_codigos_originales.codigo FROM art_codigos_originales 
-                INNER JOIN articulos ON articulos.id = art_codigos_originales.id_articulo  
-                WHERE articulos.codigo = '316708SAC'"
+        $sql2 = "SELECT codigo FROM art_codigos_originales  
+                WHERE id_articulo = 10748"
             ;
 
         $prueba = [];

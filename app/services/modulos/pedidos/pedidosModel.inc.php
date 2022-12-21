@@ -701,7 +701,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
-        var_dump($aSesion);
+        //var_dump($aSesion);
 
 
         $aPedidoEnviar["CardCode"] = $aSesion["usuario"]; // Agrego el numero cliente
