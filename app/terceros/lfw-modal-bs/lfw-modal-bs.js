@@ -6,14 +6,16 @@
 
 class LFWModalBS {
     /**
-     * 
+     * Crea una ventana modal utilziando el framework bootstrpa.
+     * @param {string} xidContainer Id. del contenedor <div> donde se escribirá el código HTML del modal.
      * @param {string} xid Id. que identifica al modal dentro del HTML
      * @param {string} xtitle Título del modal para mostrar en el header.
      * @param {mixed} xBodyContent Contenido del modal, puede ser un DOM o un HTML.
+     * @param {string} xancho Ancho expresado en pixels. Ejemplo: "500px".
      * @param {string} xbuttonFooterTitle Título del botón del footer. Default null.
      * @param {callback} cb_clicCustomButton Define la función callback del evento click del botón personalizado.
      */
-    constructor(xid, xtitle, xBodyContent = null, xbuttonFooterTitle = null, cb_clicCustomButton = null) {
+    constructor(xidContainer, xid, xtitle, xBodyContent = null, xancho = "500px", xbuttonFooterTitle = null, cb_clicCustomButton = null) {
         // Defino las propiedades privadas.
         this.__idModal = xid;
         this.__idBody = "body-" + this.__idModal;
@@ -29,6 +31,8 @@ class LFWModalBS {
         this.__bodyContent = xBodyContent;
         this.__objButtonFooter = null;
         this.__buttonFooterTitle = xbuttonFooterTitle;
+        this.__idModalContainer = xidContainer;
+        this.__ancho = xancho;
         
         this.__createModal();
 
@@ -38,8 +42,8 @@ class LFWModalBS {
                 this.close();
             });
     }
-
-     /**
+    
+    /**
       * Devuelve el Id. del modal
       * @returns {string}
       */
@@ -60,9 +64,10 @@ class LFWModalBS {
      */
     __createModal() {
         let objModal = document.getElementById(this.__idModal);
+        let objContainer = document.getElementById(this.__idModalContainer);
         
         if (objModal !== null)
-            document.body.removeChild(document.getElementById(this.__idModal));
+            objContainer.removeChild(document.getElementById(this.__idModal));
 
         this.__createMainContainer();
         this.__createModalDialog();
@@ -70,7 +75,7 @@ class LFWModalBS {
         this.__createModalHeader();
         this.__createModalBody();
         this.__createModalFooter();
-        document.body.appendChild(this.__objModal);
+        objContainer.appendChild(this.__objModal);
     }
 
     /**
@@ -93,6 +98,10 @@ class LFWModalBS {
     __createModalDialog() {
         this.__objModalDialog = document.createElement("div");
         this.__objModalDialog.classList.add("modal-dialog");
+
+        if (this.__ancho !== 0)
+            this.__objModalDialog.setAttribute("style", "width: " + this.__ancho);
+
         this.__objModal.appendChild(this.__objModalDialog);
     }
 
@@ -102,6 +111,7 @@ class LFWModalBS {
     __createModalContent() {
         this.__objModalContent = document.createElement("div");
         this.__objModalContent.classList.add("modal-content");
+        this.__objModalContent.setAttribute("style", "width: " + this.__ancho);
         this.__objModalDialog.appendChild(this.__objModalContent);
     }
 
@@ -167,6 +177,7 @@ class LFWModalBS {
      */
     __createBottonFooter() {
         let objCloseButton = document.createElement("button");
+        objCloseButton.id = this.__idModal + "_btnclose";
         objCloseButton.type = "button";
         objCloseButton.classList.add("btn");
         objCloseButton.classList.add("btn-secondary");
@@ -202,7 +213,7 @@ class LFWModalBS {
      * Permite cerrar la ventana modal.
      */
     close() {
-        document.body.removeChild(document.getElementById(this.__idModal));
+        document.getElementById(this.__idModalContainer).removeChild(document.getElementById(this.__idModal));
         document.body.removeChild(document.getElementsByClassName("modal-backdrop")[0]);
     }
 }

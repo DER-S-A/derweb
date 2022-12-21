@@ -128,7 +128,7 @@ class EdicionPedidosPendientes extends ComponentManager {
      * @param {int} xidpedido Id. del pedido seleccionado
      */
     __mostrarPiePedidoSeleccionado(xidpedido) {
-        let objContainer = document.getElementById("app-container");
+        let objContainer = document.getElementById("main");
         let objDivTotal = document.createElement("div");
         let txtTotal = new HTMLInput("txtTotal", "Total:");
         let pedidoSeleccionado = this.__getPedidoSeleccionado(xidpedido);
@@ -146,7 +146,7 @@ class EdicionPedidosPendientes extends ComponentManager {
         txtTotal.setReadOnly();
         txtTotal.setDataType("float");
         txtTotal.setWidth(300);
-        txtTotal.setValue(pedidoSeleccionado[0]["total"]);
+        txtTotal.setValue(pedidoSeleccionado[0]["total"].toFixed(2));
         objDivTotal.appendChild(txtTotal.toHtml());
         objCol.appendChild(objDivTotal);
         objRow.appendChild(objCol);
@@ -156,7 +156,7 @@ class EdicionPedidosPendientes extends ComponentManager {
         // Agrego los eventos de los botones confirmar y volver:
         document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
             let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
-            let objModal = new LFWModalBS("modal_confirmar_pedido", "Confirmar pedido");
+            let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
             objConfirmarPedido.setIdModal(objModal.getIdModal());
             objConfirmarPedido.setDivModal(objModal.getModalBody());
 
@@ -228,9 +228,11 @@ class EdicionPedidosPendientes extends ComponentManager {
      */
     editarItem(xidpedido_item) {
         let objModal = new LFWModalBS(
+            "main",
             "modal-edit-item", 
             "Editar ítem", 
-            this.__crearFormEdit(xidpedido_item), 
+            this.__crearFormEdit(xidpedido_item),
+            "500px", 
             "Grabar", 
             () => {
                 // El siguiente código permite realizar la modificación del ítem en la base de datos

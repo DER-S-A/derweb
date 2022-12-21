@@ -101,6 +101,7 @@ class HTMLInput {
         this.__objInput.id = this.__idControl;
         this.__objInput.name = this.__idControl;
         this.__objInput.classList.add("form-control");
+        this.__objInput.setAttribute("style", "font-size: 12px");
 
         // Establezco el tipo de datos.
         if (this.__esNumerico()) {

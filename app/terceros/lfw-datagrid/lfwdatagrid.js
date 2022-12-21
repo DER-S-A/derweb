@@ -34,6 +34,7 @@ class LFWDataGrid {
         this.__editJavascriptFunctionName = "";
         this.__iconEditButton = "";
         this.__editButtonTitle = "";
+
         this.__createControl();
     }
 
@@ -192,12 +193,11 @@ class LFWDataGrid {
         this.__optionCheckFunctionName = xvalue;
     }
 
-
     /**
      * Este método permite agregar y definir columnas a mostrar en el datagrid
      * @param {string} xtitulo Título de columna
      * @param {string} xcampo Nombre del campo asociado a la columna.
-     * @param {string} xtipodato Tipo de datos.
+     * @param {string} xtipodato Tipo de datos. (String | Numeric)
      * @param {double} xancho Ancho de columnas. Por defecto -1px, HTML decide el ancho de columna
      * @param {boolean} xvisible Indica si se debe mostrar la columna o no.
      * @param {boolean} xuseCheckBox Indica si esta columna contiene checkbox para seleccionar.
@@ -301,7 +301,8 @@ class LFWDataGrid {
      */
     __fill(xrows) {
         this.__tablaTBody.innerHTML = "";
-        xrows.forEach((xrow) => {
+
+        xrows.forEach((xrow, index) => {
             var tr = document.createElement("tr");
             var td = null;
             var tdEdicion = null;
@@ -320,6 +321,12 @@ class LFWDataGrid {
             for (var i = 0; i < this.__columns.length; i++) {
                 // Solo cargo los datos de las columnas que son visibles.
                 if (this.__columns[i]["visible"] === true) {
+                    // Si el valor del campo clave viene en 0 (cero) entonces lo calculo asignando
+                    // un valor correlativo.
+
+                    if (xrow[this.__campoClave] === 0)
+                        xrow[this.__campoClave] = index + 1;
+
                     td = document.createElement("td");
                     if (this.__columns[i]["use_check"]) {
                         checkbox = document.createElement("input");
@@ -342,6 +349,10 @@ class LFWDataGrid {
 
                         td.appendChild(checkbox);
                     } else {
+                        // Verifico si el tipo de datos es numérico para que formatee.
+                        if (this.__columns[i]["tipodato"] === "numeric")
+                            xrow[this.__columns[i]["campo"]] = parseFloat(xrow[this.__columns[i]["campo"]]).toFixed(2);
+
                         td.innerHTML = xrow[this.__columns[i]["campo"]];
 
                         // Verifico el tipo de datos para la alineación
@@ -442,6 +453,15 @@ class LFWDataGrid {
         else
             result = JSON.parse(sessionStorage.getItem(this.getCacheName())).rows;
         return result;
+    }
+
+    /**
+     * Devuelve la cantidad de filas.
+     * @returns int
+     */
+    getRowCount() {
+        let datagrid = this.getDataGrid();
+        return datagrid.rowCount;
     }
 
     /**
