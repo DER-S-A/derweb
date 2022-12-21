@@ -684,28 +684,63 @@ class PedidosModel extends Model {
         $aItems = [];
         $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
         $aPedidoActual = [];
+        $objSucursal = new SucursalesModel();
+        $sucursalGet = [];
+        $aDireccionEnvio = [];
         
         // Establezco la comunicación con el ETL.
         $this->getToken();
         $objAPISap->setTestMode(); // Modo testing
-        
+        /* // ! METODO SIN USO
+         
         $aBody["connectorCode"] = CONNECTOR_CODE;
         $aBody["functionalityCode"] = FUNCIONALITY_CODE;
-        
+       
         $aPedidoEnviar["DocDate"] = date("Y-m-d", time());
         $aPedidoEnviar["DocDueDate"] = date("Y-m-d", time());
         $aPedidoEnviar["CardCode"] = $this->idCliente;
+        $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
+        */
 
-        // Recupero el pedido actual
+
+        $aPedidoEnviar["CardCode"] = $this->idCliente; // Agrego el numero cliente
+        $aPedidoEnviar["NumAtCard"] = "DERWEB-". $xid_pedido; // Agrego el numero de Pedido
+        $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
+        $aPedidoEnviar["DocDate"] = date("Y-m-d", time()); // Agrego Fecha
+        $aPedidoEnviar["DocDueDate"] = date("Y-m-d", time()); // Agrego Fecha
+        $aPedidoEnviar["TaxDate"] = date("Y-m-d",time()); // Agrego Fecha
+        $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
+        $aPedidoEnviar["DocCurrency"] = "ARS"; // Agrego Tipo Moneda
+        
+
+        // * Recupero el pedido actual
         $aPedidoActual = $this->getPedidoActual($xsesion);
-        for ($i = 0; $i < sizeof($aPedidoActual["items"]); $i++) {
-            $aItems[$i]["ItemCode"] = $aPedidoActual["items"][$i]["codigo"];
-            $aItems[$i]["Quantity"] = doubleval($aPedidoActual["items"][$i]["cantidad"]);
-            $aItems[$i]["Price"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]);
+        for ($i = 0; $i < sizeof($aPedidoActual["items"]); $i++) { 
+            $aItems[$i]["ItemCode"] = $aPedidoActual["items"][$i]["codigo"]; // Codigo Articulo
+            $aItems[$i]["Quantity"] = doubleval($aPedidoActual["items"][$i]["cantidad"]); // Cantidad Articulo
+            $aItems[$i]["Price"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]); // Precio Articulo
         }
 
-        $aPedidoEnviar["DocumentLines"] = json_encode($aItems);
+        $aPedidoEnviar["DocumentLines"] = json_encode($aItems); // Hago JSON la parte de Items y lo coloco con todo el pedido
+
+        // * Recupero la direccion de envío
+        $sucursalGet = $objSucursal->get($xsesion);
+        $aDireccionEnvio["ShipToState"] = $sucursalGet["id_provincia"]; //Numero Provincia
+        $aDireccionEnvio["ShipToCountry"] = "AR"; // Pais
+        $aDireccionEnvio["ShipToStreet"] = $sucursalGet["calle"]; // Direccion de envío 1
+        $aDireccionEnvio["ShipToStreetNo"] = ""; //  ! Direccion de envío 2
+        $aDireccionEnvio["ShipToBlock"] = ""; // ! ??????
+        $aDireccionEnvio["ShipToBuilding"] = ""; // ! ??????
+        $aDireccionEnvio["ShipToCity"] = $sucursalGet["ciudad"];
+        $aDireccionEnvio["ShipToZipCode"] = $sucursalGet["codigo_postal"];
+        $aDireccionEnvio["ShipToCounty"] = ""; // ! ????????
+
+        // * Agrego al JSON General el Adress
+        $aPedidoEnviar["AddressExtension"] = json_encode( ($aDireccionEnvio));
+
+
+
         $aBody["data"] = json_encode($aPedidoEnviar);
 
         $objAPISap->setData($aBody);

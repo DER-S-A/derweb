@@ -85,7 +85,7 @@ class EntidadesModel extends Model {
         try {
             $aRegistro = json_decode($registro, true);
             $strCardCode = $aRegistro["CardCode"];
-            $strCuit = esVacio($aRegistro["LicTradNum"]) ? "" : $aRegistro["LicTradNum"];
+            $strCuit = esVacio($aRegistro["TaxId"]) ? "" : $aRegistro["TaxId"];
             $strCardName = esVacio($aRegistro["CardName"]) ? "SIN NOMBRE" : $aRegistro["CardName"];
             $strEMail = esVacio($aRegistro["E_Mail"]) ? "" : $aRegistro["E_Mail"];
             $strTelefono = esVacio($aRegistro["Phone1"]) ? "" : $aRegistro["Phone1"];
