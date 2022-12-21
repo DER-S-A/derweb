@@ -176,6 +176,7 @@ class CatalogoGridComponent extends ComponentManager {
      * Crea la segunda columna con la descripción y el código.
      * @param {string} xdescripcion Descripción del artículo.
      * @param {string} xcodigo Código del artículo.
+     * @param {int} xid Id. Articulo.
      * @returns {DOMElement}
      */
     __crearColumnaDescripcion(xdescripcion, xcodigo, xid) {
@@ -191,7 +192,7 @@ class CatalogoGridComponent extends ComponentManager {
 
         objContenedorGeneral.id = "info-articulo-general";
         objContenedorGeneral.classList.add("info-articulo-general");
-        objAnchorCodigo.href = "javascript:crearFicha("+ xid + ")";
+        objAnchorCodigo.href = "javascript:crearFicha(" + xid + ")";
 
         objSpanDescripcion.textContent = xdescripcion;
         objSpanDescripcion.classList.add("descripcion");

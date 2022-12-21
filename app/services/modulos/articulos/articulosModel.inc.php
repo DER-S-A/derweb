@@ -351,7 +351,7 @@ class ArticulosModel extends Model {
                 FROM articulos
                 INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
                 CROSS JOIN art_unidades_ventas ON art_unidades_ventas.id_articulo = articulos.id
-                WHERE articulos.codigo = '316708SAC'"
+                WHERE articulos.id = '10748'"
             ;
 
         $sql2 = "SELECT art_codigos_originales.codigo FROM art_codigos_originales 
