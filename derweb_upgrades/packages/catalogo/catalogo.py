@@ -14,6 +14,7 @@ import re
 import requests
 import json
 import sys
+from requests.packages import urllib3
 
 class Catalogo:
 
@@ -187,16 +188,17 @@ class Catalogo:
             sap.login()
             pagina = 0
             entidades = sap.getData("clientes", None, pagina)
+            print(len(entidades["value"]))
             while len(entidades["value"]) != 0 :
-                for entidad in entidades["value"]:
-                    strParametro = "registro=" + json.dumps(entidad)
-                    strParametro = strParametro.replace("&", "y")
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                
-                print(repuesta)
-                entidades = sap.getData("clientes", None, pagina)
-                pagina += 20
-
+               for entidad in entidades["value"]:
+                   strParametro = "registro=" + json.dumps(entidad)
+                   strParametro = strParametro.replace("&", "y")
+                   repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+               
+               print(repuesta)
+               entidades = sap.getData("clientes", None, pagina)
+               pagina += 20
+            
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
@@ -231,7 +233,7 @@ class Catalogo:
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            print(strParametro)
+            # print(strParametro)
             sap.logout()
 
     def getTasaIVA(self, xcode, xsapObject):

@@ -690,7 +690,7 @@ class PedidosModel extends Model {
         
         // Establezco la comunicación con el ETL.
         $this->getToken();
-       // $objAPISap->setTestMode(); // Modo testing
+        $objAPISap->setTestMode(); // Modo testing
         /* // ! METODO SIN USO
          
         $aBody["connectorCode"] = CONNECTOR_CODE;

@@ -52,15 +52,16 @@ class ArticulosModel extends Model {
         $bd = new BDObject();
         $procesar = false;
         try {
-            $rubro_cod = $aRegistro["U_ONESL_RubroCod"];
-            $subrubro_cod = $aRegistro["U_ONESL_SubRubroCod"];
-            $marca_cod = $aRegistro["U_ONESL_MarcaCod"];
+            $rubro_cod = $aRegistro["RubroCod"];
+            $subrubro_cod = $aRegistro["SubRubroCod"];
+            $marca_cod = $aRegistro["MarcaCod"];
             $codigo = $aRegistro["ItemCode"];
             $codigo_original = "";
             $descripcion = $aRegistro["ItemName"];
-            $alicuota_iva = 21;
+            $alicuota_iva = $aRegistro["IvaRate"];
             $existencia_stock = 0.00;
             $stock_minimo = 0.00;
+            $habilitado = $aRegistro["Habilitado"];
 
             // Valido que los datos que se requieren estén cargados en el JSON.
             $procesar = true;
@@ -97,15 +98,17 @@ class ArticulosModel extends Model {
             // Si los datos están correctos, entonces, envío a procesar.
             if ($procesar) {
                 $sql = "CALL sp_articulos_upgrade (
-                        xrubroCod,
-                        xsubrubroCod,
-                        xmarcaCod,
-                        xcodigo,
-                        xcodOriginal,
-                        xdescripcion,
-                        xalicuotaIVA,
-                        xexistencia,
-                        xstockMinimo)";
+                    xrubroCod,
+                    xsubrubroCod,
+                    xmarcaCod,
+                    xcodigo,
+                    xcodOriginal,
+                    xdescripcion,
+                    xalicuotaIVA,
+                    xexistencia,
+                    xstockMinimo,
+                    xhabilitado
+                    )";
                 $this->setParameter($sql, "xrubroCod", $rubro_cod);
                 $this->setParameter($sql, "xsubrubroCod", $subrubro_cod);
                 $this->setParameter($sql, "xmarcaCod", $marca_cod);
@@ -115,6 +118,7 @@ class ArticulosModel extends Model {
                 $this->setParameter($sql, "xalicuotaIVA", $alicuota_iva);
                 $this->setParameter($sql, "xexistencia", $existencia_stock);
                 $this->setParameter($sql, "xstockMinimo", $stock_minimo);
+                $this->setParameter($sql, "xhabilitado", $habilitado);
                 $bd->execQuery($sql);
 
                 $aResult["result_code"] = "OK";
