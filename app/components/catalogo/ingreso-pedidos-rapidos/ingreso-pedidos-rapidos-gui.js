@@ -239,6 +239,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let articulo = JSON.parse(document.getElementById("txtCodArt").dataset.value);
         let item = {};
 
+        if (parseInt(document.getElementById("txtCantidad").value) === 0) {
+            swal("Debe ingresar la cantidad");
+            return false;
+        }
+
         item = {
             "id": 0,
             "codart": articulo.values[0].codigo,
