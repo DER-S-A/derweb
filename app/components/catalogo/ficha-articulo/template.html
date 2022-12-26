@@ -73,24 +73,24 @@
     <div class="col-lg-6 ficha-tecnica">
         <div class="ficha">
             <div class="logo-marca">
-                <img src="assets/imagenes/sachs.png" alt="logo sachs">
+                
             </div>
             <div class="cuerpo-ficha container-fluid">
-                <h3>KIT</h3>
+                <h3>{descripcion}</h3>
                 <div class="row">
                     <div class="col-lg-6 precio-costo">
                         <p>PRECIO DE COSTO</p>
-                        <h5>$13767</h5>
+                        <h5>${precio_costo}</h5>
                     </div>
                     <div class="col-lg-6 precio-lista">
                         <p>PRECIO DE LISTA</p>
-                        <h5>$18767</h5>
+                        <h5>${precio_lista}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-6 precio-venta">
                         <p>PRECIO DE VENTA</p>
-                        <h5>$27067</h5>
+                        <h5>${precio_venta}</h5>
                     </div>
                     <div class="col-lg-6 stock">
                         <p>STOCK</p>
@@ -107,14 +107,12 @@
             <h5>INFORMACIÓN</h5>
             <div class="info">
                 <ul>
-                    <li>Código: <span>3000001234SAC</span> </li>
-                    <li>Información general: <span>PLACA + DISCO +CRAPODINA</span> </li>
-                    <li>Código originales: <span>04C141015G | 04C141025C | 04C141025 | 04C141031G | C11861P1
-                            | FJSJ32P2Z | N1159 | C11819PL | FJSJ32U9Z | C11861PL | FCD0720 | 1457431101 | FJSJ21S11Z
-                        </span> </li>
-                    <li>Datos técnicos: <span>Disco</span> </li>
-                    <li>Diámetro <span>190mm</span> </li>
-                    <li>Unidades de venta: <span>1 Unidad de cada componente</span> </li>
+                    <li>Código: <span>{codigo}</span> </li>
+                    <li>Información general: <span>{informacion_general}</span> </li>
+                    <li id="ficha-codigos-originales">Código originales: </li>
+                    <li>Datos técnicos: <span>{datos_tecnicos}</span> </li>
+                    <li>Diámetro <span>{diametros}</span> </li>
+                    <li>Unidades de venta: <span>{unidades_de_venta}</span> </li>
                 </ul>
             </div>
         </div>
@@ -142,7 +140,7 @@
 
     <div id="carrusel-equivalencias" class="carousel carousel-dark slide" data-bs-ride="carousel">
         <div class="carousel-inner contenedor-carrusel-equivalencias">
-            <div class="carousel-item active">
+            <!-- <div class="carousel-item active">
 
 
                 <div class="row contenedor-pagina">
@@ -331,7 +329,7 @@
                 </div>
 
 
-            </div>
+            </div> -->
 
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carrusel-equivalencias"

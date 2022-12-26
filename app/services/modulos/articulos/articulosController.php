@@ -123,8 +123,9 @@ class ArticulosController extends APIController {
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {
                 $objArt = new ArticulosModel();
-                $codigo = $this->getURIParameters("codigo");
-                $responseData = json_encode($objArt->generarFichaArt($codigo));
+                $xid_art = $this->getURIParameters("id_articulo");
+                $xid_cli = $this->getURIParameters("id_cliente");
+                $responseData = json_encode($objArt->generarFichaArt($xid_art, $xid_cli));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

@@ -318,7 +318,7 @@ class ArticulosModel extends Model {
                     "art.descripcion, ' ') LIKE '%";
         }
     }
-    public function generarFichaArt($codigo) {
+    public function generarFichaArt($xid_articulo,$xid_cliente) {
         
         // $sql = "SELECT 
         //         articulos.id, articulos.descripcion, 
@@ -333,35 +333,53 @@ class ArticulosModel extends Model {
         //         inner join art_codigos_originales AS ori ON ori.id_articulo = articulos.id
         //         WHERE articulos.codigo = '316708SAC'"
         //     ;
-        
+    
         $sql = "SELECT 
                 articulos.id AS ID_Articulo,
                 articulos.descripcion AS Descripcion,
-                (SELECT round(precio_lista * (100-(SELECT descuento_1 FROM entidades WHERE cliente_cardcode = 'c23900') )/100,2) AS precio_costo
-                FROM articulos_precios WHERE id_articulo = (SELECT id FROM articulos WHERE codigo = '316708sac')) AS Precio_costo,
+                (SELECT round(precio_lista * (100-(SELECT descuento_1 FROM entidades WHERE id = $xid_cliente) )/100,2)
+                FROM articulos_precios WHERE id_articulo = $xid_articulo) AS Precio_costo,
                 articulos_precios.precio_lista AS Precio_lista,
-                (SELECT round(precio_lista * (100+(SELECT rentabilidad_1 FROM entidades WHERE cliente_cardcode = 'c23900') )/100,2) AS precio_venta
-                FROM articulos_precios WHERE id_articulo = (SELECT id FROM articulos WHERE codigo = '316708sac')) AS Precio_venta,
+                (SELECT round(precio_lista * (100+(SELECT rentabilidad_1 FROM entidades WHERE id = $xid_cliente) )/100,2)
+                FROM articulos_precios WHERE id_articulo = $xid_articulo) AS Precio_venta,
                 articulos.existencia_stock AS Stock,
                 articulos.codigo AS Codigo,
                 articulos.informacion_general AS Informacion_general,
                 articulos.datos_tecnicos AS Datos_tecnicos,
                 articulos.diametro AS Diametro,
-                art_unidades_ventas.unidad_venta AS Unidades_de_venta
+                art_unidades_ventas.unidad_venta AS Unidades_de_venta,
+                marcas.linklogo AS Logo
                 FROM articulos
                 INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+                INNER JOIN marcas ON marcas.id = articulos.id_marca
                 CROSS JOIN art_unidades_ventas ON art_unidades_ventas.id_articulo = articulos.id
-                WHERE articulos.id = '10748'"
+                WHERE articulos.id = $xid_articulo"
             ;
 
-        $sql2 = "SELECT codigo FROM art_codigos_originales  
-                WHERE id_articulo = 10748"
+        $sql_codigoOriginales = "SELECT codigo FROM art_codigos_originales  
+                WHERE id_articulo = $xid_articulo"
             ;
 
-        $prueba = [];
-        $prueba ["informacion"]= getRs($sql, true)->getAsArray();
-        $prueba ["codigo originales"]= getRs($sql2, true)->getAsArray();
-        return $prueba;
+        $sql_equivalencias = $this->consultaGenerarEquivalencias($xid_articulo, $xid_cliente);
+
+
+        $response = [];
+        $response ["informacion"]= getRs($sql, true)->getAsArray();
+        $response ["codigos_originales"]= getRs($sql_codigoOriginales, true)->getAsArray();
+        $response ["equivalencias"] = getRs($sql_equivalencias, true)->getAsArray();
+        return $response;
+    }
+
+    public function consultaGenerarEquivalencias($xid_articulo, $xid_cliente) {
+        $sql = "select linklogo AS Logo, articulos.codigo AS Codigo, articulos_precios.precio_lista AS Precio_lista,
+        round(precio_lista * (100-(SELECT descuento_1 FROM entidades WHERE id = $xid_cliente) )/100,2) AS Precio_costo,
+        round(precio_lista * (100+(SELECT rentabilidad_1 FROM entidades WHERE id = $xid_cliente) )/100,2) AS Precio_venta
+        from articulos 
+        INNER JOIN marcas ON marcas.id = articulos.id_marca
+        INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+        where equivalencia = (select equivalencia from articulos where id=$xid_articulo) and articulos.id != $xid_articulo";
+
+        return $sql;
     }
 }
 
