@@ -16,7 +16,8 @@
         "marcas": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Marca_B1SLQuery",
         "provincias": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Provincias_B1SLQuery",
         "paises": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Paises_B1SLQuery",
-        "tasas_IVA": "https://181.119.123.148:50000/b1s/v1/SalesTaxCodes"
+        "tasas_IVA": "https://181.119.123.148:50000/b1s/v1/SalesTaxCodes",
+        "sucursales": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Sucursales_B1SLQuery"
     },
     "mysql": {
         "host": "localhost",
