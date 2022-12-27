@@ -10,6 +10,11 @@
 
 .logo-equi {
   width: 80%;
+  height: 50px;
+}
+
+.logo-equi img {
+  height: 100%;
 }
 
 .contenedor-carrusel-equivalencias {

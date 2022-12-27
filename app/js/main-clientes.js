@@ -376,7 +376,6 @@ function miPerfil() {
 }
 
 function crearFicha(xid) {
-    console.log();
     new FichaArticulo().generateComponent(xid);
 }
 
