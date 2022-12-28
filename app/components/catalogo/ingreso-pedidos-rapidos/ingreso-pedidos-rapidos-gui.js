@@ -88,6 +88,15 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 this.__agregarItem();
             });
 
+            // Eventos botones confirmar y volver
+            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+                // Desarrollar llamado a API para enviar y confirmar el pedido.
+            });
+
+            document.getElementById("btnVolver").addEventListener("click", () => {
+                window.location.href = "main-vendedores.php";
+            });
+
             // LLamo al método que crea la grilla.
             this.__crearGridItems();
 
