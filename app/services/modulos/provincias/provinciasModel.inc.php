@@ -32,7 +32,7 @@ class ProvinciasModel extends Model {
             $aRegistro = json_decode($registro, true);
             $strCodigo = $aRegistro["EstadoCode"];
             $strCodigoPais = $aRegistro["PaisCode"];
-            $strDescripcion = $aRegistro["EstadoName"];
+            $strDescripcion = utf8_decode($aRegistro["EstadoName"]);
             $sql = "CALL sp_provincias_upgrade(xcodigo, xcodPais, xdescripcion)";
             $this->setParameter($sql, "xcodigo", $strCodigo);
             $this->setParameter($sql, "xcodPais", $strCodigoPais);

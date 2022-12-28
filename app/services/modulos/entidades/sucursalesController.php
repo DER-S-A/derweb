@@ -41,6 +41,32 @@ class SucursalesController extends APIController {
     }
 
     // TODO: Desarrollar métodos extras acá abajo.
+
+    	/**
+     * upgrade
+     * Endpoint para actualizar sucursales
+     * @return void
+     */
+    public function upgradeSucursales() {
+        // Valido que la llamada venga por método PUT
+        if ($this->usePutMethod()) {
+            try {
+                $registro = $this->getURIParameters("registro");
+                $objModel = new SucursalesModel();
+                $responseData = json_encode($objModel->upgradeSucursales($registro));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
+
 }
 
 ?>

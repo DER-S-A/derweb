@@ -15,6 +15,7 @@ import requests
 import json
 import sys
 from requests.packages import urllib3
+import time 
 
 class Catalogo:
 
@@ -40,7 +41,7 @@ class Catalogo:
                 print(repuesta)
                 pagina += 20
                 paises = sap.getData("paises", None, pagina) # Extraigo los datos
-
+                print("Procesando página: " + str(pagina))
             sap.logout() # Me desconecto de SAP
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
@@ -63,11 +64,12 @@ class Catalogo:
             while len(provincias["value"]) != 0:
                 for pcia in provincias["value"]:
                     strParametro = "registro=" + json.dumps(pcia)
-                    strParametro = strParametro.replace("&", "y")
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                    if (pcia['PaisCode'] == 'AR'):
+                        strParametro = strParametro.replace("&", "y")
+                        repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
                 pagina += 20
                 provincias = sap.getData("provincias", None, pagina)
-
+                print("Procesando página: " + str(pagina))
             print(repuesta)
             sap.logout()
         except BaseException as err:
@@ -110,7 +112,7 @@ class Catalogo:
                     repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
 
                 print(repuesta)
-
+                print("Procesando página: " + str(pagina))
                 rubros = sap.getData("rubros", None, pagina)
                 pagina += 20
 
@@ -141,7 +143,7 @@ class Catalogo:
 
                 subrubros = sap.getData("subrubros", None, pagina)
                 pagina += 20
-
+                print("Procesando página: " + str(pagina))
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
@@ -168,7 +170,7 @@ class Catalogo:
                 print(repuesta)
                 marcas = sap.getData("marcas", None, pagina)
                 pagina += 20
-
+                print("Procesando página: " + str(pagina))
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
@@ -198,7 +200,7 @@ class Catalogo:
                print(repuesta)
                entidades = sap.getData("clientes", None, pagina)
                pagina += 20
-            
+               print("Procesando página: " + str(pagina))
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
@@ -251,3 +253,34 @@ class Catalogo:
         for tasa_iva in tasas_iva["value"]:
             iva = tasa_iva["Rate"]
         return iva
+
+    def updateSucursales(self):
+        """
+            Este método permite actualizar las Sucursales del catalogo
+        """
+        sap = SAPManager()
+        strUrl = "http://localhost/derweb/app/services/sucursales/upgradeSucursales"
+        headers = {
+            "Content-Type": "application/json"
+        } 
+        try :
+            sap.login()
+            pagina = 0
+            sucursales = sap.getData("sucursales", None, pagina)
+            while len(sucursales["value"]) != 0 :
+               for sucursales in sucursales["value"]:
+                if (sucursales['SucursalCode'].startswith('C')):  
+                    if(sucursales['SucursalName'] != 'Fiscal'):
+                        strParametro = "registro=" + json.dumps(sucursales)
+                        strParametro = strParametro.replace("&", "y")
+                        repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+               sucursales = sap.getData("sucursales", None, pagina)
+               pagina += 20
+               print("Procesando página: " + str(pagina))
+            sap.logout()
+            print("Proceso Finalizado Correctamente")
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            print(strParametro)
+            sap.logout()
+            

@@ -91,7 +91,6 @@ class EntidadesModel extends Model {
             $strTelefono = esVacio($aRegistro["Phone1"]) ? "" : $aRegistro["Phone1"];
             $descuento_p1 = doubleval($aRegistro["U_ONESL_DescuentoP1"]);
             $descuento_p2 = doubleval($aRegistro["U_ONESL_DescuentoP2"]);
-
             $sql = "CALL sp_entidades_upgrade(	
                 xid_tipoentidad,
                 xcliente_cardcode,
