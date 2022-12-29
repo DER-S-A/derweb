@@ -32,9 +32,20 @@
         </section>
 
         <footer class="ipr-footer">
-            <div class="div-total">
-                <label for="txtTotal" class="form-label">Total</label>
-                <input type="numeric" id="txtTotal" name="txtTotal" class="form-control" style="text-align: right;" readonly>
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="btnConfirmarPedido" name="btnConfirmarPedido" type="button" class="btn btn-primary mt-1">
+                        <i class="fa-regular fa-circle-check"></i> Confirmar</button>    
+                    <button id="btnVolver" name="btnVolver" type="button" class="btn btn-secondary ms-1 mt-1">
+                        <i class="fa-solid fa-arrow-left"></i> Volver</button>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="div-total">
+                        <label for="txtTotal" class="form-label">Total</label>
+                        <input type="numeric" id="txtTotal" name="txtTotal" class="form-control" style="text-align: right;" readonly>
+                    </div>        
+                </div>
             </div>
         </footer>
         
