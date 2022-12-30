@@ -92,5 +92,15 @@ class UpdateVersionEntidades extends UpdateVersion {
             sc3updateFieldHelp($tabla, $campo, "C: Cliente | V: Vendedor | T: Televenta");
         }
     }
+
+    /**
+     * cambiarTamanioCampoUsuarioEnEntidades
+     * Permite cambiar el tamaño al campo usuario de la tabla entidades.
+     * @return void
+     */
+    public static function cambiarTamanioCampoUsuarioEnEntidades() {
+        $sql = "ALTER TABLE entidades CHANGE COLUMN usuario usuario VARCHAR(20) NOT NULL";
+        self::ejecutarSQL($sql);
+    }
 }
 ?>

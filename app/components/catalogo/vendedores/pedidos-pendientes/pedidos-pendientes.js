@@ -9,10 +9,6 @@ class PedidosPendientes extends ComponentManager {
         super();
 
         this.clearContainer("app-container");
-
-        this.getTemplate((new App()).getUrlTemplate("oper-pedidos-pendientes"), html => {
-            document.getElementById("app-container").innerHTML = html;
-        });
     }
 
     /**
@@ -20,9 +16,12 @@ class PedidosPendientes extends ComponentManager {
      * @param {callback} xcallback 
      */
     getPedidosPendientes(xcallback) {
-        (new PedidosAPI()).getPendientesByVendedor((response) => {
-            this.__guardarPedidosPendientesEnCache(response);
-            xcallback(response);
+        this.getTemplate((new App()).getUrlTemplate("oper-pedidos-pendientes"), html => {
+            document.getElementById("app-container").innerHTML = html;
+            (new PedidosAPI()).getPendientesByVendedor((response) => {
+                this.__guardarPedidosPendientesEnCache(response);
+                xcallback(response);
+            });
         });
     }
 
@@ -31,7 +30,8 @@ class PedidosPendientes extends ComponentManager {
      * @param {array} xdatos 
      */
      mostrarGrillaPedidosPendientes(xdatos) {
-        document.getElementById("app_grid_container").innerHTML = "";
+        if (document.getElementById("app_grid_container") !== null)
+            document.getElementById("app_grid_container").innerHTML = "";
         this.eliminarFooter();
 
         let objGrid = new LFWDataGrid("app_grid_container", "id");

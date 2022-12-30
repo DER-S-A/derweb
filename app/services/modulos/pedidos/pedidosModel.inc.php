@@ -680,7 +680,7 @@ class PedidosModel extends Model {
         $aBody = [];
         $aPedidoEnviar = [];
         $aItems = [];
-        $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "PUT");
+        $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
         $aPedidoActual = [];
         $objSucursal = new SucursalesModel();
         $sucursalGet = [];
@@ -701,9 +701,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
-        //var_dump($aSesion);
-
-
+ 
         $aPedidoEnviar["CardCode"] = $aSesion["usuario"]; // Agrego el numero cliente
         $aPedidoEnviar["NumAtCard"] = "DERWEB-". $xid_pedido; // Agrego el numero de Pedido
         $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega

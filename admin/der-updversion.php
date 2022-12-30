@@ -26,6 +26,7 @@ agregarCpoCliPotRegistro();
 UpdateVersionEntidades::actualizarTablaSucursales();
 UpdateVersionEntidades::actualizarFormaEnvio();
 UpdateVersionEntidades::agregarCamposTiposEntidades();
+UpdateVersionEntidades::cambiarTamanioCampoUsuarioEnEntidades();
 
 // Actualizo la versión del módulo de pedidos.
 UPDVersionPedidos::actualizar();
