@@ -16,8 +16,8 @@
     let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
     let objCatalogo = new Catalogo();
 
-    if (cantidad == "") {
-        alert("Cargar cantidad");
+    if (cantidad == "" || cantidad<1) {
+        alert("Cantidad vacia o valor incorrecto");
         return;
     }
 

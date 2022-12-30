@@ -36,15 +36,12 @@ window.onload = () => {
 
 function mostrarNumCliente() {
     let storage = sessionStorage.getItem("derweb_sesion");
-    console.log(storage);
     storage = JSON.parse(storage);
-    console.log(storage.codigo);
     let objDivNumCli = document.getElementById("num-cliente");
     //objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + storage.id_sucursal + "</span></a>";
 
     let objApp = new App();
     (new APIs()).call(objApp.getUrlApi("app-entidades-getSucursalesByEntidad"), "id_entidad=" + storage.id_cliente, "GET", (xdatos) => {
-        console.log(xdatos);
         xdatos.forEach((xitem) => {
             if(storage.id_sucursal==xitem.id){
                 objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + xitem.nombre + "</span></a>";
@@ -158,6 +155,7 @@ function generarCarrusel() {
  * @param {int} xidSubrubro Id. Subrubro seleccionado
  */
 function mostrar_articulos(xidRubro, xidSubrubro) {
+    sessionStorage.setItem("derweb_id_subrubro_seleccionado", xidSubrubro);
     let objAppContainer = document.getElementById("app-container");
     objAppContainer.classList.remove("container-miPerfil");
     var objGUI = new CatalogoGUIComponent("app-container");
@@ -375,7 +373,20 @@ function miPerfil() {
     obj.addEventListener("click",cambiarContraseña);  // ESTE EVENTO GENERA EL FORM DE CAMBIO DE CLAVE.
 }
 
+/**
+ * Esta función permite crear la ficha de articulo, esta funcion es llamada desde el DOM(objAnchorCodigo) que se crea.
+ * @param {int} xid Id. Articulo.
+ * @param {object} panelesOpciones objeto que lleva el estado de los check de los paneles de opciones de precios.
+ */
+
 function crearFicha(xid) {
-    new FichaArticulo().generateComponent(xid);
+    let panelesOpciones = {
+        precioLista: document.querySelector("#opcion-lista-precio").checked,
+        precioCosto: document.querySelector("#opcion-costo").checked,
+        precioVenta: document.querySelector("#opcion-venta").checked 
+    };
+    
+    
+    new FichaArticulo().generateComponent(xid, panelesOpciones);
 }
 
