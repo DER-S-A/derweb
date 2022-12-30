@@ -225,9 +225,9 @@ class Catalogo:
                 for articulo in articulos["value"]:
                     strParametro = "registro=" + json.dumps(articulo)
                     strParametro = strParametro.replace("&", "y")
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-
-                print(repuesta)
+                    respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                print("Code: " + respuesta['result_code'])
+                print("Mensaje: " + respuesta['result_mensaje'])
                 pagina += 20
                 print("Procesando página: " + str(pagina))
                 articulos = sap.getData("articulos", None, pagina)
