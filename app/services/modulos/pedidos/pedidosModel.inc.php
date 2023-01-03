@@ -398,17 +398,10 @@ class PedidosModel extends Model {
         $tipoLogin = $aSesion["tipo_login"];
 
         $sql = "SELECT
-                    items.id,
-                    items.id_pedido,
-                    art.id AS id_articulo,
-                    items.cantidad,
-                    foto.archivo,
-                    art.codigo,
-                    art.descripcion AS descripcion_articulo,
-                    rub.descripcion AS descripcion_rubro,
-                    srb.descripcion AS descripcion_subrubro,
-                    precio.precio_lista,
-                    art.alicuota_iva
+                    items.id, items.id_pedido, art.id AS id_articulo, items.cantidad,
+                    foto.archivo, art.codigo, art.descripcion AS descripcion_articulo,
+                    rub.descripcion AS descripcion_rubro, srb.descripcion AS descripcion_subrubro,
+                    precio.precio_lista, art.alicuota_iva
                 FROM
                     pedidos_items items
                         INNER JOIN articulos art ON art.id = items.id_articulo
@@ -567,8 +560,7 @@ class PedidosModel extends Model {
         $rsEstado->close();
 
         $sql = "SELECT 
-                    id, 
-                    codigo_sucursal
+                    id, codigo_sucursal
                 FROM
                     sucursales
                 WHERE
@@ -730,13 +722,8 @@ class PedidosModel extends Model {
         $aResponse = [];
         try {
             $sql = "SELECT
-                        p.id,
-                        p.id_entidad,
-                        p.fecha_alta,
-                        ent.cliente_cardcode,
-                        ent.nombre,
-                        p.codigo_sucursal,
-                        p.total
+                        p.id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,
+                        ent.nombre, p.codigo_sucursal, p.total
                     FROM
                         pedidos p
                             INNER JOIN estados_pedidos est ON est.id = p.id_estado
@@ -758,18 +745,9 @@ class PedidosModel extends Model {
                 $aResponse[$i]["total"] = $rs->getValueFloat("total");
 
                 $sql = "SELECT
-                            item.id,
-                            item.id_pedido,
-                            item.cantidad,
-                            item.id_articulo,
-                            art.codigo,
-                            art.descripcion,
-                            item.precio_lista,
-                            item.costo_unitario,
-                            item.subtotal,
-                            item.alicuota_iva,
-                            item.importe_iva,
-                            item.total
+                            item.id, item.id_pedido, item.cantidad, item.id_articulo,
+                            art.codigo, art.descripcion, item.precio_lista, item.costo_unitario,
+                            item.subtotal, item.alicuota_iva, item.importe_iva, item.total
                         FROM
                             pedidos_items item
                                 INNER JOIN articulos art ON art.id = item.id_articulo
