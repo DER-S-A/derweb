@@ -844,8 +844,15 @@ class PedidosModel extends Model {
            $total += $xdatos[$i]["total"]; 
         }
 
-        $sql = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total, fecha_modificado = CURRENT_TIMESTAMP
-        WHERE id = $xidpedido";
+        $sql = "UPDATE 
+                    pedidos 
+                SET 
+                    subtotal = $subtotal, 
+                    importe_iva = 
+                    $importe_iva, 
+                    total = $total, 
+                    fecha_modificado = CURRENT_TIMESTAMP
+                WHERE id = $xidpedido";
         $bd->execQuery($sql);
         $bd->close();
     }
