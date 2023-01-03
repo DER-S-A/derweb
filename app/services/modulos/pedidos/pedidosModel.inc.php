@@ -170,39 +170,15 @@ class PedidosModel extends Model {
      */
     private function generarInsertCabecera($xaCabecera) {
         $sql = "INSERT INTO pedidos (
-                    id_entidad,
-                    id_tipoentidad,
-                    id_estado,
-                    id_vendedor,
-                    id_sucursal,
-                    codigo_sucursal,
-                    id_transporte,
-                    codigo_transporte,
-                    id_formaenvio,
-                    descuento_1,
-                    descuento_2,
-                    subtotal,
-                    importe_iva,
-                    total,
-                    anulado,
-                    fecha_alta)
+                    id_entidad, id_tipoentidad, id_estado, id_vendedor,
+                    id_sucursal, codigo_sucursal, id_transporte, codigo_transporte,
+                    id_formaenvio, descuento_1, descuento_2, subtotal,
+                    importe_iva, total, anulado, fecha_alta)
                 VALUES (
-                    xidentidad,
-                    xidtipoentidad,
-                    xidestado,
-                    xidvendedor,
-                    xidsucursal,
-                    xcodSucursal,
-                    xidTransporte,
-                    xcodigoTransporte,
-                    xidFormaEnvio,
-                    xdescuento1,
-                    xdescuento2,
-                    xsubtotal,
-                    ximporte_iva,
-                    xtotal,
-                    0,
-                    current_timestamp)";
+                    xidentidad, xidtipoentidad, xidestado, xidvendedor,
+                    xidsucursal, xcodSucursal, xidTransporte, xcodigoTransporte,
+                    xidFormaEnvio, xdescuento1, xdescuento2, xsubtotal,
+                    ximporte_iva, xtotal, 0, current_timestamp)";
         $this->setParameter($sql, "xidentidad", intval($xaCabecera["id_entidad"]));
         $this->setParameter($sql, "xidtipoentidad", intval($xaCabecera["id_tipoentidad"]));
         $this->setParameter($sql, "xidestado", intval($xaCabecera["id_estado"]));
@@ -302,29 +278,13 @@ class PedidosModel extends Model {
         $total = $subtotal + $importeIVA;      
 
         $sql = "INSERT INTO pedidos_items (
-                    id_pedido,
-                    id_articulo,
-                    cantidad,
-                    porcentaje_oferta,
-                    precio_lista,
-                    costo_unitario,
-                    alicuota_iva,
-                    subtotal,
-                    importe_iva,
-                    total,
-                    anulado)
+                    id_pedido, id_articulo, cantidad, porcentaje_oferta,
+                    precio_lista, costo_unitario, alicuota_iva, subtotal,
+                    importe_iva, total, anulado)
                 VALUES (
-                    xidpedido,
-                    xidarticulo,
-                    xcantidad,
-                    xporcentajeOferta,
-                    xprecioLista,
-                    xcostoUnitario,
-                    xalicuotaIVA,
-                    xsubtotal,
-                    ximporteIVA,
-                    xtotal,
-                    0)";
+                    xidpedido, xidarticulo, xcantidad, xporcentajeOferta,
+                    xprecioLista, xcostoUnitario, xalicuotaIVA, xsubtotal,
+                    ximporteIVA, xtotal,  0)";
         $this->setParameter($sql, "xidpedido", $this->idPedido);
         $this->setParameter($sql, "xidarticulo", intval($xaItem["id_articulo"]));
         $this->setParameter($sql, "xcantidad", doubleval($xaItem["cantidad"]));
