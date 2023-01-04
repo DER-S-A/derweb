@@ -46,7 +46,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-10">
+                            <div class="col-md-10 buscador-mas-menu">
                                 <div id="barra_busqueda" class="app-home-barra-opciones">
                                     <ul>
                                         <li>
@@ -91,7 +91,7 @@
                                             </select>
                                         </li>
 
-                                        <li>
+                                        <li style=" width: auto">
                                             <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
                                                 <i class="fa-solid fa-magnifying-glass"></i> 
                                             </button>
@@ -99,7 +99,11 @@
                                     </ul>
                                 </div>
 
-                                <div class="menu-perfil-container">
+                                <div id="num-cliente" class="num-cliente"></div></li>
+
+                                <div id="menu-container" class="menu-container"></div>
+
+                                <!-- <div class="menu-perfil-container">
                                     <button type="button" id="btn_perfil" name="btn_perfil" class="boton-perfil">
                                         <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
                                     </button>
@@ -114,7 +118,7 @@
                                         <li class="presupuestos-item"><a href="#" >Presupuestos<hr></a><li>
                                         <li class="cierreSesion-item"><a href="../index.php" id="cierreSession">Cerrar sesion <hr></a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>                                
                         </div>
                     </div>
@@ -123,9 +127,9 @@
                 <!-- Acá armar el menú principal -->
                 <div id="toolbar" class="toolbar-container">
                     <ul>
-                        <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
+                        <!-- <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li> -->
                         <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
-                        <li class="toolbar-col-3"><div id="num-cliente" class="num-cliente"></div></li>
+                        <!-- <li class="toolbar-col-3"><div id="num-cliente" class="num-cliente"></div></li> -->
                         <li class="toolbar-col-4"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
                 </div>
@@ -155,7 +159,7 @@
             </main>
 
             <footer class="app-footer">
-                <div class="app-footer-container container">
+                <div class="app-footer-container container-fluid">
                     <div class="row">
                         <div class="col-lg-3">
                             <ul class="app-social-bar">
@@ -176,8 +180,13 @@
                             </ul>
                         </div>
 
-                        <div class="col-md-9">
-                            <ul class="app-footer-info">
+                        <div class="col-md-4 contenedor-info">
+                            <p class="app-footer-info">
+                                <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span>
+                                        <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h
+                                        <i class="fa-solid fa-phone"></i> (+5411) 4846 7500</small>
+                            </p>
+                            <!-- <ul class="app-footer-info">
                                 <li>
                                     <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span><br>
                                         <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h</small>
@@ -186,7 +195,7 @@
                                 <li>
                                     <small class="home-texto-footer"><i class="fa-solid fa-phone"></i> (+5411) 4846 7500</small>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </div>
                     </div>
                 </div>

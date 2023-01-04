@@ -55,7 +55,7 @@ class MenuComponent {
         var aOperaciones = objAPIs.getFromAPI(this.__objApp.getUrlApi("app-operaciones-getByTipoEntidad") 
             + "?idTipoEntidad=" + idTipoEntidad);
 
-        aOperaciones.forEach(xElement => {
+        aOperaciones.forEach(xElement => {console.log(xElement)
             let objLink = document.createElement("a");
             objLink.href = xElement.url;
             objLink.innerHTML = "<i class='" + xElement.icono + "'></i>&nbsp;" + xElement.nombre;

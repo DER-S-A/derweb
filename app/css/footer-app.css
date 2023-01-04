@@ -17,9 +17,14 @@
 .app-footer-container {
     position: relative;
     float: left;
-    width: 60%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.app-footer-container .row {
+    align-items: center;
+    justify-content: center;
 }
 
 .app-footer .app-social-bar {
@@ -35,6 +40,10 @@
 
 .app-footer .app-social-bar li img {
     width: 30px;
+}
+
+.contenedor-info {
+    height: 30%;
 }
 
 .app-footer-info {
