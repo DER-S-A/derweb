@@ -834,6 +834,77 @@ class PedidosModel extends Model {
         $bd->execQuery($sql);
         $bd->close();
     }
+    
+    /**
+     * grabarPedido
+     * Permite grabar un pedido completo que viene en dato en un JSON desde
+     * la pantalla de ingresos de pedidos rápidos.
+     * @param  string $xjsonData JSON con el pedido a grabar
+     * @return array Devuelve un array con el resultado de la operación.
+     */
+    public function grabarPedido($xjsonData) {
+        $aPedido = json_decode($xjsonData, true);
+
+        $objBD = new BDObject();
+        $objBD->beginT();
+        try {
+            $aResponse = [];
+            $sql = "CALL sp_pedidos_grabar (xidentidad, xidtipoentidad, xidvendedor,
+                            xidsucursal, xcodSucursal, xidTransporte, xcodigoTransporte,
+                            xidFormaEnvio, xsubtotal, ximporte_iva, xtotal)";
+            $this->setParameter($sql, "xidentidad", intval($aPedido["id_cliente"]));
+            $this->setParameter($sql, "xidtipoentidad", intval($aPedido["id_tipoentidad"]));
+            $this->setParameter($sql, "xidvendedor",intval($aPedido["id_vendedor"]));
+            $this->setParameter($sql, "xidsucursal", intval($aPedido["id_sucursal"]));
+            $this->setParameter($sql, "xcodSucursal", $aPedido["codigo_sucursal"]);
+            $this->setParameter($sql, "xidTransporte", intval($aPedido["id_transporte"]));
+            $this->setParameter($sql, "xcodigoTransporte", $aPedido["codigo_transporte"]);
+            $this->setParameter($sql, "xidFormaEnvio", intval($aPedido["id_formaenvio"]));
+            $this->setParameter($sql, "xsubtotal", doubleval($aPedido["subtotal"]));
+            $this->setParameter($sql, "ximporte_iva", doubleval($aPedido["importe_iva"]));
+            $this->setParameter($sql, "xtotal", doubleval($aPedido["total"]));
+
+            $objBD->execQuery($sql, false, true);
+            if (!sonIguales($objBD->getValue("codigo_error"), "BD_ERROR")) {
+                $objBD->rollbackT();
+                $aResponse["codigo"] = $objBD->getValue("codigo_error");
+                $aResponse["mensaje"] = $objBD->getValue("result");
+                return false;
+            }
+
+            // Recupero el id de pedido que se generó
+            $aPedido["id_pedido"] = $objBD->getValue("result");
+        
+            // Grabo los ítems.
+            for ($i = 0; $i < sizeof($aPedido["items"]); $i++) {
+                $sql = "CALL sp_pedidos_grabar_item (xidpedido, xidcliente, xidarticulo, xcantidad)";
+                $this->setParameter($sql, "xidpedido", $aPedido["id_pedido"]);
+                $this->setParameter($sql, "xidcliente", $aPedido["id_cliente"]);
+                $this->setParameter($sql, "xidarticulo", $aPedido["items"]["id_articulo"]);
+                $this->setParameter($sql, "xcantidad", $aPedido["items"]["cantidad"]);
+
+                $objBD->execQuery($sql, false, true);
+                if (!sonIguales($objBD->getValue("codigo_error"), "BD_ERROR")) {
+                    $objBD->rollbackT();
+                    $aResponse["codigo"] = $objBD->getValue("codigo_error");
+                    $aResponse["mensaje"] = $objBD->getValue("result");
+                    return false;
+                }
+            }
+
+            $objBD->commitT();
+            $aResponse["codigo"] = "OK";
+            $aResponse["mensaje"] = "El pedido se grabó satisfactoriamente";
+        } catch (Exception $e) {
+            $objBD->rollbackT();
+            $aResponse["codigo"] = "API_ERROR";
+            $aResponse["mensaje"] = $e->getMessage();
+        } finally {
+            $objBD->close();
+        }
+        
+        return true;
+    }
 }
 
 ?>
