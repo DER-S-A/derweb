@@ -100,25 +100,6 @@
                                 </div>
 
                                 <div id="num-cliente" class="num-cliente"></div></li>
-
-                                <div id="menu-container" class="menu-container"></div>
-
-                                <!-- <div class="menu-perfil-container">
-                                    <button type="button" id="btn_perfil" name="btn_perfil" class="boton-perfil">
-                                        <i class="fa-solid fa-user"></i><i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-                                    <ul class="menu-perfil">
-                                        <li class="perfil-item"><a href="javascript:miPerfil(); cerrarAutogestion();" >Mi perfil<hr></a></li>
-                                        <li class="reclamos-item"><a href="#" >Mis reclamos<hr></a></li>
-                                        <li class="garantia-item"><a href="#" >Garantias<hr></a></li>
-                                        <li class="ctacte-item"><a href="#" >Cuenta corriente<hr></a></li>
-                                        <li class="ubicaciones-item"><a href="#" >Mis ubicaciones<hr></a></li>
-                                        <li class="ultimos-item"><a href="#" >Ultimos vistos<hr></a><li>
-                                        <li class="favoritos-item"><a href="#" >Favoritos<hr></a><li>
-                                        <li class="presupuestos-item"><a href="#" >Presupuestos<hr></a><li>
-                                        <li class="cierreSesion-item"><a href="../index.php" id="cierreSession">Cerrar sesion <hr></a></li>
-                                    </ul>
-                                </div> -->
                             </div>                                
                         </div>
                     </div>

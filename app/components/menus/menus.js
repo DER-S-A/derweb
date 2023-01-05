@@ -24,11 +24,13 @@ class MenuComponent {
             if (document.getElementById("menu-options").style.display === "none" 
                     || document.getElementById("menu-options").style.display === "") {
                 document.getElementById("menu-options").style.display = "block";
-                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-xmark'></i>";
+                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-xmark'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-chevron-up'></i>";
             }
             else {
                 document.getElementById("menu-options").style.display = "none";
-                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-chevron-down'></i>";
             }
             });
             document.getElementById("btnPushMenu").addEventListener("keyup", (e)=>{
