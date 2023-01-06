@@ -203,7 +203,9 @@ class FichaArticulo extends ComponentManager {
             let objImg = new Image();
             objImg.className = "d-block w-100";
             objImg.alt = "foto-producto";
-            objImg.src = "../admin/ufiles/" + foto.archivo;
+            let src = "../admin/ufiles/" + foto.archivo;
+            objImg.src = src;
+            objImg.setAttribute("onclick", "agrandarFoto('" + src + "')");
             if(index ===0){
                 objBoton.className = "active";
                 objBoton.setAttribute("aria-current", "true");
@@ -296,10 +298,10 @@ class FichaArticulo extends ComponentManager {
     }    
 }
 
-function agrandarFoto(){
+function agrandarFoto(src){
     let objDivfoto = document.createElement("div");
     let objImg = new Image();
-    objImg.src = "assets/imagenes/embrague.jpg"
+    objImg.src = src; /*"../admin/ufiles/20223/f1672139548_infladorosr.jpg"*/
     let objContainer = document.querySelector("#content-wrap");
     objDivfoto.className = "foto-grande-ficha";
     objDivfoto.append(objImg);

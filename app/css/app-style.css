@@ -68,15 +68,6 @@ body {
     width: 65%;
 }
 
-.num-cliente span {
-    background-color: #009ada;
-    color: #f5f5f5;
-    font-family: "futura";
-    font-weight: bold;
-    border-radius: 7%;
-    padding: 1%;
-}
-
 .carousel-inner img {
     max-height: 20rem;
 }

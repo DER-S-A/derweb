@@ -17,14 +17,20 @@
 .app-footer-container {
     position: relative;
     float: left;
-    width: 60%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.app-footer-container .row {
+    align-items: center;
+    justify-content: center;
 }
 
 .app-footer .app-social-bar {
     list-style-type: none;
     margin-top: 5px;
+    text-align: end;
 }
 
 .app-footer .app-social-bar li {
@@ -35,6 +41,15 @@
 
 .app-footer .app-social-bar li img {
     width: 30px;
+}
+
+.app-footer .app-social-bar a {
+    color: white;
+    font-size: 2em;
+}
+
+.contenedor-info {
+    height: 30%;
 }
 
 .app-footer-info {

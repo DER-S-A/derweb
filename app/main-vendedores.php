@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-10">
+                            <div class="col-md-10 buscador-mas-menu">
                                 <div id="barra_busqueda" class="app-home-barra-opciones">
                                     <ul>
                                         <li>
@@ -93,13 +93,14 @@
                                             </select>
                                         </li>
 
-                                        <li>
+                                        <li style=" width: auto">
                                             <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
-                                                <i class="fa-solid fa-magnifying-glass"></i> BUSCAR
+                                                <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
                                         </li>
                                     </ul>
                                 </div>
+                                <div id="menu-container" class="menu-container"></div>
                             </div>                                
                         </div>
                     </div>
@@ -108,7 +109,7 @@
                 <!-- Acá armar el menú principal -->
                 <div id="toolbar" class="toolbar-container">
                     <ul>
-                        <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
+                        <!-- <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li> -->
                         <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
                         <li class="toolbar-col-3"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
@@ -128,28 +129,31 @@
             </main>
 
             <footer class="app-footer" style="bottom: 0; position:fixed;">
-                <div class="app-footer-container container">
+                <div class="app-footer-container container-fluid">
                     <div class="row">
                         <div class="col-lg-3">
                             <ul class="app-social-bar">
-                                <li>
-                                    <a href="https://www.facebook.com/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a>
+                            <li>
+                                    <!-- <a href="https://www.facebook.com/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a> -->
+                                    <a href="https://www.facebook.com/derdistribuciones/"><i class="fa-brands fa-facebook"></i></a>
                                 </li>
 
                                 <li>
-                                    <a href="https://www.instagram.com/der.distribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a>
+                                    <!-- <a href="https://www.instagram.com/der.distribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a> -->
+                                    <a href="https://www.instagram.com/der.distribuciones/"><i class="fa-brands fa-instagram"></i></a>
                                 </li>
 
                                 <li>
-                                    <a href="https://www.youtube.com/user/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a>
+                                    <!-- <a href="https://www.youtube.com/user/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a> -->
+                                    <a href="https://www.youtube.com/user/derdistribuciones/"><i class="fa-brands fa-youtube"></i></a>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="col-md-9">
+                        <div class="col-lg-4">
                             <ul class="app-footer-info">
                                 <li>
                                     <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span><br>
