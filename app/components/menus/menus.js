@@ -10,6 +10,7 @@ class MenuComponent {
     constructor(xidContainer) {
         this.menuContainer = document.getElementById(xidContainer);
         this.__objApp = new App();
+        
     }
 
     /**

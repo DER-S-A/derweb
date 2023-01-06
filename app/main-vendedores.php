@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-10">
+                            <div class="col-md-10 buscador-mas-menu">
                                 <div id="barra_busqueda" class="app-home-barra-opciones">
                                     <ul>
                                         <li>
@@ -93,13 +93,14 @@
                                             </select>
                                         </li>
 
-                                        <li>
+                                        <li style=" width: auto">
                                             <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
                                                 <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
                                         </li>
                                     </ul>
                                 </div>
+                                <div id="menu-container" class="menu-container"></div>
                             </div>                                
                         </div>
                     </div>
@@ -108,7 +109,7 @@
                 <!-- Acá armar el menú principal -->
                 <div id="toolbar" class="toolbar-container">
                     <ul>
-                        <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
+                        <!-- <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li> -->
                         <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
                         <li class="toolbar-col-3"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
