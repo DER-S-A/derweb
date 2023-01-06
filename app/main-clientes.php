@@ -145,18 +145,21 @@
                         <div class="col-lg-3">
                             <ul class="app-social-bar">
                                 <li>
-                                    <a href="https://www.facebook.com/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a>
+                                    <!-- <a href="https://www.facebook.com/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a> -->
+                                    <a href="https://www.facebook.com/derdistribuciones/"><i class="fa-brands fa-facebook"></i></a>
                                 </li>
 
                                 <li>
-                                    <a href="https://www.instagram.com/der.distribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a>
+                                    <!-- <a href="https://www.instagram.com/der.distribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a> -->
+                                    <a href="https://www.instagram.com/der.distribuciones/"><i class="fa-brands fa-instagram"></i></a>
                                 </li>
 
                                 <li>
-                                    <a href="https://www.youtube.com/user/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a>
+                                    <!-- <a href="https://www.youtube.com/user/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a> -->
+                                    <a href="https://www.youtube.com/user/derdistribuciones/"><i class="fa-brands fa-youtube"></i></a>
                                 </li>
                             </ul>
                         </div>

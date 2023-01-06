@@ -129,28 +129,31 @@
             </main>
 
             <footer class="app-footer" style="bottom: 0; position:fixed;">
-                <div class="app-footer-container container">
+                <div class="app-footer-container container-fluid">
                     <div class="row">
                         <div class="col-lg-3">
                             <ul class="app-social-bar">
-                                <li>
-                                    <a href="https://www.facebook.com/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a>
+                            <li>
+                                    <!-- <a href="https://www.facebook.com/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a> -->
+                                    <a href="https://www.facebook.com/derdistribuciones/"><i class="fa-brands fa-facebook"></i></a>
                                 </li>
 
                                 <li>
-                                    <a href="https://www.instagram.com/der.distribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a>
+                                    <!-- <a href="https://www.instagram.com/der.distribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a> -->
+                                    <a href="https://www.instagram.com/der.distribuciones/"><i class="fa-brands fa-instagram"></i></a>
                                 </li>
 
                                 <li>
-                                    <a href="https://www.youtube.com/user/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a>
+                                    <!-- <a href="https://www.youtube.com/user/derdistribuciones/">
+                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a> -->
+                                    <a href="https://www.youtube.com/user/derdistribuciones/"><i class="fa-brands fa-youtube"></i></a>
                                 </li>
                             </ul>
                         </div>
 
-                        <div class="col-md-9">
+                        <div class="col-lg-4">
                             <ul class="app-footer-info">
                                 <li>
                                     <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span><br>
