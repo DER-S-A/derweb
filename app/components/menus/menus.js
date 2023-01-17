@@ -10,6 +10,7 @@ class MenuComponent {
     constructor(xidContainer) {
         this.menuContainer = document.getElementById(xidContainer);
         this.__objApp = new App();
+        
     }
 
     /**
@@ -24,11 +25,13 @@ class MenuComponent {
             if (document.getElementById("menu-options").style.display === "none" 
                     || document.getElementById("menu-options").style.display === "") {
                 document.getElementById("menu-options").style.display = "block";
-                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-xmark'></i>";
+                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-xmark'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-chevron-up'></i>";
             }
             else {
                 document.getElementById("menu-options").style.display = "none";
-                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fa-solid fa-chevron-down'></i>";
             }
             });
             document.getElementById("btnPushMenu").addEventListener("keyup", (e)=>{
@@ -55,7 +58,7 @@ class MenuComponent {
         var aOperaciones = objAPIs.getFromAPI(this.__objApp.getUrlApi("app-operaciones-getByTipoEntidad") 
             + "?idTipoEntidad=" + idTipoEntidad);
 
-        aOperaciones.forEach(xElement => {
+        aOperaciones.forEach(xElement => {console.log(xElement)
             let objLink = document.createElement("a");
             objLink.href = xElement.url;
             objLink.innerHTML = "<i class='" + xElement.icono + "'></i>&nbsp;" + xElement.nombre;

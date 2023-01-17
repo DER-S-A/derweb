@@ -63,7 +63,7 @@ class ListaArticuloComponent {
         objButton.id = "btnPushListaArticulo";
         objButton.name = "btnPushListaArticulo";
         objButton.type = "button";
-        objButton.innerHTML = /*<i class='fa-solid fa-list'></i>*/ "LISTA DE ARTICULOS";
+        objButton.innerHTML = /*<i class='fa-solid fa-list'></i>*/ "<i id='botonHambur' class='fas fa-bars'></i>";
         objButton.classList.add("btn");
         objButton.classList.add("lista-articulos-button");
                 
@@ -133,6 +133,7 @@ class ListaArticuloComponent {
             let objDivTexto = document.createElement("div");
             let objDivIcono = document.createElement("div");
             let objLink = document.createElement("a");
+            
 
             // Si es la lista de rubros, entonces hago el llamado a la función para desplegar
             // los subrubros del rubro seleccionado, en caso contrario, hago el llamado a la
@@ -141,6 +142,7 @@ class ListaArticuloComponent {
                 objLink.href = "javascript:desplegar_subrubros(" + xrow.id + ");";
             else
                 objLink.href = "javascript:mostrar_articulos(" + sessionStorage.getItem("derweb_id_rubro_seleccionado") + ", " +  xrow.id + ");";
+                //sessionStorage.setItem("derweb_id_rubro_seleccionado", xrow.id);
 
             objDivContainerOption.classList.add("opcion-rubro-container");
             objDivTexto.classList.add("opcion-rubro-texto-container");
@@ -177,6 +179,7 @@ function desplegar_subrubros(xid_rubro) {
     var objTitulo = document.createElement("h5");
     var rubroSeleccionado = objCatalogo.getRubros("id = " + xid_rubro);
     var objListaSubrubroAbierta = document.getElementById("lista-subrubros-container");
+    
 
     sessionStorage.setItem("derweb_id_rubro_seleccionado", xid_rubro);
 

@@ -63,6 +63,8 @@ class MiPerfil extends ComponentManager {
     objDiv3.appendChild(objButton);
 
     
+
+    
     
     // Aca uso el fetch para traerme toda la api
 
@@ -73,7 +75,7 @@ class MiPerfil extends ComponentManager {
       done(data); //dentro de done estoy mandando el data
       });
     }
-    dataApi(data =>{ console.log(data);
+    dataApi(data =>{
       /*for (let i = 0; i < data.length; i++) {
         if (xIdCliente == data[i].id) {
           xIdCliente = data[i];
@@ -82,27 +84,36 @@ class MiPerfil extends ComponentManager {
       }*/
 
       xIdCliente = data[0];
+      let xparametrosxUrl = "id_sucursales=1";
 
-      /**
-      * Genero el contenido de los nodos.
-      */
-      objH1.innerHTML = "MI PERFIL";
-      objH2.innerHTML = xIdCliente.nombre;
-      objButton.innerHTML = "CAMBIAR CONTRASEÑA";
-      let valorli = ["NÚMERO DE CLIENTE: ", "DIRECCIÓN: ", "TELÉFONO: ", "MAIL: ", "VENDEDOR: ",
-        "BENEFICIO VIGENTE: ", "ENTREGA PREDETERMINADA: "
-      ];
+      (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
+        
+        /**
+        * Genero el contenido de los nodos.
+        */
+        objH1.innerHTML = "MI PERFIL";
+        objH2.innerHTML = xIdCliente.nombre;
+        objButton.innerHTML = "CAMBIAR CONTRASEÑA";
+        let valorli = ["NÚMERO DE CLIENTE: ", "DIRECCIÓN: ", "TELÉFONO: ", "MAIL: ", "VENDEDOR: ",
+          "BENEFICIO VIGENTE: ", "ENTREGA PREDETERMINADA: "
+        ];
+        
+        
+        let valorspan = [xIdCliente.cliente_cardcode, xIdCliente.direccion, xIdCliente.telefono, xIdCliente.email, "AGUSTIN", xIdCliente.descuento_1, xdatos[0].descripcion];
+
+        for (let i = 0; i < 7; i++) {
+          let objLi7 = document.createElement("li");
+          let objspan = document.createElement("span");
+          objLi7.style.listStyle = "none";
+          objUl.appendChild(objLi7).appendChild(objspan);
+          objLi7.innerHTML = valorli[i] + "<span>" + valorspan[i] + "</span>";
+          objspan.innerHTML = valorspan[i];
+        }
+
+      });  
       
-      let valorspan = [xIdCliente.cliente_cardcode, "MORENO 1240", xIdCliente.telefono, xIdCliente.email, "AGUSTIN", xIdCliente.descuento_1, "RETIRA VIAJANTE"];
 
-      for (let i = 0; i < 7; i++) {
-        let objLi7 = document.createElement("li");
-        let objspan = document.createElement("span");
-        objLi7.style.listStyle = "none";
-        objUl.appendChild(objLi7).appendChild(objspan);
-        objLi7.innerHTML = valorli[i] + "<span>" + valorspan[i] + "</span>";
-        objspan.innerHTML = valorspan[i];
-      }
+      
     });
   }
 }

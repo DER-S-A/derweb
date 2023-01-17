@@ -222,7 +222,6 @@ class ConfirmacionPedido {
                     var xselec = JSON.parse(sessionStorage.getItem("derweb_sesion"));
                     xselec = xselec.id_sucursal;
                     let objOption = document.getElementById("suc-deselecylabel");
-                    console.log("comprador");
                     objOption.style.display = "none";
                 } 
                 let xparametrosxUrl = "id_sucursales=" + xselec;
@@ -240,7 +239,6 @@ class ConfirmacionPedido {
                     // Me traigo la lista de transporte para pegar en el selector de transportes.
 
                     (new APIs()).call(this.__objApp.getUrlApi("app-transportes"), "", "GET", (xdatos) => {
-                        console.log(xdatos);
                         xdatos.forEach((xitem) => {
                             // Completo los option con el resultado de json q traigo con el fetch call.
                             let objOption = document.createElement("option");
@@ -341,8 +339,7 @@ class ConfirmacionPedido {
      */
 
      displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, objSelectTransporte, change = false) {
-        console.log(opcionElegidaDeEnvio);
-        console.log(objSelectTransporte);
+        
         if(change) {
             if(opcionElegidaDeEnvio != xcodigo){
                 objSelectTransporte.style.display = "none";

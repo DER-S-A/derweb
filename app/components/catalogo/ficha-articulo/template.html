@@ -1,6 +1,6 @@
 <div class="row header-template-ficha">
     <div class="col-lg-3 mx-3">
-        <a href="main-clientes.php"><i class="fa-solid fa-reply"></i></a>
+        <a href="javascript:mostrar_articulos({rubroysub})"><i class="fa-solid fa-reply" title="Volver"></i></a>
     </div>
     <div class="col-lg-7">
         <div class="catalogo-container" id="catalogo-container">
@@ -17,11 +17,11 @@
                         <div class="col-lg-9">
                             <div class="options-container">
                                 <ul>
-                                    <li><input type="checkbox" id="opcion-lista-precio" name="undefined"> <span>PRECIO
+                                    <li><input type="checkbox" id="ficha-opcion-lista" name="opcion-precios-lista" {lista}> <span>PRECIO
                                             DE LISTA</span></li>
-                                    <li><input type="checkbox" id="opcion-costo" name="opcion-precios"> <span>PRECIO DE
+                                    <li><input type="checkbox" id="ficha-opcion-costo" name="opcion-precios-costo" {costo}><span>PRECIO DE
                                             COSTO</span></li>
-                                    <li><input type="checkbox" id="opcion-venta" name="opcion-precios" checked="true">
+                                    <li><input type="checkbox" id="ficha-opcion-venta" name="opcion-precios-venta" {venta}>
                                         <span>PRECIO DE VENTA</span>
                                     </li>
                                 </ul>
@@ -38,15 +38,17 @@
         <!-- COLOCO CARRUSEL  -->
         <div id="carousel-ficha" class="carousel slide" data-bs-ride="false">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carousel-ficha" data-bs-slide-to="0" class="active"
+                <!-- <button type="button" data-bs-target="#carousel-ficha" data-bs-slide-to="0" class="active"
                     aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carousel-ficha" data-bs-slide-to="1"
                     aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carousel-ficha" data-bs-slide-to="2"
                     aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carousel-ficha" data-bs-slide-to="3"
+                    aria-label="Slide 4"></button> -->
             </div>
             <div class="carousel-inner">
-                <div class="carousel-item active">
+                <!-- <div class="carousel-item active">
                     <img src="assets/imagenes/embrague.jpg" class="d-block w-100" alt="..." onclick="agrandarFoto()">
                 </div>
                 <div class="carousel-item">
@@ -55,6 +57,9 @@
                 <div class="carousel-item">
                     <img src="assets/imagenes/embrague3.jpg" class="d-block w-100" alt="...">
                 </div>
+                <div class="carousel-item">
+                    <img src="assets/imagenes/embrague2.jpg" class="d-block w-100" alt="...">
+                </div> -->
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carousel-ficha"
                 data-bs-slide="prev">
@@ -94,13 +99,19 @@
                     </div>
                     <div class="col-lg-6 stock">
                         <p>STOCK</p>
-                        <p>VERDE</p>
+                        <ul class="semaforo verde" id="stock-ficha">
+                            <li title="Dispoible"></li>
+                            <li title="Consulte"></li>
+                            <li title="Sin stock"></li>
+                            <li title="Por pedido"></li>
+                            <li title="Inhabilitado"></li>
+                            </ul>
                     </div>
                 </div>
             </div>
             <div class="container-fluid my-4 input-mas-carro">
-                <input type="number" class="input-ficha mx-2">
-                <a href="" class="carrito-ficha mx-2"> <i class="fa-solid fa-cart-plus"></i></a>
+                <input type="number" class="input-ficha mx-2" id="txtcantidad_{id_art}">
+                <a href="javascript:agregarAlCarrito({id_articulo})" class="carrito-ficha mx-2" title="Agregar al Carrito"> <i class="fa-solid fa-cart-plus"></i></a>
             </div>
         </div>
         <div class="informacion">
@@ -122,8 +133,7 @@
     <div class="col-lg-4 offset-lg-3">
         <h4>APLICACIONES</h4>
         <ul>
-            <li>VOLKSWAGEN FOX (2009-2017)</li>
-            <li>VOLKSWAGEN UP 1.0</li>
+            <li>EN CONSTRUCCIÓN</li>
         </ul>
     </div>
     <div class="col-lg-5 my-4">
@@ -140,196 +150,6 @@
 
     <div id="carrusel-equivalencias" class="carousel carousel-dark slide" data-bs-ride="carousel">
         <div class="carousel-inner contenedor-carrusel-equivalencias">
-            <!-- <div class="carousel-item active">
-
-
-                <div class="row contenedor-pagina">
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">{imp}</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-            </div>
-            <div class="carousel-item">
-
-
-
-                <div class="row contenedor-pagina">
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-2">
-                        <div class="card">
-                            <div class="logo-equi">
-                                <img src="assets/imagenes/sachs.png" alt="" class="card-img-top">
-                            </div>
-                            <h6>PA41001PAR</h6>
-                            <div class="precio-lista-equi ">
-                                <p class="descrip">PRECIO DE LISTA</p>
-                                <p class="importe">10542</p>
-                            </div>
-                            <div class="precio-costo-equi">
-                                <p class="descrip">PRECIO DE COSTO</p>
-                                <p class="importe">8050</p>
-                            </div>
-                            <div class="precio-venta-equi">
-                                <p class="descrip">PRECIO DE VENTA</p>
-                                <p class="importe">15000</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </div> -->
 
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carrusel-equivalencias"

@@ -26,14 +26,14 @@
 
 #top-menu .menu_options {
     position: absolute;
-    float: left;
+    float: right;
     width: 300px;
     background-color: #f5f5f5;
     display: none;
     max-height: 93vh;
     overflow-y: auto;
     overflow-x: hidden;
-    left: 0px;
+    right: 0px;
     opacity: .95;
     border: 2px solid lightgray;
     z-index: 99999;

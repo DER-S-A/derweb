@@ -361,12 +361,14 @@ class ArticulosModel extends Model {
             ;
 
         $sql_equivalencias = $this->consultaGenerarEquivalencias($xid_articulo, $xid_cliente);
+        $sql_art_fotos = $this->consultaGenerarFotosArticulos($xid_articulo);
 
 
         $response = [];
         $response ["informacion"]= getRs($sql, true)->getAsArray();
         $response ["codigos_originales"]= getRs($sql_codigoOriginales, true)->getAsArray();
         $response ["equivalencias"] = getRs($sql_equivalencias, true)->getAsArray();
+        $response["fotos"] = getRs($sql_art_fotos, true)->getAsArray();
         return $response;
     }
 
@@ -379,6 +381,11 @@ class ArticulosModel extends Model {
         INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
         where equivalencia = (select equivalencia from articulos where id=$xid_articulo) and articulos.id != $xid_articulo";
 
+        return $sql;
+    }
+
+    public function consultaGenerarFotosArticulos($xid_articulo) {
+        $sql = "SELECT archivo FROM art_fotos WHERE id_articulo = $xid_articulo";
         return $sql;
     }
 }

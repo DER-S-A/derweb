@@ -28,6 +28,10 @@
     margin-left: 3%;
 }
 
+.ficha {
+    width: 80%;
+}
+
 .cuerpo-ficha p {
     margin-bottom: 0;
     font-weight: bolder;
@@ -36,6 +40,10 @@
 
 .cuerpo-ficha h5, .cuerpo-ficha h3 {
     font-weight: bolder;
+}
+
+.ocultar-precio {
+    display: none;
 }
 
 .logo-marca {
@@ -48,9 +56,45 @@
     height: 100%;
 }
 
-.ficha {
-    width: 80%;
+
+
+
+
+ul.semaforo {
+    position: relative;
+    /*width: 100px; para 5 (ancho li x nº de círculos total) */
+    margin: 10px auto;
+    padding: 0;
+    list-style-type: none;
 }
+    ul.semaforo li {
+    position: relative;
+    display: block;
+    float: left;
+    width: 20px; /* ancho de cada círculo */
+    height: 20px;
+    border-radius: 50%;
+    background: lightgrey;
+    margin: auto 1%;
+}
+
+.rojo li:nth-of-type(3) {
+    background: #cc0000;
+}
+    .gris li:nth-of-type(5) {
+    background: #0f0f0f;
+}
+    .verde li:nth-of-type(1) {
+    background: #1fb41f;
+}
+    .azul li:nth-of-type(4) {
+    background: #3366ff;
+}
+    .amarillo li:nth-of-type(2) {
+    background: rgb(238, 238, 4);
+}
+
+
 
 .input-mas-carro {
     display: flex;

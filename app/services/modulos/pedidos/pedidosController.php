@@ -217,6 +217,29 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
+    
+    /**
+     * grabarPedido
+     * Permite grabar un pedido completo desde la pantalla de pedidos rápidos.
+     * @return void
+     */
+    public function grabarPedido() {
+        if ($this->usePostMethod()) {
+            try {
+                $jsonData = $this->getBodyParameter();
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->grabarPedido($jsonData));
+            } catch (Exception $e) {
+                $this->setErrorFromException($e);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 }
 
 ?>
