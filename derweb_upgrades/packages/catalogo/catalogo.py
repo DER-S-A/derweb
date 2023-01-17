@@ -4,6 +4,7 @@ Descripción
     Permite extraer los datos desde SAP y actualizar la base
     de datos del catálogo en MySQL.
 """
+
 from dataclasses import replace
 from datetime import datetime
 from multiprocessing.sharedctypes import Value
@@ -190,7 +191,6 @@ class Catalogo:
             sap.login()
             pagina = 0
             entidades = sap.getData("clientes", None, pagina)
-            print(len(entidades["value"]))
             while len(entidades["value"]) != 0 :
                for entidad in entidades["value"]:
                    strParametro = "registro=" + json.dumps(entidad)
@@ -213,30 +213,92 @@ class Catalogo:
             Este método permite actualizar los artículos del catálogo.
         """
         sap = SAPManager()
-        strUrl = "http://localhost/derweb/app/services/articulos/upgrade"
-        headers = {
-            "Content-Type": "application/json"
-        } 
+        mysql = MySqlManager()
+        # strUrl = "http://localhost/derweb/app/services/articulos/upgrade"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # } 
         try :
+            artDER = mysql.getQuery("SELECT CODIGO, FECHA_MODIFICADO FROM ARTICULOS;")
             sap.login()
             pagina = 0
+            queondaperro = 0
+            actualizados = 0
+            nuevos = 0
+            NoActualizados = 0
+            start_time = time.perf_counter()
             articulos = sap.getData("articulos", None, pagina)
-            while len(articulos["value"]) != 0 :
-                for articulo in articulos["value"]:
-                    strParametro = "registro=" + json.dumps(articulo)
-                    strParametro = strParametro.replace("&", "y")
-                    respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                print("Code: " + respuesta['result_code'])
-                print("Mensaje: " + respuesta['result_mensaje'])
-                pagina += 20
-                print("Procesando página: " + str(pagina))
-                articulos = sap.getData("articulos", None, pagina)
-
+          #  while len(articulos["value"]) != 0 :
+            for articulo in articulos["value"]:
+                    Noencontrado = True;
+                    Error = False;
+                    # hora = datetime.fromtimestamp(articulo["UpdateTime"]).strftime("%H:%M:%S")
+                    for aDER in artDER :
+                        if articulo["ItemCode"] == aDER[0]:
+                            Noencontrado = False
+                            if  '2023-01-16' != aDER[1].strftime("%Y-%m-%d"):   
+                                # strParametro = "registro=" + json.dumps(articulo)
+                                # strParametro = strParametro.replace("&", "y")
+                                # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()                        
+                                # print(f"Code: {respuesta['result_code']}")
+                                # print(f"Mensaje: {respuesta['result_mensaje']}")    
+                                if type(articulo['RubroCod']) != str:
+                                    Error = True    
+                                if type(articulo['SubRubroCod']) != str:
+                                    Error = True
+                                if type(articulo['MarcaCod']) != str :
+                                    Error = True
+                                if type(articulo['ItemCode']) != str: 
+                                    Error = True  
+                                if type(articulo["ItemName"]) != str:
+                                    Error = True  
+                                if (Error != True):    
+                                    articulo['ItemName'] = articulo["ItemName"].replace("'","")
+                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"               
+                                    mysql.execute(sql)
+                                    actualizados+=1
+                                else : print('Error')
+                            else : NoActualizados+=1   
+                    if (Noencontrado):
+                        # strParametro = "registro=" + json.dumps(articulo)
+                        # strParametro = strParametro.replace("&", "y")
+                        # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json() 
+                        if type(articulo['RubroCod']) != str:
+                            Error = True 
+                        if type(articulo['SubRubroCod']) != str:
+                            Error = True
+                        if type(articulo['MarcaCod']) != str :
+                            Error = True
+                        if type(articulo['ItemCode']) != str: 
+                            Error = True  
+                        if type(articulo["ItemName"]) != str:
+                            Error = True  
+                        if (Error != True):    
+                            articulo['ItemName'] = articulo["ItemName"].replace("'","")
+                            sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"               
+                            mysql.execute(sql)
+                        # print(f"Code: {respuesta['result_code']} ")
+                        # print(f"Mensaje: {respuesta['result_mensaje']}")
+                        nuevos+= 1
+                    queondaperro+= 1
+                    print (f"QUE ONDA PERRRRRRRRRRO: {queondaperro}")
+            pagina += 10000
+                #print(f"Procesando página: {str(pagina)}")
+                #articulos = sap.getData("articulos", None, pagina)
+            print ("Proceso Finalizado ")
+            elapsed_time = time.perf_counter() - start_time
+            minute = int(elapsed_time / 60)
+            seconds = int(elapsed_time % 60)
+            print(f"Tiempo establecido: {minute}.{seconds} ")
+            print(f"Actualizados: {str(actualizados)}")
+            print(f"NoActualizados: {str(NoActualizados)}")
+            print(f"Nuevos: {str(nuevos)}")
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             # print(strParametro)
             sap.logout()
+            sys.exit(1);
 
     def getTasaIVA(self, xcode, xsapObject):
         """

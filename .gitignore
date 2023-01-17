@@ -10,3 +10,4 @@
 /app/services/test/
 /backups/
 *.sql
+derweb_upgrades/.vscode

@@ -46,7 +46,8 @@ class SAPManager:
 
         headers = {
             "Content-Type": "application/json",
-            "Cookie": 'B1SESSION=' + self.sessionId + "; ROUTER.node1"
+            "Cookie": 'B1SESSION=' + self.sessionId + "; ROUTER.node1",
+            "Prefer": "odata.maxpagesize=0"
         }
         result = requests.get(url, headers=headers, verify=False).json()
         return result
