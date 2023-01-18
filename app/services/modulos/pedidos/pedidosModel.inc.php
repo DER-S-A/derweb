@@ -170,39 +170,15 @@ class PedidosModel extends Model {
      */
     private function generarInsertCabecera($xaCabecera) {
         $sql = "INSERT INTO pedidos (
-                    id_entidad,
-                    id_tipoentidad,
-                    id_estado,
-                    id_vendedor,
-                    id_sucursal,
-                    codigo_sucursal,
-                    id_transporte,
-                    codigo_transporte,
-                    id_formaenvio,
-                    descuento_1,
-                    descuento_2,
-                    subtotal,
-                    importe_iva,
-                    total,
-                    anulado,
-                    fecha_alta)
+                    id_entidad, id_tipoentidad, id_estado, id_vendedor,
+                    id_sucursal, codigo_sucursal, id_transporte, codigo_transporte,
+                    id_formaenvio, descuento_1, descuento_2, subtotal,
+                    importe_iva, total, anulado, fecha_alta)
                 VALUES (
-                    xidentidad,
-                    xidtipoentidad,
-                    xidestado,
-                    xidvendedor,
-                    xidsucursal,
-                    xcodSucursal,
-                    xidTransporte,
-                    xcodigoTransporte,
-                    xidFormaEnvio,
-                    xdescuento1,
-                    xdescuento2,
-                    xsubtotal,
-                    ximporte_iva,
-                    xtotal,
-                    0,
-                    current_timestamp)";
+                    xidentidad, xidtipoentidad, xidestado, xidvendedor,
+                    xidsucursal, xcodSucursal, xidTransporte, xcodigoTransporte,
+                    xidFormaEnvio, xdescuento1, xdescuento2, xsubtotal,
+                    ximporte_iva, xtotal, 0, current_timestamp)";
         $this->setParameter($sql, "xidentidad", intval($xaCabecera["id_entidad"]));
         $this->setParameter($sql, "xidtipoentidad", intval($xaCabecera["id_tipoentidad"]));
         $this->setParameter($sql, "xidestado", intval($xaCabecera["id_estado"]));
@@ -302,29 +278,13 @@ class PedidosModel extends Model {
         $total = $subtotal + $importeIVA;      
 
         $sql = "INSERT INTO pedidos_items (
-                    id_pedido,
-                    id_articulo,
-                    cantidad,
-                    porcentaje_oferta,
-                    precio_lista,
-                    costo_unitario,
-                    alicuota_iva,
-                    subtotal,
-                    importe_iva,
-                    total,
-                    anulado)
+                    id_pedido, id_articulo, cantidad, porcentaje_oferta,
+                    precio_lista, costo_unitario, alicuota_iva, subtotal,
+                    importe_iva, total, anulado)
                 VALUES (
-                    xidpedido,
-                    xidarticulo,
-                    xcantidad,
-                    xporcentajeOferta,
-                    xprecioLista,
-                    xcostoUnitario,
-                    xalicuotaIVA,
-                    xsubtotal,
-                    ximporteIVA,
-                    xtotal,
-                    0)";
+                    xidpedido, xidarticulo, xcantidad, xporcentajeOferta,
+                    xprecioLista, xcostoUnitario, xalicuotaIVA, xsubtotal,
+                    ximporteIVA, xtotal,  0)";
         $this->setParameter($sql, "xidpedido", $this->idPedido);
         $this->setParameter($sql, "xidarticulo", intval($xaItem["id_articulo"]));
         $this->setParameter($sql, "xcantidad", doubleval($xaItem["cantidad"]));
@@ -438,17 +398,10 @@ class PedidosModel extends Model {
         $tipoLogin = $aSesion["tipo_login"];
 
         $sql = "SELECT
-                    items.id,
-                    items.id_pedido,
-                    art.id AS id_articulo,
-                    items.cantidad,
-                    foto.archivo,
-                    art.codigo,
-                    art.descripcion AS descripcion_articulo,
-                    rub.descripcion AS descripcion_rubro,
-                    srb.descripcion AS descripcion_subrubro,
-                    precio.precio_lista,
-                    art.alicuota_iva
+                    items.id, items.id_pedido, art.id AS id_articulo, items.cantidad,
+                    foto.archivo, art.codigo, art.descripcion AS descripcion_articulo,
+                    rub.descripcion AS descripcion_rubro, srb.descripcion AS descripcion_subrubro,
+                    precio.precio_lista, art.alicuota_iva
                 FROM
                     pedidos_items items
                         INNER JOIN articulos art ON art.id = items.id_articulo
@@ -607,8 +560,7 @@ class PedidosModel extends Model {
         $rsEstado->close();
 
         $sql = "SELECT 
-                    id, 
-                    codigo_sucursal
+                    id, codigo_sucursal
                 FROM
                     sucursales
                 WHERE
@@ -770,13 +722,8 @@ class PedidosModel extends Model {
         $aResponse = [];
         try {
             $sql = "SELECT
-                        p.id,
-                        p.id_entidad,
-                        p.fecha_alta,
-                        ent.cliente_cardcode,
-                        ent.nombre,
-                        p.codigo_sucursal,
-                        p.total
+                        p.id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,
+                        ent.nombre, p.codigo_sucursal, p.total
                     FROM
                         pedidos p
                             INNER JOIN estados_pedidos est ON est.id = p.id_estado
@@ -798,18 +745,9 @@ class PedidosModel extends Model {
                 $aResponse[$i]["total"] = $rs->getValueFloat("total");
 
                 $sql = "SELECT
-                            item.id,
-                            item.id_pedido,
-                            item.cantidad,
-                            item.id_articulo,
-                            art.codigo,
-                            art.descripcion,
-                            item.precio_lista,
-                            item.costo_unitario,
-                            item.subtotal,
-                            item.alicuota_iva,
-                            item.importe_iva,
-                            item.total
+                            item.id, item.id_pedido, item.cantidad, item.id_articulo,
+                            art.codigo, art.descripcion, item.precio_lista, item.costo_unitario,
+                            item.subtotal, item.alicuota_iva, item.importe_iva, item.total
                         FROM
                             pedidos_items item
                                 INNER JOIN articulos art ON art.id = item.id_articulo
@@ -884,10 +822,88 @@ class PedidosModel extends Model {
            $total += $xdatos[$i]["total"]; 
         }
 
-        $sql = "UPDATE pedidos SET subtotal = $subtotal, importe_iva = $importe_iva, total = $total, fecha_modificado = CURRENT_TIMESTAMP
-        WHERE id = $xidpedido";
+        $sql = "UPDATE 
+                    pedidos 
+                SET 
+                    subtotal = $subtotal, 
+                    importe_iva = 
+                    $importe_iva, 
+                    total = $total, 
+                    fecha_modificado = CURRENT_TIMESTAMP
+                WHERE id = $xidpedido";
         $bd->execQuery($sql);
         $bd->close();
+    }
+    
+    /**
+     * grabarPedido
+     * Permite grabar un pedido completo que viene en dato en un JSON desde
+     * la pantalla de ingresos de pedidos rápidos.
+     * @param  string $xjsonData JSON con el pedido a grabar
+     * @return array Devuelve un array con el resultado de la operación.
+     */
+    public function grabarPedido($xjsonData) {
+        $aPedido = json_decode($xjsonData, true);
+
+        $objBD = new BDObject();
+        $objBD->beginT();
+        try {
+            $aResponse = [];
+            $sql = "CALL sp_pedidos_grabar (xidentidad, xidtipoentidad, xidvendedor,
+                            xidsucursal, xcodSucursal, xidTransporte, xcodigoTransporte,
+                            xidFormaEnvio, xsubtotal, ximporte_iva, xtotal)";
+            $this->setParameter($sql, "xidentidad", intval($aPedido["id_cliente"]));
+            $this->setParameter($sql, "xidtipoentidad", intval($aPedido["id_tipoentidad"]));
+            $this->setParameter($sql, "xidvendedor",intval($aPedido["id_vendedor"]));
+            $this->setParameter($sql, "xidsucursal", intval($aPedido["id_sucursal"]));
+            $this->setParameter($sql, "xcodSucursal", $aPedido["codigo_sucursal"]);
+            $this->setParameter($sql, "xidTransporte", intval($aPedido["id_transporte"]));
+            $this->setParameter($sql, "xcodigoTransporte", $aPedido["codigo_transporte"]);
+            $this->setParameter($sql, "xidFormaEnvio", intval($aPedido["id_formaenvio"]));
+            $this->setParameter($sql, "xsubtotal", doubleval($aPedido["subtotal"]));
+            $this->setParameter($sql, "ximporte_iva", doubleval($aPedido["importe_iva"]));
+            $this->setParameter($sql, "xtotal", doubleval($aPedido["total"]));
+
+            $objBD->execQuery($sql, false, true);
+            if (!sonIguales($objBD->getValue("codigo_error"), "BD_ERROR")) {
+                $objBD->rollbackT();
+                $aResponse["codigo"] = $objBD->getValue("codigo_error");
+                $aResponse["mensaje"] = $objBD->getValue("result");
+                return false;
+            }
+
+            // Recupero el id de pedido que se generó
+            $aPedido["id_pedido"] = $objBD->getValue("result");
+        
+            // Grabo los ítems.
+            for ($i = 0; $i < sizeof($aPedido["items"]); $i++) {
+                $sql = "CALL sp_pedidos_grabar_item (xidpedido, xidcliente, xidarticulo, xcantidad)";
+                $this->setParameter($sql, "xidpedido", $aPedido["id_pedido"]);
+                $this->setParameter($sql, "xidcliente", $aPedido["id_cliente"]);
+                $this->setParameter($sql, "xidarticulo", $aPedido["items"]["id_articulo"]);
+                $this->setParameter($sql, "xcantidad", $aPedido["items"]["cantidad"]);
+
+                $objBD->execQuery($sql, false, true);
+                if (!sonIguales($objBD->getValue("codigo_error"), "BD_ERROR")) {
+                    $objBD->rollbackT();
+                    $aResponse["codigo"] = $objBD->getValue("codigo_error");
+                    $aResponse["mensaje"] = $objBD->getValue("result");
+                    return false;
+                }
+            }
+
+            $objBD->commitT();
+            $aResponse["codigo"] = "OK";
+            $aResponse["mensaje"] = "El pedido se grabó satisfactoriamente";
+        } catch (Exception $e) {
+            $objBD->rollbackT();
+            $aResponse["codigo"] = "API_ERROR";
+            $aResponse["mensaje"] = $e->getMessage();
+        } finally {
+            $objBD->close();
+        }
+        
+        return true;
     }
 }
 

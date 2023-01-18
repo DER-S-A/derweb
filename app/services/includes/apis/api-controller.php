@@ -209,6 +209,14 @@ class APIController {
             
         return $filter;
     }
+
+    /**
+     * Permite recuperar un parámetro desde el body
+     */
+    protected function getBodyParameter() {
+        $datos = file_get_contents("php://input");
+        return $datos;
+    }
 }
 
 ?>
