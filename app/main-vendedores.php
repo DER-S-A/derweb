@@ -40,16 +40,9 @@
                         <a href="main-vendedores.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
                     </div>
                     <div class="col-md-11">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="app-header-buscar">
-                                    <input type="text" id="txtValorBuscado" name="txtValorBuscado" class="app-input-buscar" placeholder="Buscar">
-                                    <a href="javascript:buscarPorFrase()"><i class="fa-solid fa-magnifying-glass"></i></a>
-                                </div>
-                            </div>
-
-                            <div class="col-md-10 buscador-mas-menu">
-                                <div id="barra_busqueda" class="app-home-barra-opciones">
+                        <div class="row app-header-vendedor-row" id="app-header-vendedor-row">
+                            <div class="col-lg-12 buscador-mas-menu buscador-mas-menu-vendedor">
+                                <div id="barra_busqueda" class="app-home-barra-opciones" style="display: none;">
                                     <ul>
                                         <li>
                                             <label for="select_marca_repuesto">MARCA DE REPUESTO</label>

@@ -23,8 +23,8 @@ window.onload = () => {
     llenarMotor();
     llenarAnio();
     generarMenuOperaciones();
-    generarBotonListaArticulos();
-    generarBotonMiCarrito();
+    //generarBotonListaArticulos();
+    //generarBotonMiCarrito();
     getClientes();
 }
 

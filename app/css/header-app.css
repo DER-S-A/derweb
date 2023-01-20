@@ -10,6 +10,10 @@
     width: 99vw;
 }
 
+.row {
+    align-items: center !important;
+}
+
 .app-header {
     background-color: #003d7c;
     max-width: 100%;
@@ -24,7 +28,6 @@
 
 .app-header-buscar {
     width: 100%;
-    margin-top: 15px;
     background-color: white;
     padding: 3px;
     border-radius: 20px;
@@ -54,6 +57,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.buscador-mas-menu-vendedor {
+    justify-content: flex-end;
 }
 
 .num-cliente {
