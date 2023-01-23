@@ -4,6 +4,7 @@ Descripción
     Permite extraer los datos desde SAP y actualizar la base
     de datos del catálogo en MySQL.
 """
+
 from dataclasses import replace
 from datetime import datetime
 from multiprocessing.sharedctypes import Value
@@ -24,6 +25,7 @@ class Catalogo:
             Actualiza los paises
         """
         sap = SAPManager()
+        mysql = MySqlManager()
         strUrl = "http://localhost/derweb/app/services/paises/upgrade"
         headers = {
             "Content-Type": "application/json"
@@ -31,18 +33,24 @@ class Catalogo:
 
         sap.login() # Me logueo en SAP
         pagina = 0
+        procesados = 0
         paises = sap.getData("paises", None, pagina) # Extraigo los datos
+        sap.logout() # Me desconecto de SAP
         try:
-            while len(paises["value"]) != 0:
-                for pais in paises["value"]:
-                    strParametro = "registro=" + json.dumps(pais)
-                    strParametro = strParametro.replace("&", "y")
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                print(repuesta)
-                pagina += 20
-                paises = sap.getData("paises", None, pagina) # Extraigo los datos
-                print("Procesando página: " + str(pagina))
-            sap.logout() # Me desconecto de SAP
+            # while len(paises["value"]) != 0:
+            for pais in paises["value"]:
+                #     strParametro = "registro=" + json.dumps(pais)
+                #     strParametro = strParametro.replace("&", "y")
+                #     repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                # print(repuesta)
+                # pagina += 20
+                # paises = sap.getData("paises", None, pagina) # Extraigo los datos
+                # print("Procesando página: " + str(pagina))
+                sql = f"CALL sp_paises_upgrade('{pais['PaisCode']}','{pais['PaisName']}')"
+                mysql.execute(sql)
+                procesados += 1
+                print (f"Pasies Procesados: {procesados}")
+            mysql.closeDB()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             print(strParametro)
@@ -53,28 +61,34 @@ class Catalogo:
             Permite actualizar la tabla de provincias
         """
         sap = SAPManager()
-        strUrl = "http://localhost/derweb/app/services/provincias/upgrade"
-        headers = {
-            "Content-Type": "application/json"
-        }
+        mysql = MySqlManager()
+        # strUrl = "http://localhost/derweb/app/services/provincias/upgrade"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # }
         try:
             sap.login()
             pagina = 0
+            provincia = 0
             provincias = sap.getData("provincias", None, pagina)
-            while len(provincias["value"]) != 0:
-                for pcia in provincias["value"]:
-                    strParametro = "registro=" + json.dumps(pcia)
-                    if (pcia['PaisCode'] == 'AR'):
-                        strParametro = strParametro.replace("&", "y")
-                        repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                pagina += 20
-                provincias = sap.getData("provincias", None, pagina)
-                print("Procesando página: " + str(pagina))
-            print(repuesta)
+            # while len(provincias["value"]) != 0:
+            for pcia in provincias["value"]:
+                    # strParametro = "registro=" + json.dumps(pcia)
+                    # strParametro = strParametro.replace("&", "y")
+                    # repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                # pagina += 20
+                # provincias = sap.getData("provincias", None, pagina)
+                # print("Procesando página: " + str(pagina))
+                if (pcia['PaisCode'] == 'AR'):
+                    sql = f"CALL sp_provincias_upgrade({pcia['EstadoCode']}, '{pcia['PaisCode']}','{pcia['EstadoName']}')"
+                    mysql.execute(sql)
+                    provincia += 1
+                    print(f"Provincias procesadas: {provincia}")
+            # print(repuesta)
             sap.logout()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            print(strParametro)
+            print(pcia)
             sap.logout()
 
     def updateFormasEnvios(self):
@@ -98,6 +112,7 @@ class Catalogo:
             Permite actualizar los rubros.
         """
         sap = SAPManager()
+        mysql = MySqlManager()
         strUrl = "http://localhost/derweb/app/services/rubros/upgrade"
         headers = {
             "Content-Type": "application/json"
@@ -105,18 +120,22 @@ class Catalogo:
         try :
             sap.login()
             pagina = 0
+            rbr = 0
             rubros = sap.getData("rubros", None, pagina)
-            while len(rubros["value"]) != 0 :
-                for rubro in rubros["value"]:
-                    strParametro = "registro=" + json.dumps(rubro)
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-
-                print(repuesta)
-                print("Procesando página: " + str(pagina))
-                rubros = sap.getData("rubros", None, pagina)
-                pagina += 20
-
             sap.logout()
+            # while len(rubros["value"]) != 0 :
+            for rubro in rubros["value"]:
+                # strParametro = "registro=" + json.dumps(rubro)
+                # repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                # print(repuesta)
+                # print("Procesando página: " + str(pagina))
+                # rubros = sap.getData("rubros", None, pagina)
+                # pagina += 20
+                sql = f"CALL sp_rubros_upgrade({rubro['RubroCode']},'{rubro['RubroName']}')"
+                mysql.execute(sql)
+                rbr += 1
+                print(f"Rubros Procesados: {rbr}")
+            mysql.closeDB()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
@@ -126,25 +145,30 @@ class Catalogo:
             Permite actualizar los subrubros.
         """
         sap = SAPManager()
-        strUrl = "http://localhost/derweb/app/services/subrubros/upgrade"
-        headers = {
-            "Content-Type": "application/json"
-        }        
+        mysql = MySqlManager()
+        # strUrl = "http://localhost/derweb/app/services/subrubros/upgrade"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # }        
         try :
             sap.login()
             pagina = 0
+            srb = 0
             subrubros = sap.getData("subrubros", None, pagina)
-            while len(subrubros["value"]) != 0 :
-                for subrubro in subrubros["value"]:
-                    strParametro = "registro=" + json.dumps(subrubro)
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-
-                print(repuesta)
-
-                subrubros = sap.getData("subrubros", None, pagina)
-                pagina += 20
-                print("Procesando página: " + str(pagina))
             sap.logout()
+            # while len(subrubros["value"]) != 0 :
+            for subrubro in subrubros["value"]:
+                # strParametro = "registro=" + json.dumps(subrubro)
+                # repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                # print(repuesta)
+                # subrubros = sap.getData("subrubros", None, pagina)
+                # pagina += 20
+                # print("Procesando página: " + str(pagina))
+                sql = f"CALL sp_subrubros_upgrade({subrubro['SubRubroCode']},'{subrubro['SubRubroName']}')"
+                mysql.execute(sql)
+                srb += 1
+                print (f"Subrubros Procesados {srb}")     
+            mysql.closeDB()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
@@ -154,24 +178,30 @@ class Catalogo:
             Permite actualizar las marcas.
         """
         sap = SAPManager()
-        strUrl = "http://localhost/derweb/app/services/marcas/upgrade"
-        headers = {
-            "Content-Type": "application/json"
-        }   
+        mysql = MySqlManager()
+        # strUrl = "http://localhost/derweb/app/services/marcas/upgrade"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # }   
         try :
             sap.login()
             pagina = 0
             marcas = sap.getData("marcas", None, pagina)
-            while len(marcas["value"]) != 0 :
-                for marca in marcas["value"] :
-                    strParametro = "registro=" + json.dumps(marca)
-                    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                
-                print(repuesta)
-                marcas = sap.getData("marcas", None, pagina)
-                pagina += 20
-                print("Procesando página: " + str(pagina))
             sap.logout()
+            # while len(marcas["value"]) != 0 :
+            mark = 0
+            for marca in marcas["value"] :
+                # strParametro = "registro=" + json.dumps(marca)
+                # repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                # print(repuesta)
+                # marcas = sap.getData("marcas", None, pagina)
+                # pagina += 20
+                # print("Procesando página: " + str(pagina))
+                sql = f"call sp_marcas_upgrade({marca['MarcaCode']}, '{marca['MarcaName']}')"
+                mysql.execute(sql)
+                mark += 1
+                print(f"Marcas Procesadas: {mark}")          
+            mysql.closeDB()
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
@@ -182,29 +212,42 @@ class Catalogo:
             Permite actualizar los clientes en la tabla entidades.
         """
         sap = SAPManager()
-        strUrl = "http://localhost/derweb/app/services/entidades/upgradeClientes"
-        headers = {
-            "Content-Type": "application/json"
-        } 
+        mysql = MySqlManager()
+        # strUrl = "http://localhost/derweb/app/services/entidades/upgradeClientes"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # } 
         try :
             sap.login()
             pagina = 0
+            clientes = 0;
+            start_time = time.perf_counter()
             entidades = sap.getData("clientes", None, pagina)
-            print(len(entidades["value"]))
-            while len(entidades["value"]) != 0 :
-               for entidad in entidades["value"]:
-                   strParametro = "registro=" + json.dumps(entidad)
-                   strParametro = strParametro.replace("&", "y")
-                   repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-               
-               print(repuesta)
-               entidades = sap.getData("clientes", None, pagina)
-               pagina += 20
-               print("Procesando página: " + str(pagina))
             sap.logout()
+            # while len(entidades["value"]) != 0 :
+            for entidad in entidades["value"]:
+                if entidad['CardName'] is not None:
+                    entidad['CardName'] = entidad['CardName'].replace("'","")
+                sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']})"
+                mysql.execute(sql)
+                clientes += 1
+                print(f"Clientes Procesados: {clientes}")
+                #    strParametro = "registro=" + json.dumps(entidad)
+                #    strParametro = strParametro.replace("&", "y")
+                #    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
+                # print(repuesta)
+                # entidades = sap.getData("clientes", None, pagina)
+                # pagina += 20
+                # print("Procesando página: " + str(pagina))
+            mysql.closeDB()
+            elapsed_time = time.perf_counter() - start_time
+            minute = int(elapsed_time / 60)
+            seconds = int(elapsed_time % 60)
+            print(f"Tiempo establecido: {minute}.{seconds} ")
+            print ("Proceso Clientes Finalizado")
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            print(strParametro)
+            print(entidad)
             sap.logout()
 
 
@@ -213,30 +256,70 @@ class Catalogo:
             Este método permite actualizar los artículos del catálogo.
         """
         sap = SAPManager()
-        strUrl = "http://localhost/derweb/app/services/articulos/upgrade"
-        headers = {
-            "Content-Type": "application/json"
-        } 
+        mysql = MySqlManager()
+        # strUrl = "http://localhost/derweb/app/services/articulos/upgrade"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # } 
         try :
+            artDER = mysql.getQuery("SELECT CODIGO, FECHA_MODIFICADO FROM ARTICULOS;")
             sap.login()
             pagina = 0
+            arti = 0
+            actualizados = 0
+            nuevos = 0
+            NoActualizados = 0
+            start_time = time.perf_counter()
             articulos = sap.getData("articulos", None, pagina)
-            while len(articulos["value"]) != 0 :
-                for articulo in articulos["value"]:
-                    strParametro = "registro=" + json.dumps(articulo)
-                    strParametro = strParametro.replace("&", "y")
-                    respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                print("Code: " + respuesta['result_code'])
-                print("Mensaje: " + respuesta['result_mensaje'])
-                pagina += 20
-                print("Procesando página: " + str(pagina))
-                articulos = sap.getData("articulos", None, pagina)
-
             sap.logout()
+            #  while len(articulos["value"]) != 0 :
+            for articulo in articulos["value"]:
+                    Noencontrado = True;
+                    # hora = datetime.fromtimestamp(articulo["UpdateTime"]).strftime("%H:%M:%S")
+                    for aDER in artDER :
+                        if articulo["ItemCode"] == aDER[0]:
+                            Noencontrado = False
+                            if  '2023-01-16' != aDER[1].strftime("%Y-%m-%d"):   
+                                # strParametro = "registro=" + json.dumps(articulo)
+                                # strParametro = strParametro.replace("&", "y")
+                                # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()                        
+                                # print(f"Code: {respuesta['result_code']}")
+                                # print(f"Mensaje: {respuesta['result_mensaje']}")    
+                                articulo['ItemName'] = articulo["ItemName"].replace("'","")
+                                sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"               
+                                mysql.execute(sql)
+                                actualizados+=1
+                            else : NoActualizados+=1   
+                    if (Noencontrado):
+                        # strParametro = "registro=" + json.dumps(articulo)
+                        # strParametro = strParametro.replace("&", "y")
+                        # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json() 
+                        articulo['ItemName'] = articulo["ItemName"].replace("'","")
+                        sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"               
+                        mysql.execute(sql)
+                        # print(f"Code: {respuesta['result_code']} ")
+                        # print(f"Mensaje: {respuesta['result_mensaje']}")
+                        nuevos+= 1
+                    arti+= 1
+                    print (f"Articulos Procesados: {arti}")
+            # pagina += 10000
+                #print(f"Procesando página: {str(pagina)}")
+                #articulos = sap.getData("articulos", None, pagina)
+            mysql.closeDB()
+            print ("Proceso Finalizado ")
+            elapsed_time = time.perf_counter() - start_time
+            minute = int(elapsed_time / 60)
+            seconds = int(elapsed_time % 60)
+            print(f"Tiempo establecido: {minute}.{seconds} ")
+            print(f"Actualizados: {str(actualizados)}")
+            print(f"NoActualizados: {str(NoActualizados)}")
+            print(f"Nuevos: {str(nuevos)}")
+            
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            # print(strParametro)
+            print(articulo)
             sap.logout()
+            sys.exit(1);
 
     def getTasaIVA(self, xcode, xsapObject):
         """
