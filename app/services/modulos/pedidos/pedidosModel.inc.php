@@ -723,7 +723,7 @@ class PedidosModel extends Model {
         try {
             $sql = "SELECT
                         p.id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,
-                        ent.nombre, p.codigo_sucursal, p.total
+                        ent.nombre, p.id_sucursal, p.codigo_sucursal, p.total
                     FROM
                         pedidos p
                             INNER JOIN estados_pedidos est ON est.id = p.id_estado
@@ -741,6 +741,7 @@ class PedidosModel extends Model {
                 $aResponse[$i]["fecha_alta"] = $rs->getValueFechaFormateada("fecha_alta");
                 $aResponse[$i]["cliente_cardcode"] = $rs->getValue("cliente_cardcode");
                 $aResponse[$i]["nombre"] = $rs->getValue("nombre");
+                $aResponse[$i]["id_sucursal"] = $rs->getValue("id_sucursal");
                 $aResponse[$i]["codigo_sucursal"] = $rs->getValue("codigo_sucursal");
                 $aResponse[$i]["total"] = $rs->getValueFloat("total");
 
