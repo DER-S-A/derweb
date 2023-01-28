@@ -102,5 +102,26 @@ class UpdateVersionEntidades extends UpdateVersion {
         $sql = "ALTER TABLE entidades CHANGE COLUMN usuario usuario VARCHAR(20) NOT NULL";
         self::ejecutarSQL($sql);
     }
+    
+    /**
+     * instalarOpEstablecerClave
+     * Permite instalar la operación para establecer la clave de una
+     * entidad.
+     * @return void
+     */
+    public static function instalarOpEstablecerClave() {
+        $opid = sc3AgregarOperacion(
+            "Establecer clave", 
+            "der-establecer-clave.php", 
+            "ico/lock_edit.ico", 
+            "Permite establecer una clave a una entidad.", 
+            "entidades", 
+            "", 
+            0, 
+            "Administrador", 
+            "", 
+            0, 
+            "entidades");
+    }
 }
 ?>
