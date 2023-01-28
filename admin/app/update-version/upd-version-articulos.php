@@ -5,16 +5,28 @@
  *  Permite actualizar el módulo de artículos.
  */
 
-class UpdateVersionArticulos extends UpdateVersion {
+class UpdateVersionArticulos extends UpdateVersion {    
+    /**
+     * actualziar
+     * Ejecuta la actualización del módulo de artículos.
+     * @return void
+     */
     public static function actualziar() {
         self::agregarCampoAMarcas();
         self::instalarTablaUnidadesVentas();
+        self::instalarOpEquivalencias();
     }
-
+    
+    /**
+     * agregarCampoAMarcas
+     * Agrega campos a la tabla marcas.
+     * @return void
+     */
     private static function agregarCampoAMarcas() {
         $tabla = "marcas";
         $query = "marcas";
 
+        // Se agrega link para cargar el logo de la marca.
         $campo = "linkLogo";
         if (!sc3existeCampo($tabla, $campo)) {
             $sql = "ALTER TABLE $tabla ADD $campo varchar(255) NULL";
@@ -23,7 +35,12 @@ class UpdateVersionArticulos extends UpdateVersion {
             sc3updateField($query, $campo, "Imagen Logo", 0, "", 1);
         }
     }
-
+    
+    /**
+     * instalarTablaUnidadesVentas
+     * Instala la tabla de unidades de ventas.
+     * @return void
+     */
     private static function instalarTablaUnidadesVentas() {
         $tabla = "art_unidades_ventas";
         $query = getQueryName($tabla);
@@ -45,5 +62,26 @@ class UpdateVersionArticulos extends UpdateVersion {
             sc3AgregarQueryAPerfil($query, "root");
         }
     }
+    
+    /**
+     * instalarOpEquivalencias
+     * Permite instalar la operación para gestionar las equivalencias en
+     * el ABM de artículos.
+     * @return void
+     */
+    private static function instalarOpEquivalencias() {
+        $opid = sc3AgregarOperacion(
+            "Equivalencias", 
+            "der-equivalencias.php", 
+            "ico/barragrisMapa.ico", 
+            "Permite gestionar las equivalencias de los artículos.", 
+            "articulos", 
+            "", 
+            0, 
+            "Administrador", 
+            "", 
+            0, 
+            "articulos");
+    }    
 }
 ?>
