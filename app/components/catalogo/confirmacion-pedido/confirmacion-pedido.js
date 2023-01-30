@@ -288,7 +288,7 @@ class ConfirmacionPedido {
             let xselec = document.getElementById("select-sucursales").value;
             let xparametrosxUrl = "id_sucursales=" + xselec; 
 
-            (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
+            (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {console.log(xdatos)
                 xdatos.forEach((xitem) => {
                     // Completo los option con el resultado de json q traigo con el fetch call.
                     let objOption = document.createElement("option");

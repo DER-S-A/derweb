@@ -23,8 +23,8 @@ window.onload = () => {
     llenarMotor();
     llenarAnio();
     generarMenuOperaciones();
-    generarBotonListaArticulos();
-    generarBotonMiCarrito();
+    //generarBotonListaArticulos();
+    //generarBotonMiCarrito();
     getClientes();
 }
 
@@ -247,15 +247,61 @@ function getClientes() {
  * @param {int} xid Id. de cliente.
  */
 function entrar_al_cliente(xid) {
-    let objCache = new CacheUtils("derweb");
-    let aSesion = objCache.get("sesion");
-    console.log(aSesion);
-    aSesion["id_cliente"] = xid;
-    objCache.set("sesion", aSesion);
+    
 
     // Abro el derweb con el cliente seleccionado en una pestaña
     // a parte.
-    window.open("main-clientes.php", "_blank");
+
+    
+    
+    
+    let xparametrosxUrl = "filter=id_entidad=" + xid;
+    
+    (new APIs()).call(app.getUrlApi("app-entidades-sucursales"), xparametrosxUrl, "GET", (xdatos) => {
+        console.log(xdatos);
+        
+        let idSucursal;
+        let objCache = new CacheUtils("derweb");
+        let aSesion = objCache.get("sesion");
+        aSesion.id_cliente = xid;
+        console.log(aSesion);
+        if(xdatos.length>1) {
+            const select = document.createElement("select");
+            select.id = 'suc-pantalla-vendedor';
+            xdatos.forEach((sucursal) => {
+                const option = document.createElement("option");
+                option.value = sucursal.id;
+                option.text = sucursal.nombre;
+                select.append(option);
+            });
+            swal({
+                title: "Selecciona una sucursal",
+                content: select,
+                icon: "info",
+                buttons: true,
+            })
+            .then(valor => {
+                if(valor) {
+                    idSucursal = document.getElementById("suc-pantalla-vendedor").value;
+                    aSesion.id_sucursal = parseInt(idSucursal);
+                    objCache.set("sesion", aSesion);
+                    console.log(idSucursal);
+                    window.open("main-clientes.php", "_blank");
+                }
+            })
+        } else {
+            idSucursal = xdatos[0].id;
+            aSesion.id_sucursal = idSucursal;
+            objCache.set("sesion", aSesion);
+            console.log(idSucursal);
+            window.open("main-clientes.php", "_blank");
+        }
+    }); 
+
+
+    
+
+    
 }
 
 /**

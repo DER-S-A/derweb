@@ -19,6 +19,7 @@ class EdicionPedidosPendientes extends ComponentManager {
         this.getTemplate((new App()).getUrlTemplate("oper-pedidos-pendientes"), html => {
             document.getElementById("app-container").innerHTML = html;
             let pedidoSeleccionado = this.__getPedidoSeleccionado(xidpedido);
+            console.log(pedidoSeleccionado)
             let items = pedidoSeleccionado[0]["items"];
             document.getElementById("app_grid_container").innerHTML = "";
             document.getElementById("app_grid_container").appendChild(this.__mostrarCabeceraPedido(pedidoSeleccionado));
@@ -31,6 +32,7 @@ class EdicionPedidosPendientes extends ComponentManager {
             // Piso el id del cliente en la sesión.
             let aSesion = (new CacheUtils("derweb", false).get("sesion"));
             aSesion["id_cliente"] = parseInt(pedidoSeleccionado[0]["id_entidad"]);
+            aSesion["id_sucursal"] = parseInt(pedidoSeleccionado[0]["id_sucursal"]);
             (new CacheUtils("derweb", false).set("sesion", aSesion));
         });
     }

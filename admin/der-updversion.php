@@ -27,6 +27,7 @@ UpdateVersionEntidades::actualizarTablaSucursales();
 UpdateVersionEntidades::actualizarFormaEnvio();
 UpdateVersionEntidades::agregarCamposTiposEntidades();
 UpdateVersionEntidades::cambiarTamanioCampoUsuarioEnEntidades();
+UpdateVersionEntidades::instalarOpEstablecerClave();
 
 // Actualizo la versión del módulo de pedidos.
 UPDVersionPedidos::actualizar();
