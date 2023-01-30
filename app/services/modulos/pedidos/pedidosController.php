@@ -168,7 +168,6 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
-
     
     /**
      * getPedidosPendientesByVendedor

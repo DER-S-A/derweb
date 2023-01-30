@@ -88,11 +88,10 @@ class SucursalesModel extends Model {
     public function getVendedorSucursal($xsesion){
         $session = json_decode($xsesion,true);
         $codigoSucursal = intval($session["id_sucursal"]);
-        $sql = "SELECT replace(entidades.cliente_cardcode, 'v', '')as cliente_cardcode ,sucursales.* FROM sucursales inner join entidades on entidades.id = id_vendedor where sucursales.id =". $codigoSucursal;   
+        $sql = "SELECT codigo_vendedor FROM sucursales INNER JOIN entidades ON sucursales.id_entidad = entidades.id WHERE sucursales.ID = ". $codigoSucursal;   
         $rs = getRs($sql, true);
-        $aVendedor = $rs->getValue("cliente_cardcode");
+        $aVendedor = $rs->getValueInt("codigo_vendedor");
         $rs->close();
-
         return $aVendedor;
     }
 /** 
@@ -105,16 +104,17 @@ class SucursalesModel extends Model {
         $aDireccion = [];
         $session = json_decode($xsesion,true);
         $sql = "SELECT 
-                        sucursales.* 
+                    p.codigo ,sucursales.calle,sucursales.ciudad, sucursales.codigo_postal
                 FROM
-                        sucursales
+                    sucursales
+                INNER JOIN provincias p ON sucursales.id_provincia = p.id
                 WHERE 
-                        sucursales.id = ". $session["id_sucursal"];
-         $rsSuc = $this->getQuery2($sql);
-            $aDireccion["ShipToState"] = $rsSuc->getValueInt("id_provincia");
-            $aDireccion["ShipToStreet"] = $rsSuc->getValue("calle");
-            $aDireccion["ShipToCity"] = $rsSuc->getValue("ciudad");
-            $aDireccion["ShipToZipCode"] = $rsSuc->getValue("codigo_postal");
+                sucursales.id = ". $session["id_sucursal"];
+        $rsSuc = $this->getQuery2($sql);
+        $aDireccion["ShipToState"] = $rsSuc->getValueInt("codigo");
+        $aDireccion["ShipToStreet"] = $rsSuc->getValue("calle");
+        $aDireccion["ShipToCity"] = $rsSuc->getValue("ciudad");
+        $aDireccion["ShipToZipCode"] = $rsSuc->getValueInt("codigo_postal");
         return $aDireccion;
     }
 

@@ -30,6 +30,7 @@ class Catalogo {
      */
     getSubrubros(xfilter = "") {
         var aSubrubros = (new APIs()).getFromAPI((new App()).getUrlApi("catalogo-subrubros-get"), xfilter);
+        console.log(aSubrubros);
         return aSubrubros;
     }
 
