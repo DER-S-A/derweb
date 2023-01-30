@@ -1,0 +1,49 @@
+Area Cliente
+--------------------------------------------
+user: sistemas3@derdistribuciones.com.ar
+pass: Snblo937m
+
+*********************************************************************
+
+Información General
+--------------------------------------------
+Dominio Servidor: sd-2447368-L.ferozo.com
+IP Principal: 179.43.114.82
+Plataforma: Linux 
+
+**********************************************************************
+
+Acceso SSH
+--------------------------------------------
+IP: 179.43.114.82
+Puerto: 4225
+Usuario: root
+Contraseña: uBVOHihb1YUN
+
+**********************************************************************
+
+Panel de control (Admin)
+--------------------------------------------
+Panel: Ferozo
+URL: http://179.43.114.82:2083 
+Usuario: dhmcontrol
+Contraseña: uBVOHihb1YUN
+
+**********************************************************************
+
+MySQL (Admin)
+--------------------------------------------
+Usuario: root
+Contraseña: uBVOHihb1YUN
+
+**********************************************************************
+
+NS para dominios
+--------------------------------------------
+Si vas a utilizar el panel Ferozo
+DNS 1: ns9.hostmar.com
+DNS 2: ns10.hostmar.com
+
+Si vas a utilizar el panel cPanel
+DNS 1: ns13.hostmar.com
+DNS 2: ns14.hostmar.com

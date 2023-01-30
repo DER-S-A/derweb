@@ -10,6 +10,7 @@ class APISap {
     private $aInfo;
     private $output;
     private $testMode;
+
             
     /**
      * __construct
@@ -28,6 +29,7 @@ class APISap {
         $this->aInfo = [];
         $this->output = "";
         $this->testMode = false;
+
     }
     
     /**
@@ -68,9 +70,19 @@ class APISap {
      * @return void
      */
     public function setData($xdata) {
-        $this->data = json_encode($xdata);
+        $this->data =$xdata;
         if ($this->testMode)
-            file_put_contents("test/enviado-" . date("Ymd", time()) . "json", $this->data);
+            file_put_contents("test/enviado-" . date("Ymd", time()) . ".json", $this->data);
+    }
+
+    /**
+     * setToken
+     * Establezco el dato para tomar el token como el sistema lo necesita
+     * @param  array $xdata Array con los datos a procesar.
+     * @return void
+     */
+    public function setToken($xdata) {
+        $this->data =json_encode($xdata);
     }
     
     /**
@@ -95,9 +107,8 @@ class APISap {
         
         if (sonIguales($this->method, "POST"))
             curl_setopt($curlHandler, CURLOPT_POST, true);
-        
         curl_setopt($curlHandler, CURLOPT_HEADER, $this->headerOutput);
-        curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $this->data);
+        curl_setopt($curlHandler, CURLOPT_POSTFIELDS,$this->data);
         curl_setopt($curlHandler, CURLOPT_SSL_VERIFYHOST, $this->ssl_verify);
         curl_setopt($curlHandler, CURLOPT_SSL_VERIFYPEER, $this->ssl_verify);
         curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->aHeaders);
@@ -115,9 +126,10 @@ class APISap {
 
         $this->output = json_encode($this->aInfo);
         if ($this->testMode)
-            file_put_contents("test/recibido-" . date("Ymd", time()) . "json", $this->output);
+            file_put_contents("test/recibido-" . date("Ymd", time()) . ".json", $this->output);
     }
-    
+
+
     /**
      * getInfo
      * Obtiene información de ejecución de API.
@@ -145,7 +157,7 @@ class APISap {
     public function getTokenETL() {
         $this->url = URL_LOGIN_ETL;
         $this->method = "POST";
-        $this->setData(BODY_LOGIN_ETL);
+        $this->setToken(BODY_LOGIN_ETL);
         $this->send();
     }
 }

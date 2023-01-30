@@ -8,7 +8,8 @@
 define ("URL_LOGIN_ETL", "https://b.onesolutions.com.ar/OSSYS/Security/Login");
 
 // ! Enviar Pedido Viejo ->define ("URL_ENVIAR_PEDIDO", "https://181.119.112.208:5444/dev/api/ETL/GetAndProcessNews"); 
-define ("URL_ENVIAR_PEDIDO","https://b.onesolutions.com.ar/etl/der/ExecuteOperation?OperationCode=SQ2SAP");
+define ("URL_ENVIAR_PEDIDO","https://b.onesolutions.com.ar/BindApp/ExecuteOperation?OperationCode=SQ2SAP");
+
 
 // Establece la configuración de logueo al ETL.
 // ! LOGIN VIEJO 

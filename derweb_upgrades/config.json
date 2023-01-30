@@ -17,7 +17,8 @@
         "provincias": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Provincias_B1SLQuery",
         "paises": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Paises_B1SLQuery",
         "tasas_IVA": "https://181.119.123.148:50000/b1s/v1/SalesTaxCodes",
-        "sucursales": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Sucursales_B1SLQuery"
+        "sucursales": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Sucursales_B1SLQuery",
+        "televentas": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_EmpleadoVenta_B1SLQuery"
     },
     "mysql": {
         "host": "localhost",

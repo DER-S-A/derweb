@@ -168,6 +168,8 @@ class ConfirmacionPedido {
             "id_transporte": parseInt(idtransporte)
         };
 
+        console.log(aParametrosConfirmacion);
+
         // Armo los parámetros para pasarle al API.
         parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") 
             + "&pedido=" + JSON.stringify(aParametrosConfirmacion);

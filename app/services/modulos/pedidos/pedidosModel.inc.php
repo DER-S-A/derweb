@@ -1,5 +1,7 @@
 <?php
 
+use LDAP\Result;
+
 /**
  * Esta clase permite manejar la tabla de pedidos
  * 
@@ -543,6 +545,7 @@ class PedidosModel extends Model {
         $ok = false;
         $this->getClienteActual($xsesion);
         $aPedidoConfirmar = json_decode($xpedido, true);
+        $aSesion = json_decode($xsesion,true);
         $aResponse = [];
         // Transfiero el pedido a SAP.
         $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, intval($aPedidoConfirmar["id_pedido"]));
@@ -558,19 +561,18 @@ class PedidosModel extends Model {
         $rsEstado = getRs($sql);
         $idEstado = $rsEstado->getValueInt("id");
         $rsEstado->close();
-
-        $sql = "SELECT 
+        $sql = 'SELECT 
                     id, codigo_sucursal
                 FROM
                     sucursales
                 WHERE
-                    sucursales.id = " . intval($aPedidoConfirmar["id_sucursal"]);
+                    sucursales.id = '. intval($aSesion["id_sucursal"]);
         $rsSucursal = getRs($sql, true);
         $idSucursal = $rsSucursal->getValueInt("id");
         $codigoSucursal = $rsSucursal->getValue("codigo_sucursal");
         $rsSucursal->close();
 
-        $sql = "SELECT mostrar_transporte FROM formas_envios WHERE id = " . intval($aPedidoConfirmar["id_formaenvio"]);
+        $sql = "SELECT mostrar_transporte FROM formas_envios WHERE codigo = " . intval($aPedidoConfirmar["id_formaenvio"]);
         $rsFormaEnvio = getRs($sql, true);
         $grabar_transporte = $rsFormaEnvio->getValueInt("mostrar_transporte") == 1 ? true : false;
         $rsFormaEnvio->close();
@@ -638,32 +640,37 @@ class PedidosModel extends Model {
         $sucursalGet = [];
         $aDireccionEnvio = [];
         $aSesion = json_decode($xsesion, true);
-        
         // Establezco la comunicación con el ETL.
-        $this->getToken();
+        $token = $this->getToken();
+        // Establezco los headers
+        $header =[ 
+            "Content-Type: application/json",
+            "Authorization : Bearer ".$token
+        ];
+        $objAPISap->setHeaders($header);
         $objAPISap->setTestMode(); // Modo testing
         /* // ! METODO SIN USO
-         
+
         $aBody["connectorCode"] = CONNECTOR_CODE;
         $aBody["functionalityCode"] = FUNCIONALITY_CODE;
-       
+
         $aPedidoEnviar["DocDate"] = date("Y-m-d", time());
         $aPedidoEnviar["DocDueDate"] = date("Y-m-d", time());
         $aPedidoEnviar["CardCode"] = $this->idCliente;
         $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
- 
-        $aPedidoEnviar["CardCode"] = $aSesion["usuario"]; // Agrego el numero cliente
-        $aPedidoEnviar["NumAtCard"] = "DERWEB-". $xid_pedido; // Agrego el numero de Pedido
-        $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
-        $aPedidoEnviar["DocDate"] = date("Y-m-d", time()); // Agrego Fecha
-        $aPedidoEnviar["DocDueDate"] = date("Y-m-d", time()); // Agrego Fecha
-        $aPedidoEnviar["TaxDate"] = date("Y-m-d",time()); // Agrego Fecha
-        $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
-        $aPedidoEnviar["DocCurrency"] = "ARS"; // Agrego Tipo Moneda
 
-       
+        $aPedidoEnviar["CardCode"] = $aSesion['usuario']; // Agrego el numero cliente
+        $aPedidoEnviar["NumAtCard"] = 'DERWEB-'. $xid_pedido; // Agrego el numero de Pedido
+        $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
+        $aPedidoEnviar["DocDate"] = date('Y-m-d', time()); // Agrego Fecha
+        $aPedidoEnviar["DocDueDate"] = date('Y-m-d', time()); // Agrego Fecha
+        $aPedidoEnviar["TaxDate"] = date('Y-m-d',time()); // Agrego Fecha
+        $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
+        $aPedidoEnviar["DocCurrency"] = 'ARS'; // Agrego Tipo Moneda
+
+
         // * Recupero el pedido actual
         $aPedidoActual = $this->getPedidoActual($xsesion);
         for ($i = 0; $i < sizeof($aPedidoActual["items"]); $i++) { 
@@ -672,41 +679,42 @@ class PedidosModel extends Model {
             $aItems[$i]["Price"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]); // Precio Articulo
         }
 
-        $aPedidoEnviar["DocumentLines"] = json_encode($aItems); // Hago JSON la parte de Items y lo coloco con todo el pedido
+        $aPedidoEnviar["DocumentLines"] = $aItems; // Hago JSON la parte de Items y lo coloco con todo el pedido
         
         // * Recupero la direccion de envío
         $sucursalGet = $objSucursal->getDireccionSucursal($xsesion);
-        $aDireccionEnvio["ShipToState"] = $sucursalGet["ShipToState"]; //Numero Provincia
-        $aDireccionEnvio["ShipToCountry"] = "AR"; // Pais
-        $aDireccionEnvio["ShipToStreet"] = $sucursalGet["ShipToStreet"]; // Direccion de envío 1
-        $aDireccionEnvio["ShipToStreetNo"] = ""; //  ! Direccion de envío 2
-        $aDireccionEnvio["ShipToBlock"] = ""; // ! ??????
-        $aDireccionEnvio["ShipToBuilding"] = ""; // ! ??????
-        $aDireccionEnvio["ShipToCity"] = $sucursalGet["ShipToCity"];
-        $aDireccionEnvio["ShipToZipCode"] = $sucursalGet["ShipToZipCode"];
-        $aDireccionEnvio["ShipToCounty"] = ""; // ! ????????
-              
+        $aDireccionEnvio["ShipToState"] = $sucursalGet['ShipToState']; //Numero Provincia
+        $aDireccionEnvio["ShipToCountry"] = 'AR'; // Pais
+        $aDireccionEnvio["ShipToStreet"] = $sucursalGet['ShipToStreet']; // Direccion de envío 1
+        $aDireccionEnvio["ShipToStreetNo"] = ''; //  ! Direccion de envío 2
+        $aDireccionEnvio["ShipToBlock"] = ''; // ! ??????
+        $aDireccionEnvio["ShipToBuilding"] = ''; // ! ??????
+        $aDireccionEnvio["ShipToCity"] = $sucursalGet['ShipToCity'];
+        $aDireccionEnvio["ShipToZipCode"] = $sucursalGet['ShipToZipCode'];
+        $aDireccionEnvio["ShipToCounty"] = ''; // ! ????????
+
         // * Agrego al JSON General el Adress
-        $aPedidoEnviar["AddressExtension"] = json_encode( ($aDireccionEnvio));
-   
+        $aPedidoEnviar["AddressExtension"] = $aDireccionEnvio;
+    
 
 
-        $aBody["data"] = json_encode($aPedidoEnviar);
-
-        $objAPISap->setData($aBody);
+        // $aBody["data"] = json_encode($aPedidoEnviar,true);
+        $objAPISap->setData(json_encode($aPedidoEnviar));
         $objAPISap->send();
-
         return $objAPISap->getInfo();
     }
     
     /**
      * getToken
      * Obtiene el token para enviar pedidos al ETL.
-     * @return void
+     * @return string token
      */
     private function getToken() {
         $objAPISap = new APISap(URL_LOGIN_ETL, "POST");
+        $result = array();
         $objAPISap->getTokenETL();
+        $result = json_decode($objAPISap->getInfo(),true);
+        return $result['mensaje']['data']['token'];
     }
     
     /**
