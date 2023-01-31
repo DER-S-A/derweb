@@ -227,7 +227,7 @@ class Catalogo:
         try :
             sap.login()
             pagina = 0
-            clientes = 0;
+            clientes = 0
             start_time = time.perf_counter()
             entidades = sap.getData("clientes", None, pagina)
             sap.logout()
@@ -235,7 +235,7 @@ class Catalogo:
             for entidad in entidades["value"]:
                 if entidad['CardName'] is not None:
                     entidad['CardName'] = entidad['CardName'].replace("'","")
-                sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
+                sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','No','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
                 mysql.execute(sql)
                 clientes += 1
                 # print(f"Clientes Procesados: {clientes}")

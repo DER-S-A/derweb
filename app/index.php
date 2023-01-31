@@ -20,7 +20,7 @@
                                 <img src="assets/imagenes/logo.png" alt="" class="home-logo" />
                             </div>
                             <div id="app-header-content" class= "col col-md-1">
-                                <a href="javascript:history.back()"><img src="assets/imagenes/volver.png" class="img-fluid" alt="Volver"/></a>
+                                <a href="https://www.derdistribuciones.com.ar"><img src="assets/imagenes/volver.png" class="img-fluid" alt="Volver"/></a>
                             </div>
                         </div>
             </header>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="row align-middle" id="redSocial" style="align-items: center; margin-left: 0; margin-top: 10px">
                                     <div class="col-md-2">
-                                        <a href="http://qr.afip.gob.ar/?qr=5Ip-AeTRpniGhP9pY4y5pg">
+                                        <a href="http://qr.afip.gob.ar/?qr=5Ip-AeTRpniGhP9pY4y5pg,,">
                                             <img class="home-footer-icon" src="assets/imagenes/icons/data-fiscal-8.png" alt=""></a>
                                     </div>
                                     <div class="col-md-2">

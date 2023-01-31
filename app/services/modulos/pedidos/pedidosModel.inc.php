@@ -147,11 +147,12 @@ class PedidosModel extends Model {
                         INNER JOIN estados_pedidos ON estados_pedidos.id = pedidos.id_estado
                 WHERE
                     estados_pedidos.estado_inicial = 1 AND
-                    pedidos.id_entidad = " . $this->idCliente . " AND 
+                    pedidos.id_entidad = " . $this->idCliente . " AND
+                    pedidos.id_sucursal =  $this->idSucursal AND
                     pedidos.id_tipoentidad = " . $this->idTipoEntidad . " ";
 
-        if (sonIguales($this->tipoLogin, "C"))
-            $sql .= "AND pedidos.id_sucursal = " . $this->idSucursal;
+        // if (sonIguales($this->tipoLogin, "C"))
+        //     $sql .= "AND pedidos.id_sucursal = " . $this->idSucursal;
 
         $rs = $this->getQuery2($sql);
         $this->idPedido = $rs->getValueInt("id");
@@ -419,10 +420,11 @@ class PedidosModel extends Model {
                     (foto.predeterminada = 1 OR foto.predeterminada IS NULL) AND
                     ped.id_entidad = $id_cliente AND
                     lpre.id = $id_precio_lista AND
+                    ped.id_sucursal = $idSucursal AND
                     ped.id_tipoentidad = " . $this->idTipoEntidad . " ";
         
-        if (sonIguales($tipoLogin, "C"))
-            $sql .= "AND ped.id_sucursal = " . $idSucursal;
+        // if (sonIguales($tipoLogin, "C"))
+        //     $sql .= "AND ped.id_sucursal = " . $idSucursal;
 
         $rs = getRs($sql);
         $indice = 0;

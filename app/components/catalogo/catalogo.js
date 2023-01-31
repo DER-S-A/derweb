@@ -117,7 +117,7 @@ class Catalogo {
                 "id_tipoentidad": xaCabecera["id_tipoentidad"],
                 "id_estado" : 1,
                 "id_vendedor": xaCabecera["id_vendedor"],
-                "id_sucursal": this.__getIdSucursal(xaSesion, xaCabecera),
+                "id_sucursal": xaSesion["id_sucursal"],
                 "codigo_sucursal": xaCabecera["codigo_sucursal"],
                 "id_televenta": 0,
                 "id_transporte": xaCabecera["id_transporte"],
