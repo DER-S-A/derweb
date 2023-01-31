@@ -170,9 +170,7 @@ class Catalogo:
                 # print("Procesando página: " + str(pagina))
                 sql = f"CALL sp_subrubros_upgrade({subrubro['SubRubroCode']},'{subrubro['SubRubroName']}')"
                 mysql.execute(sql)
-                response = requests.get(f"http://localhost/derweb/app/services/subrubros.php/get?filter=codigo={subrubro['SubRubroCode']}")
-                print(response.json())
-                time.sleep(0.5)
+                requests.get(f"http://localhost/derweb/app/services/subrubros.php/get?filter=codigo={subrubro['SubRubroCode']}")
                 srb += 1
                 # print (f"Subrubros Procesados {srb}")     
             mysql.closeDB()
@@ -376,8 +374,11 @@ class Catalogo:
             #          repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
             #    sucursales = sap.getData("sucursales", None, pagina)
             #    pagina += 20
+                        # sucursales['Calle'] = sucursales['Calle'].replace("'","")
                         sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}',{sucursales['EstadoCode']},{sucursales['ZipCode']},{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
                         mysql.execute(sql)
+                        time.sleep(0.01)
+                        print(sql)
                 # print("Procesando página: " + str(pagina))
 
             print("Proceso Finalizado Correctamente")
@@ -401,7 +402,7 @@ class Catalogo:
             sap.logout()
             for tv in teleVentas["value"]:
                 if tv['SlpCode'] > 0:
-                    sql = f"CALL sp_televentas_upgrade(2,{tv['SlpCode']}, '{tv['SlpName']}','{tv['Telefono']}','{tv['Direccion']}','{tv['Email']}','{tv['FiscalID']}')"
+                    sql = f"CALL sp_televentas_upgrade(3,{tv['SlpCode']}, '{tv['SlpName']}','{tv['Telefono']}','{tv['Direccion']}','{tv['Email']}','{tv['FiscalID']}')"
                     mysql.execute(sql)
                     procesados += 1
                     print(f"Televentas Procesados {procesados}")

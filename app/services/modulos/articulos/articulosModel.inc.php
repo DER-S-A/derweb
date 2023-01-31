@@ -153,6 +153,7 @@ class ArticulosModel extends Model {
         $id_subrubro = intval($aParametros["values"]["id_subrubro"]);
 
         $sql = "CALL sp_articulos_getByRubroAndRubro($this->id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
+        var_dump($sql);
         $rsArticulos = getRs($sql, true);
         $aResponse = $this->loadResponseArray($rsArticulos, 
                 $xpagina, 
