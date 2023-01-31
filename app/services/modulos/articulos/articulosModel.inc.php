@@ -153,7 +153,6 @@ class ArticulosModel extends Model {
         $id_subrubro = intval($aParametros["values"]["id_subrubro"]);
 
         $sql = "CALL sp_articulos_getByRubroAndRubro($this->id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
-        var_dump($sql);
         $rsArticulos = getRs($sql, true);
         $aResponse = $this->loadResponseArray($rsArticulos, 
                 $xpagina, 
@@ -164,7 +163,7 @@ class ArticulosModel extends Model {
         
         return $aResponse;
     }
-           
+    
     /**
      * loadResponseArray
      * Permite recuperar los datos del conjunto de resultados en el arrya que va a devolver
@@ -181,7 +180,7 @@ class ArticulosModel extends Model {
         while (!$rsArticulos->EOF()) {
             $aArticulosResponse[$index]["id"] = $rsArticulos->getValueInt('id');
             $aArticulosResponse[$index]["codigo"] = $rsArticulos->getValue('codigo');
-            $aArticulosResponse[$index]["desc"] = $rsArticulos->getValue('descripcion');
+            $aArticulosResponse[$index]["desc"] = utf8_encode($rsArticulos->getValue('descripcion'));
             $aArticulosResponse[$index]["iva"] = $rsArticulos->getValueFloat('alicuota_iva');
             $aArticulosResponse[$index]["prlista"] = doubleval($rsArticulos->getValue('precio_lista'));
             $aArticulosResponse[$index]["cped"] = calcular_costo("PED", doubleval($rsArticulos->getValue('precio_lista')), $xdescuento_p1, $xdescuento_p2);
@@ -367,6 +366,7 @@ class ArticulosModel extends Model {
 
         $response = [];
         $response ["informacion"]= getRs($sql, true)->getAsArray();
+        $response ['informacion'][0]['Descripcion'] = utf8_encode($response ['informacion'][0]['Descripcion']);
         $response ["codigos_originales"]= getRs($sql_codigoOriginales, true)->getAsArray();
         $response ["equivalencias"] = getRs($sql_equivalencias, true)->getAsArray();
         $response["fotos"] = getRs($sql_art_fotos, true)->getAsArray();

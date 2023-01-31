@@ -294,6 +294,7 @@ class Catalogo:
                                 # print(f"Mensaje: {respuesta['result_mensaje']}") 
                                 if(articulo['RubroCod'] != None and articulo['MarcaCod'] != None and articulo['SubRubroCod'] != None):    
                                     articulo['ItemName'] = articulo["ItemName"].replace("'","")
+                                    articulo['ItemName'].decode('iso-8859-1').encode('utf8')
                                     sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"               
                                     mysql.execute(sql)
                                     actualizados+=1
@@ -374,10 +375,12 @@ class Catalogo:
             #          repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
             #    sucursales = sap.getData("sucursales", None, pagina)
             #    pagina += 20
-                        # sucursales['Calle'] = sucursales['Calle'].replace("'","")
-                        sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}',{sucursales['EstadoCode']},{sucursales['ZipCode']},{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
+
+                        if sucursales['Calle'] != None:
+                            sucursales['Calle'] = sucursales['Calle'].replace("'","")
+                        sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}',{sucursales['EstadoCode']},'{sucursales['ZipCode']}',{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
                         mysql.execute(sql)
-                        time.sleep(0.01)
+                        time.sleep(0.001)
                         print(sql)
                 # print("Procesando página: " + str(pagina))
 

@@ -104,8 +104,6 @@ class CatalogoGridComponent extends ComponentManager {
         var url = this._aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
             + "&parametros=" + JSON.stringify(this._aParametros) + "&pagina=" + xpagina;
-        console.log(url_con_parametros);
-       
 
         fetch (url_con_parametros)
             .then(xresponse => xresponse.json())

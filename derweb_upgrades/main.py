@@ -9,10 +9,10 @@ oCatalogo = Catalogo()
 # oCatalogo.updateRubros()
 # oCatalogo.updateSubrubros()
 # oCatalogo.updateMarcas()
-oCatalogo.updateTeleVentas()
+# oCatalogo.updateTeleVentas()
 # oCatalogo.updateClientes()
 # oCatalogo.updateSucursales()
-# oCatalogo.updateArticulos()
+oCatalogo.updateArticulos()
 
 elapsed_time = time.perf_counter() - start_time
 minute = int(elapsed_time / 60)
