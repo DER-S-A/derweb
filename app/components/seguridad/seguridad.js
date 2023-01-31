@@ -41,10 +41,11 @@ class Seguridad {
         // si tengo que mostrar sucursales o no.
         document.getElementById("txtNroCliente").addEventListener("blur", () => {
             let url = (new App()).getUrlApi("app-entidades-get");
-            let filter = "filter=\"cliente_cardcode = '" + document.getElementById("txtNroCliente").value + "'\"";
-            
-            (new APIs).call(url, filter, "GET", (response) => {
+            //let filter = "filter=\"cliente_cardcode = '" + document.getElementById("txtNroCliente").value + "'\"";
+            let filter = "filter=\"usuario = '" + document.getElementById("txtNroCliente").value + "'\"";
 
+            (new APIs).call(url, filter, "GET", (response) => {
+                console.log(response)
                 // Me fijo si tengo alguna sucursal asiganda
                 if (response[0]["sucursales"].length !== 0) {
                     document.getElementById("selector-sucursales-container").style = "display:block";

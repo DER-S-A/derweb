@@ -170,9 +170,7 @@ class Catalogo:
                 # print("Procesando página: " + str(pagina))
                 sql = f"CALL sp_subrubros_upgrade({subrubro['SubRubroCode']},'{subrubro['SubRubroName']}')"
                 mysql.execute(sql)
-                response = requests.get(f"http://localhost/derweb/app/services/subrubros.php/get?filter=codigo={subrubro['SubRubroCode']}")
-                print(response.json())
-                time.sleep(0.5)
+                requests.get(f"http://localhost/derweb/app/services/subrubros.php/get?filter=codigo={subrubro['SubRubroCode']}")
                 srb += 1
                 # print (f"Subrubros Procesados {srb}")     
             mysql.closeDB()
@@ -229,7 +227,7 @@ class Catalogo:
         try :
             sap.login()
             pagina = 0
-            clientes = 0;
+            clientes = 0
             start_time = time.perf_counter()
             entidades = sap.getData("clientes", None, pagina)
             sap.logout()
@@ -237,7 +235,7 @@ class Catalogo:
             for entidad in entidades["value"]:
                 if entidad['CardName'] is not None:
                     entidad['CardName'] = entidad['CardName'].replace("'","")
-                sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
+                sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','No','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
                 mysql.execute(sql)
                 clientes += 1
                 # print(f"Clientes Procesados: {clientes}")
@@ -376,6 +374,7 @@ class Catalogo:
             #          repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
             #    sucursales = sap.getData("sucursales", None, pagina)
             #    pagina += 20
+                        sucursales['Calle'] = sucursales['Calle'].replace("'", "")
                         sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}',{sucursales['EstadoCode']},{sucursales['ZipCode']},{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
                         mysql.execute(sql)
                 # print("Procesando página: " + str(pagina))
@@ -401,7 +400,7 @@ class Catalogo:
             sap.logout()
             for tv in teleVentas["value"]:
                 if tv['SlpCode'] > 0:
-                    sql = f"CALL sp_televentas_upgrade(2,{tv['SlpCode']}, '{tv['SlpName']}','{tv['Telefono']}','{tv['Direccion']}','{tv['Email']}','{tv['FiscalID']}')"
+                    sql = f"CALL sp_televentas_upgrade(3,{tv['SlpCode']}, '{tv['SlpName']}','{tv['Telefono']}','{tv['Direccion']}','{tv['Email']}','{tv['FiscalID']}')"
                     mysql.execute(sql)
                     procesados += 1
                     print(f"Televentas Procesados {procesados}")
