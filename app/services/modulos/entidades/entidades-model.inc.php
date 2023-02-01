@@ -172,10 +172,11 @@ class EntidadesModel extends Model {
     public function getClientesByVendedor($xidVendedor) {
         $sql = "SELECT
                     e.id,
-                    s.id AS 'id_sucursal',
-                    e.cliente_cardcode,
-                    s.codigo_sucursal AS 'codsuc',
-                    e.nombre,
+                    /*s.id AS 'id_sucursal',*/
+                    e.cliente_cardcode as 'codent',
+                    /*s.codigo_sucursal AS 'codsuc',*/
+                    e.usuario AS 'codusu',
+                    e.nombre as 'nombre',
                     e.nro_cuit AS 'cuit'
                 FROM
                     entidades e
@@ -185,8 +186,10 @@ class EntidadesModel extends Model {
                     t.tipo_login = 'C' AND
                     s.id_vendedor = $xidVendedor AND
                     e.habilitado = 1
+                GROUP BY 
+                    e.id,cliente_cardcode,nombre,cuit
                 ORDER BY
-                    nombre";
+                    nombre;";
         return getRs($sql, true)->getAsArray();
     }
 

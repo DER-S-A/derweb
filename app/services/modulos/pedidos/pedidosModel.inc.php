@@ -732,12 +732,13 @@ class PedidosModel extends Model {
         $aResponse = [];
         try {
             $sql = "SELECT
-                        p.id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,
-                        ent.nombre, p.id_sucursal, p.codigo_sucursal, p.total
+                        CONCAT('DERWEB-',p.id) as id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,ent.usuario as 'usuario', sucursales.nombre as 'sucnom',
+                        ent.nombre, p.id_sucursal, p.codigo_sucursal, p.total 
                     FROM
                         pedidos p
                             INNER JOIN estados_pedidos est ON est.id = p.id_estado
                             INNER JOIN entidades ent ON ent.id = p.id_entidad
+                            inner join sucursales ON p.id_sucursal = sucursales.id
                     WHERE
                         p.id_vendedor = $idVendedor AND
                         est.estado_inicial = 1 AND
@@ -746,11 +747,13 @@ class PedidosModel extends Model {
             
             $i = 0;
             while(!$rs->EOF()) {
-                $aResponse[$i]["id"] = $rs->getValueInt("id");
+                $aResponse[$i]["id"] = $rs->getValue("id");
                 $aResponse[$i]["id_entidad"] = $rs->getValueInt("id_entidad");
                 $aResponse[$i]["fecha_alta"] = $rs->getValueFechaFormateada("fecha_alta");
                 $aResponse[$i]["cliente_cardcode"] = $rs->getValue("cliente_cardcode");
                 $aResponse[$i]["nombre"] = $rs->getValue("nombre");
+                $aResponse[$i]["sucnom"] = $rs->getValue('sucnom');
+                $aResponse[$i]["usuario"] = $rs->getValue('usuario');
                 $aResponse[$i]["id_sucursal"] = $rs->getValue("id_sucursal");
                 $aResponse[$i]["codigo_sucursal"] = $rs->getValue("codigo_sucursal");
                 $aResponse[$i]["total"] = $rs->getValueFloat("total");
