@@ -36,7 +36,7 @@ class PedidosPendientes extends ComponentManager {
         this.eliminarFooter();
 
         let objGrid = new LFWDataGrid("app_grid_container", "id");
-    
+        console.log(objGrid);
         objGrid.setAsociatedFormId("formulario");
         objGrid.setPermitirOrden(true);
         objGrid.setPermitirFiltros(true);
@@ -45,7 +45,7 @@ class PedidosPendientes extends ComponentManager {
         objGrid.setIconEditButton("fa-arrow-right-to-bracket");
         objGrid.setEditButtonTitle("Entrar al pedido");
     
-        objGrid.agregarColumna("Pedido N°", "id", "string");
+        objGrid.agregarColumna("Pedido N°", 'id', "string");
         objGrid.agregarColumna("Fecha", "fecha_alta", "string");
         objGrid.agregarColumna("Usuario", "usuario", "string");
         objGrid.agregarColumna('Sucursal','sucnom','string');

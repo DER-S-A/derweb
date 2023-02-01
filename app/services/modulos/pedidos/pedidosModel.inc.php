@@ -731,8 +731,8 @@ class PedidosModel extends Model {
         $idTipoEntidad = intval($aSesion["id_tipoentidad"]);
         $aResponse = [];
         try {
-            $sql = "SELECT
-                        CONCAT('DERWEB-',p.id) as id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,ent.usuario as 'usuario', sucursales.nombre as 'sucnom',
+            $sql = "SELECT 
+                        p.id, p.id_entidad, p.fecha_alta, ent.cliente_cardcode,ent.usuario as 'usuario', sucursales.nombre as 'sucnom',
                         ent.nombre, p.id_sucursal, p.codigo_sucursal, p.total 
                     FROM
                         pedidos p

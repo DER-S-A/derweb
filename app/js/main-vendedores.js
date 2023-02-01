@@ -315,6 +315,8 @@ function ver_pedidos_pendientes() {
     });
 }
 
+
+
 /**
  * Permite mostrar los ítems del pedido.
  * @param {int} xidpedido 
@@ -324,6 +326,7 @@ function entrar_al_pedido(xidpedido) {
 }
 
 /**
+ * 
  * Permite editiar un ítem del pedido seleccionado actualmente.
  * @param {int} xidpedido_item 
  */
