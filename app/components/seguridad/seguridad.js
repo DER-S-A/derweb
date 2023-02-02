@@ -131,4 +131,41 @@ class Seguridad {
         });
         return this.aResponse;
     }
+
+    /**
+    * Permite cambiar la clave en la base de datos mediante
+    * la API correspondiente.
+    */
+    recuperarClave() {
+        swal({
+            title: 'Recuperar contraseña',
+            content: {
+              element: "div",
+              attributes: {
+                id: "container-recoveryPass",
+                innerHTML: `
+                  <input type="text" placeholder="Usuario" class="swal-content__input my-4">
+                  <input type="email" placeholder="Email" class="swal-content__input my-4">
+                  <input type="text" placeholder="Cuit" class="swal-content__input my-4">
+                `,
+              },
+            },
+        })
+        .then(value => {
+            if(value) {
+                const arrayInput = document.querySelectorAll('#container-recoveryPass input');
+                const url = (new App()).getUrlApi("app-entidades-olvide_mi_contrasenia");
+                const argumentos = 'usuario=' + arrayInput[0].value + '&mail=' + arrayInput[1].value + '&cuit=' + arrayInput[2].value;
+                //const argumentos = 'usuario=' + 'c23900' + '&mail=' + 'PETRUCCI@TALLERESPETRUCCI.COM.AR' + '&cuit=' + arrayInput[2].value;
+                (new APIs()).call(url, argumentos, "POST", (xdatos) => {
+                    console.log(xdatos[0].clave);
+                    swal("Tu contraseña", xdatos[0].clave)
+                });
+            }
+        })  
+    }
+}
+
+function recoveryPass() {
+    new Seguridad().recuperarClave();
 }
