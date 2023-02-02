@@ -21,6 +21,7 @@ const aAPIs = [
     {"app-entidades-getSucursalesByEntidad"     : "services/entidades.php/getSucursalesByEntidad"},
     {"app-entidades-getClientesByVendedor"      : "services/entidades.php/getClientesByVendedor"},
     {"app-entidades-cambiarClave"               : "services/entidades.php/cambiarPassword"},
+    {"app-entidades-olvide_mi_contrasenia"      : "services/entidades.php/olvideMiContrasenia"},
     {"app-entidades-sucursales"                 : "services/sucursales.php/get"},
     {"app-forma-envio"                          : "services/formas-envios.php/getMiCarrito"},
     {"app-transportes"                          : "services/transportes.php/get"},
