@@ -172,10 +172,11 @@ class EntidadesModel extends Model {
     public function getClientesByVendedor($xidVendedor) {
         $sql = "SELECT
                     e.id,
-                    s.id AS 'id_sucursal',
-                    e.cliente_cardcode,
-                    s.codigo_sucursal AS 'codsuc',
-                    e.nombre,
+                    /*s.id AS 'id_sucursal',*/
+                    e.cliente_cardcode as 'codent',
+                    /*s.codigo_sucursal AS 'codsuc',*/
+                    e.usuario AS 'codusu',
+                    e.nombre as 'nombre',
                     e.nro_cuit AS 'cuit'
                 FROM
                     entidades e
@@ -185,8 +186,10 @@ class EntidadesModel extends Model {
                     t.tipo_login = 'C' AND
                     s.id_vendedor = $xidVendedor AND
                     e.habilitado = 1
+                GROUP BY 
+                    e.id,cliente_cardcode,nombre,cuit
                 ORDER BY
-                    nombre";
+                    nombre;";
         return getRs($sql, true)->getAsArray();
     }
 
@@ -237,6 +240,17 @@ class EntidadesModel extends Model {
             $aResult["result_message"] = "Contraseña actual incorrecta.";
         }
         return $aResult;
+    }
+    public function olvideMiContrasenia($usuario, $mail, $cuit) {
+
+        $sql = "SELECT clave from entidades where id_tipoentidad=1 and usuario='c23900' 
+        and email= 'PETRUCCI@TALLERESPETRUCCI.COM.AR' and nro_cuit= '20041149443'";
+
+        $result = getRs($sql, true)->getAsArray();
+        if(empty($result)) {
+            $result = 'CLIENTE NO ENCONTRADO';
+        }
+        return $result;
     }
 }
 ?>

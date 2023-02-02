@@ -21,6 +21,7 @@ const aAPIs = [
     {"app-entidades-getSucursalesByEntidad"     : "services/entidades.php/getSucursalesByEntidad"},
     {"app-entidades-getClientesByVendedor"      : "services/entidades.php/getClientesByVendedor"},
     {"app-entidades-cambiarClave"               : "services/entidades.php/cambiarPassword"},
+    {"app-entidades-olvide_mi_contrasenia"      : "services/entidades.php/olvideMiContrasenia"},
     {"app-entidades-sucursales"                 : "services/sucursales.php/get"},
     {"app-forma-envio"                          : "services/formas-envios.php/getMiCarrito"},
     {"app-transportes"                          : "services/transportes.php/get"},
@@ -39,7 +40,9 @@ const aAPIs = [
     {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"},
     {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"},
     {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"},
-    {"ficha-articulos"                          : "services/articulos.php/getFicha"}
+    {"ficha-articulos"                          : "services/articulos.php/getFicha"},
+    {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
+
 ]
 
 // El siguiente array contiene los templates html que se utilizan en el sistema para dibujar

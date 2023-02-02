@@ -84,9 +84,9 @@ class MiPerfil extends ComponentManager {
       }*/
 
       xIdCliente = data[0];
-      let xparametrosxUrl = "id_sucursales=1";
+      let xparametrosxUrl = 'id_sucursales=' + JSON.parse(sessionStorage.getItem('derweb_sesion')).id_sucursal;
 
-      (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
+      (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {console.log(xdatos)
         
         /**
         * Genero el contenido de los nodos.

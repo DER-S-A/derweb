@@ -26,7 +26,7 @@ class SubrubrosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
-    
+
     /**
      * ejecutarMetodoGet
      * Ejecuta el método get de la clase modelo.

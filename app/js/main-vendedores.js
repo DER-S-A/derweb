@@ -219,8 +219,8 @@ function getClientes() {
     objGrid.setIconEditButton("fa-arrow-right-to-bracket");
     objGrid.setEditButtonTitle("Entrar al cliente");
 
-    objGrid.agregarColumna("N° Cliente", "id", "numeric", 100, false);
-    objGrid.agregarColumna("Cód. Suc.", "codsuc", "string", 100);
+    objGrid.agregarColumna("Usuario", "codusu", "numeric", 100, false);
+    objGrid.agregarColumna("Usuario", "codusu", "string", 100);
     objGrid.agregarColumna("Razón Social", "nombre", "string");
     objGrid.agregarColumna("C.U.I.T", "cuit", "string", 200);
 
@@ -315,6 +315,8 @@ function ver_pedidos_pendientes() {
     });
 }
 
+
+
 /**
  * Permite mostrar los ítems del pedido.
  * @param {int} xidpedido 
@@ -324,6 +326,7 @@ function entrar_al_pedido(xidpedido) {
 }
 
 /**
+ * 
  * Permite editiar un ítem del pedido seleccionado actualmente.
  * @param {int} xidpedido_item 
  */

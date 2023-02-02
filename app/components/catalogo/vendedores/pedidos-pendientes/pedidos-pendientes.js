@@ -29,13 +29,14 @@ class PedidosPendientes extends ComponentManager {
      * Permite mostrar la grilla de pedidos pendientes.
      * @param {array} xdatos 
      */
-     mostrarGrillaPedidosPendientes(xdatos) {
+    mostrarGrillaPedidosPendientes(xdatos) {
+        console.log(xdatos);
         if (document.getElementById("app_grid_container") !== null)
             document.getElementById("app_grid_container").innerHTML = "";
         this.eliminarFooter();
 
         let objGrid = new LFWDataGrid("app_grid_container", "id");
-    
+        console.log(objGrid);
         objGrid.setAsociatedFormId("formulario");
         objGrid.setPermitirOrden(true);
         objGrid.setPermitirFiltros(true);
@@ -44,9 +45,10 @@ class PedidosPendientes extends ComponentManager {
         objGrid.setIconEditButton("fa-arrow-right-to-bracket");
         objGrid.setEditButtonTitle("Entrar al pedido");
     
-        objGrid.agregarColumna("Pedido N°", "id", "numeric");
+        objGrid.agregarColumna("Pedido N°", 'id', "string");
         objGrid.agregarColumna("Fecha", "fecha_alta", "string");
-        objGrid.agregarColumna("Cliente", "cliente_cardcode", "numeric");
+        objGrid.agregarColumna("Usuario", "usuario", "string");
+        objGrid.agregarColumna('Sucursal','sucnom','string');
         objGrid.agregarColumna("Razón Social", "nombre");
         objGrid.agregarColumna("Total", "total", "numeric");
 

@@ -18,7 +18,7 @@ class EdicionPedidosPendientes extends ComponentManager {
      entrarAlPedido(xidpedido) {
         this.getTemplate((new App()).getUrlTemplate("oper-pedidos-pendientes"), html => {
             document.getElementById("app-container").innerHTML = html;
-            let pedidoSeleccionado = this.__getPedidoSeleccionado(xidpedido);
+            let pedidoSeleccionado =   this.__getPedidoSeleccionado(xidpedido);
             console.log(pedidoSeleccionado)
             let items = pedidoSeleccionado[0]["items"];
             document.getElementById("app_grid_container").innerHTML = "";

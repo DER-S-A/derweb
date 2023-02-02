@@ -244,6 +244,26 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+
+    public function olvideMiContrasenia() {
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $user = $this->getURIParameters("usuario");
+                $mail = $this->getURIParameters("mail");
+                $cuit = $this->getURIParameters("cuit");
+                $objModel = new entidadesModel();
+                $responseData = json_encode($objModel->olvideMiContrasenia($user,$mail,$cuit));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 }
 
 ?>

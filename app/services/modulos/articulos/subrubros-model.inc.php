@@ -15,10 +15,10 @@ class SubrubrosModel extends Model {
         // Armado de la sentencia SQL.
         $sql = "SELECT * FROM subrubros ";
         $this->setWhere($sql, $xfilter);
-        $sql .= "ORDER BY descripcion ASC";
+        $sql .= " ORDER BY descripcion ASC";
         return $this->getQuery($sql);
     }
-    
+
     /**
      * getSubrubrosByRubro
      * Permite obtener los subrubros filtrando por un rubro.

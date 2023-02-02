@@ -16,7 +16,7 @@ class FichaArticulo extends ComponentManager {
         let id_cli = JSON.parse(sessionStorage.getItem("derweb_sesion")).id_cliente;
         let parametro = "id_articulo=" + xid_art + "&id_cliente=" + id_cli;  
         (new APIs()).call(url, parametro, "GET", (xdatos) => {
-        console.log(xdatos);
+        console.log(url + parametro);
             this.getTemplate((new App()).getUrlTemplate("ficha-articulo"), html => {
                 let arrayConRubroYSub = this.extraerCodigoRubroYSub();
                 html = this.completarTemplate(xdatos,html, xid_art, arrayConRubroYSub);
