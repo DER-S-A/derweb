@@ -79,7 +79,7 @@ class SucursalesModel extends Model {
         return $aNombre;
         
     }
-     /** 
+    /** 
      * getVendedor 
      * Obtengo el numero de vendedor del cliente
      * @param  string $xsesion JSON con los datos de la sesión actual.
@@ -176,6 +176,27 @@ class SucursalesModel extends Model {
         }
 
         return $aResult;        
+    }
+
+    /**
+     * getEntidadSucursal
+     * obtengo el CardCode del cliente.
+     * @param  string $$xsesion JSON con los datos de la sesión actual.
+     * @return array Resultado de la operación
+     */
+
+
+    public function getEntidadSucursal($xsesion){
+        $session = json_decode($xsesion,true);
+        $id_sucursal = $session['id_sucursal'];
+        $sql = 'SELECT e.cliente_cardcode FROM SUCURSALES
+                INNER JOIN entidades e ON sucursales.id_entidad = e.id
+                WHERE sucursales.id = '.$id_sucursal;
+        $rs = getRs($sql, true);
+        $cardCode = $rs->getValue("cliente_cardcode");
+
+        return $cardCode;
+
     }
 }
 

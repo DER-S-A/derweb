@@ -663,7 +663,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
 
-        $aPedidoEnviar["CardCode"] = $aSesion['usuario']; // Agrego el numero cliente
+        $aPedidoEnviar["CardCode"] = $objSucursal->getEntidadSucursal($xsesion); // Agrego el numero cliente
         $aPedidoEnviar["NumAtCard"] = 'DERWEB-'. $xid_pedido; // Agrego el numero de Pedido
         $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
         $aPedidoEnviar["DocDate"] = date('Y-m-d', time()); // Agrego Fecha
