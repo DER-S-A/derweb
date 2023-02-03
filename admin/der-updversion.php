@@ -13,6 +13,7 @@ require("app/update-version/upd-version-entidades.php");
 require("app/update-version/upd-version-articulos.php");
 include("der-updversion-clientes-potenciales.php");
 require("app/update-version/upd-version-pedidos.php");
+require("app/update-version/upd-version-ofertas.php");
 
 // DERWEB Core
 agregarOperGenerarEndPoint();
@@ -36,6 +37,8 @@ UpdateVersionArticulos::actualziar();
 // DERWEB APP Vendedores
 UpdateVersion::instalarOpPedidosPendientes();
 
+// DERWEB Ofertas
+UpdateVersionOfertas::actualizar();
 
 // Actualización de SPs.
 ejecutarSps("sp/");
