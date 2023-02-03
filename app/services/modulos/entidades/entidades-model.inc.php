@@ -243,12 +243,13 @@ class EntidadesModel extends Model {
     }
     public function olvideMiContrasenia($usuario, $mail, $cuit) {
 
-        $sql = "SELECT clave from entidades where id_tipoentidad=1 and usuario='c23900' 
-        and email= 'PETRUCCI@TALLERESPETRUCCI.COM.AR' and nro_cuit= '20041149443'";
+        $sql = "SELECT clave from entidades where id_tipoentidad=1 and usuario='$usuario' 
+        and email= '$mail' and nro_cuit= '$cuit'";
 
         $result = getRs($sql, true)->getAsArray();
         if(empty($result)) {
-            $result = 'CLIENTE NO ENCONTRADO';
+            $result = [0];
+            $result[0] = ["clave"=>"USUARIO NO ENCONTRADO"];
         }
         return $result;
     }
