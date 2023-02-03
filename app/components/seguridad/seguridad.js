@@ -114,6 +114,10 @@ class Seguridad {
                 break;
             case 'V':
                 page = "main-vendedores.php";
+                break;
+            case 'T':
+                page = "main-vendedores.php";
+                break;
         }
 
         return page;
