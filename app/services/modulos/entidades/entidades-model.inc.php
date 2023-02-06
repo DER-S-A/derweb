@@ -198,7 +198,7 @@ class EntidadesModel extends Model {
     * Cambia el password del cliente.
     * Solo recupera los clientes que están habilitados.
     * @param  int $xid (este es el id de entidades, osea el id del cliente).
-    * @param  string $xreset (esta es la clave nuevva q pone el cliente).
+    * @param  string $xreset (esta es la clave nueva q pone el cliente).
     * @return array
     */
     public function cambiarClave($xreset, $xid, $xActual) {
@@ -241,6 +241,16 @@ class EntidadesModel extends Model {
         }
         return $aResult;
     }
+
+    /**
+    * olvideMiContrasenia
+    * Muestra el password del cliente.
+    * @param  int $usuario (este es el usuario de entidades, osea el user del cliente).
+    * @param  string $mail (esta es la email de entidades, osea el del cliente).
+    * @param  string $cuit (esta es el cuit de entidades, osea el del cliente).
+    * @return array
+    */
+
     public function olvideMiContrasenia($usuario, $mail, $cuit) {
 
         $sql = "SELECT clave from entidades where id_tipoentidad=1 and usuario='$usuario' 
