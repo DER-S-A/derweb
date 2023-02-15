@@ -16,15 +16,15 @@ window.onload = () => {
         return;
     }
 
-    llenarMarcasRepuesto();
-    llenarSubrubros();
-    llenarMarcasVehiculos();
-    llenarModelos();
-    llenarMotor();
-    llenarAnio();
-    generarMenuOperaciones();
+    //llenarMarcasRepuesto();
+    //llenarSubrubros();
+    //llenarMarcasVehiculos();
+    //llenarModelos();
+    //llenarMotor();
+    //llenarAnio();
     //generarBotonListaArticulos();
     //generarBotonMiCarrito();
+    generarMenuOperaciones();
     getClientes();
 }
 
@@ -338,6 +338,17 @@ function editar_pedido(xidpedido_item) {
  * Permite ingresar a la operación de pedidos rápidos.
  */
 function ingresar_pedidos_rapido() {
+    reset_cli_suc();
+    sessionStorage.removeItem('ipr_grid_items_rows');
     let objIngresoPedidosRapido = new IngresoPedidosRapidoGUI("app-container");
     objIngresoPedidosRapido.generateComponent();
+}
+
+function reset_cli_suc() {
+    let aSesion = new CacheUtils("derweb", false).get("sesion");
+    if(aSesion.id_cliente != null || aSesion.id_sucursal != null) {
+        aSesion.id_cliente = null;
+        aSesion.id_sucursal = null;
+        new CacheUtils("derweb", false).set("sesion", aSesion);
+    }
 }
