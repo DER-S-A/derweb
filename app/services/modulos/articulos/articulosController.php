@@ -105,6 +105,7 @@ class ArticulosController extends APIController {
                 $pagina = intval($this->getURIParameters("pagina"));
                 $objModel = new ArticulosModel();
                 $responseData = json_encode($objModel->getByFrase($sesion, $frase, $pagina));
+                //$responseData = json_encode($objModel->getByFrase($sesion, $frase, $pagina));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

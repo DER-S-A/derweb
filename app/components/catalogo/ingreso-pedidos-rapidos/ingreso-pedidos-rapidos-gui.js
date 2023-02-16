@@ -63,6 +63,13 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
             this.__inicializarInputs();
 
+            document.getElementById("txtCodArt").addEventListener("blur", () => {
+                // Al salirse del foco realizo una búsqueda inicial.
+                if (!this.__validarSeleccionCliente())
+                    return;
+
+            });
+            
             let cambiarCliente = false;
 
             // Agrego el evento change del selector de clientes.
@@ -73,10 +80,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 let element = document.querySelector('#sel-cliente');
                 element = element.getAttribute('data-value');
                 element = JSON.parse(element);
-                console.log(element);
                 let aSesion = new CacheUtils("derweb", false).get("sesion");
                 aSesion.id_cliente = element.id;
-                console.log(aSesion);
                 new CacheUtils("derweb", false).set("sesion", aSesion);
                 const url = new App().getUrlApi("app-entidades-sucursales");
                 (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {console.log(response)
@@ -147,10 +152,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         })
                     });
 
-                    document.getElementById("btnVolver").addEventListener("click", () => {
-                        window.location.href = "main-vendedores.php";
-                    });
-
                     // LLamo al método que crea la grilla.
                     this.__crearGridItems();
 
@@ -158,6 +159,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                             
                 });
                         
+            });
+
+            document.getElementById("btnVolver").addEventListener("click", () => {
+                window.location.href = "main-vendedores.php";
             });
             
             document.getElementById(objDataList.idSelector).addEventListener('click', () =>{
@@ -200,11 +205,12 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let filter = "frase=" + txtCodArt;
         
         aClienteSeleccionado = JSON.parse(document.getElementById("sel-cliente").dataset.value);
-        aSesion["id_cliente"] = aClienteSeleccionado["id"];
-        aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
+        //aSesion["id_cliente"] = aClienteSeleccionado["id"];
+        //aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
         sesion = "sesion=" + JSON.stringify(aSesion);
-
-        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
+        console.log(sesion);
+        
+        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {console.log(response);
             if (response.values.length === 1) {console.log(response);
                 document.getElementById("txtCodArt").value = response.values[0]["codigo"];
                 document.getElementById("txtDescripcion").value = response.values[0]["desc"];
