@@ -175,12 +175,12 @@ function generarBotonMiCarrito() {
     objBtnMiCarrito.generateComponent();
 }
 
-let objTxtValorBuscado = document.getElementById("txtValorBuscado");
+/*let objTxtValorBuscado = document.getElementById("txtValorBuscado");
 objTxtValorBuscado.addEventListener("keypress",(e) => {
     if(e.keyCode === 13) {
         buscarPorFrase ();
     }
-})
+})*/
 
 function esconderHamburguesa() {
     let objHambur = document.getElementById("menu-options");
