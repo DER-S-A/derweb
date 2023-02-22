@@ -203,15 +203,16 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let aSesion = (new CacheUtils("derweb")).get("sesion");
         let sesion;
         let filter = "frase=" + txtCodArt;
+
+        this.__modalBusquedaAbierto = false;
         
         aClienteSeleccionado = JSON.parse(document.getElementById("sel-cliente").dataset.value);
         //aSesion["id_cliente"] = aClienteSeleccionado["id"];
         //aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
         sesion = "sesion=" + JSON.stringify(aSesion);
-        console.log(sesion);
         
         (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {console.log(response);
-            if (response.values.length === 1) {console.log(response);
+            if (response.values.length === 1) {
                 document.getElementById("txtCodArt").value = response.values[0]["codigo"];
                 document.getElementById("txtDescripcion").value = response.values[0]["desc"];
                 document.getElementById("txtCantidad").focus();
