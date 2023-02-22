@@ -103,6 +103,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         // Al salirse del foco realizo una búsqueda inicial.
                         if (!this.__validarSeleccionCliente())
                             return;
+                        if(document.getElementById("txtCodArt").value == '') {
+                            //swal('warning','Debes completar el campo articulo');
+                            return;
+                        }
 
                         this.__buscarArticulo();
                     });
@@ -210,12 +214,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         //aSesion["id_cliente"] = aClienteSeleccionado["id"];
         //aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
         sesion = "sesion=" + JSON.stringify(aSesion);
+        console.log(url+sesion+"&pagina=0&" + filter);
         
         (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {console.log(response);
             if (response.values.length === 1) {
                 document.getElementById("txtCodArt").value = response.values[0]["codigo"];
                 document.getElementById("txtDescripcion").value = response.values[0]["desc"];
                 document.getElementById("txtCantidad").focus();
+                
 
                 // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
                 document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
