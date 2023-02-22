@@ -268,8 +268,7 @@ class LFWDataGrid {
             th.innerHTML = "Acciones";
             th.setAttribute("style", "width: 50px;");
             this.__tablaTHead.appendChild(th);
-        }           
-     
+        }     
     }    
 
     /**
@@ -292,7 +291,6 @@ class LFWDataGrid {
             rowCount: this.__rowCount
         };
         sessionStorage.setItem(this.__cacheName, JSON.stringify(datagrid_cache));
-        this.__generateInputFormRows();
     }
 
     /**
@@ -401,29 +399,9 @@ class LFWDataGrid {
                 tr.appendChild(tdEdicion);
             }
 
-
             this.__rows.push(xrow);
             this.__rowCount++;
         });
-    }
-
-    /**
-     * Genera las filas en un input hidden y lo insreta en un formulario.
-     */
-    __generateInputFormRows() {
-        var formulario = document.getElementById(this.__asociatedFormId);
-        var input_hidden_row = document.createElement("input");
-        var rows = this.getRows();
-        input_hidden_row.setAttribute("type", "hidden");
-        input_hidden_row.id = this.__idControl + "_rows";
-        input_hidden_row.name = this.__idControl + "_rows";
-        input_hidden_row.value = JSON.stringify(rows);
-
-        var input_eliminar = document.getElementById(this.__idControl + "_rows");
-        if (input_eliminar !== null)
-            formulario.removeChild(input_eliminar);
-
-        formulario.appendChild(input_hidden_row);
     }
 
     /**
