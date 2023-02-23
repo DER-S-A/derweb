@@ -15,6 +15,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         this.__idSelectorClientesDataList = "";
         this.__modalBusquedaAbierto = false;
         this.__objGridArticulos = null;
+        this.__tablaArticulos = null;
 
         // Limpio el contenedor principal.
         this.clearContainer(xidcontainer);
@@ -25,7 +26,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      */
     generateComponent() {
         let urlAPI = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
-        //let urlAPI = (new App()).getUrlApi("app-entidades-sucursales");
         let urlTemplate = (new App()).getUrlTemplate("ingreso-pedido-rapido");
         let aSesion = (new CacheUtils("derweb", false).get("sesion"));
         let idVendedor = aSesion["id_vendedor"];
@@ -34,7 +34,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             this.__idSelectorClientes = "selector-clientes";
             htmlResponse = this.setTemplateParameters(htmlResponse, "id-selector", this.__idSelectorClientes);
             // Recupero los clientes para el vendedor actual.
-            (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {console.log(response)
+            (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {
                 // Creo la GUI.
                 this.__crearFormulario(htmlResponse, response);
             });
@@ -67,7 +67,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 // Al salirse del foco realizo una búsqueda inicial.
                 if (!this.__validarSeleccionCliente())
                     return;
-
             });
             
             let cambiarCliente = false;
@@ -84,20 +83,16 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 aSesion.id_cliente = element.id;
                 new CacheUtils("derweb", false).set("sesion", aSesion);
                 const url = new App().getUrlApi("app-entidades-sucursales");
-                (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {console.log(response)
+                (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
                     if(response.length >1) {
-                        console.log('elegir sucursal');
                         this.seleccionar_sucursal(response);
-                        
                     } else {
-                        console.log(response[0].id);
                         aSesion = new CacheUtils("derweb", false).get("sesion");
                         aSesion.id_sucursal = response[0].id;
                         new CacheUtils("derweb", false).set("sesion", aSesion);
                         this.pintarPedido();
                     }
 
-                    
                     // Agrego el evento blur de txtCodArt
                     document.getElementById("txtCodArt").addEventListener("blur", () => {
                         // Al salirse del foco realizo una búsqueda inicial.
@@ -124,8 +119,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     
                         this.__agregarEnTabla(xid_articulo, txtCantidad);
                         new CacheUtils("derven", false).set("id_pedido_sel", 179);
-                        
-
                     });
 
                     // Eventos botones confirmar y volver
@@ -211,7 +204,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         //aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
         sesion = "sesion=" + JSON.stringify(aSesion);
         
-        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {console.log(response);
+        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
             if (response.values.length === 1) {
                 document.getElementById("txtCodArt").value = response.values[0]["codigo"];
                 document.getElementById("txtDescripcion").value = response.values[0]["desc"];
@@ -236,63 +229,46 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {string} xfilter 
      */
     __buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter) {
+        var tablaArticulos = null;
         if (!this.__modalBusquedaAbierto) {
-            let objModal = new LFWModalBS(
-                "main", 
-                "modal_articulos", 
-                "Búsqueda de artículos",
-                "<div id='ipr_grid_articulos'></div>",
-                "700px");
-            
-            objModal.open();
-            this.__modalBusquedaAbierto = true;
-            this.__crearGrillaArticulos();
+            this.getTemplate((new App()).getUrlTemplate("ipr-grid-articulos"), (htmlResponse) => {
+                let objModal = new LFWModalBS(
+                    "main", 
+                    "modal_articulos", 
+                    "Búsqueda de artículos",
+                    htmlResponse,
+                    "700px");
+                
+                objModal.open();
+                this.__modalBusquedaAbierto = true;
+    
+                // Agrego evento al hacer clic en cerrar del modal. Al cerrar marco el estado del modal a 
+                // cerrado.
+                document.getElementById("modal_articulos_btnclose").addEventListener("click", () => {
+                    this.__modalBusquedaAbierto = false;
+                    objModal.close();
+                });
 
-            // Agrego evento al hacer clic en cerrar del modal. Al cerrar marco el estado del modal a 
-            // cerrado.
-            document.getElementById("modal_articulos_btnclose").addEventListener("click", () => {
-                this.__modalBusquedaAbierto = false;
-                objModal.close();
+                // Inicializo el datatable
+                this.__tablaArticulos = $("#ipr_grid_articulos").DataTable({
+                    responsive: false
+                });        
             });
         }
 
+        // Cargo el datatable con los resultados obtenidos.
         (new APIs().call(xurl, xsesion + "&pagina=" + xpagina + "&" + xfilter, "GET", 
             response => {
                 if (response.values.length !== 0) {
                     xpagina += 40;
                     this.__buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter);
-                }   this.__llenarGrillaArticulos(response.values);
-            }));        
-    }
-
-    /**
-     * Permite crear la grilla de artículos.
-     */
-    __crearGrillaArticulos() {
-        this.__objGridArticulos = new LFWDataGrid("ipr_grid_articulos", "id");
-        this.__objGridArticulos.setAsociatedFormId("frm-ingreso-pedido-rapido");
-        this.__objGridArticulos.setPermitirFiltros(true);
-        this.__objGridArticulos.setPermitirOrden(true);
-        this.__objGridArticulos.setPermitirEditarRegistro(true);
-        this.__objGridArticulos.setEditButtonTitle("Seleccionar")
-        this.__objGridArticulos.setEditJavascriptFunctionName("seleccionar_articulo")
-        this.__objGridArticulos.setIconEditButton("fa-arrow-right-to-bracket");
-
-        this.__objGridArticulos.agregarColumna("ID", "id", "numeric", 0, false);
-        this.__objGridArticulos.agregarColumna("Código", "codigo", "string", 100);
-        this.__objGridArticulos.agregarColumna("Descripción", "desc", "string");
-    }
-
-    /**
-     * Permite llenar la grilla de artículos.
-     * @param {array} Array Artículos a llenar en la grilla.
-     */
-    __llenarGrillaArticulos(xrows) {
-        xrows.forEach(element => {
-            this.__objGridArticulos.agregarFila(element);
-        });
-
-        this.__objGridArticulos.refresh();
+                    response.values.forEach((row) => {
+                        let linkSelect = "<a href='javascript:seleccionar_articulo(" + row.id + ");' title='Seleccionar'><i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>";
+                        this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
+                    });
+                    this.__tablaArticulos.draw();
+                }
+            }));
     }
 
     /**
@@ -317,8 +293,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     /**
      * Agrega un ítem al pedido.
      */
-    __agregarItem() {
-        
+    __agregarItem() {        
         let articulo = JSON.parse(document.getElementById("txtCodArt").dataset.value);
         let item = {};
 
@@ -335,15 +310,12 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             "precio_unitario": parseFloat(articulo.values[0].cped).toFixed(2),
             "subtotal": (articulo.values[0].cped * parseInt(document.getElementById("txtCantidad").value)).toFixed(2)
         };
-        console.log(item);
         if(this.__objDataGrid.getDataGrid() != null) item = this.validarItemRepetido(item);
         if(item.id>0) this.__objDataGrid.deleteRowByCampoClave(item.id);
         this.__objDataGrid.agregarFila(item);
         this.__objDataGrid.refresh();
         this.__calcularTotalPedido();
         this.__blanquearInputsItems();
-        console.log(this.__objDataGrid.getRows());
-        //this.__objDataGrid.updateDataRow(item);
     }
 
     /**
@@ -394,12 +366,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let container = document.querySelector('#app-container');
         container.append(modal);
         let selector = document.querySelector('#selectorSuc');
+
         arraySuc.forEach(sucursal => {
             let option = document.createElement('option');
             option.innerText = sucursal.nombre;
             option.value = sucursal.id;
             selector.append(option);
         })
+
         modal.addEventListener('click', (e) => {
            if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
             ingresar_pedidos_rapido();
@@ -418,7 +392,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
         let objCatalogo = new Catalogo();
     
-        if (cantidad == "" || cantidad<1) {
+        if (cantidad == "" || cantidad < 1) {
             alert("Cantidad vacia o valor incorrecto");
             return;
         }
@@ -451,7 +425,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         aSesion = sessionStorage.getItem("derweb_sesion");
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
-            console.log(arrItems);
             arrItems.forEach(item => {
                 item = {
                     "id": 0,
@@ -472,23 +445,19 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             }
         })
     }
+
     validarItemRepetido(item) {
         let longitud = this.__objDataGrid.getRows().length;
         let element = this.__objDataGrid.getRows();
-        console.log(longitud);
-        console.log(element);
         for(let i=0;i<longitud;i++) {
             if(element[i].codart == item.codart) {
-                console.log("paso");
                 item.cantidad += parseFloat(element[i].cantidad);
                 item.id = element[i].id;
-                console.log(item);
                 return item;
             }
         }
         return item;
     }
-
 }
 
 // Funciones a medida de esta operación.
