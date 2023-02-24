@@ -224,7 +224,6 @@ class LFWDataGrid {
      */
      __crearColumnas() {
         var htmlColHead = null;
-        var htmlInputText = null;
         this.__tablaTHead.innerHTML = "";
 
         // Recorro las columnas definidas en array __columns mediante agregarColumna().
