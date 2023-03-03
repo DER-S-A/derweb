@@ -117,6 +117,8 @@ class ConfirmacionPedido {
             if (this.__cb_finalizar_pedido !== null)
                 this.__cb_finalizar_pedido();
 
+            console.log("cerrar pantallla")
+
         }, false);
 
         objDivFooter.appendChild(objBotonFinalizarPedido);

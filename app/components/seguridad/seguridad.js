@@ -137,7 +137,7 @@ class Seguridad {
     }
 
     /**
-    * Permite cambiar la clave en la base de datos mediante
+    * Permite recuperar la clave en la base de datos mediante
     * la API correspondiente.
     */
     recuperarClave() {

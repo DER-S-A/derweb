@@ -245,6 +245,14 @@ class EntidadesController extends APIController {
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
 
+    /**
+    * olvideMiContrasenia
+    * Devuelve la contraseña del cliente.
+    * Parametro $user es el usuario de entidades (cliente), el parametro $mail es el email de entidades (cliente)
+    * Y parametro $cuit es el cuit de entidades (cliente).
+    * @return void
+    */
+
     public function olvideMiContrasenia() {
         if ($this->useGetMethod() || $this->usePostMethod()) {
             try {

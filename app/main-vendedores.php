@@ -5,6 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="node_modules/datatables.net-responsive/css/responsive.dataTables.min.css" rel="stylesheet">
         <link href="css/app-style.css" rel="stylesheet">
         <link href="components/menus/menus.css" rel="stylesheet">
         <link href="components/catalogo/lista-articulos/lista-articulos.css" rel="stylesheet">
@@ -23,6 +25,9 @@
         <link rel="stylesheet" href="components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapido.css">
 
         <title>DER WEB</title>
+        <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
+        <script src="node_modules/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
         <script src="js/utils/apis.js" type="text/javascript"></script>

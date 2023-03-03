@@ -224,53 +224,89 @@ class LFWDataGrid {
      */
      __crearColumnas() {
         var htmlColHead = null;
-        var htmlInputText = null;
         this.__tablaTHead.innerHTML = "";
 
         // Recorro las columnas definidas en array __columns mediante agregarColumna().
         this.__columns.forEach((xcolumna, xindex) => {
             // Solo creo en el HTML las columnas que son visibles.
             if (xcolumna["visible"] === true) {
-                htmlColHead = document.createElement("th");
-                if (xcolumna["ancho"] !== -1)
-                    htmlColHead.setAttribute("style", "width: " + xcolumna["ancho"] + "px;");
-                htmlColHead.innerHTML = xcolumna["titulo"] + " " + "<i id=\"" + this.__idControl + "_" + xcolumna["campo"] + "\"></i>";
-                htmlColHead.classList.add("text-center");
-
-                if (this.__permitirFiltros) {
-                    htmlInputText = document.createElement("input");
-                    htmlInputText.classList.add("form-control");
-                    htmlInputText.classList.add("lfw-input-filters");
-                    htmlInputText.id = this.__idControl + "-" + xcolumna["campo"];
-                    htmlInputText.name = this.__idControl + "-" + xcolumna["campo"];
-
-                    // Este evento se ejecuta mientras el usuario va tipeando en el input.
-                    htmlInputText.addEventListener("keyup", (event) => {
-                        this.__filter(xcolumna["campo"]);
-                    }, false);
-
-                    htmlColHead.appendChild(htmlInputText);
-                }
-
-                // Este evento se ejecuta al hacer clic sobre el encabezado de una
-                // columna si es que permite ordenar por columna.
-                if (this.__permitirOrden)
-                    htmlColHead.addEventListener("click", (event) => {
-                        this.__sortByColumn(xcolumna, xindex);
-                    }, false);
-
+                htmlColHead = this.__addHeader(xcolumna);
+                htmlColHead = this.__addFilterHeader(xcolumna, htmlColHead);
+                htmlColHead = this.__addSortHeader(xcolumna, xindex, htmlColHead);
                 this.__tablaTHead.appendChild(htmlColHead);
             }
         });
 
+        this.__addColumnForActionButtons();    
+    }
+
+    /**
+     * Permite agregar el encabezado de una columna.
+     * @param {array} xcolumna 
+     * @returns {DOMElement}
+     */
+    __addHeader(xcolumna) {
+        let htmlColHead = document.createElement("th");
+        if (xcolumna["ancho"] !== -1)
+            htmlColHead.setAttribute("style", "width: " + xcolumna["ancho"] + "px;");
+        htmlColHead.innerHTML = xcolumna["titulo"] + " " + "<i id=\"" + this.__idControl + "_" + xcolumna["campo"] + "\"></i>";
+        htmlColHead.classList.add("text-center");
+        return htmlColHead;
+    }
+
+    /**
+     * Permite agregar los inputs para filtros si es que la grilla permite realizar
+     * filtrado de datos.
+     * @param {array} xcolumna 
+     * @param {DOMElement} xhtmlColHead 
+     * @returns {DOMElement}
+     */
+    __addFilterHeader(xcolumna, xhtmlColHead) {
+        if (this.__permitirFiltros) {
+            let htmlInputText = document.createElement("input");
+            htmlInputText.classList.add("form-control");
+            htmlInputText.classList.add("lfw-input-filters");
+            htmlInputText.id = this.__idControl + "-" + xcolumna["campo"];
+            htmlInputText.name = this.__idControl + "-" + xcolumna["campo"];
+
+            // Este evento se ejecuta mientras el usuario va tipeando en el input.
+            htmlInputText.addEventListener("keyup", (event) => {
+                this.__filter(xcolumna["campo"]);
+            }, false);
+
+            xhtmlColHead.appendChild(htmlInputText);
+        }
+
+        return xhtmlColHead;
+    }
+
+    /**
+     * Agrega la funcionalidad de ordenamiento.
+     * @param {array} xcolumna 
+     * @param {int} xindex
+     * @param {DOMElement} xhtmlColHead 
+     * @returns {DOMElement}
+     */
+    __addSortHeader(xcolumna, xindex, xhtmlColHead) {
+        if (this.__permitirOrden)
+            xhtmlColHead.addEventListener("click", (event) => {
+                this.__sortByColumn(xcolumna, xindex);
+            }, false);
+        
+        return xhtmlColHead;
+    }
+
+    /**
+     * Agrega la columna reservada para los botones de acciones.
+     */
+    __addColumnForActionButtons() {
         if (this.__permitirEditar || this.__permitirEliminar) {
             var th = document.createElement("th");
             th.innerHTML = "Acciones";
             th.setAttribute("style", "width: 50px;");
             this.__tablaTHead.appendChild(th);
-        }           
-     
-    }    
+        }     
+    }
 
     /**
      * Dato a mostrar en cada fila del grid.
@@ -292,7 +328,6 @@ class LFWDataGrid {
             rowCount: this.__rowCount
         };
         sessionStorage.setItem(this.__cacheName, JSON.stringify(datagrid_cache));
-        this.__generateInputFormRows();
     }
 
     /**
@@ -303,104 +338,51 @@ class LFWDataGrid {
         this.__tablaTBody.innerHTML = "";
 
         xrows.forEach((xrow, index) => {
-            var tr = document.createElement("tr");
-            var td = null;
-            var tdEdicion = null;
-            var checkbox = null;
+            if (xrow === null) return;
 
-            // Valido si xrow es null porque cuando se elimina un elemento del array,
-            // queda la posición en null. En ese caso corto la ejecución para que no
-            // genere error de javascript.
-            if (xrow === null)
-                return;
+            const tr = document.createElement("tr");
+            tr.id = `${this.__idControl}_row_${this.__rowCount}`;
 
-            tr.id = this.__idControl + "_row_" + this.__rowCount;
+            for (const column of this.__columns) {
+                if (!column.visible) continue;
 
-            // Recorro las columnas para ir completando las filas del grid con los datos
-            // a mostrar.
-            for (var i = 0; i < this.__columns.length; i++) {
-                // Solo cargo los datos de las columnas que son visibles.
-                if (this.__columns[i]["visible"] === true) {
-                    // Si el valor del campo clave viene en 0 (cero) entonces lo calculo asignando
-                    // un valor correlativo.
-
-                    if (xrow[this.__campoClave] === 0)
-                        xrow[this.__campoClave] = index + 1;
-
-                    td = document.createElement("td");
-                    if (this.__columns[i]["use_check"]) {
-                        checkbox = document.createElement("input");
-                        checkbox.id = this.__columns[i]["campo"] + "_" + xrow[this.__campoClave];
-                        checkbox.name = this.__columns[i]["campo"] + "[]";
-                        checkbox.type = "checkbox";
-                        checkbox.value = xrow[this.__campoClave];
-
-                        // Agrego un evento click al checkbox para marcar la fila
-                        // seleccionada.
-                        checkbox.addEventListener("click", () => {
-                            // Al seleccionar el checkbox marco el registro como seleccionado
-                            // y viceversa.
-                            var selected_row = new Array();
-                            selected_row = this.getRowByCampoClave(checkbox.value);
-                            selected_row[0].selected = checkbox.checked;
-                            this.updateDataRow(selected_row[0], false);
-                            this.__optionCheckFunctionName(checkbox);
-                        });
-
-                        td.appendChild(checkbox);
-                    } else {
-                        // Verifico si el tipo de datos es numérico para que formatee.
-                        if (this.__columns[i]["tipodato"] === "numeric")
-                            xrow[this.__columns[i]["campo"]] = parseFloat(xrow[this.__columns[i]["campo"]]).toFixed(2);
-
-                        td.innerHTML = xrow[this.__columns[i]["campo"]];
-
-                        // Verifico el tipo de datos para la alineación
-                        if ((this.__columns[i]["tipodato"] === "numeric") 
-                                || (this.__columns[i]["tipodato"] === "datetime"))
-                            this.__formatearValorNumerico(td);
-                    }
-                    tr.appendChild(td);
+                if (xrow[this.__campoClave] === 0) {
+                    xrow[this.__campoClave] = index + 1;
                 }
+
+                const td = document.createElement("td");
+                let content = xrow[column.campo];
+
+                if (column.use_check) {
+                    const checkbox = this.__createCheckbox(column.campo, xrow[this.__campoClave]);
+                    checkbox.addEventListener("click", () => this.__handleCheckboxClick(checkbox));
+                    td.appendChild(checkbox);
+                } else {
+                    content = this.__formatContent(content, column.tipodato);
+                    td.innerHTML = content;
+                    if (column.tipodato === "numeric" || column.tipodato === "datetime") {
+                        this.__formatearValorNumerico(td);
+                    }
+                }
+
+                tr.appendChild(td);
             }
+
             this.__tablaTBody.appendChild(tr);
 
-            // Si permite editar, entonces, muestro el ícono editar.
             if (this.__permitirEditar) {
-                let jsFunctinName = "";
-                let iconEditButton = "";
-                let editButtonTitle = "";
-                tdEdicion = document.createElement("td");
-
-                // Si el nombre del a función de javascript no está establecido le
-                // pongo un nombre predeterminado.
-                if (this.__editJavascriptFunctionName === "")
-                    jsFunctinName = this.__idControl + "_edit(" + xrow[this.__campoClave] + ");"
-                else
-                    jsFunctinName = this.__editJavascriptFunctionName + "(" + xrow[this.__campoClave] + ");";
-
-                if (this.__iconEditButton === "")
-                    iconEditButton = "fa-edit";
-                else
-                    iconEditButton = this.__iconEditButton;
-
-                if (this.__editButtonTitle === "")
-                    editButtonTitle = "Editar";
-                else
-                    editButtonTitle = this.__editButtonTitle;
-
-                tdEdicion.innerHTML = "<a href='javascript:" + jsFunctinName + "' title='" + editButtonTitle + "'><i class=\"fa " + iconEditButton + " fa-lg\"></i></a> &nbsp;";
+                const jsFunctionName = this.__getEditFunctionName(xrow[this.__campoClave]);
+                const iconEditButton = this.__iconEditButton === "" ? "fa-edit" : this.__iconEditButton;
+                const editButtonTitle = this.__editButtonTitle === "" ? "Editar" : this.__editButtonTitle;
+                const tdEdicion = document.createElement("td");
+                tdEdicion.innerHTML = `<a href='javascript:${jsFunctionName}' title='${editButtonTitle}'><i class="fa ${iconEditButton} fa-lg"></i></a> &nbsp;`;
                 tr.appendChild(tdEdicion);
             }
 
-            // Si permite eliminar, entonces muestro el ícono para eliminar una fila.
             if (this.__permitirEliminar) {
-                if (tdEdicion === null)
-                    tdEdicion = document.createElement("td");
-                tdEdicion.innerHTML += "<a href='javascript:" + this.__idControl + "_delete(" + xrow[this.__campoClave] + ");'><i class=\"far fa-trash-alt fa-lg\"></i></a>";
-                tr.appendChild(tdEdicion);
+                const tdEdicion = this.__getDeleteButtonTd(tr);
+                tdEdicion.innerHTML += `<a href='javascript:${this.__idControl}_delete(${xrow[this.__campoClave]})'><i class="far fa-trash-alt fa-lg"></i></a>`;
             }
-
 
             this.__rows.push(xrow);
             this.__rowCount++;
@@ -408,22 +390,65 @@ class LFWDataGrid {
     }
 
     /**
-     * Genera las filas en un input hidden y lo insreta en un formulario.
+     * Permite crear un checkbox en caso de que esté permitida la selección
+     * @param {string} xcampo 
+     * @param {string} xclave 
+     * @returns {DOMElement}
      */
-    __generateInputFormRows() {
-        var formulario = document.getElementById(this.__asociatedFormId);
-        var input_hidden_row = document.createElement("input");
-        var rows = this.getRows();
-        input_hidden_row.setAttribute("type", "hidden");
-        input_hidden_row.id = this.__idControl + "_rows";
-        input_hidden_row.name = this.__idControl + "_rows";
-        input_hidden_row.value = JSON.stringify(rows);
+    __createCheckbox(xcampo, xclave) {
+        const checkbox = document.createElement("input");
+        checkbox.id = `${xcampo}_${xclave}`;
+        checkbox.name = `${xcampo}[]`;
+        checkbox.type = "checkbox";
+        checkbox.value = xclave;
+        return checkbox;
+    }
 
-        var input_eliminar = document.getElementById(this.__idControl + "_rows");
-        if (input_eliminar !== null)
-            formulario.removeChild(input_eliminar);
+    /**
+     * Funcionalidad del evento click al hacer click sobre un checkbox.
+     * @param {DOMElement} xcheckbox 
+     */
+    __handleCheckboxClick(xcheckbox) {
+        const selected_row = this.getRowByCampoClave(xcheckbox.value);
+        selected_row[0].selected = xcheckbox.checked;
+        this.updateDataRow(selected_row[0], false);
+        this.__optionCheckFunctionName(xcheckbox);
+    }
 
-        formulario.appendChild(input_hidden_row);
+    /**
+     * Permite crear el contenido de la celda.
+     * @param {*} xcontent 
+     * @param {string} xtipodato 
+     * @returns 
+     */
+    __formatContent(xcontent, xtipodato) {
+        if (xtipodato === "numeric") {
+            xcontent = parseFloat(xcontent).toFixed(2);
+        }
+        return xcontent;
+    }
+
+    /**
+     * Establece el nombre de la función javascript.
+     * @param {*} clave 
+     * @returns 
+     */
+    __getEditFunctionName(clave) {
+        return this.__editJavascriptFunctionName === "" ? `${this.__idControl}_edit(${clave})` : `${this.__editJavascriptFunctionName}(${clave})`;
+    }
+
+    /**
+     * Crea el contenedor del  botón
+     * @param {*} xtr 
+     * @returns 
+     */
+    __getDeleteButtonTd(xtr) {
+        let tdEdicion = xtr.lastElementChild;
+        if (tdEdicion === null || tdEdicion.tagName !== "TD") {
+            tdEdicion = document.createElement("td");
+            xtr.appendChild(tdEdicion);
+        }
+        return tdEdicion;
     }
 
     /**
@@ -473,23 +498,21 @@ class LFWDataGrid {
     }
 
     /**
-     * Permite eliminar un registro a partir del valor seleccionado según el campo
-     * clave.
-     * @param {int} xid Id. de registro definido en campo clave.
+     * Deletes a row with the specified ID.
+     * @param {number} id The ID of the row to delete.
      */
-    deleteRowByCampoClave(xid) {
-        var rows = this.getRows();
-        var dataGridProperties = this.getDataGrid();
-        rows.find((xelement, xindex) => {
-            if (xelement !== null)
-                if (parseInt(xelement[this.__campoClave]) === parseInt(xid))
-                    delete rows[xindex];
+    deleteRowByCampoClave(id) {
+        const rows = this.getRows();
+        const filteredRows = rows.filter((row) => {
+            if (row && parseInt(row[this.__campoClave]) === parseInt(id)) {
+                return false; // exclude row with specified ID
+            }
+            return true;
         });
-        dataGridProperties.rows = rows;
-        this.__dataSet = rows;
+        const dataGridProperties = { ...this.getDataGrid(), rows: filteredRows };
+        this.__dataSet = filteredRows;
         sessionStorage.setItem(this.getCacheName(), JSON.stringify(dataGridProperties));
         this.refresh();
-        this.__generateInputFormRows();
     }
 
     /**
@@ -509,23 +532,22 @@ class LFWDataGrid {
     }
 
     /**
-     * Actualiza los datos de la fila selecionada
-     * @param {array} xrow Fila a actualizar
-     * @param {array} xrefreshGrid Indica si debe refrescar la grilla.
+     * Updates the data of the selected row.
+     * @param {array} row Row to be updated.
+     * @param {boolean} refreshGrid Indicates whether to refresh the grid.
      */
-    updateDataRow(xrow, xrefreshGrid = true) {
-        var dataGridProperties = this.getDataGrid();
-        dataGridProperties.rows.find((xelement, xindex) => {
-            if (xelement !== null)
-                if (parseInt(xelement[this.__campoClave]) === parseInt(xrow[this.__campoClave]))
-                    dataGridProperties.rows[xindex] = xrow;
-        });
-        sessionStorage.setItem(this.getCacheName(), JSON.stringify(dataGridProperties));
-        if (xrefreshGrid)
-            this.refresh();
-        this.__generateInputFormRows();
+    updateDataRow(row, refreshGrid = true) {
+        const dataGridProperties = this.getDataGrid();
+        const rowIndex = dataGridProperties.rows.findIndex(x => x !== null && parseInt(x[this.__campoClave]) === parseInt(row[this.__campoClave]));
+        if (rowIndex !== -1) {
+            dataGridProperties.rows[rowIndex] = row;
+            sessionStorage.setItem(this.getCacheName(), JSON.stringify(dataGridProperties));
+            if (refreshGrid) {
+                this.refresh();
+            }
+        }
     }
-
+  
     /**
      * Permite realizar filtrar por un campo en base a lo que el usuario busca.
      * Para evitar las diferencias entre mayúsculas y minúsculas, se convierte todo
@@ -548,52 +570,46 @@ class LFWDataGrid {
     }
 
     /**
-     * Ordeno las filas según el campo seleccionado.
-     * @param {string} xcampo 
+     * Ordena las filas según el campo seleccionado.
+     * @param {object} column Columna que se está ordenando
+     * @param {number} index Índice de la columna en el arreglo de columnas
      */
-    __sortByColumn(xcolumna, xindex) {
-        var dataGridProperties = this.getDataGrid();
+    __sortByColumn(column, index) {
+        const dataGridProperties = this.getDataGrid();
 
-        // Verifico si hago click en sobre la misma columna que ordené por última vez,
-        // si es así hago el orden inverso, en caso contrario, ordeno en forma ascendente
-        // por la nueva columna que se está ordenando.
-        if (this.__ultimoCampoOrdenado === xcolumna["campo"])
-            if (xcolumna["orden"] === "none" || xcolumna["orden"] === "desc") {
-                dataGridProperties.rows.sort((a, b) => {
-                    return a[xcolumna["campo"]].localeCompare(b[xcolumna["campo"]]);
-                });
-                xcolumna["orden"] = "asc";
+        let order = "asc";
+        if (this.__ultimoCampoOrdenado === column.campo) {
+            if (column.orden === "asc") {
+                order = "desc";
+                column.orden = "desc";
+            } else {
+                column.orden = "asc";
             }
-            else {
-                dataGridProperties.rows.sort((a, b) => {
-                    return b[xcolumna["campo"]].localeCompare(a[xcolumna["campo"]]);
-                });
-                xcolumna["orden"] = "desc";
-            }
-        else {
-            dataGridProperties.rows.sort((a, b) => {
-                return a[xcolumna["campo"]].localeCompare(b[xcolumna["campo"]]);
-            });
-            xcolumna["orden"] = "asc";
+        } else {
+            column.orden = "asc";
+            this.__resetColumnOrder(dataGridProperties.columns);
         }
 
-        this.__cambiarIconoOrdenEnColumna(xcolumna);
-        
-        // Inicializo la propiedad orden en none antes de actualizar por qué
-        // campo fué el último orden.
-        dataGridProperties.columns.forEach((xelemento, xidx) => {
-            xelemento["orden"] = "none";
-            dataGridProperties.columns[xidx] = xelemento;
+        this.__cambiarIconoOrdenEnColumna(column);
+        dataGridProperties.rows.sort((a, b) => {
+            return order === "asc" ? a[column.campo].localeCompare(b[column.campo]) : b[column.campo].localeCompare(a[column.campo]);
         });
 
-        // Actualizo la propiedad orden de la columna.
-        dataGridProperties.columns[xindex] = xcolumna;
-        // Indico por qué campo se ordenó.
-        this.__ultimoCampoOrdenado = xcolumna["campo"];
-        this.__fill(dataGridProperties.rows);
+        dataGridProperties.columns[index] = column;
+        this.__ultimoCampoOrdenado = column.campo;
 
-        // Actualizo los valores de las propiedades del datagrid en sessionStorage.
+        this.__fill(dataGridProperties.rows);
         sessionStorage.setItem(this.getCacheName(), JSON.stringify(dataGridProperties));
+    }
+
+    /**
+     * Establece el orden en "none" para todas las columnas.
+     * @param {array} columns Arreglo de columnas
+     */
+    __resetColumnOrder(columns) {
+        columns.forEach(column => {
+            column.orden = "none";
+        });
     }
 
     /**
@@ -669,4 +685,3 @@ class LFWDataGrid {
         return JSON.parse(document.getElementById(this.__idControl + "_selectedRow").value);
     }
 }
-

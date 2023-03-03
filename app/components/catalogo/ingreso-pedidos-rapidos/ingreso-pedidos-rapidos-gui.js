@@ -15,6 +15,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         this.__idSelectorClientesDataList = "";
         this.__modalBusquedaAbierto = false;
         this.__objGridArticulos = null;
+        this.__tablaArticulos = null;
 
         // Limpio el contenedor principal.
         this.clearContainer(xidcontainer);
@@ -28,11 +29,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let urlTemplate = (new App()).getUrlTemplate("ingreso-pedido-rapido");
         let aSesion = (new CacheUtils("derweb", false).get("sesion"));
         let idVendedor = aSesion["id_vendedor"];
-
+    
         this.getTemplate(urlTemplate, (htmlResponse) => {
             this.__idSelectorClientes = "selector-clientes";
             htmlResponse = this.setTemplateParameters(htmlResponse, "id-selector", this.__idSelectorClientes);
-    
             // Recupero los clientes para el vendedor actual.
             (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {
                 // Creo la GUI.
@@ -54,8 +54,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         objDataList.setEtiqueta("Cliente:");
         objDataList.setPlaceholderText("Escribí parte del código o nombre del cliente...");
         objDataList.setData(xresponse);
-        objDataList.setColumns(["codsuc", "nombre"]);
-        objDataList.setColumnsKey(["id", "id_sucursal"]);
+        objDataList.setColumns(["codusu", "nombre"]);
+        objDataList.setColumnsKey(["id", "codusu"]);
         objDataList.toHtml(html => {
             // Lleno el autocomplete y dibujo el HTML en el navegador.
             xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "lfw-datalist-bs", html);
@@ -63,44 +63,108 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
             this.__inicializarInputs();
 
-            // Agrego el evento blur del selector de clientes.
-            document.getElementById(objDataList.idSelector).addEventListener("blur", (event) => {
-                objDataList.getSelectedValue(event.target.value);
-            });
-            
-            // Agrego el evento blur de txtCodArt
             document.getElementById("txtCodArt").addEventListener("blur", () => {
                 // Al salirse del foco realizo una búsqueda inicial.
                 if (!this.__validarSeleccionCliente())
                     return;
-
-                this.__buscarArticulo();
             });
+            
+            let cambiarCliente = false;
 
-            // Evento al recibir el foco.
-            document.getElementById("txtCantidad").addEventListener("focus", () => {
-                // Selecciono el contenido del input.
-                document.getElementById("txtCantidad").select();
-            });
+            // Agrego el evento change del selector de clientes.
+            document.getElementById(objDataList.idSelector).addEventListener("change", (event) => {
+                cambiarCliente = true;
+                sessionStorage.removeItem('ipr_grid_items_rows');
+                objDataList.getSelectedValue(event.target.value);
+                let element = document.querySelector('#sel-cliente');
+                element = element.getAttribute('data-value');
+                element = JSON.parse(element);
+                let aSesion = new CacheUtils("derweb", false).get("sesion");
+                aSesion.id_cliente = element.id;
+                new CacheUtils("derweb", false).set("sesion", aSesion);
+                const url = new App().getUrlApi("app-entidades-sucursales");
+                (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
+                    if(response.length >1) {
+                        this.seleccionar_sucursal(response);
+                    } else {
+                        aSesion = new CacheUtils("derweb", false).get("sesion");
+                        aSesion.id_sucursal = response[0].id;
+                        new CacheUtils("derweb", false).set("sesion", aSesion);
+                        this.pintarPedido();
+                    }
 
-            // Agrego el evento cantidad.
-            document.getElementById("txtCantidad").addEventListener("blur", () => {
-                this.__agregarItem();
-            });
+                    // Agrego el evento blur de txtCodArt
+                    document.getElementById("txtCodArt").addEventListener("blur", () => {
+                        // Al salirse del foco realizo una búsqueda inicial.
+                        if (!this.__validarSeleccionCliente())
+                            return;
 
-            // Eventos botones confirmar y volver
-            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-                // Desarrollar llamado a API para enviar y confirmar el pedido.
+                        this.__buscarArticulo();
+                    });
+
+                    // Evento al recibir el foco.
+                    document.getElementById("txtCantidad").addEventListener("focus", () => {
+                        // Selecciono el contenido del input.
+                        document.getElementById("txtCantidad").select();
+                    });
+
+                    // Agrego el evento cantidad.
+                    document.getElementById("txtCantidad").addEventListener("blur", () => {
+                        let txtCantidad = document.querySelector('#txtCantidad').value;
+                        this.__agregarItem();
+                        const txtCodArt = document.querySelector('#txtCodArt');
+                        let xid_articulo = JSON.parse(txtCodArt.dataset.value);
+                        xid_articulo = xid_articulo.values[0].id;
+                        //this.agregarArticulo();
+                    
+                        this.__agregarEnTabla(xid_articulo, txtCantidad);
+                        new CacheUtils("derven", false).set("id_pedido_sel", 179);
+                    });
+
+                    // Eventos botones confirmar y volver
+                    document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+                        // Desarrollar llamado a API para enviar y confirmar el pedido.
+                        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
+                        let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
+                        objConfirmarPedido.setIdModal(objModal.getIdModal());
+                        objConfirmarPedido.setDivModal(objModal.getModalBody());
+
+                        // Agrego funcionalidad extra al finalizar el pedido
+                        objConfirmarPedido.setCallbackFinalizarPedido(() => {
+                            objModal.close();
+                            ingresar_pedidos_rapido();
+                        });
+                        
+                        objConfirmarPedido.generarFooterPedido();
+                        objModal.open();
+
+                        aSesion = sessionStorage.getItem("derweb_sesion");
+                        let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
+                        (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
+                            new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
+                        })
+                    });
+
+                    // LLamo al método que crea la grilla.
+                    this.__crearGridItems();
+
+                    document.getElementById("sel-cliente").focus();
+                            
+                });
+                        
             });
 
             document.getElementById("btnVolver").addEventListener("click", () => {
                 window.location.href = "main-vendedores.php";
             });
+            
+            document.getElementById(objDataList.idSelector).addEventListener('click', () =>{
+                if(cambiarCliente) {
+                    ingresar_pedidos_rapido();
+                    cambiarCliente = false;
+                }
+            })
 
-            // LLamo al método que crea la grilla.
-            this.__crearGridItems();
-
-            document.getElementById("sel-cliente").focus();
         });
     }
 
@@ -132,13 +196,15 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let aSesion = (new CacheUtils("derweb")).get("sesion");
         let sesion;
         let filter = "frase=" + txtCodArt;
+
+        this.__modalBusquedaAbierto = false;
         
         aClienteSeleccionado = JSON.parse(document.getElementById("sel-cliente").dataset.value);
-        aSesion["id_cliente"] = aClienteSeleccionado["id"];
-        aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
+        //aSesion["id_cliente"] = aClienteSeleccionado["id"];
+        //aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
         sesion = "sesion=" + JSON.stringify(aSesion);
-
-        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response => {
+        
+        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
             if (response.values.length === 1) {
                 document.getElementById("txtCodArt").value = response.values[0]["codigo"];
                 document.getElementById("txtDescripcion").value = response.values[0]["desc"];
@@ -163,63 +229,46 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {string} xfilter 
      */
     __buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter) {
+        var tablaArticulos = null;
         if (!this.__modalBusquedaAbierto) {
-            let objModal = new LFWModalBS(
-                "main", 
-                "modal_articulos", 
-                "Búsqueda de artículos",
-                "<div id='ipr_grid_articulos'></div>",
-                "700px");
-            
-            objModal.open();
-            this.__modalBusquedaAbierto = true;
-            this.__crearGrillaArticulos();
+            this.getTemplate((new App()).getUrlTemplate("ipr-grid-articulos"), (htmlResponse) => {
+                let objModal = new LFWModalBS(
+                    "main", 
+                    "modal_articulos", 
+                    "Búsqueda de artículos",
+                    htmlResponse,
+                    "700px");
+                
+                objModal.open();
+                this.__modalBusquedaAbierto = true;
+    
+                // Agrego evento al hacer clic en cerrar del modal. Al cerrar marco el estado del modal a 
+                // cerrado.
+                document.getElementById("modal_articulos_btnclose").addEventListener("click", () => {
+                    this.__modalBusquedaAbierto = false;
+                    objModal.close();
+                });
 
-            // Agrego evento al hacer clic en cerrar del modal. Al cerrar marco el estado del modal a 
-            // cerrado.
-            document.getElementById("modal_articulos_btnclose").addEventListener("click", () => {
-                this.__modalBusquedaAbierto = false;
-                objModal.close();
+                // Inicializo el datatable
+                this.__tablaArticulos = $("#ipr_grid_articulos").DataTable({
+                    responsive: false
+                });        
             });
         }
 
+        // Cargo el datatable con los resultados obtenidos.
         (new APIs().call(xurl, xsesion + "&pagina=" + xpagina + "&" + xfilter, "GET", 
             response => {
                 if (response.values.length !== 0) {
                     xpagina += 40;
                     this.__buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter);
-                }   this.__llenarGrillaArticulos(response.values);
-            }));        
-    }
-
-    /**
-     * Permite crear la grilla de artículos.
-     */
-    __crearGrillaArticulos() {
-        this.__objGridArticulos = new LFWDataGrid("ipr_grid_articulos", "id");
-        this.__objGridArticulos.setAsociatedFormId("frm-ingreso-pedido-rapido");
-        this.__objGridArticulos.setPermitirFiltros(true);
-        this.__objGridArticulos.setPermitirOrden(true);
-        this.__objGridArticulos.setPermitirEditarRegistro(true);
-        this.__objGridArticulos.setEditButtonTitle("Seleccionar")
-        this.__objGridArticulos.setEditJavascriptFunctionName("seleccionar_articulo")
-        this.__objGridArticulos.setIconEditButton("fa-arrow-right-to-bracket");
-
-        this.__objGridArticulos.agregarColumna("ID", "id", "numeric", 0, false);
-        this.__objGridArticulos.agregarColumna("Código", "codigo", "string", 100);
-        this.__objGridArticulos.agregarColumna("Descripción", "desc", "string");
-    }
-
-    /**
-     * Permite llenar la grilla de artículos.
-     * @param {array} Array Artículos a llenar en la grilla.
-     */
-    __llenarGrillaArticulos(xrows) {
-        xrows.forEach(element => {
-            this.__objGridArticulos.agregarFila(element);
-        });
-
-        this.__objGridArticulos.refresh();
+                    response.values.forEach((row) => {
+                        let linkSelect = "<a href='javascript:seleccionar_articulo(" + row.id + ");' title='Seleccionar'><i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>";
+                        this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
+                    });
+                    this.__tablaArticulos.draw();
+                }
+            }));
     }
 
     /**
@@ -244,7 +293,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     /**
      * Agrega un ítem al pedido.
      */
-    __agregarItem() {
+    __agregarItem() {        
         let articulo = JSON.parse(document.getElementById("txtCodArt").dataset.value);
         let item = {};
 
@@ -261,7 +310,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             "precio_unitario": parseFloat(articulo.values[0].cped).toFixed(2),
             "subtotal": (articulo.values[0].cped * parseInt(document.getElementById("txtCantidad").value)).toFixed(2)
         };
-
+        if(this.__objDataGrid.getDataGrid() != null) item = this.validarItemRepetido(item);
+        if(item.id>0) this.__objDataGrid.deleteRowByCampoClave(item.id);
         this.__objDataGrid.agregarFila(item);
         this.__objDataGrid.refresh();
         this.__calcularTotalPedido();
@@ -290,6 +340,123 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         document.getElementById("txtDescripcion").value = "";
         document.getElementById("txtCantidad").value = 0;
         document.getElementById("txtCodArt").focus();
+    }
+
+    seleccionar_sucursal(arraySuc) {
+        let html = `
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Selecciona sucursal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Por favor selecciona una sucursal:</p>
+                <select class="form-control" name="sucursal" id= "selectorSuc">
+                </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="btnSelect">Seleccionar</button>
+            </div>
+          </div>
+        </div>`;
+        let modal = this.crearElementDom('div', 'modal', 'modalSuc', ['tabindex','-1']);
+        modal.style.display = 'block';
+        modal.innerHTML = html;
+        let container = document.querySelector('#app-container');
+        container.append(modal);
+        let selector = document.querySelector('#selectorSuc');
+
+        arraySuc.forEach(sucursal => {
+            let option = document.createElement('option');
+            option.innerText = sucursal.nombre;
+            option.value = sucursal.id;
+            selector.append(option);
+        })
+
+        modal.addEventListener('click', (e) => {
+           if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
+            ingresar_pedidos_rapido();
+           }
+        });
+        let btnSelec = document.querySelector('#btnSelect');
+        btnSelec.addEventListener('click', ()=> {
+            let aSesion = new CacheUtils("derweb", false).get("sesion");
+            aSesion.id_sucursal = parseInt(selector.value);
+            new CacheUtils("derweb", false).set("sesion", aSesion);
+            modal.style.display = 'none';
+            this.pintarPedido();
+        });
+    }
+    __agregarEnTabla(xidarticulo, cantidad) {
+        let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
+        let objCatalogo = new Catalogo();
+    
+        if (cantidad == "" || cantidad < 1) {
+            alert("Cantidad vacia o valor incorrecto");
+            return;
+        }
+    
+        // Recupero los datos de la sucursal predeterminada
+        objCatalogo.getSucursalPredeterminadaByCliente(aSesion["id_cliente"], (xaSucursal) => {
+            let acabecera = {
+                "id_cliente": parseInt(aSesion["id_cliente"]),
+                "id_tipoentidad": parseInt(aSesion["id_tipoentidad"]),
+                "id_vendedor": parseInt(xaSucursal[0]["id_vendedor"]),
+                "id_sucursal": parseInt(xaSucursal[0]["id"]),
+                "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
+                "id_transporte": xaSucursal[0]["id_transporte"],
+                "codigo_transporte": xaSucursal[0]["codigo_transporte"],
+                "id_formaenvio": xaSucursal[0]["id_formaenvio"],
+                "codigo_forma_envio": xaSucursal[0]["codigo_forma_envio"]
+            };
+    
+            if (xaSucursal === undefined) {
+                alert("Usted no tiene sucursal asignada, por favor comuníquese con sistemas para resolver este problema");
+                return;
+            }
+            
+            objCatalogo.agregarArticuloEnCarrito(aSesion, xidarticulo, cantidad, acabecera);
+        });
+    }
+
+    pintarPedido() {
+        const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
+        aSesion = sessionStorage.getItem("derweb_sesion");
+        (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
+            let arrItems = response.items;
+            arrItems.forEach(item => {
+                item = {
+                    "id": 0,
+                    "codart": item.codigo,
+                    "descripcion": item.descripcion,
+                    "cantidad": item.cantidad,
+                    "precio_unitario": item.costo,
+                    "subtotal": item.costo * item.cantidad
+                };
+                
+                this.__objDataGrid.agregarFila(item);
+                this.__objDataGrid.refresh();
+                this.__calcularTotalPedido();
+                this.__blanquearInputsItems();
+            })
+            if(response.id_pedido == 0) {
+                this.__objDataGrid.refresh();
+            }
+        })
+    }
+
+    validarItemRepetido(item) {
+        let longitud = this.__objDataGrid.getRows().length;
+        let element = this.__objDataGrid.getRows();
+        for(let i=0;i<longitud;i++) {
+            if(element[i].codart == item.codart) {
+                item.cantidad += parseFloat(element[i].cantidad);
+                item.id = element[i].id;
+                return item;
+            }
+        }
+        return item;
     }
 }
 
@@ -320,3 +487,4 @@ function seleccionar_articulo(xid) {
         document.getElementById("txtCantidad").focus();
     });
 }
+

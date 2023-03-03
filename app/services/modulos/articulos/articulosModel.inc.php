@@ -245,8 +245,9 @@ class ArticulosModel extends Model {
             $aResponse["error"] = "VALID_ERROR";
             $aResponse["message"] = "Debe ingresar al menos 5 caracteres para buscar";
             return $aResponse;
+            
         }
-
+        
         $this->getClienteActual($xsesion);
         $this->formatearValorBuscado($xfrase);
         $palabras = explode(' ', $xfrase);
