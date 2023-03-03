@@ -1,0 +1,37 @@
+#container-rentabilidad {
+    font-family: 'futura';
+}
+
+.titulo-ganancia {
+    color: #009ada;
+    text-align: center;
+    font-family: 'futura';
+}
+
+#container-rentabilidad .contenedor-mgGral h4, #container-rentabilidad .contenedor-mgEsp h4 {
+    /*font-size: 90%;*/
+}
+
+.margenesEsp ul {
+    list-style: none;
+    display: flex;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.margenesEsp ul li {
+    border-bottom: solid 2px #777777;
+    border-right: solid 2px #777777;
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.margenesEsp .cabecera {
+    border-top: solid 2px #777777;
+}
+
+.margenesEsp .left {
+    border-left: solid 2px #777777;
+}

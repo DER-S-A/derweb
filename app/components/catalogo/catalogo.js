@@ -30,7 +30,7 @@ class Catalogo {
      */
     getSubrubros(xfilter = "") {
         var aSubrubros = (new APIs()).getFromAPI((new App()).getUrlApi("catalogo-subrubros-get"), xfilter);
-        console.log(aSubrubros);
+    
         return aSubrubros;
     }
 
@@ -142,6 +142,7 @@ class Catalogo {
     
         // Envío el pedido al API para grabarlo en la( base de datos.
         let argumentos = "sesion=" + JSON.stringify(xaSesion) + "&" + "datos=" + JSON.stringify(parametros);
+        console.log(url_carrito + '?' + argumentos);
         (new APIs()).call(url_carrito, argumentos, "PUT", (xdatos) => {
             alert(xdatos.mensaje);
         });

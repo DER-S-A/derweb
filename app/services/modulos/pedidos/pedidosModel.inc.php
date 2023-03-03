@@ -291,7 +291,8 @@ class PedidosModel extends Model {
         $this->setParameter($sql, "xidpedido", $this->idPedido);
         $this->setParameter($sql, "xidarticulo", intval($xaItem["id_articulo"]));
         $this->setParameter($sql, "xcantidad", doubleval($xaItem["cantidad"]));
-        $this->setParameter($sql, "xporcentajeOferta", doubleval($xaItem["porcentaje_oferta"]));
+        $this->setParameter($sql, "xporcentajeOferta", doubleval(0.00));
+        //$this->setParameter($sql, "xporcentajeOferta", doubleval($xaItem["porcentaje_oferta"]));
         $this->setParameter($sql, "xprecioLista", doubleval($xaItem["precio_lista"]));
         $this->setParameter($sql, "xcostoUnitario", doubleval($xaItem["costo_unitario"]));
         $this->setParameter($sql, "xalicuotaIVA", doubleval($xaItem["alicuota_iva"]));

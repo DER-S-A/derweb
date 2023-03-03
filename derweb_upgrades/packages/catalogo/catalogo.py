@@ -236,6 +236,7 @@ class Catalogo:
                 if entidad['CardName'] is not None:
                     entidad['CardName'] = entidad['CardName'].replace("'","")
                 sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','No','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
+                print(sql)
                 mysql.execute(sql)
                 clientes += 1
                 # print(f"Clientes Procesados: {clientes}")
@@ -282,11 +283,11 @@ class Catalogo:
             #  while len(articulos["value"]) != 0 :
             for articulo in articulos["value"]:
                     Noencontrado = True;
-                    # hora = datetime.fromtimestamp(articulo["UpdateTime"]).strftime("%H:%M:%S")
+                    dt = articulo['UpdateDate']+ " " + str(datetime.fromtimestamp(articulo['UpdateTime']).time())
                     for aDER in artDER :
                         if articulo["ItemCode"] == aDER[0]:
                             Noencontrado = False
-                            if  '2023-01-20' != aDER[1].strftime("%Y-%m-%d"):   
+                            if  dt != str(aDER[1]):   
                                 # strParametro = "registro=" + json.dumps(articulo)
                                 # strParametro = strParametro.replace("&", "y")
                                 # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()                        
@@ -294,8 +295,7 @@ class Catalogo:
                                 # print(f"Mensaje: {respuesta['result_mensaje']}") 
                                 if(articulo['RubroCod'] != None and articulo['MarcaCod'] != None and articulo['SubRubroCod'] != None):    
                                     articulo['ItemName'] = articulo["ItemName"].replace("'","")
-                                    articulo['ItemName'].decode('iso-8859-1').encode('utf8')
-                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"               
+                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"             
                                     mysql.execute(sql)
                                     actualizados+=1
                             else : NoActualizados+=1   
@@ -305,11 +305,7 @@ class Catalogo:
                         # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
                         if(articulo['RubroCod'] != '' and articulo['MarcaCod'] != '' and articulo['SubRubroCod'] != ''): 
                             articulo['ItemName'] = articulo["ItemName"].replace("'","")
-                            sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1)"  
-                            if articulo['ItemCode'] == '0415/22-CGRI':
-                                print (articulo['RubroCod'])
-                                print(sql)
-                                time.sleep(20)             
+                            sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"  
                             mysql.execute(sql)
                             # print(f"Code: {respuesta['result_code']} ")
                             # print(f"Mensaje: {respuesta['result_mensaje']}")
@@ -358,10 +354,10 @@ class Catalogo:
         """
         sap = SAPManager()
         mysql = MySqlManager()
-        strUrl = "http://localhost/derweb/app/services/sucursales/upgradeSucursales"
-        headers = {
-            "Content-Type": "application/json"
-        } 
+        # strUrl = "http://localhost/derweb/app/services/sucursales/upgradeSucursales"
+        # headers = {
+        #     "Content-Type": "application/json"
+        # } 
         try :
             sap.login()
             sucursales = sap.getData("sucursales")
@@ -380,8 +376,6 @@ class Catalogo:
                             sucursales['Calle'] = sucursales['Calle'].replace("'","")
                         sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}',{sucursales['EstadoCode']},'{sucursales['ZipCode']}',{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
                         mysql.execute(sql)
-                        time.sleep(0.001)
-                        print(sql)
                 # print("Procesando página: " + str(pagina))
 
             print("Proceso Finalizado Correctamente")
