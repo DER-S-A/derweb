@@ -65,3 +65,27 @@
 .ipr-footer .div-total label {
     font-size: 15px;
 }
+
+#ipr_grid_articulos input {
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+#ipr_grid_articulos select option {
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+#ipr_grid_articulos th {
+    background-color: #009ada;
+    color: white;  
+    font-size: 11px;
+}
+
+#ipr_grid_articulos td {
+    font-size: 11px;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 5px;
+}
