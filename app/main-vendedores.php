@@ -7,6 +7,7 @@
         
         <link href="node_modules/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">
         <link href="node_modules/datatables.net-responsive/css/responsive.dataTables.min.css" rel="stylesheet">
+
         <link href="css/app-style.css" rel="stylesheet">
         <link href="components/menus/menus.css" rel="stylesheet">
         <link href="components/catalogo/lista-articulos/lista-articulos.css" rel="stylesheet">
@@ -28,6 +29,7 @@
         <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
         <script src="node_modules/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+
         <script src="js/utils/funciones.js" type="text/javascript"></script>
         <script src="js/utils/app.js" type="text/javascript"></script>
         <script src="js/utils/apis.js" type="text/javascript"></script>
@@ -114,7 +116,7 @@
                 </div>
             </header>
 
-            <main class="container-fluid">
+            <main class="container">
                 <section id="app-container">
                     <form id="formulario">
                         <div class="row">
