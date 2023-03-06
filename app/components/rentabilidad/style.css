@@ -1,15 +1,25 @@
 #container-rentabilidad {
     font-family: 'futura';
+    background-color: #e5e5e5;
+    margin: 5% auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 65vh;
+}
+
+#container-rentabilidad h6 {
+    border-bottom: 0.1vw solid black;
+}
+
+#container-rentabilidad .contenedor-mgGral div, #container-rentabilidad .contenedor-mgEsp div {
+    margin-top: 2%;
 }
 
 .titulo-ganancia {
     color: #009ada;
     text-align: center;
     font-family: 'futura';
-}
-
-#container-rentabilidad .contenedor-mgGral h4, #container-rentabilidad .contenedor-mgEsp h4 {
-    /*font-size: 90%;*/
 }
 
 .margenesEsp ul {
@@ -22,16 +32,21 @@
 .margenesEsp ul li {
     border-bottom: solid 2px #777777;
     border-right: solid 2px #777777;
-    width: 150px;
+    width: 15%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.margenesEsp .cabecera {
+.margenesEsp .cabecera li {
     border-top: solid 2px #777777;
 }
 
 .margenesEsp .left {
     border-left: solid 2px #777777;
+}
+
+.contenedor-boxes select {
+    width: 20%;
+    margin: auto 5%;
 }
