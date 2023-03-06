@@ -175,13 +175,6 @@ function generarBotonMiCarrito() {
     objBtnMiCarrito.generateComponent();
 }
 
-/*let objTxtValorBuscado = document.getElementById("txtValorBuscado");
-objTxtValorBuscado.addEventListener("keypress",(e) => {
-    if(e.keyCode === 13) {
-        buscarPorFrase ();
-    }
-})*/
-
 function esconderHamburguesa() {
     let objHambur = document.getElementById("menu-options");
     let objBotonLista = document.getElementById("btnPushListaArticulo");
@@ -207,22 +200,24 @@ function miPerfil() {
  * Obtiene la lista de clientes del venededor actualmente logueado.
  */
 function getClientes() {
-    let objGrid = new LFWDataGrid("app_grid_container", "id");
     let objCacheUtils = new CacheUtils("derweb", false);
-    let url = "";
+    var templateDataTable = document.getElementById("app_grid_container");
+    templateDataTable.innerHTML = " \
+        <table id='tabla-clientes' class='table table-bordered table-hover' style='font-size: 11px; width: 100%' data-page-length='10'> \
+            <thead style='background: #009ada; color: white;'>\
+                <th>Cliente</th>\
+                <th>Razón Social</th>\
+                <th>CUIT</th>\
+                <th>Acciones</th>\
+            </thead>\
+        </table>";
 
-    objGrid.setAsociatedFormId("formulario");
-    objGrid.setPermitirOrden(true);
-    objGrid.setPermitirFiltros(true);
-    objGrid.setPermitirEditarRegistro(true);
-    objGrid.setEditJavascriptFunctionName("entrar_al_cliente");
-    objGrid.setIconEditButton("fa-arrow-right-to-bracket");
-    objGrid.setEditButtonTitle("Entrar al cliente");
-
-    objGrid.agregarColumna("Usuario", "codusu", "numeric", 100, false);
-    objGrid.agregarColumna("Usuario", "codusu", "string", 100);
-    objGrid.agregarColumna("Razón Social", "nombre", "string");
-    objGrid.agregarColumna("C.U.I.T", "cuit", "string", 200);
+    var dataTableClientes = $("#tabla-clientes").DataTable({
+        searching: true,
+        paging: true,
+        responsive: true,
+        scrollY: 260
+    });
 
     // Llamo a la API que devuelve la lista de clientes del vendedor y 
     // lleno la grilla.
@@ -234,12 +229,13 @@ function getClientes() {
         "GET", 
         response => {
             response.forEach(element => {
-                objGrid.agregarFila(element);
-    
+                let link = "<a href='javascript:entrar_al_cliente(" + element.id + ")'>\
+                    <i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>"
+                dataTableClientes.row.add([element.codent, element.nombre, element.cuit, link]);
             });
-            objGrid.refresh();    
+            dataTableClientes.draw();
         }
-    );
+    );    
 }
 
 /**
@@ -247,14 +243,8 @@ function getClientes() {
  * @param {int} xid Id. de cliente.
  */
 function entrar_al_cliente(xid) {
-    
-
     // Abro el derweb con el cliente seleccionado en una pestaña
-    // a parte.
-
-    
-    
-    
+    // a parte.   
     let xparametrosxUrl = "filter=id_entidad=" + xid;
     
     (new APIs()).call(app.getUrlApi("app-entidades-sucursales"), xparametrosxUrl, "GET", (xdatos) => {
@@ -296,12 +286,7 @@ function entrar_al_cliente(xid) {
             console.log(idSucursal);
             window.open("main-clientes.php", "_blank");
         }
-    }); 
-
-
-    
-
-    
+    });     
 }
 
 /**
@@ -314,8 +299,6 @@ function ver_pedidos_pendientes() {
         objPedidosPendientes.mostrarGrillaPedidosPendientes(response);        
     });
 }
-
-
 
 /**
  * Permite mostrar los ítems del pedido.
