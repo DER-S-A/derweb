@@ -272,6 +272,32 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
-}
 
-?>
+    /**
+    * cambiarPassword
+    * Realiza cambio de password del cliente.
+    * Parametro $id es el id de entidades (cliente) y el parametro $reset es la password nueva q coloca el cliente
+    * @return void
+    */
+
+    public function editarRentabilidad() {
+        if ($this->usePutMethod()) {
+            try {
+                $rentabilidad = $this->getURIParameters("renta");
+                $id = $this->getURIParameters("id");
+                $objModel = new entidadesModel();
+                $responseData = json_encode($objModel->updateRentabilidad($id, $rentabilidad));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+
+
+}

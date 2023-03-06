@@ -41,7 +41,9 @@ const aAPIs = [
     {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"},
     {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"},
     {"ficha-articulos"                          : "services/articulos.php/getFicha"},
+    {"rentabilidad"                             : "services/articulos.php/editarRentabilidad"},
     {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
+    
 
 ]
 

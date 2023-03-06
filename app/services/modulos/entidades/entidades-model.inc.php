@@ -263,5 +263,45 @@ class EntidadesModel extends Model {
         }
         return $result;
     }
+
+    /**
+    * updateRentabilidadGral
+    * Actualiza la rentabilidad de la entidad.
+    * @param  int $id_cliente (este es el id de entidades, osea el id del cliente).
+    * @param  array $arrayRentabilidad (este es el valor a updatear en el campo rentabilidad de entidades).
+    * @return array
+    */
+
+    public function updateRentabilidad($id_cliente, $jsonRentabilidad) {
+        $bd = new BDObject();
+        $aResult = [];
+        $arrayRentabilidad = json_decode($jsonRentabilidad, true);
+        
+        $bd->beginT();
+            try {
+                for($i=0;$i<count($arrayRentabilidad);$i++) {
+                    $rentabilidad = 'rentabilidad_'.($i+1);
+                    $sql = "UPDATE entidades SET $rentabilidad = $jsonRentabilidad[$i]
+                    WHERE id = $id_cliente";
+                    $bd->execInsert($sql);
+                }
+                
+                // Actualizo el checksum de la tabla.
+                sc3UpdateTableChecksum("entidades", $bd);
+
+                $bd->commitT();
+
+                $aResult["result_code"] = "OK";
+                $aResult["result_message"] = "Rentabilidad cargada correctamente.";            
+            } catch (Exception $e) {
+                $bd->rollbackT();
+                $aResult["result_code"] = "BD_ERROR";
+                $aResult["result_message"] = $e->getMessage();
+            } finally {
+                $bd->close();
+            }
+
+        return $aResult;
+    }
+
 }
-?>
