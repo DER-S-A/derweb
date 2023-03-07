@@ -36,7 +36,9 @@ class EntidadesModel extends Model {
                     usuario, 
                     clave,
                     id_tipoentidad,
-                    tipo_login
+                    tipo_login,
+                    rentabilidad_1,
+                    rentabilidad_2
                 FROM 
                     entidades
                         INNER JOIN tipos_entidades ON tipos_entidades.id = entidades.id_tipoentidad
@@ -61,6 +63,8 @@ class EntidadesModel extends Model {
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
                 $aResult["id_tipoentidad"] = intval($aDatos[0]["id_tipoentidad"]);
                 $aResult["tipo_login"] = $aDatos[0]["tipo_login"];
+                $aResult["rentabilidad_1"] = $aDatos[0]["rentabilidad_1"];
+                $aResult["rentabilidad_2"] = $aDatos[0]["rentabilidad_2"];
 
             } else {
                 $aResult["result"] = "ERR_CLAVE";
@@ -276,12 +280,22 @@ class EntidadesModel extends Model {
         $bd = new BDObject();
         $aResult = [];
         $arrayRentabilidad = json_decode($jsonRentabilidad, true);
+
+        if (is_countable($arrayRentabilidad)) {
+            $count = count($arrayRentabilidad);
+        } else {
+            $count = 0;
+            $aResult["result_code"] = "error";
+            $aResult["result_message"] = "No es contable.";
+            $aResult["result_titulo"] = "ERROR";   
+            return $aResult;
+        }
         
         $bd->beginT();
             try {
-                for($i=0;$i<count($arrayRentabilidad);$i++) {
+                for($i=0;$i<$count;$i++) {
                     $rentabilidad = 'rentabilidad_'.($i+1);
-                    $sql = "UPDATE entidades SET $rentabilidad = $jsonRentabilidad[$i]
+                    $sql = "UPDATE entidades SET $rentabilidad = $arrayRentabilidad[$i]
                     WHERE id = $id_cliente";
                     $bd->execInsert($sql);
                 }
@@ -291,12 +305,14 @@ class EntidadesModel extends Model {
 
                 $bd->commitT();
 
-                $aResult["result_code"] = "OK";
-                $aResult["result_message"] = "Rentabilidad cargada correctamente.";            
+                $aResult["result_code"] = "success";
+                $aResult["result_message"] = "Rentabilidad cargada correctamente.";
+                $aResult["result_titulo"] = "EXITO";            
             } catch (Exception $e) {
                 $bd->rollbackT();
-                $aResult["result_code"] = "BD_ERROR";
+                $aResult["result_code"] = "ERROR";
                 $aResult["result_message"] = $e->getMessage();
+                $aResult["result_titulo"] = "ERROR";
             } finally {
                 $bd->close();
             }
