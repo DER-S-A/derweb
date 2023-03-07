@@ -1,0 +1,118 @@
+/**
+ * Este script contiene el estilo de la grilla de catálogo.
+*/
+
+.grid-container {
+    /*width: 900px;*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #fff !important;
+    padding: 5%;
+}
+
+.grid-container .row-lista {
+    width: 100%;
+    margin-top: 3px;
+    border: 1px solid #dddddd;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.grid-container .info-articulo-foto {
+    width: 100%;
+    text-align: center;
+    display:table-cell;
+    height:8em;
+    vertical-align: middle;
+}
+
+.grid-container .info-articulo-foto img {
+    width: 100%;
+}
+
+.grid-container .info-articulo-general {
+    width: 100%;
+    text-align: center;
+}
+
+.grid-container .info-articulo-general span {
+    font-family: "futura";
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.grid-container .info-articulo-general h4 {
+    font-family: "futura";
+    font-size: 12px;
+    font-weight: bold;
+    color: #009ada;
+    margin-bottom: 1px;
+    margin-top: 3px;
+}
+
+.grid-container .info-articulo-precios {
+    width: 400px;
+    text-align: center;
+}
+
+.grid-container .info-articulo-precios h5 {
+    font-family: "futura";
+    font-size: 10px;
+    font-weight: bold;
+    color: gray;
+    margin-bottom: 1px;
+    margin-top: 3px;
+}
+
+.grid-container .info-articulo-precios span {
+    font-family: "futura";
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.grid-container .pedido-container {
+    position: relative;
+    width: 100%;
+}
+
+.grid-container .pedido-container .carrito-container {
+    margin-top: 5px;
+}
+
+.grid-container .pedido-container .carrito-container input {
+    width: 50px;
+    text-align: right;
+}
+
+/* Botón carrito container */
+.grid-container .pedido-container .carrito-container a {
+    width: 60px;
+    margin-left: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #003d7c;
+    color: white;
+    border: none;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 580px) {
+    .grid-container {
+        width: auto;
+        text-align: center;
+    }
+    .grid-container .info-articulo-precios {
+        width: auto;
+        
+    }
+    .panel-opciones {
+        text-align: center;
+    }
+    
+    .grid-container .info-articulo-foto {
+        height:18em;
+    } 
+
+}

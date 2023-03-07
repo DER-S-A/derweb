@@ -1,18 +1,18 @@
 /**
 * Contiene las hojas de estilo principal de la aplicación
 */
-@import url("../../node_modules/@fortawesome/fontawesome-free/css/all.min.css");
-@import url("../../node_modules/bootstrap/dist/css/bootstrap.min.css");
-@import url("../../components/tabs/tabs.css");
-@import url("../../components/seguridad/seguridad.css");
-@import url("../../css/header-home.css");
-@import url("../../css/header-app.css");
-@import url("../../css/footer-home.css");
-@import url("../../css/footer-app.css");
+@import url("../node_modules/@fortawesome/fontawesome-free/css/all.min.css");
+@import url("../node_modules/bootstrap/dist/css/bootstrap.min.css");
+@import url("../components/tabs/tabs.css");
+@import url("../components/seguridad/seguridad.css");
+@import url("../css/header-home.css");
+@import url("../css/header-app.css");
+@import url("../css/footer-home.css");
+@import url("../css/footer-app.css");
 
 @font-face {
     font-family: "futura";
-    src: url("../../assets/fuentes/fl.ttf");
+    src: url("../assets/fuentes/fl.ttf");
 }
 
 body {

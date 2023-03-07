@@ -1,16 +1,17 @@
+<?php include("sc-cachebuster.php") ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/app-style.css" rel="stylesheet">
+        <link href="<?php echo sc3CacheButer("css/app-style.css");?>" rel="stylesheet">
         <title>DER WEB</title>
-        <script src="js/utils/funciones.js" type="text/javascript"></script>
-        <script src="js/utils/app.js" type="text/javascript"></script>
-        <script src="js/utils/apis.js" type="text/javascript"></script>
-        <script src="components/catalogo/catalogo.js" type="text/javascript"></script>
-        <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("js/utils/funciones.js"); ?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("js/utils/app.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("js/utils/apis.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/catalogo/catalogo.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("terceros/sweet-alert/sweetalert.min.js");?>" type="text/javascript"></script>
     </head>
     <body id="page-container">
         <div id="content-wrap">
@@ -86,9 +87,9 @@
             </footer>
         </div>
 
-        <script src="components/tabs/tabs.js" type="text/javascript"></script>
-        <script src="components/seguridad/seguridad.js" type="text/javascript"></script>
-        <script src="components/seguridad/registrar-cliente-potencial.js"></script>
-        <script src="js/index.js" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/tabs/tabs.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/seguridad/seguridad.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/seguridad/registrar-cliente-potencial.js");?>"></script>
+        <script src="<?php echo sc3CacheButer("js/index.js");?>" type="text/javascript"></script>
     </body>
 </html>
