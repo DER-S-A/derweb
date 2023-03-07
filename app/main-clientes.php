@@ -1,4 +1,4 @@
-<?php include("sc-cachebuster.php") ?>
+<?php include("sc-cachebuster.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -31,6 +31,7 @@
         <script src="<?php echo sc3CacheButer("components/catalogo/catalogo.js");?>" type="text/javascript"></script>
         <script src="terceros/sweet-alert/sweetalert.min.js" type="text/javascript"></script>
         <script src="terceros/Glider-js/js/glider.js" type="text/javascript"></script>
+        
     </head>
     <body id="page-container">
         <div id="content-wrap">
