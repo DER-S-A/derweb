@@ -95,6 +95,9 @@ class Rentabilidad extends ComponentManager {
 
     }
 
+    /**
+     * Permite cerrar la pantalla.
+     */
     cerrar() {
         const botonCerrar = document.querySelector('#container-rentabilidad #Cerrar');
         botonCerrar.addEventListener('click', () => {
@@ -102,6 +105,9 @@ class Rentabilidad extends ComponentManager {
         })
     }
 
+    /**
+     * Permite llenar los inputs con las rentabilidades que tiene el cliente.
+     */
     llenarInputs(inputsArrayValue, arrayInputs) {
         arrayInputs.forEach((inp, index) => {
             inp.value = inputsArrayValue[index];
