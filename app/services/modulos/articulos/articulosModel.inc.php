@@ -390,6 +390,14 @@ class ArticulosModel extends Model {
         $sql = "SELECT archivo FROM art_fotos WHERE id_articulo = $xid_articulo";
         return $sql;
     }
+
+    function consultaFiltrar_marcasRubrosSubrubros($stringFiltro) {
+        $sql = "SELECT id_marca, id_rubro, id_subrubro FROM articulos 
+        WHERE $stringFiltro. GROUP BY id_marca, id_rubro, id_subrubro";
+        $response = getRs($sql)->getAsArray();
+        return $response;
+
+    }
 }
 
 ?>
