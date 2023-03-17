@@ -243,7 +243,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     "modal_articulos", 
                     "Búsqueda de artículos",
                     htmlResponse,
-                    "100%");
+                    "700px");
                 
                 objModal.open();
                 this.__modalBusquedaAbierto = true;
@@ -257,10 +257,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
                 // Inicializo el datatable
                 this.__tablaArticulos = $("#ipr_grid_articulos").DataTable({
-                    searching: true,
-                    paging: true,
-                    responsive: true,
-                    scrollY: 260
+                    responsive: false
                 });        
             });
         }

@@ -243,7 +243,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     "modal_articulos", 
                     "Búsqueda de artículos",
                     htmlResponse,
-                    "100%");
+                    "300px");
                 
                 objModal.open();
                 this.__modalBusquedaAbierto = true;

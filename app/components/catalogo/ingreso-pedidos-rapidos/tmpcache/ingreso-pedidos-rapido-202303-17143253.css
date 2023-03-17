@@ -76,7 +76,7 @@
     font-size: 11px;
 }
 
-#ipr_grid_articulos_wrapper table th {
+#ipr_grid_articulos thead {
     background-color: #009ada !important;
     color: white;  
     font-size: 11px;
