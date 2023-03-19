@@ -13,12 +13,12 @@
 
         <hr>
         <section id="ipr-items" class="row ipr-items-container">
-            <div class="col-md-2">
+            <div class="col-md-2 mb-3">
                 <label for="txtCodArt" class="form-label">Artículo</label>
                 <input id="txtCodArt" name="txtCodArt" class="form-control" type="text">
             </div>
 
-            <div class="col-md-8">
+            <div class="col-md-8 mb-3">
                 <label for="txtDescripcion" class="form-label">Descripción</label>
                 <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" readonly>
             </div>
@@ -28,16 +28,11 @@
                 <input id="txtCantidad" name="txtCantidad" class="form-control" type="number" style="text-align: right;">
             </div>
 
-            <div id="ipr_grid_items_container" class="contenedor-grid-items">
+        </section>
+
+        <section id="ipr-grilla-items" class="row ipr-items-container">
+            <div id="ipr_grid_items_container" class="col-md-12 contenedor-grid-items">
                 <table id="ipr_grid_items" class="table table-bordered table-hover">
-                    <!--<thead>
-                        <th>Renglón</th>
-                        <th>Código</th>
-                        <th>Descripción</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unit.</th>
-                        <th>Subtotal</th>
-                    </thead>-->
                 </table>
             </div>
         </section>

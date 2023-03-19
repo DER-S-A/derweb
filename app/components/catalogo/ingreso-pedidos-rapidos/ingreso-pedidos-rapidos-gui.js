@@ -81,13 +81,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     return;
             });
             
-            let cambiarCliente = false;
-
             this.__crearGridItems();
 
             // Agrego el evento change del selector de clientes.
             document.getElementById(objDataList.idSelector).addEventListener("change", (event) => {
-                cambiarCliente = true;
+                //cambiarCliente = true;
                 sessionStorage.removeItem('ipr_grid_items_rows');
                 objDataList.getSelectedValue(event.target.value);
                 let element = document.querySelector('#sel-cliente');
@@ -112,7 +110,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         this.__agregarArticuloAlPedido();                    
                     });
 
-                    document.getElementById("sel-cliente").focus();                            
+                    document.getElementById("txtCodArt").focus();
                 });                            
             });
 
@@ -122,7 +120,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 document.getElementById("txtCantidad").select();
             });
 
-            
             // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
             // dos veces el modal.
             document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
@@ -628,7 +625,6 @@ function seleccionar_articulo(xid) {
     (new APIs()).call(url, parametros, "GET", response => {
         document.getElementById("txtCodArt").value = response.values[0]["codigo"];
         document.getElementById("txtDescripcion").value = response.values[0]["desc"];
-        document.getElementById("txtCantidad").focus();
 
         // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
         document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
@@ -638,6 +634,6 @@ function seleccionar_articulo(xid) {
         // Cierro el modal
         document.getElementById("main").removeChild(document.getElementById("modal_articulos"));
         document.querySelector("#page-container > div.modal-backdrop.fade.show").remove();
-        document.getElementById("txtCodArt").focus();
+        document.getElementById("txtCantidad").focus();
     });
 }
