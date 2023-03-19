@@ -104,76 +104,77 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
                     // Agrego el evento blur de txtCodArt
                     document.getElementById("txtCodArt").addEventListener("blur", () => {
-                        this.__ejecutarBuscadorDeArticulos();
+                        // Al salirse del foco realizo una búsqueda inicial.
+                        if (!this.__validarSeleccionCliente())
+                            return;
+
+                        if(document.getElementById("txtCodArt").value == '') {
+                            //swal('warning','Debes completar el campo articulo');
+                            return;
+                        }
+
+                        this.__buscarArticulo();
                     });
 
-                    // Evento blur del input de cantidad.
+                    // Evento al recibir el foco.
+                    document.getElementById("txtCantidad").addEventListener("focus", () => {
+                        // Selecciono el contenido del input.
+                        document.getElementById("txtCantidad").select();
+                    });
+
+                    // Agrego el evento cantidad.
                     document.getElementById("txtCantidad").addEventListener("blur", () => {
-                        this.__agregarArticuloAlPedido();                    
+                        let txtCantidad = document.querySelector('#txtCantidad').value;
+                        if (this.__agregarItem()) {
+                            const txtCodArt = document.querySelector('#txtCodArt');
+                            let xid_articulo = JSON.parse(txtCodArt.dataset.value);
+                            xid_articulo = xid_articulo.values[0].id;
+                            this.__guardarPedido(xid_articulo, txtCantidad);
+                            new CacheUtils("derven", false).set("id_pedido_sel", 179);    
+                        }                    
+                    });
+
+                    // Eventos botones confirmar y volver
+                    document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+                        // Desarrollar llamado a API para enviar y confirmar el pedido.
+                        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
+                        let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
+                        objConfirmarPedido.setIdModal(objModal.getIdModal());
+                        objConfirmarPedido.setDivModal(objModal.getModalBody());
+
+                        // Agrego funcionalidad extra al finalizar el pedido
+                        objConfirmarPedido.setCallbackFinalizarPedido(() => {
+                            objModal.close();
+                            ingresar_pedidos_rapido();
+                        });
+                        
+                        objConfirmarPedido.generarFooterPedido();
+                        objModal.open();
+
+                        aSesion = sessionStorage.getItem("derweb_sesion");
+                        let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
+                        (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
+                            new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
+                        })
                     });
 
                     document.getElementById("sel-cliente").focus();                            
-                });                            
-            });
-
-            // Evento al recibir el foco.
-            document.getElementById("txtCantidad").addEventListener("focus", () => {
-                // Selecciono el contenido del input.
-                document.getElementById("txtCantidad").select();
-            });
-
-            
-            // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
-            // dos veces el modal.
-            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-                this.__confirmarPedido(aSesion);
+                });
+                        
             });
 
             document.getElementById("btnVolver").addEventListener("click", () => {
                 window.location.href = "main-vendedores.php";
-            });        
+            });
+            
+            document.getElementById(objDataList.idSelector).addEventListener('click', () =>{
+                if(cambiarCliente) {
+                    ingresar_pedidos_rapido();
+                    cambiarCliente = false;
+                }
+            })
+
         });
-    }
-
-    /**
-     * Permite confirmar el pedido y enviarlo a SAP.
-     * @returns 
-     */
-    __confirmarPedido() {
-        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
-        let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
-        objConfirmarPedido.setIdModal(objModal.getIdModal());
-        objConfirmarPedido.setDivModal(objModal.getModalBody());
-
-        // Agrego funcionalidad extra al finalizar el pedido
-        objConfirmarPedido.setCallbackFinalizarPedido(() => {
-            objModal.close();
-            ingresar_pedidos_rapido();
-        });
-
-        objConfirmarPedido.generarFooterPedido();
-        objModal.open();
-
-        aSesion = sessionStorage.getItem("derweb_sesion");
-        let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
-        (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
-            new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
-        });
-    }
-
-    /**
-     * Obtiene la cantidad ingresada y agrega el artículo al pedido guardando el
-     * ítem en la base de datos.
-     */
-    __agregarArticuloAlPedido() {
-        let txtCantidad = document.querySelector('#txtCantidad').value;
-        if (this.__agregarItem()) {
-            const txtCodArt = document.querySelector('#txtCodArt');
-            let xid_articulo = JSON.parse(txtCodArt.dataset.value);
-            xid_articulo = xid_articulo.values[0].id;
-            this.__guardarPedido(xid_articulo, txtCantidad);
-            new CacheUtils("derven", false).set("id_pedido_sel", 179);
-        }
     }
 
     /**
@@ -181,76 +182,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      */
     __inicializarInputs() {
         document.getElementById("txtCantidad").value = 1;
-    }
-
-    /**
-     * Valida que el cliente haya sido seleccionado.
-     * @returns {bool}
-     */
-    __validarSeleccionCliente() {
-        if (document.getElementById("sel-cliente").value === "") {
-            swal("Atención!!!", "Tenés que seleccionar un cliente");
-            document.getElementById("sel-cliente").focus();
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Crea la grilla de ítems del pedido.
-     */
-    __crearGridItems() {
-        this.__objDataGrid = $("#ipr_grid_items").DataTable({
-            searching: false,
-            paging: false,
-            responsive: true,
-            scrollY: 260,
-            keys: true,
-            columns: [
-                {data: "id", title: "Renglón N°", type: 'num', width: '100px'},
-                {data: "codart", title: "Código", type: 'string', width: '150px'},
-                {data: "descripcion", title: "Descripción", type: 'string', width: '300px'},
-                {data: "cantidad", title: "Cantidad", type: 'num', width: '100px', 
-                    render: (data, type, row, meta) => {
-                        if (type === "display")
-                            return "<div style='text-align: right;'>" + data + '</div>';
-                        else
-                            return data;                    
-                    }
-                },
-                {data: "precio_unitario", title: "Precio Unit.", type: 'num', width: '100px', 
-                    render: (data, type, row, meta) => {
-                        if (type === "display")
-                            return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
-                        else
-                            return data;                    
-                    }
-                },
-                {data: "subtotal", title: "Subtotal", type: 'num', width: '100px',
-                    render: (data, type, row, meta) => {
-                        if (type === "display")
-                            return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
-                        else
-                            return data;
-                    }
-                },
-                {data: "opciones", title: "Opciones", width: '100px'}
-            ]
-        });
-        this.__acomodarFooter()
-    }
-
-    /**
-     * Permite acomodar el estilo de footer para que sea fijo o
-     * relativo dependiendo de la situación.
-     */
-    __acomodarFooter() {
-        if (this.__objDataGrid.rows().count() !== 0) {
-            let objFooter = document.getElementById("app-footer");
-            objFooter.style.bottom = "none";
-            objFooter.style.position = "relative";
-        }
     }
 
     /**
@@ -276,13 +207,12 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         aSesion = sessionStorage.getItem("derweb_sesion");
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
-            var total = 0.00;
+            let total = 0.00;
 
             if (arrItems !== undefined) {
                 var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
                 opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
 
-                this.__objDataGrid.clear().draw();
                 arrItems.forEach((item, index) => {
                     item = {
                         "id": index + 1,
@@ -296,10 +226,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     
                     this.__objDataGrid.row.add(item);
                     total += (item.costo * item.cantidad);
-                    this.__nroRenglon = (index + 1);
                 });
-            } else {
-                this.__nroRenglon = 0;
             }
 
             this.__objDataGrid.draw();
@@ -309,22 +236,18 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     }
 
     /**
-     * Inicia la ejecución del buscador de artículos. Este método se llama en el evento
-     * blur de txtCodArt.
-     * @returns {void}
+     * Valida que el cliente haya sido seleccionado.
+     * @returns {bool}
      */
-    __ejecutarBuscadorDeArticulos() {
-        // Al salirse del foco realizo una búsqueda inicial.
-        if (!this.__validarSeleccionCliente())
-            return;
-
-        if(document.getElementById("txtCodArt").value == '') {
-            //swal('warning','Debes completar el campo articulo');
-            return;
+    __validarSeleccionCliente() {
+        if (document.getElementById("sel-cliente").value === "") {
+            swal("Atención!!!", "Tenés que seleccionar un cliente");
+            document.getElementById("sel-cliente").focus();
+            return false;
         }
 
-        this.__buscarArticulo();        
-    }    
+        return true;
+    }
 
     /**
      * Busca un artículo por frase.
@@ -415,6 +338,62 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     }
 
     /**
+     * Crea la grilla de ítems del pedido.
+     */
+    __crearGridItems() {
+        this.__objDataGrid = $("#ipr_grid_items").DataTable({
+            searching: false,
+            paging: false,
+            responsive: true,
+            scrollY: 260,
+            keys: true,
+            columns: [
+                {data: "id", title: "Renglón N°", type: 'num', width: '100px'},
+                {data: "codart", title: "Código", type: 'string', width: '150px'},
+                {data: "descripcion", title: "Descripción", type: 'string', width: '300px'},
+                {data: "cantidad", title: "Cantidad", type: 'num', width: '100px', 
+                    render: (data, type, row, meta) => {
+                        if (type === "display")
+                            return "<div style='text-align: right;'>" + data + '</div>';
+                        else
+                            return data;                    
+                    }
+                },
+                {data: "precio_unitario", title: "Precio Unit.", type: 'num', width: '100px', 
+                    render: (data, type, row, meta) => {
+                        if (type === "display")
+                            return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
+                        else
+                            return data;                    
+                    }
+                },
+                {data: "subtotal", title: "Subtotal", type: 'num', width: '100px',
+                    render: (data, type, row, meta) => {
+                        if (type === "display")
+                            return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
+                        else
+                            return data;
+                    }
+                },
+                {data: "opciones", title: "Opciones", width: '100px'}
+            ]
+        });
+        this.__acomodarFooter()
+    }
+
+    /**
+     * Permite acomodar el estilo de footer para que sea fijo o
+     * relativo dependiendo de la situación.
+     */
+    __acomodarFooter() {
+        if (this.__objDataGrid.rows().count() !== 0) {
+            let objFooter = document.getElementById("app-footer");
+            objFooter.style.bottom = "none";
+            objFooter.style.position = "relative";
+        }
+    }
+
+    /**
      * Permite agregar un artículo a la grilla. En caso de que el
      * artículo esté repetido, entonces, suma la cantidad.
      * @returns {bool} true: si el artículo se agregó, false: si no pasó las validaciones.
@@ -473,15 +452,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __blanquearInputsItems() {
         document.getElementById("txtCodArt").value = "";
         document.getElementById("txtDescripcion").value = "";
-        document.getElementById("txtCantidad").value = 1;
+        document.getElementById("txtCantidad").value = 0;
         document.getElementById("txtCodArt").focus();
     }
 
-    /**
-     * Arma el contenido de la pantalla modal para finalizar pedidos permitiendo
-     * la selección de sucursales.
-     * @param {array} arraySuc 
-     */
     __seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
@@ -516,11 +490,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         modal.addEventListener('click', (e) => {
            if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
-                ingresar_pedidos_rapido();
+            ingresar_pedidos_rapido();
            }
         });
         let btnSelec = document.querySelector('#btnSelect');
-        
         btnSelec.addEventListener('click', ()=> {
             let aSesion = new CacheUtils("derweb", false).get("sesion");
             aSesion.id_sucursal = parseInt(selector.value);
@@ -638,6 +611,7 @@ function seleccionar_articulo(xid) {
         // Cierro el modal
         document.getElementById("main").removeChild(document.getElementById("modal_articulos"));
         document.querySelector("#page-container > div.modal-backdrop.fade.show").remove();
-        document.getElementById("txtCodArt").focus();
+        document.getElementById("txtCantidad").focus();
     });
 }
+

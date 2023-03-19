@@ -473,15 +473,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __blanquearInputsItems() {
         document.getElementById("txtCodArt").value = "";
         document.getElementById("txtDescripcion").value = "";
-        document.getElementById("txtCantidad").value = 1;
+        document.getElementById("txtCantidad").value = 0;
         document.getElementById("txtCodArt").focus();
     }
 
-    /**
-     * Arma el contenido de la pantalla modal para finalizar pedidos permitiendo
-     * la selección de sucursales.
-     * @param {array} arraySuc 
-     */
     __seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
@@ -516,11 +511,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         modal.addEventListener('click', (e) => {
            if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
-                ingresar_pedidos_rapido();
+            ingresar_pedidos_rapido();
            }
         });
         let btnSelec = document.querySelector('#btnSelect');
-        
         btnSelec.addEventListener('click', ()=> {
             let aSesion = new CacheUtils("derweb", false).get("sesion");
             aSesion.id_sucursal = parseInt(selector.value);
@@ -641,3 +635,4 @@ function seleccionar_articulo(xid) {
         document.getElementById("txtCodArt").focus();
     });
 }
+

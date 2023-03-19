@@ -49,6 +49,30 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         (new APIs()).call(xurlAPI, "id_vendedor=" + xidVendedor, "GET", response => {
             // Creo la GUI.
             this.__crearFormulario(xhtmlResponse, response);
+            // Agrego el evento blur de txtCodArt
+            document.getElementById("txtCodArt").addEventListener("blur", () => {
+                this.__ejecutarBuscadorDeArticulos();
+            });
+
+            // Evento al recibir el foco.
+            document.getElementById("txtCantidad").addEventListener("focus", () => {
+                // Selecciono el contenido del input.
+                document.getElementById("txtCantidad").select();
+            });
+
+            // Evento blur del input de cantidad.
+            document.getElementById("txtCantidad").addEventListener("blur", () => {
+                this.__agregarArticuloAlPedido();                    
+            });
+
+            document.getElementById("btnVolver").addEventListener("click", () => {
+                window.location.href = "main-vendedores.php";
+            });
+
+            // Evento del botón confirmar pedido.
+            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+                this.__confirmarPedido(aSesion);
+            });
         });
     }
 
@@ -102,36 +126,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     this.__recuperarDatosDeSucursales(response, aSesion);
                     this.__recuperarPedido();
 
-                    // Agrego el evento blur de txtCodArt
-                    document.getElementById("txtCodArt").addEventListener("blur", () => {
-                        this.__ejecutarBuscadorDeArticulos();
-                    });
-
-                    // Evento blur del input de cantidad.
-                    document.getElementById("txtCantidad").addEventListener("blur", () => {
-                        this.__agregarArticuloAlPedido();                    
-                    });
-
                     document.getElementById("sel-cliente").focus();                            
-                });                            
-            });
-
-            // Evento al recibir el foco.
-            document.getElementById("txtCantidad").addEventListener("focus", () => {
-                // Selecciono el contenido del input.
-                document.getElementById("txtCantidad").select();
-            });
-
-            
-            // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
-            // dos veces el modal.
-            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-                this.__confirmarPedido(aSesion);
-            });
-
-            document.getElementById("btnVolver").addEventListener("click", () => {
-                window.location.href = "main-vendedores.php";
-            });        
+                });
+                        
+            });            
         });
     }
 
@@ -296,10 +294,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     
                     this.__objDataGrid.row.add(item);
                     total += (item.costo * item.cantidad);
-                    this.__nroRenglon = (index + 1);
                 });
-            } else {
-                this.__nroRenglon = 0;
             }
 
             this.__objDataGrid.draw();
@@ -473,15 +468,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __blanquearInputsItems() {
         document.getElementById("txtCodArt").value = "";
         document.getElementById("txtDescripcion").value = "";
-        document.getElementById("txtCantidad").value = 1;
+        document.getElementById("txtCantidad").value = 0;
         document.getElementById("txtCodArt").focus();
     }
 
-    /**
-     * Arma el contenido de la pantalla modal para finalizar pedidos permitiendo
-     * la selección de sucursales.
-     * @param {array} arraySuc 
-     */
     __seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
@@ -516,11 +506,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         modal.addEventListener('click', (e) => {
            if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
-                ingresar_pedidos_rapido();
+            ingresar_pedidos_rapido();
            }
         });
         let btnSelec = document.querySelector('#btnSelect');
-        
         btnSelec.addEventListener('click', ()=> {
             let aSesion = new CacheUtils("derweb", false).get("sesion");
             aSesion.id_sucursal = parseInt(selector.value);
@@ -638,6 +627,7 @@ function seleccionar_articulo(xid) {
         // Cierro el modal
         document.getElementById("main").removeChild(document.getElementById("modal_articulos"));
         document.querySelector("#page-container > div.modal-backdrop.fade.show").remove();
-        document.getElementById("txtCodArt").focus();
+        document.getElementById("txtCantidad").focus();
     });
 }
+

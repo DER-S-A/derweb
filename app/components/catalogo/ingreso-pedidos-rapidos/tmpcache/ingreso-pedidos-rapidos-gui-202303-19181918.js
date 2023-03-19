@@ -296,10 +296,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     
                     this.__objDataGrid.row.add(item);
                     total += (item.costo * item.cantidad);
-                    this.__nroRenglon = (index + 1);
                 });
-            } else {
-                this.__nroRenglon = 0;
             }
 
             this.__objDataGrid.draw();
@@ -473,15 +470,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __blanquearInputsItems() {
         document.getElementById("txtCodArt").value = "";
         document.getElementById("txtDescripcion").value = "";
-        document.getElementById("txtCantidad").value = 1;
+        document.getElementById("txtCantidad").value = 0;
         document.getElementById("txtCodArt").focus();
     }
 
-    /**
-     * Arma el contenido de la pantalla modal para finalizar pedidos permitiendo
-     * la selección de sucursales.
-     * @param {array} arraySuc 
-     */
     __seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
@@ -516,11 +508,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         modal.addEventListener('click', (e) => {
            if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
-                ingresar_pedidos_rapido();
+            ingresar_pedidos_rapido();
            }
         });
         let btnSelec = document.querySelector('#btnSelect');
-        
         btnSelec.addEventListener('click', ()=> {
             let aSesion = new CacheUtils("derweb", false).get("sesion");
             aSesion.id_sucursal = parseInt(selector.value);
@@ -638,6 +629,7 @@ function seleccionar_articulo(xid) {
         // Cierro el modal
         document.getElementById("main").removeChild(document.getElementById("modal_articulos"));
         document.querySelector("#page-container > div.modal-backdrop.fade.show").remove();
-        document.getElementById("txtCodArt").focus();
+        document.getElementById("txtCantidad").focus();
     });
 }
+

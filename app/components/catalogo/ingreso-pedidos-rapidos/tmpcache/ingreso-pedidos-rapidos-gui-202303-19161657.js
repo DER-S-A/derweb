@@ -107,64 +107,60 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         this.__ejecutarBuscadorDeArticulos();
                     });
 
-                    // Evento blur del input de cantidad.
+                    // Evento al recibir el foco.
+                    document.getElementById("txtCantidad").addEventListener("focus", () => {
+                        // Selecciono el contenido del input.
+                        document.getElementById("txtCantidad").select();
+                    });
+
+                    // Agrego el evento cantidad.
                     document.getElementById("txtCantidad").addEventListener("blur", () => {
                         this.__agregarArticuloAlPedido();                    
                     });
 
+                    // Eventos botones confirmar y volver
+                    document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+                        // Desarrollar llamado a API para enviar y confirmar el pedido.
+                        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
+                        let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
+                        objConfirmarPedido.setIdModal(objModal.getIdModal());
+                        objConfirmarPedido.setDivModal(objModal.getModalBody());
+
+                        // Agrego funcionalidad extra al finalizar el pedido
+                        objConfirmarPedido.setCallbackFinalizarPedido(() => {
+                            objModal.close();
+                            ingresar_pedidos_rapido();
+                        });
+                        
+                        objConfirmarPedido.generarFooterPedido();
+                        objModal.open();
+
+                        aSesion = sessionStorage.getItem("derweb_sesion");
+                        let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
+                        (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
+                            new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
+                        })
+                    });
+
                     document.getElementById("sel-cliente").focus();                            
-                });                            
-            });
-
-            // Evento al recibir el foco.
-            document.getElementById("txtCantidad").addEventListener("focus", () => {
-                // Selecciono el contenido del input.
-                document.getElementById("txtCantidad").select();
-            });
-
-            
-            // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
-            // dos veces el modal.
-            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-                this.__confirmarPedido(aSesion);
+                });
+                        
             });
 
             document.getElementById("btnVolver").addEventListener("click", () => {
                 window.location.href = "main-vendedores.php";
-            });        
+            });
+            
+            document.getElementById(objDataList.idSelector).addEventListener('click', () =>{
+                if(cambiarCliente) {
+                    ingresar_pedidos_rapido();
+                    cambiarCliente = false;
+                }
+            })
+
         });
     }
 
-    /**
-     * Permite confirmar el pedido y enviarlo a SAP.
-     * @returns 
-     */
-    __confirmarPedido() {
-        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
-        let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
-        objConfirmarPedido.setIdModal(objModal.getIdModal());
-        objConfirmarPedido.setDivModal(objModal.getModalBody());
-
-        // Agrego funcionalidad extra al finalizar el pedido
-        objConfirmarPedido.setCallbackFinalizarPedido(() => {
-            objModal.close();
-            ingresar_pedidos_rapido();
-        });
-
-        objConfirmarPedido.generarFooterPedido();
-        objModal.open();
-
-        aSesion = sessionStorage.getItem("derweb_sesion");
-        let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
-        (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
-            new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
-        });
-    }
-
-    /**
-     * Obtiene la cantidad ingresada y agrega el artículo al pedido guardando el
-     * ítem en la base de datos.
-     */
     __agregarArticuloAlPedido() {
         let txtCantidad = document.querySelector('#txtCantidad').value;
         if (this.__agregarItem()) {
@@ -276,13 +272,12 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         aSesion = sessionStorage.getItem("derweb_sesion");
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
-            var total = 0.00;
+            let total = 0.00;
 
             if (arrItems !== undefined) {
                 var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
                 opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
 
-                this.__objDataGrid.clear().draw();
                 arrItems.forEach((item, index) => {
                     item = {
                         "id": index + 1,
@@ -296,10 +291,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     
                     this.__objDataGrid.row.add(item);
                     total += (item.costo * item.cantidad);
-                    this.__nroRenglon = (index + 1);
                 });
-            } else {
-                this.__nroRenglon = 0;
             }
 
             this.__objDataGrid.draw();
@@ -473,15 +465,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __blanquearInputsItems() {
         document.getElementById("txtCodArt").value = "";
         document.getElementById("txtDescripcion").value = "";
-        document.getElementById("txtCantidad").value = 1;
+        document.getElementById("txtCantidad").value = 0;
         document.getElementById("txtCodArt").focus();
     }
 
-    /**
-     * Arma el contenido de la pantalla modal para finalizar pedidos permitiendo
-     * la selección de sucursales.
-     * @param {array} arraySuc 
-     */
     __seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
@@ -516,11 +503,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         modal.addEventListener('click', (e) => {
            if(e.target.id == 'modalSuc' || e.target.classList == 'btn-close') {
-                ingresar_pedidos_rapido();
+            ingresar_pedidos_rapido();
            }
         });
         let btnSelec = document.querySelector('#btnSelect');
-        
         btnSelec.addEventListener('click', ()=> {
             let aSesion = new CacheUtils("derweb", false).get("sesion");
             aSesion.id_sucursal = parseInt(selector.value);
@@ -638,6 +624,7 @@ function seleccionar_articulo(xid) {
         // Cierro el modal
         document.getElementById("main").removeChild(document.getElementById("modal_articulos"));
         document.querySelector("#page-container > div.modal-backdrop.fade.show").remove();
-        document.getElementById("txtCodArt").focus();
+        document.getElementById("txtCantidad").focus();
     });
 }
+
