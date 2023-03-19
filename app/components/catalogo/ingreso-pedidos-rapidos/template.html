@@ -23,12 +23,23 @@
                 <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" readonly>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-2 mb-3">
                 <label for="txtCantidad" class="form-label">Cantidad</label>
                 <input id="txtCantidad" name="txtCantidad" class="form-control" type="number" style="text-align: right;">
             </div>
 
-            <div id="ipr_grid_items" class="contenedor-grid-items"></div>
+            <div id="ipr_grid_items_container" class="contenedor-grid-items">
+                <table id="ipr_grid_items" class="table table-bordered table-hover">
+                    <!--<thead>
+                        <th>Renglón</th>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Subtotal</th>
+                    </thead>-->
+                </table>
+            </div>
         </section>
 
         <footer class="ipr-footer">

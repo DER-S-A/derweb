@@ -99,7 +99,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 const url = new App().getUrlApi("app-entidades-sucursales");
                 
                 (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
-                    if(response.length > 1) {
+                    if(response.length >1) {
                         this.__seleccionar_sucursal(response);
                     } else {
                         aSesion = new CacheUtils("derweb", false).get("sesion");
@@ -113,7 +113,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         // Al salirse del foco realizo una búsqueda inicial.
                         if (!this.__validarSeleccionCliente())
                             return;
-
+                            
                         if(document.getElementById("txtCodArt").value == '') {
                             //swal('warning','Debes completar el campo articulo');
                             return;

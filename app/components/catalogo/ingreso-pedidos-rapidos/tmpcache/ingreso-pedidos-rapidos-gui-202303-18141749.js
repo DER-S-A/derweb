@@ -32,23 +32,13 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let idVendedor = aSesion["id_vendedor"];
     
         this.getTemplate(urlTemplate, (htmlResponse) => {
-            this.__inicializarGUI(htmlResponse, urlAPI, idVendedor);
-        });
-    }
-
-    /**
-     * 
-     * @param {string} xhtmlResponse 
-     * @param {string} xurlAPI 
-     * @param {int} xidVendedor 
-     */
-    __inicializarGUI(xhtmlResponse, xurlAPI, xidVendedor) {
-        this.__idSelectorClientes = "selector-clientes";
-        xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "id-selector", this.__idSelectorClientes);
-        // Recupero los clientes para el vendedor actual.
-        (new APIs()).call(xurlAPI, "id_vendedor=" + xidVendedor, "GET", response => {
-            // Creo la GUI.
-            this.__crearFormulario(xhtmlResponse, response);
+            this.__idSelectorClientes = "selector-clientes";
+            htmlResponse = this.setTemplateParameters(htmlResponse, "id-selector", this.__idSelectorClientes);
+            // Recupero los clientes para el vendedor actual.
+            (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {
+                // Creo la GUI.
+                this.__crearFormulario(htmlResponse, response);
+            });
         });
     }
 
@@ -67,7 +57,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         objDataList.setData(xresponse);
         objDataList.setColumns(["codusu", "nombre"]);
         objDataList.setColumnsKey(["id", "codusu"]);
-
         objDataList.toHtml(html => {
             // Lleno el autocomplete y dibujo el HTML en el navegador.
             xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "lfw-datalist-bs", html);
@@ -83,8 +72,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             
             let cambiarCliente = false;
 
-            this.__crearGridItems();
-
             // Agrego el evento change del selector de clientes.
             document.getElementById(objDataList.idSelector).addEventListener("change", (event) => {
                 cambiarCliente = true;
@@ -97,15 +84,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 aSesion.id_cliente = element.id;
                 new CacheUtils("derweb", false).set("sesion", aSesion);
                 const url = new App().getUrlApi("app-entidades-sucursales");
-                
                 (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
-                    if(response.length > 1) {
-                        this.__seleccionar_sucursal(response);
+                    if(response.length >1) {
+                        this.seleccionar_sucursal(response);
                     } else {
                         aSesion = new CacheUtils("derweb", false).get("sesion");
                         aSesion.id_sucursal = response[0].id;
                         new CacheUtils("derweb", false).set("sesion", aSesion);
-                        this.__recuperarPedido();
+                        this.pintarPedido();
                     }
 
                     // Agrego el evento blur de txtCodArt
@@ -113,7 +99,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         // Al salirse del foco realizo una búsqueda inicial.
                         if (!this.__validarSeleccionCliente())
                             return;
-
                         if(document.getElementById("txtCodArt").value == '') {
                             //swal('warning','Debes completar el campo articulo');
                             return;
@@ -131,13 +116,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     // Agrego el evento cantidad.
                     document.getElementById("txtCantidad").addEventListener("blur", () => {
                         let txtCantidad = document.querySelector('#txtCantidad').value;
-                        if (this.__agregarItem()) {
-                            const txtCodArt = document.querySelector('#txtCodArt');
-                            let xid_articulo = JSON.parse(txtCodArt.dataset.value);
-                            xid_articulo = xid_articulo.values[0].id;
-                            this.__guardarPedido(xid_articulo, txtCantidad);
-                            new CacheUtils("derven", false).set("id_pedido_sel", 179);    
-                        }                    
+                        this.__agregarItem();
+                        const txtCodArt = document.querySelector('#txtCodArt');
+                        let xid_articulo = JSON.parse(txtCodArt.dataset.value);
+                        xid_articulo = xid_articulo.values[0].id;
+                        //this.agregarArticulo();
+                    
+                        this.__agregarEnTabla(xid_articulo, txtCantidad);
+                        new CacheUtils("derven", false).set("id_pedido_sel", 179);
                     });
 
                     // Eventos botones confirmar y volver
@@ -164,7 +150,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         })
                     });
 
-                    document.getElementById("sel-cliente").focus();                            
+                    // LLamo al método que crea la grilla.
+                    this.__crearGridItems();
+
+                    document.getElementById("sel-cliente").focus();
+                            
                 });
                         
             });
@@ -293,51 +283,42 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Crea la grilla de ítems del pedido.
      */
     __crearGridItems() {
+        /*this.__objDataGrid = new LFWDataGrid("ipr_grid_items", "id")
+        this.__objDataGrid.setAsociatedFormId("frm-ingreso-pedido-rapido");
+        this.__objDataGrid.setPermitirEditarRegistro(true);
+        this.__objDataGrid.setPermitirEliminarRegistro(true);
+        this.__objDataGrid.setPermitirOrden(false);
+        this.__objDataGrid.setPermitirFiltros(false);
+        
+        this.__objDataGrid.agregarColumna("Renglón", "id", "numeric", 0, false);
+        this.__objDataGrid.agregarColumna("Código de artículo", "codart", "string");
+        this.__objDataGrid.agregarColumna("Descripción", "descripcion", "string");
+        this.__objDataGrid.agregarColumna("Cantidad", "cantidad", "numeric");
+        this.__objDataGrid.agregarColumna("Precio Unit.", "precio_unitario", "numeric");
+        this.__objDataGrid.agregarColumna("Subtotal", "subtotal", "numeric");*/
+
         this.__objDataGrid = $("#ipr_grid_items").DataTable({
             searching: false,
             paging: false,
             responsive: true,
             scrollY: 260,
-            keys: true,
             columns: [
-                {data: "id", title: "Renglón N°", type: 'num', width: '100px'},
-                {data: "codart", title: "Código", type: 'string', width: '150px'},
-                {data: "descripcion", title: "Descripción", type: 'string', width: '300px'},
-                {data: "cantidad", title: "Cantidad", type: 'num', width: '100px', 
-                    render: (data, type, row, meta) => {
-                        if (type === "display")
-                            return "<div style='text-align: right;'>" + data + '</div>';
-                        else
-                            return data;                    
-                    }
-                },
-                {data: "precio_unitario", title: "Precio Unit.", type: 'num', width: '100px', 
-                    render: (data, type, row, meta) => {
-                        if (type === "display")
-                            return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
-                        else
-                            return data;                    
-                    }
-                },
-                {data: "subtotal", title: "Subtotal", type: 'num', width: '100px',
-                    render: (data, type, row, meta) => {
-                        if (type === "display")
-                            return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
-                        else
-                            return data;
-                    }
-                },
-                {data: "opciones", title: "Opciones", width: '100px'}
+                {data: "id", title: "Renglón N°"},
+                {data: "codart", title: "Código"},
+                {data: "descripcion", title: "Descripción"},
+                {data: "cantidad", title: "Cantidad"},
+                {data: "precio_unitario", title: "Precio Unit."},
+                {data: "subtotal", title: "Subtotal"}
             ]
         });
-        this.__acomodarFooter()
+        this.acomodarFooter()
     }
 
     /**
      * Permite acomodar el estilo de footer para que sea fijo o
      * relativo dependiendo de la situación.
      */
-    __acomodarFooter() {
+    acomodarFooter() {
         if (this.__objDataGrid.rows().count() !== 0) {
             let objFooter = document.getElementById("app-footer");
             objFooter.style.bottom = "none";
@@ -346,19 +327,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     }
 
     /**
-     * Permite agregar un artículo a la grilla. En caso de que el
-     * artículo esté repetido, entonces, suma la cantidad.
-     * @returns {bool} true: si el artículo se agregó, false: si no pasó las validaciones.
+     * Agrega un ítem al pedido.
      */
     __agregarItem() {        
         let articulo = JSON.parse(document.getElementById("txtCodArt").dataset.value);
         let item = {};
-        var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
-        opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
-
 
         if (parseInt(document.getElementById("txtCantidad").value) === 0) {
-            alert("Debe ingresar la cantidad");
+            swal("Debe ingresar la cantidad");
             return false;
         }
 
@@ -369,28 +345,33 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             "descripcion": articulo.values[0].desc,
             "cantidad": parseFloat(document.getElementById("txtCantidad").value),
             "precio_unitario": parseFloat(articulo.values[0].cped).toFixed(2),
-            "subtotal": (articulo.values[0].cped * parseInt(document.getElementById("txtCantidad").value)).toFixed(2),
-            "opciones": opciones
+            "subtotal": (articulo.values[0].cped * parseInt(document.getElementById("txtCantidad").value)).toFixed(2)
         };
 
-        if (this.validarItemRepetido(item) == false)
-            this.__objDataGrid.row.add(item).draw();
-            
-
+        this.__objDataGrid.row.add(item).draw();
         this.__calcularTotalPedido();
         this.__blanquearInputsItems();
-        this.__acomodarFooter();
+        this.acomodarFooter();
 
-        return true;
+        /*if(this.__objDataGrid.getDataGrid() != null) 
+            item = this.validarItemRepetido(item);
+
+        if(item.id > 0) 
+            this.__objDataGrid.deleteRowByCampoClave(item.id);*/
+
+        /*this.__objDataGrid.agregarFila(item);
+        this.__objDataGrid.refresh();
+        this.__calcularTotalPedido();
+        this.__blanquearInputsItems();*/
     }
 
     /**
      * Calcula el total del pedido en base a los ítems agregados.
      */
     __calcularTotalPedido() {
-        let total = 0.00
-        let items = this.__objDataGrid.rows().data().toArray();
-        items.forEach(element => {
+        let aItems = this.__objDataGrid.getRows();
+        let total = 0.00;
+        aItems.forEach(element => {
             total += parseFloat(element.subtotal);
         });
 
@@ -408,7 +389,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         document.getElementById("txtCodArt").focus();
     }
 
-    __seleccionar_sucursal(arraySuc) {
+    seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
           <div class="modal-content">
@@ -451,128 +432,90 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             aSesion.id_sucursal = parseInt(selector.value);
             new CacheUtils("derweb", false).set("sesion", aSesion);
             modal.style.display = 'none';
-            this.__recuperarPedido();
+            this.pintarPedido();
         });
     }
-
-    /**
-     * Permite guardar el ítem de un pedido en la base de datos.
-     * @param {int} xidarticulo Id. de artículo.
-     * @param {double} cantidad Cantidad
-     * @returns 
-     */
-    __guardarPedido(xidarticulo, cantidad) {
+    __agregarEnTabla(xidarticulo, cantidad) {
         let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
         let objCatalogo = new Catalogo();
     
         if (cantidad == "" || cantidad < 1) {
-            swal("Cantidad vacia o valor incorrecto");
-            document.getElementById("txtCantidad").focus();
+            alert("Cantidad vacia o valor incorrecto");
             return;
         }
     
         // Recupero los datos de la sucursal predeterminada
         objCatalogo.getSucursalPredeterminadaByCliente(aSesion["id_cliente"], (xaSucursal) => {
+            let acabecera = {
+                "id_cliente": parseInt(aSesion["id_cliente"]),
+                "id_tipoentidad": parseInt(aSesion["id_tipoentidad"]),
+                "id_vendedor": parseInt(xaSucursal[0]["id_vendedor"]),
+                "id_sucursal": parseInt(xaSucursal[0]["id"]),
+                "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
+                "id_transporte": xaSucursal[0]["id_transporte"],
+                "codigo_transporte": xaSucursal[0]["codigo_transporte"],
+                "id_formaenvio": xaSucursal[0]["id_formaenvio"],
+                "codigo_forma_envio": xaSucursal[0]["codigo_forma_envio"]
+            };
+    
             if (xaSucursal === undefined) {
                 alert("Usted no tiene sucursal asignada, por favor comuníquese con sistemas para resolver este problema");
                 return;
             }
-
-            this.__guardarItemEnBD(aSesion, xaSucursal, objCatalogo, xidarticulo, cantidad);
+            
+            objCatalogo.agregarArticuloEnCarrito(aSesion, xidarticulo, cantidad, acabecera);
         });
     }
 
-    /**
-     * Permite grabar el artículo en el pedido.
-     * @param {array} xaSesion Datos de sesión iniciada actualmente.
-     * @param {array} xaSucursal Sucursal predeterminada.
-     * @param {Catalogo} xobjCatalogo Objeto catálogo
-     * @param {int} xidarticulo Id. de artículo
-     * @param {double} xcantidad Cantidad
-     */
-    __guardarItemEnBD(xaSesion, xaSucursal, xobjCatalogo, xidarticulo, xcantidad) {
-        let aCabecera = {
-            "id_cliente": parseInt(xaSesion["id_cliente"]),
-            "id_tipoentidad": parseInt(xaSesion["id_tipoentidad"]),
-            "id_vendedor": parseInt(xaSucursal[0]["id_vendedor"]),
-            "id_sucursal": parseInt(xaSucursal[0]["id"]),
-            "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
-            "id_transporte": xaSucursal[0]["id_transporte"],
-            "codigo_transporte": xaSucursal[0]["codigo_transporte"],
-            "id_formaenvio": xaSucursal[0]["id_formaenvio"],
-            "codigo_forma_envio": xaSucursal[0]["codigo_forma_envio"]
-        };
-
-        xobjCatalogo.agregarArticuloEnCarrito(xaSesion, xidarticulo, xcantidad, aCabecera);
-    }
-
-    /**
-     * Permite recuprar el pedido que se encuentra actualmente pendiente de
-     * confirmar.
-     */
-    __recuperarPedido() {
+    pintarPedido() {
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
             let total = 0.00;
-
-            if (arrItems !== undefined) {
-                var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
-                opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
-
-                arrItems.forEach((item, index) => {
-                    item = {
-                        "id": index + 1,
-                        "codart": item.codigo,
-                        "descripcion": item.descripcion,
-                        "cantidad": item.cantidad,
-                        "precio_unitario": item.costo,
-                        "subtotal": item.costo * item.cantidad,
-                        "opciones": opciones
-                    };
-                    
-                    this.__objDataGrid.row.add(item);
-                    total += (item.costo * item.cantidad);
-                });
-            }
+            arrItems.forEach((item, index) => {
+                let fila = [];
+                /*item = {
+                    "id": 0,
+                    "codart": item.codigo,
+                    "descripcion": item.descripcion,
+                    "cantidad": item.cantidad,
+                    "precio_unitario": item.costo,
+                    "subtotal": item.costo * item.cantidad
+                };
+                
+                this.__objDataGrid.agregarFila(item);
+                this.__objDataGrid.refresh();*/
+                fila = [index + 1, item.codigo, item.descripcion, item.cantidad, item.costo, (item.costo * item.cantidad)]
+                this.__objDataGrid.row.add(fila);
+                total += (item.costo * item.cantidad);
+            });
 
             this.__objDataGrid.draw();
-            this.__acomodarFooter();
-            this.__calcularTotalPedido();
+            this.acomodarFooter();
+            /*this.__calcularTotalPedido();
+            this.__blanquearInputsItems();*/
+
+            document.getElementById("txtTotal").value = total.toFixed(2);
+
+
+            if(response.id_pedido == 0) {
+                //this.__objDataGrid.refresh();
+            }
         })
     }
 
-    /**
-     * Permite verificar si un ítem se encuentra repetido en el pedido. Si está repetido
-     * entonces le suma la cantidad.
-     * @param {array} xitem 
-     * @returns {bool} true: si el ítem está repetido | false: en caso contrario.
-     */
-    validarItemRepetido(xitem) {
-        let items = this.__objDataGrid.rows().data().toArray();
-        let resultado = false;
-        items.forEach((element, index) => {
-            if (element.codart == xitem.codart) {
-                this.__sumarCantidadAlItemRepetido(xitem, element, index);
-                resultado = true;
-                return;
+    validarItemRepetido(item) {
+        let longitud = this.__objDataGrid.getRows().length;
+        let element = this.__objDataGrid.getRows();
+        for(let i=0;i<longitud;i++) {
+            if(element[i].codart == item.codart) {
+                item.cantidad += parseFloat(element[i].cantidad);
+                item.id = element[i].id;
+                return item;
             }
-        });
-
-        return resultado;
-    }
-
-    /**
-     * Permite sumar la cantidad al ítem repetido.
-     * @param {array} xitem Item original que está cargado actualmente.
-     * @param {array} element Item que se está cargando en el sistema.
-     * @param {int} index Índice de fila de la grilla.
-     */
-    __sumarCantidadAlItemRepetido(xitem, element, index) {
-        xitem.cantidad += parseFloat(element.cantidad);
-        xitem.subtotal = parseFloat(xitem.cantidad) * parseFloat(element.precio_unitario);
-        this.__objDataGrid.row(index).data(xitem).draw();
+        }
+        return item;
     }
 }
 

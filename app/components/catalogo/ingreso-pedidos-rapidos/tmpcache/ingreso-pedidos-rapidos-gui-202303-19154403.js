@@ -96,76 +96,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 let aSesion = new CacheUtils("derweb", false).get("sesion");
                 aSesion.id_cliente = element.id;
                 new CacheUtils("derweb", false).set("sesion", aSesion);
-                const url = new App().getUrlApi("app-entidades-sucursales");
-                
-                (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
-                    if(response.length > 1) {
-                        this.__seleccionar_sucursal(response);
-                    } else {
-                        aSesion = new CacheUtils("derweb", false).get("sesion");
-                        aSesion.id_sucursal = response[0].id;
-                        new CacheUtils("derweb", false).set("sesion", aSesion);
-                        this.__recuperarPedido();
-                    }
 
-                    // Agrego el evento blur de txtCodArt
-                    document.getElementById("txtCodArt").addEventListener("blur", () => {
-                        // Al salirse del foco realizo una búsqueda inicial.
-                        if (!this.__validarSeleccionCliente())
-                            return;
-
-                        if(document.getElementById("txtCodArt").value == '') {
-                            //swal('warning','Debes completar el campo articulo');
-                            return;
-                        }
-
-                        this.__buscarArticulo();
-                    });
-
-                    // Evento al recibir el foco.
-                    document.getElementById("txtCantidad").addEventListener("focus", () => {
-                        // Selecciono el contenido del input.
-                        document.getElementById("txtCantidad").select();
-                    });
-
-                    // Agrego el evento cantidad.
-                    document.getElementById("txtCantidad").addEventListener("blur", () => {
-                        let txtCantidad = document.querySelector('#txtCantidad').value;
-                        if (this.__agregarItem()) {
-                            const txtCodArt = document.querySelector('#txtCodArt');
-                            let xid_articulo = JSON.parse(txtCodArt.dataset.value);
-                            xid_articulo = xid_articulo.values[0].id;
-                            this.__guardarPedido(xid_articulo, txtCantidad);
-                            new CacheUtils("derven", false).set("id_pedido_sel", 179);    
-                        }                    
-                    });
-
-                    // Eventos botones confirmar y volver
-                    document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
-                        // Desarrollar llamado a API para enviar y confirmar el pedido.
-                        let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
-                        let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
-                        objConfirmarPedido.setIdModal(objModal.getIdModal());
-                        objConfirmarPedido.setDivModal(objModal.getModalBody());
-
-                        // Agrego funcionalidad extra al finalizar el pedido
-                        objConfirmarPedido.setCallbackFinalizarPedido(() => {
-                            objModal.close();
-                            ingresar_pedidos_rapido();
-                        });
-                        
-                        objConfirmarPedido.generarFooterPedido();
-                        objModal.open();
-
-                        aSesion = sessionStorage.getItem("derweb_sesion");
-                        let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
-                        (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
-                            new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
-                        })
-                    });
-
-                    document.getElementById("sel-cliente").focus();                            
-                });
+                aSesion = this.__getSucursalesByEntidad(element, aSesion);
                         
             });
 
@@ -181,6 +113,79 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             })
 
         });
+    }
+
+    __getSucursalesByEntidad(element, aSesion) {
+        const url = new App().getUrlApi("app-entidades-sucursales");
+        (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
+            if (response.length > 1) {
+                this.__seleccionar_sucursal(response);
+            } else {
+                aSesion = new CacheUtils("derweb", false).get("sesion");
+                aSesion.id_sucursal = response[0].id;
+                new CacheUtils("derweb", false).set("sesion", aSesion);
+                this.__recuperarPedido();
+            }
+
+            // Agrego el evento blur de txtCodArt
+            document.getElementById("txtCodArt").addEventListener("blur", () => {
+                // Al salirse del foco realizo una búsqueda inicial.
+                if (!this.__validarSeleccionCliente())
+                    return;
+
+                if (document.getElementById("txtCodArt").value == '') {
+                    //swal('warning','Debes completar el campo articulo');
+                    return;
+                }
+
+                this.__buscarArticulo();
+            });
+
+            // Evento al recibir el foco.
+            document.getElementById("txtCantidad").addEventListener("focus", () => {
+                // Selecciono el contenido del input.
+                document.getElementById("txtCantidad").select();
+            });
+
+            // Agrego el evento cantidad.
+            document.getElementById("txtCantidad").addEventListener("blur", () => {
+                let txtCantidad = document.querySelector('#txtCantidad').value;
+                if (this.__agregarItem()) {
+                    const txtCodArt = document.querySelector('#txtCodArt');
+                    let xid_articulo = JSON.parse(txtCodArt.dataset.value);
+                    xid_articulo = xid_articulo.values[0].id;
+                    this.__guardarPedido(xid_articulo, txtCantidad);
+                    new CacheUtils("derven", false).set("id_pedido_sel", 179);
+                }
+            });
+
+            // Eventos botones confirmar y volver
+            document.getElementById("btnConfirmarPedido").addEventListener("click", () => {
+                // Desarrollar llamado a API para enviar y confirmar el pedido.
+                let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad", true);
+                let objModal = new LFWModalBS("main", "modal_confirmar_pedido", "Confirmar pedido");
+                objConfirmarPedido.setIdModal(objModal.getIdModal());
+                objConfirmarPedido.setDivModal(objModal.getModalBody());
+
+                // Agrego funcionalidad extra al finalizar el pedido
+                objConfirmarPedido.setCallbackFinalizarPedido(() => {
+                    objModal.close();
+                    ingresar_pedidos_rapido();
+                });
+
+                objConfirmarPedido.generarFooterPedido();
+                objModal.open();
+
+                aSesion = sessionStorage.getItem("derweb_sesion");
+                let url = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
+                (new APIs()).call(url, "sesion=" + aSesion, "GET", response => {
+                    new CacheUtils("derven", false).set("id_pedido_sel", response.id_pedido);
+                });
+            });
+
+            document.getElementById("sel-cliente").focus();
+        });
+        return aSesion;
     }
 
     __inicializarInputs() {

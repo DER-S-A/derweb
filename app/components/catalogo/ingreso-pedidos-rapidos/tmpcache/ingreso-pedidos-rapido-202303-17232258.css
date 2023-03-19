@@ -66,11 +66,9 @@
     font-size: 15px;
 }
 
-
-table input {
+#ipr_grid_articulos input {
     border-radius: 5px;
     font-size: 11px;
-    margin-bottom: 2px;
 }
 
 #ipr_grid_articulos select option {
@@ -81,11 +79,11 @@ table input {
 table th {
     background-color: #009ada !important;
     color: white;  
-    font-size: 15px;
+    font-size: 11px;
 }
 
-table td {
-    font-size: 12px;
+#ipr_grid_articulos td {
+    font-size: 11px;
 }
 
 .dataTables_wrapper .dataTables_length {

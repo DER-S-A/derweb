@@ -32,23 +32,13 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let idVendedor = aSesion["id_vendedor"];
     
         this.getTemplate(urlTemplate, (htmlResponse) => {
-            this.__inicializarGUI(htmlResponse, urlAPI, idVendedor);
-        });
-    }
-
-    /**
-     * 
-     * @param {string} xhtmlResponse 
-     * @param {string} xurlAPI 
-     * @param {int} xidVendedor 
-     */
-    __inicializarGUI(xhtmlResponse, xurlAPI, xidVendedor) {
-        this.__idSelectorClientes = "selector-clientes";
-        xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "id-selector", this.__idSelectorClientes);
-        // Recupero los clientes para el vendedor actual.
-        (new APIs()).call(xurlAPI, "id_vendedor=" + xidVendedor, "GET", response => {
-            // Creo la GUI.
-            this.__crearFormulario(xhtmlResponse, response);
+            this.__idSelectorClientes = "selector-clientes";
+            htmlResponse = this.setTemplateParameters(htmlResponse, "id-selector", this.__idSelectorClientes);
+            // Recupero los clientes para el vendedor actual.
+            (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {
+                // Creo la GUI.
+                this.__crearFormulario(htmlResponse, response);
+            });
         });
     }
 
@@ -67,7 +57,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         objDataList.setData(xresponse);
         objDataList.setColumns(["codusu", "nombre"]);
         objDataList.setColumnsKey(["id", "codusu"]);
-
         objDataList.toHtml(html => {
             // Lleno el autocomplete y dibujo el HTML en el navegador.
             xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "lfw-datalist-bs", html);
@@ -83,8 +72,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             
             let cambiarCliente = false;
 
-            this.__crearGridItems();
-
             // Agrego el evento change del selector de clientes.
             document.getElementById(objDataList.idSelector).addEventListener("change", (event) => {
                 cambiarCliente = true;
@@ -97,15 +84,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 aSesion.id_cliente = element.id;
                 new CacheUtils("derweb", false).set("sesion", aSesion);
                 const url = new App().getUrlApi("app-entidades-sucursales");
-                
                 (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
-                    if(response.length > 1) {
-                        this.__seleccionar_sucursal(response);
+                    if(response.length >1) {
+                        this.seleccionar_sucursal(response);
                     } else {
                         aSesion = new CacheUtils("derweb", false).get("sesion");
                         aSesion.id_sucursal = response[0].id;
                         new CacheUtils("derweb", false).set("sesion", aSesion);
-                        this.__recuperarPedido();
+                        this.pintarPedido();
                     }
 
                     // Agrego el evento blur de txtCodArt
@@ -113,7 +99,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         // Al salirse del foco realizo una búsqueda inicial.
                         if (!this.__validarSeleccionCliente())
                             return;
-
                         if(document.getElementById("txtCodArt").value == '') {
                             //swal('warning','Debes completar el campo articulo');
                             return;
@@ -135,7 +120,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                             const txtCodArt = document.querySelector('#txtCodArt');
                             let xid_articulo = JSON.parse(txtCodArt.dataset.value);
                             xid_articulo = xid_articulo.values[0].id;
-                            this.__guardarPedido(xid_articulo, txtCantidad);
+                            this.__agregarEnTabla(xid_articulo, txtCantidad);
                             new CacheUtils("derven", false).set("id_pedido_sel", 179);    
                         }                    
                     });
@@ -164,7 +149,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         })
                     });
 
-                    document.getElementById("sel-cliente").focus();                            
+                    // LLamo al método que crea la grilla.
+                    this.__crearGridItems();
+
+                    document.getElementById("sel-cliente").focus();
+                            
                 });
                         
             });
@@ -300,10 +289,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             scrollY: 260,
             keys: true,
             columns: [
-                {data: "id", title: "Renglón N°", type: 'num', width: '100px'},
-                {data: "codart", title: "Código", type: 'string', width: '150px'},
-                {data: "descripcion", title: "Descripción", type: 'string', width: '300px'},
-                {data: "cantidad", title: "Cantidad", type: 'num', width: '100px', 
+                {data: "id", title: "Renglón N°", type: 'num'},
+                {data: "codart", title: "Código", type: 'string'},
+                {data: "descripcion", title: "Descripción", type: 'string'},
+                {data: "cantidad", title: "Cantidad", type: 'num', 
                     render: (data, type, row, meta) => {
                         if (type === "display")
                             return "<div style='text-align: right;'>" + data + '</div>';
@@ -311,7 +300,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                             return data;                    
                     }
                 },
-                {data: "precio_unitario", title: "Precio Unit.", type: 'num', width: '100px', 
+                {data: "precio_unitario", title: "Precio Unit.", type: 'num', 
                     render: (data, type, row, meta) => {
                         if (type === "display")
                             return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
@@ -319,7 +308,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                             return data;                    
                     }
                 },
-                {data: "subtotal", title: "Subtotal", type: 'num', width: '100px',
+                {data: "subtotal", title: "Subtotal", type: 'num', 
                     render: (data, type, row, meta) => {
                         if (type === "display")
                             return "<div style='text-align: right;'>" + Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(data) + '</div>';
@@ -327,17 +316,17 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                             return data;
                     }
                 },
-                {data: "opciones", title: "Opciones", width: '100px'}
+                {data: "opciones", title: "Opciones"}
             ]
         });
-        this.__acomodarFooter()
+        this.acomodarFooter()
     }
 
     /**
      * Permite acomodar el estilo de footer para que sea fijo o
      * relativo dependiendo de la situación.
      */
-    __acomodarFooter() {
+    acomodarFooter() {
         if (this.__objDataGrid.rows().count() !== 0) {
             let objFooter = document.getElementById("app-footer");
             objFooter.style.bottom = "none";
@@ -379,7 +368,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         this.__calcularTotalPedido();
         this.__blanquearInputsItems();
-        this.__acomodarFooter();
+        this.acomodarFooter();
 
         return true;
     }
@@ -408,7 +397,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         document.getElementById("txtCodArt").focus();
     }
 
-    __seleccionar_sucursal(arraySuc) {
+    seleccionar_sucursal(arraySuc) {
         let html = `
         <div class="modal-dialog">
           <div class="modal-content">
@@ -451,17 +440,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             aSesion.id_sucursal = parseInt(selector.value);
             new CacheUtils("derweb", false).set("sesion", aSesion);
             modal.style.display = 'none';
-            this.__recuperarPedido();
+            this.pintarPedido();
         });
     }
 
-    /**
-     * Permite guardar el ítem de un pedido en la base de datos.
-     * @param {int} xidarticulo Id. de artículo.
-     * @param {double} cantidad Cantidad
-     * @returns 
-     */
-    __guardarPedido(xidarticulo, cantidad) {
+    __agregarEnTabla(xidarticulo, cantidad) {
         let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
         let objCatalogo = new Catalogo();
     
@@ -473,51 +456,35 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     
         // Recupero los datos de la sucursal predeterminada
         objCatalogo.getSucursalPredeterminadaByCliente(aSesion["id_cliente"], (xaSucursal) => {
+            let acabecera = {
+                "id_cliente": parseInt(aSesion["id_cliente"]),
+                "id_tipoentidad": parseInt(aSesion["id_tipoentidad"]),
+                "id_vendedor": parseInt(xaSucursal[0]["id_vendedor"]),
+                "id_sucursal": parseInt(xaSucursal[0]["id"]),
+                "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
+                "id_transporte": xaSucursal[0]["id_transporte"],
+                "codigo_transporte": xaSucursal[0]["codigo_transporte"],
+                "id_formaenvio": xaSucursal[0]["id_formaenvio"],
+                "codigo_forma_envio": xaSucursal[0]["codigo_forma_envio"]
+            };
+    
             if (xaSucursal === undefined) {
                 alert("Usted no tiene sucursal asignada, por favor comuníquese con sistemas para resolver este problema");
                 return;
             }
-
-            this.__guardarItemEnBD(aSesion, xaSucursal, objCatalogo, xidarticulo, cantidad);
+            
+            objCatalogo.agregarArticuloEnCarrito(aSesion, xidarticulo, cantidad, acabecera);
         });
     }
 
-    /**
-     * Permite grabar el artículo en el pedido.
-     * @param {array} xaSesion Datos de sesión iniciada actualmente.
-     * @param {array} xaSucursal Sucursal predeterminada.
-     * @param {Catalogo} xobjCatalogo Objeto catálogo
-     * @param {int} xidarticulo Id. de artículo
-     * @param {double} xcantidad Cantidad
-     */
-    __guardarItemEnBD(xaSesion, xaSucursal, xobjCatalogo, xidarticulo, xcantidad) {
-        let aCabecera = {
-            "id_cliente": parseInt(xaSesion["id_cliente"]),
-            "id_tipoentidad": parseInt(xaSesion["id_tipoentidad"]),
-            "id_vendedor": parseInt(xaSucursal[0]["id_vendedor"]),
-            "id_sucursal": parseInt(xaSucursal[0]["id"]),
-            "codigo_sucursal": xaSucursal[0]["codigo_sucursal"],
-            "id_transporte": xaSucursal[0]["id_transporte"],
-            "codigo_transporte": xaSucursal[0]["codigo_transporte"],
-            "id_formaenvio": xaSucursal[0]["id_formaenvio"],
-            "codigo_forma_envio": xaSucursal[0]["codigo_forma_envio"]
-        };
-
-        xobjCatalogo.agregarArticuloEnCarrito(xaSesion, xidarticulo, xcantidad, aCabecera);
-    }
-
-    /**
-     * Permite recuprar el pedido que se encuentra actualmente pendiente de
-     * confirmar.
-     */
-    __recuperarPedido() {
+    pintarPedido() {
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
             let total = 0.00;
 
-            if (arrItems !== undefined) {
+            if (arrItems !== undefined)
                 var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
                 opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
 
@@ -535,44 +502,27 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     this.__objDataGrid.row.add(item);
                     total += (item.costo * item.cantidad);
                 });
-            }
 
             this.__objDataGrid.draw();
-            this.__acomodarFooter();
+            this.acomodarFooter();
             this.__calcularTotalPedido();
         })
     }
 
-    /**
-     * Permite verificar si un ítem se encuentra repetido en el pedido. Si está repetido
-     * entonces le suma la cantidad.
-     * @param {array} xitem 
-     * @returns {bool} true: si el ítem está repetido | false: en caso contrario.
-     */
     validarItemRepetido(xitem) {
         let items = this.__objDataGrid.rows().data().toArray();
         let resultado = false;
         items.forEach((element, index) => {
             if (element.codart == xitem.codart) {
-                this.__sumarCantidadAlItemRepetido(xitem, element, index);
+                xitem.cantidad += parseFloat(element.cantidad);
+                xitem.subtotal = parseFloat(xitem.cantidad) * parseFloat(element.precio_unitario);
+                this.__objDataGrid.row(index).data(xitem).draw();
                 resultado = true;
                 return;
             }
         });
 
         return resultado;
-    }
-
-    /**
-     * Permite sumar la cantidad al ítem repetido.
-     * @param {array} xitem Item original que está cargado actualmente.
-     * @param {array} element Item que se está cargando en el sistema.
-     * @param {int} index Índice de fila de la grilla.
-     */
-    __sumarCantidadAlItemRepetido(xitem, element, index) {
-        xitem.cantidad += parseFloat(element.cantidad);
-        xitem.subtotal = parseFloat(xitem.cantidad) * parseFloat(element.precio_unitario);
-        this.__objDataGrid.row(index).data(xitem).draw();
     }
 }
 

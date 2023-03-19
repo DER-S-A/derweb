@@ -41,6 +41,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {string} xhtmlResponse 
      * @param {string} xurlAPI 
      * @param {int} xidVendedor 
+     * @returns 
      */
     __inicializarGUI(xhtmlResponse, xurlAPI, xidVendedor) {
         this.__idSelectorClientes = "selector-clientes";
@@ -50,6 +51,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             // Creo la GUI.
             this.__crearFormulario(xhtmlResponse, response);
         });
+        return xhtmlResponse;
     }
 
     /**
@@ -97,9 +99,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 aSesion.id_cliente = element.id;
                 new CacheUtils("derweb", false).set("sesion", aSesion);
                 const url = new App().getUrlApi("app-entidades-sucursales");
-                
                 (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
-                    if(response.length > 1) {
+                    if(response.length >1) {
                         this.__seleccionar_sucursal(response);
                     } else {
                         aSesion = new CacheUtils("derweb", false).get("sesion");
@@ -113,7 +114,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         // Al salirse del foco realizo una búsqueda inicial.
                         if (!this.__validarSeleccionCliente())
                             return;
-
                         if(document.getElementById("txtCodArt").value == '') {
                             //swal('warning','Debes completar el campo articulo');
                             return;

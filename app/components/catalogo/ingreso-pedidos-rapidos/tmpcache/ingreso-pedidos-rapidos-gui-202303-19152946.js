@@ -32,23 +32,13 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let idVendedor = aSesion["id_vendedor"];
     
         this.getTemplate(urlTemplate, (htmlResponse) => {
-            this.__inicializarGUI(htmlResponse, urlAPI, idVendedor);
-        });
-    }
-
-    /**
-     * 
-     * @param {string} xhtmlResponse 
-     * @param {string} xurlAPI 
-     * @param {int} xidVendedor 
-     */
-    __inicializarGUI(xhtmlResponse, xurlAPI, xidVendedor) {
-        this.__idSelectorClientes = "selector-clientes";
-        xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "id-selector", this.__idSelectorClientes);
-        // Recupero los clientes para el vendedor actual.
-        (new APIs()).call(xurlAPI, "id_vendedor=" + xidVendedor, "GET", response => {
-            // Creo la GUI.
-            this.__crearFormulario(xhtmlResponse, response);
+            this.__idSelectorClientes = "selector-clientes";
+            htmlResponse = this.setTemplateParameters(htmlResponse, "id-selector", this.__idSelectorClientes);
+            // Recupero los clientes para el vendedor actual.
+            (new APIs()).call(urlAPI, "id_vendedor=" + idVendedor, "GET", response => {
+                // Creo la GUI.
+                this.__crearFormulario(htmlResponse, response);
+            });
         });
     }
 
@@ -67,7 +57,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         objDataList.setData(xresponse);
         objDataList.setColumns(["codusu", "nombre"]);
         objDataList.setColumnsKey(["id", "codusu"]);
-
         objDataList.toHtml(html => {
             // Lleno el autocomplete y dibujo el HTML en el navegador.
             xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "lfw-datalist-bs", html);
@@ -97,9 +86,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 aSesion.id_cliente = element.id;
                 new CacheUtils("derweb", false).set("sesion", aSesion);
                 const url = new App().getUrlApi("app-entidades-sucursales");
-                
                 (new APIs()).call(url, "filter=id_entidad=" + element.id, "GET", response => {
-                    if(response.length > 1) {
+                    if(response.length >1) {
                         this.__seleccionar_sucursal(response);
                     } else {
                         aSesion = new CacheUtils("derweb", false).get("sesion");
@@ -113,7 +101,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         // Al salirse del foco realizo una búsqueda inicial.
                         if (!this.__validarSeleccionCliente())
                             return;
-
                         if(document.getElementById("txtCodArt").value == '') {
                             //swal('warning','Debes completar el campo articulo');
                             return;
@@ -164,7 +151,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         })
                     });
 
-                    document.getElementById("sel-cliente").focus();                            
+                    // LLamo al método que crea la grilla.
+                    //this.__crearGridItems();
+
+                    document.getElementById("sel-cliente").focus();
+                            
                 });
                         
             });
