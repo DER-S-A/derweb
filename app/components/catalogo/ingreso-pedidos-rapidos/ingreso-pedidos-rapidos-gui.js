@@ -273,7 +273,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         aSesion = sessionStorage.getItem("derweb_sesion");
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
-            var total = 0.00;
 
             if (arrItems !== undefined) {
                 var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
@@ -292,7 +291,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     };
                     
                     this.__objDataGrid.row.add(item);
-                    total += (item.costo * item.cantidad);
                     this.__nroRenglon = (index + 1);
                 });
             } else {
