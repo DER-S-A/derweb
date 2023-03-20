@@ -31,7 +31,6 @@ class Rentabilidad extends ComponentManager {
                 const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
                 this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
                 this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
-                this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
                 this.cargarTabla();
                 //dataTableRenta.row.add(['Omer', 'Todas', 'Todas', '10.00', '0']);
                 //dataTableRenta.draw();
@@ -46,10 +45,13 @@ class Rentabilidad extends ComponentManager {
     /**
      * Permite llenar todos los select q hay en la pantalla.
      */
-    llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {
-        this.__llenarBox(marcas, arrayQuerySelec[0], 'TODAS');
-        this.__llenarBox(rubros, arrayQuerySelec[1], 'TODAS');
-        this.__llenarBox(subrubros, arrayQuerySelec[2], 'TODAS');
+    llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {console.log(arrayQuerySelec)
+        //const arrayQuerySelec = ['#container-rentabilidad #marcas', '#container-rentabilidad #rubros', '#container-rentabilidad #subrubros'];
+        //const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
+        this.__llenarBox(marcas, arrayQuerySelec[0]);
+        this.__llenarBox(rubros, arrayQuerySelec[1]);
+        this.__llenarBox(subrubros, arrayQuerySelec[2]);
+        //this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
     }
 
     /**
@@ -487,49 +489,33 @@ class Rentabilidad extends ComponentManager {
             responsive: true,
             scrollY: 260
         });
-        let botonAgregar = document.querySelector('#container-rentabilidad #buttonM');
+        let botonAgregar = document.querySelector('#container-rentabilidad #buttonR');
         let selectMarcas = document.querySelector('#container-rentabilidad #marcas');
         let selectRubros = document.querySelector('#container-rentabilidad #rubros');
         let selectSubrubros = document.querySelector('#container-rentabilidad #subrubros');
         let margen1 = document.querySelector('#container-rentabilidad .contenedor-mgEsp input[name="margen1"]');
         let margen2 = document.querySelector('#container-rentabilidad .contenedor-mgEsp input[name="margen2"]');
-        let objTabla = [];        
+        let objTabla = [];
+        console.log(objTabla)
 
         botonAgregar.addEventListener('click', () => {
             let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
-            let resultadoValidar = this.__validarRepetido(objTabla, objTemporal);
-            this.__pintarTabla(resultadoValidar, dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2);
+            this.__validarRepetido(objTemporal, objTemporal);
+            this.__pintarTabla(dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2);
             
         })
     }
 
-    __pintarTabla(resultadoValidar, dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
-        if(resultadoValidar) {
-            swal('Error...!', 'Combinacion existente', 'error');
-            return;
-        }
+    __pintarTabla(dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
         objTabla.push({id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value});
         console.log(objTabla);
         dataTableRenta.row.add([selectMarcas.options[selectMarcas.selectedIndex].text, selectRubros.options[selectRubros.selectedIndex].text, selectSubrubros.options[selectSubrubros.selectedIndex].text, margen1.value, margen2.value]);
         dataTableRenta.draw();
     }
 
-    __validarRepetido(objTabla, objTemporal) {
-        if(objTabla.length > 0){
-            let resultado = objTabla.find(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
-            console.log(resultado);
-            if(resultado !== undefined){
-                return true;
-            }
-        }
-        
-    }
-
-    limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec) {
-        let botonlimpiar = document.querySelector('#container-rentabilidad #buttonR');
-        botonlimpiar.addEventListener('click', () => {
-            this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
-        })
+    __validarRepetido(objTabla, objTemporal) {console.log(objTabla.length)
+        let resultado = objTabla.find(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
+        console.log(resultado);
     }
 
 }

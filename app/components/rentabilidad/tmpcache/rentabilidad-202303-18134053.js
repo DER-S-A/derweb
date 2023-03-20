@@ -31,7 +31,6 @@ class Rentabilidad extends ComponentManager {
                 const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
                 this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
                 this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
-                this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
                 this.cargarTabla();
                 //dataTableRenta.row.add(['Omer', 'Todas', 'Todas', '10.00', '0']);
                 //dataTableRenta.draw();
@@ -46,10 +45,13 @@ class Rentabilidad extends ComponentManager {
     /**
      * Permite llenar todos los select q hay en la pantalla.
      */
-    llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {
-        this.__llenarBox(marcas, arrayQuerySelec[0], 'TODAS');
-        this.__llenarBox(rubros, arrayQuerySelec[1], 'TODAS');
-        this.__llenarBox(subrubros, arrayQuerySelec[2], 'TODAS');
+    llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {console.log(arrayQuerySelec)
+        //const arrayQuerySelec = ['#container-rentabilidad #marcas', '#container-rentabilidad #rubros', '#container-rentabilidad #subrubros'];
+        //const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
+        this.__llenarBox(marcas, arrayQuerySelec[0]);
+        this.__llenarBox(rubros, arrayQuerySelec[1]);
+        this.__llenarBox(subrubros, arrayQuerySelec[2]);
+        //this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
     }
 
     /**
@@ -487,7 +489,7 @@ class Rentabilidad extends ComponentManager {
             responsive: true,
             scrollY: 260
         });
-        let botonAgregar = document.querySelector('#container-rentabilidad #buttonM');
+        let botonAgregar = document.querySelector('#container-rentabilidad #buttonR');
         let selectMarcas = document.querySelector('#container-rentabilidad #marcas');
         let selectRubros = document.querySelector('#container-rentabilidad #rubros');
         let selectSubrubros = document.querySelector('#container-rentabilidad #subrubros');
@@ -523,13 +525,6 @@ class Rentabilidad extends ComponentManager {
             }
         }
         
-    }
-
-    limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec) {
-        let botonlimpiar = document.querySelector('#container-rentabilidad #buttonR');
-        botonlimpiar.addEventListener('click', () => {
-            this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
-        })
     }
 
 }

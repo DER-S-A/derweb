@@ -47,9 +47,12 @@ class Rentabilidad extends ComponentManager {
      * Permite llenar todos los select q hay en la pantalla.
      */
     llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {
-        this.__llenarBox(marcas, arrayQuerySelec[0], 'TODAS');
-        this.__llenarBox(rubros, arrayQuerySelec[1], 'TODAS');
-        this.__llenarBox(subrubros, arrayQuerySelec[2], 'TODAS');
+        //const arrayQuerySelec = ['#container-rentabilidad #marcas', '#container-rentabilidad #rubros', '#container-rentabilidad #subrubros'];
+        //const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
+        this.__llenarBox(marcas, arrayQuerySelec[0], false);
+        this.__llenarBox(rubros, arrayQuerySelec[1], false);
+        this.__llenarBox(subrubros, arrayQuerySelec[2], false);
+        //this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
     }
 
     /**

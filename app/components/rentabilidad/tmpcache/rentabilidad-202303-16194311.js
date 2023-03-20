@@ -31,10 +31,6 @@ class Rentabilidad extends ComponentManager {
                 const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
                 this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
                 this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
-                this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
-                this.cargarTabla();
-                //dataTableRenta.row.add(['Omer', 'Todas', 'Todas', '10.00', '0']);
-                //dataTableRenta.draw();
                 this.confirmar(id_cliente, arrayInputs, inputsArrayValue, miSession);
                 this.cerrar();
                 
@@ -46,10 +42,13 @@ class Rentabilidad extends ComponentManager {
     /**
      * Permite llenar todos los select q hay en la pantalla.
      */
-    llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {
-        this.__llenarBox(marcas, arrayQuerySelec[0], 'TODAS');
-        this.__llenarBox(rubros, arrayQuerySelec[1], 'TODAS');
-        this.__llenarBox(subrubros, arrayQuerySelec[2], 'TODAS');
+    llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec) {console.log(arrayQuerySelec)
+        //const arrayQuerySelec = ['#container-rentabilidad #marcas', '#container-rentabilidad #rubros', '#container-rentabilidad #subrubros'];
+        //const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
+        this.__llenarBox(marcas, arrayQuerySelec[0]);
+        this.__llenarBox(rubros, arrayQuerySelec[1]);
+        this.__llenarBox(subrubros, arrayQuerySelec[2]);
+        //this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
     }
 
     /**
@@ -80,7 +79,9 @@ class Rentabilidad extends ComponentManager {
      * Permite confirmar las rentabilidades editadas en la pantalla.
      */
     confirmar(id, arrayInputs, inputsValueSession, session) {
-        const botonConfirmar = document.querySelector('#container-rentabilidad #Aceptar');
+        //const botonConfirmar = document.querySelector('#container-rentabilidad #Aceptar');
+        const botonConfirmar = document.querySelector('#Aceptar');
+        console.log(botonConfirmar);
         botonConfirmar.addEventListener('click', () => {
             
             let arrayRenta = [];
@@ -133,6 +134,9 @@ class Rentabilidad extends ComponentManager {
     }
 
     __llenarBoxFiltrado(query_selector, marcas, rubros, subrubros) {
+        //const objMarcas = document.querySelector(query_selector[0]);
+        //const objRubros = document.querySelector(query_selector[1]);
+        //const objSubrubros = document.querySelector(query_selector[2]);
         const objMarcas = query_selector[0];
         const objRubros = query_selector[1];
         const objSubrubros = query_selector[2];
@@ -175,6 +179,7 @@ class Rentabilidad extends ComponentManager {
                     let listado = filtrarNumerosArray(xdatos,'id_subrubro');
                     let subrubroSeleccionado = objSubrubros.value;
                     objSubrubros.innerHTML = '';
+                    console.log('1')
                     this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);
                 });
             } else {
@@ -186,9 +191,11 @@ class Rentabilidad extends ComponentManager {
                     let listado = filtrarNumerosArray(xdatos,'id_rubro');
                     let rubroSeleccionado = objRubros.value;
                     objRubros.innerHTML = '';
+                    console.log('1')
                     this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
                 });
             }
+            console.log('return');
             return;
         }
         
@@ -196,6 +203,7 @@ class Rentabilidad extends ComponentManager {
         console.log(parametros); 
         new APIs().call(url, parametros, 'POST', xdatos => {
             console.log(url + parametros);
+            console.log(xdatos);
             let listado = filtrarNumerosArray(xdatos,'id_rubro');
             let rubroSeleccionado = objRubros.value;
             objRubros.innerHTML = '';
@@ -204,42 +212,56 @@ class Rentabilidad extends ComponentManager {
             listado = filtrarNumerosArray(xdatos,'id_subrubro');
             let subrubroSeleccionado = objSubrubros.value;
             objSubrubros.innerHTML = '';
+            console.log('1')
             this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);
             
             parametros = `where=id_marca=${objMarcas.value}`;
             console.log(parametros);
             new APIs().call(url, parametros, 'POST', xdatos => {
+                console.log(xdatos);
                 if(objSubrubros.value == 'TODAS') {
                     let listado = filtrarNumerosArray(xdatos,'id_rubro');
                     let rubroSeleccionado = objRubros.value;
                     objRubros.innerHTML = '<option value="TODAS">Todas</option>';
+                    console.log(listado);
+                    console.log('2')
                     this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
                 }
                 if(objRubros.value == 'TODAS') {
                     let listado = filtrarNumerosArray(xdatos,'id_subrubro');
                     let subrubroSeleccionado = objSubrubros.value;
                     objSubrubros.innerHTML = '<option value="TODAS">Todas</option>';
+                    console.log(listado);
+                    console.log('2');
                     this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);
                 }
 
                 if(objSubrubros.value != 'TODAS' && objRubros.value != 'TODAS' && objMarcas.value != 'TODAS') {                
                     parametros = `where=id_marca=${objMarcas.value} AND id_rubro=${objRubros.value} AND id_subrubro=${objSubrubros.value}`;
-
+                    console.log(parametros)
                     new APIs().call(url, parametros, 'POST', xdatos => {
+                        console.log(xdatos);
 
                         let listado = filtrarNumerosArray(xdatos, 'id_marca');
                         let marcaSeleccionado = objMarcas.value;
                         objMarcas.innerHTML = ''; 
+                        console.log(listado);
+                        console.log('3');
+                        console.log(marcas);
                         this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionado);
 
                         listado = filtrarNumerosArray(xdatos,'id_rubro');
                         let rubroSeleccionado = objRubros.value;
                         objRubros.innerHTML = '';
+                        console.log(listado);
+                        console.log('3');
                         this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
 
                         listado = filtrarNumerosArray(xdatos,'id_subrubro');
                         let subrubroSeleccionado = objSubrubros.value;
                         objSubrubros.innerHTML = '';
+                        console.log(listado);
+                        console.log('3');
                         this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);    
                     });
                 }
@@ -266,10 +288,12 @@ class Rentabilidad extends ComponentManager {
                 let marcaSeleccionada = objMarcas.value;
                 objMarcas.innerHTML = '<option value="TODAS">Todas</option>';
                 this.__llenarBox(marcas, objMarcas, marcaSeleccionada);
+                console.log(parametros)
                 new APIs().call(url, parametros, 'POST', xdatos => {
                     let listado = filtrarNumerosArray(xdatos,'id_subrubro');
                     let subrubroSeleccionado = objSubrubros.value;
                     objSubrubros.innerHTML = '';
+                    console.log('1 aca')
                     this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);
                 });
             } else {
@@ -282,6 +306,7 @@ class Rentabilidad extends ComponentManager {
                     let listado = filtrarNumerosArray(xdatos,'id_marca');
                     let marcaSeleccionado = objMarcas.value;
                     objMarcas.innerHTML = '';
+                    console.log('1')
                     this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionado);
                 });
             }
@@ -293,48 +318,64 @@ class Rentabilidad extends ComponentManager {
         
         new APIs().call(url, parametros, 'POST', xdatos => {
             console.log(url + parametros);
+            console.log(xdatos);
             let listado = filtrarNumerosArray(xdatos,'id_marca');
             let marcaSeleccionada = objMarcas.value;
             objMarcas.innerHTML = '';
+            console.log(listado);
             this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionada);
             listado = filtrarNumerosArray(xdatos,'id_subrubro');
             let subrubroSeleccionada = objSubrubros.value;
             objSubrubros.innerHtml = '<option value="TODAS">Todas</option>';
+            console.log(listado);
             this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionada);
 
             parametros = `where=id_rubro=${objRubros.value}`; 
         
             new APIs().call(url, parametros, 'POST', xdatos => {
+                console.log(url + parametros);
+                console.log(xdatos);
                 if(objSubrubros.value == 'TODAS') {
                     let listado = filtrarNumerosArray(xdatos,'id_marca');
                     let marcaSeleccionada = objMarcas.value;
                     objMarcas.innerHTML = '<option value="TODAS">Todas</option>';
+                    console.log(listado);
                     this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionada);
                 }
                 if(objMarcas.value == 'TODAS') {
                     let listado = filtrarNumerosArray(xdatos,'id_subrubro');
                     let subrubroSeleccionada = objSubrubros.value;
                     objSubrubros.innerHTML = '<option value="TODAS">Todas</option>';
+                    console.log(listado);
                     this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionada);
                 }
 
                 if(objSubrubros.value != 'TODAS' && objMarcas.value != 'TODAS' && objMarcas.value != 'TODAS') {                
                     parametros = `where=id_marca=${objMarcas.value} AND id_rubro=${objRubros.value} AND id_subrubro=${objSubrubros.value}`;
+                    console.log(parametros)
                     new APIs().call(url, parametros, 'POST', xdatos => {
+                        console.log(xdatos);
 
                         let listado = filtrarNumerosArray(xdatos, 'id_marca');
                         let marcaSeleccionado = objMarcas.value;
                         objMarcas.innerHTML = ''; 
+                        console.log(listado);
+                        console.log('3');
+                        console.log(marcas);
                         this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionado);
 
                         listado = filtrarNumerosArray(xdatos,'id_rubro');
                         let rubroSeleccionado = objRubros.value;
                         objRubros.innerHTML = '';
+                        console.log(listado);
+                        console.log('3');
                         this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
 
                         listado = filtrarNumerosArray(xdatos,'id_subrubro');
                         let subrubroSeleccionado = objSubrubros.value;
                         objSubrubros.innerHTML = '';
+                        console.log(listado);
+                        console.log('3');
                         this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);    
                     });
                 }
@@ -365,6 +406,7 @@ class Rentabilidad extends ComponentManager {
                     let listado = filtrarNumerosArray(xdatos,'id_marca');
                     let marcaSeleccionado = objMarcas.value;
                     objMarcas.innerHTML = '';
+                    console.log('1')
                     this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionado);
                 });
             } else {
@@ -373,10 +415,12 @@ class Rentabilidad extends ComponentManager {
                 objMarcas.innerHTML = '<option value="TODAS">Todas</option>'
                 this.__llenarBox(marcas, objMarcas, marcaSeleccionada);
                 
+                console.log(parametros)
                 new APIs().call(url, parametros, 'POST', xdatos => {
                     let listado = filtrarNumerosArray(xdatos,'id_rubro');
                     let rubroSeleccionado = objRubros.value;
                     objRubros.innerHTML = '';
+                    console.log('1')
                     this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
                 });
             }
@@ -387,14 +431,17 @@ class Rentabilidad extends ComponentManager {
         let parametros = `where=${consulta}`;
 
         new APIs().call(url, parametros, 'POST', xdatos => {
-
+            console.log(url + parametros);
+            console.log(xdatos);
             let listado = filtrarNumerosArray(xdatos,'id_marca');
             let marcaSeleccionado = objMarcas.value;
             objMarcas.innerHtml = '';
             this.__llenarBox(filtrarArray(listado,marcas), objMarcas, marcaSeleccionado);
 
             parametros = `where=id_subrubro=${objSubrubros.value}`;
+            console.log(xdatos);
             listado = filtrarNumerosArray(xdatos,'id_rubro');
+            console.log(listado);
             let rubroSeleccionada = objRubros.value;
             objRubros.innerHTML = '';
             this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionada);
@@ -402,43 +449,80 @@ class Rentabilidad extends ComponentManager {
             parametros = `where=id_subrubro=${objSubrubros.value}`; 
         
             new APIs().call(url, parametros, 'POST', xdatos => {
-
+                console.log(url + parametros);
+                console.log(xdatos);
                 if(objRubros.value == 'TODAS') {
                     let listado = filtrarNumerosArray(xdatos,'id_marca');
-                    let marcaSeleccionada = objMarcas.value;
-                    objMarcas.innerHTML = '<option value="TODAS">Todas</option>';
-                    console.log(listado);
-                    this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionada);
+                let marcaSeleccionada = objMarcas.value;
+                objMarcas.innerHTML = '<option value="TODAS">Todas</option>';
+                console.log(listado);
+                this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionada);
                 }
                 if(objMarcas.value == 'TODAS') {
                     let listado = filtrarNumerosArray(xdatos,'id_rubro');
                     let rubroSeleccionado = objRubros.value;
                     objRubros.innerHTML = '<option value="TODAS">Todas</option>';
+                    console.log(listado);
+                    console.log('3');
                     this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
                 }
 
                 if(objSubrubros.value != 'TODAS' && objRubros.value != 'TODAS' && objMarcas.value != 'TODAS') {                
                     parametros = `where=id_marca=${objMarcas.value} AND id_rubro=${objRubros.value} AND id_subrubro=${objSubrubros.value}`;
+                    console.log(parametros)
                     new APIs().call(url, parametros, 'POST', xdatos => {
+                        console.log(xdatos);
 
                         let listado = filtrarNumerosArray(xdatos, 'id_marca');
                         let marcaSeleccionado = objMarcas.value;
                         objMarcas.innerHTML = ''; 
+                        console.log(listado);
+                        console.log('3');
+                        console.log(marcas);
                         this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionado);
 
                         listado = filtrarNumerosArray(xdatos,'id_rubro');
                         let rubroSeleccionado = objRubros.value;
                         objRubros.innerHTML = '';
+                        console.log(listado);
+                        console.log('3');
                         this.__llenarBox(filtrarArray(listado, rubros), objRubros, rubroSeleccionado);
 
                         listado = filtrarNumerosArray(xdatos,'id_subrubro');
                         let subrubroSeleccionado = objSubrubros.value;
                         objSubrubros.innerHTML = '';
+                        console.log(listado);
+                        console.log('3');
                         this.__llenarBox(filtrarArray(listado, subrubros), objSubrubros, subrubroSeleccionado);    
                     });
                 }
+                
             });
         });
+        
+        // new APIs().call(url, parametros, 'POST', xdatos => {
+        //     console.log(xdatos);
+        //     /*let listado = filtrarNumerosArray(xdatos,'id_marca');
+        //     let marcaSeleccionada = objMarcas.value;
+        //     objMarcas.innerHTML = '';
+        //     this.__llenarBox(filtrarArray(listado,marcas), objMarcas, marcaSeleccionada);*/
+        //     let listado = filtrarNumerosArray(xdatos,'id_rubro');
+        //     let rubroSeleccionada = objRubros.value;
+        //     objRubros.innerHTML = '';
+        //     console.log(listado);
+        //     this.__llenarBox(filtrarArray(listado,rubros), objRubros, rubroSeleccionada);
+        // });
+        // parametros = `where=id_subrubro=${objSubrubros.value}`;
+        // new APIs().call(url, parametros, 'POST', xdatos => {
+        //     console.log(xdatos);
+        //     let listado = filtrarNumerosArray(xdatos,'id_marca');
+        //     let marcaSeleccionada = objMarcas.value;
+        //     objMarcas.innerHTML = '<option value="TODAS">Todas</option>';
+        //     console.log(listado);
+        //     this.__llenarBox(filtrarArray(listado, marcas), objMarcas, marcaSeleccionada);
+        // });
+
+        
     }
 
     __crearConsultaParaFiltro(objMarcas, objRubros, objSubrubros, opcion) {
@@ -478,58 +562,6 @@ class Rentabilidad extends ComponentManager {
         }
         
         return consulta;
-    }
-
-    cargarTabla() {
-        let dataTableRenta = $("#contenedor-tabla-renta").DataTable({
-            searching: true,
-            paging: true,
-            responsive: true,
-            scrollY: 260
-        });
-        let botonAgregar = document.querySelector('#container-rentabilidad #buttonM');
-        let selectMarcas = document.querySelector('#container-rentabilidad #marcas');
-        let selectRubros = document.querySelector('#container-rentabilidad #rubros');
-        let selectSubrubros = document.querySelector('#container-rentabilidad #subrubros');
-        let margen1 = document.querySelector('#container-rentabilidad .contenedor-mgEsp input[name="margen1"]');
-        let margen2 = document.querySelector('#container-rentabilidad .contenedor-mgEsp input[name="margen2"]');
-        let objTabla = [];        
-
-        botonAgregar.addEventListener('click', () => {
-            let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
-            let resultadoValidar = this.__validarRepetido(objTabla, objTemporal);
-            this.__pintarTabla(resultadoValidar, dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2);
-            
-        })
-    }
-
-    __pintarTabla(resultadoValidar, dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
-        if(resultadoValidar) {
-            swal('Error...!', 'Combinacion existente', 'error');
-            return;
-        }
-        objTabla.push({id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value});
-        console.log(objTabla);
-        dataTableRenta.row.add([selectMarcas.options[selectMarcas.selectedIndex].text, selectRubros.options[selectRubros.selectedIndex].text, selectSubrubros.options[selectSubrubros.selectedIndex].text, margen1.value, margen2.value]);
-        dataTableRenta.draw();
-    }
-
-    __validarRepetido(objTabla, objTemporal) {
-        if(objTabla.length > 0){
-            let resultado = objTabla.find(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
-            console.log(resultado);
-            if(resultado !== undefined){
-                return true;
-            }
-        }
-        
-    }
-
-    limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec) {
-        let botonlimpiar = document.querySelector('#container-rentabilidad #buttonR');
-        botonlimpiar.addEventListener('click', () => {
-            this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
-        })
     }
 
 }
