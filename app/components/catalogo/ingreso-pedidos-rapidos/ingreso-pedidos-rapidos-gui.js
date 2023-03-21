@@ -257,7 +257,10 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
                 // Inicializo el datatable
                 this.__tablaArticulos = $("#ipr_grid_articulos").DataTable({
-                    responsive: false
+                    searching: true,
+                    paging: true,
+                    responsive: true,
+                    scrollY: 260
                 });        
             });
         }
