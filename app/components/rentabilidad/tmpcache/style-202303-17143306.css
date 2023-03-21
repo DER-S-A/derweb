@@ -1,0 +1,388 @@
+/* button, input, optgroup, select, textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    border-radius: 8px;
+    border-color: cornflowerblue;
+    width: 21%;
+    height: 28px;
+} */
+
+
+#container-rentabilidad {
+    font-family: 'futura';
+    background-color: #e5e5e547;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    /* margin-bottom: 4%; */
+
+}
+
+#container-rentabilidad div {
+    margin: 5% auto; 
+}
+
+
+#container-rentabilidad h6 {
+    border-bottom: 2px dotted #009ada;
+    padding: 2% 0% 0.3% 0%;
+}
+
+/* #container-rentabilidad .contenedor-mgGral div, #container-rentabilidad .contenedor-mgEsp div {
+
+} */
+
+
+
+.titulo-ganancia {
+    color: #009ada;
+    text-align: center;
+    /* font-family: 'futura';*/
+    padding-top: 2%;
+    padding-bottom: 2%;
+    font-weight: 300;
+}
+
+
+
+
+
+
+.contenedor-boxes {
+    display: flex;
+    justify-content: space-around;
+}
+
+
+
+.contenedor-boxes div {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+
+}
+
+
+.contenedor-boxes div select {
+    width: 60%;
+}
+
+.contenedor-boxes div label {
+    width: 40%;
+
+}
+
+
+
+
+.contenedor-inputs {
+    display: flex;
+    justify-content: space-around;
+    width: 66.5%;
+}
+
+
+
+.contenedor-inputs div {
+    display: flex;
+    width: 61.5%;
+    justify-content: space-between;
+    width: 300px;
+
+}
+
+
+.contenedor-input:last-child {
+    margin-right: 0;
+    /* Eliminar el margen derecho del último contenedor */
+}
+
+
+
+.contenedor-inputs div input {
+    width: 60%;
+
+}
+
+.contenedor-inputs div label {
+    width: 40%;
+
+}
+
+
+
+
+
+.contenedor-inputs2 {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 3%;
+
+}
+
+
+.contenedor-inputs2 div {
+    display: flex;
+    justify-content: flex-end;
+    width: 300px;
+    align-items: center;
+
+}
+
+
+.contenedor-inputs2 div input {
+    width: 60%;
+}
+
+.contenedor-inputs2 div label {
+    width: 40%;
+
+}
+
+
+
+
+
+.contenedor-inputs2 button {
+    width: 60%;
+    border: solid 0px #546bce;
+    background: linear-gradient(183deg, #009ada, #364fb7);
+    font-weight: 500;
+    color: aliceblue;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 2%;
+}
+
+
+
+
+
+.margenesEsp ul {
+    list-style: none;
+    display: flex;
+    margin-bottom: 0;
+    padding: 0;
+    justify-content: center;
+
+}
+
+.margenesEsp ul li {
+    border: solid 1px #009ada;
+    width: 17%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5%;
+
+
+}
+
+
+.margenesEsp .cabecera li {
+    border: solid 0px #009ada;
+    background: linear-gradient(183deg, #009ada, #364fb7);
+    font-weight: 500;
+    color: aliceblue;
+}
+
+
+
+.margenesEsp .left {
+    border-left: solid 2px #009ada;
+}
+
+.margenesEsp .right {
+    border-right: solid 2px #009ada;
+}
+
+.margenesEsp .down {
+    border-bottom: solid 2px #009ada;
+}
+
+
+#buttonposition {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px;
+}
+
+
+
+#buttonM {
+    border: solid 0px #546bce;
+    background: linear-gradient(183deg, #009ada, #364fb7);
+    font-weight: 700;
+    font-size: 25px;
+    width: 5%;
+    height: 56px;
+    color: aliceblue;
+    margin: 1%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 30px;
+
+
+}
+
+#buttonoption {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+
+
+#Aceptar {
+    border: solid 0px #546bce;
+    background: linear-gradient(183deg, #009ada, #364fb7);
+    font-weight: 500;
+    width: 20%;
+    height: 35px;
+    color: aliceblue;
+    margin: 1%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+
+}
+
+
+#Cerrar {
+    border: solid 0px #546bce;
+    background: linear-gradient(183deg, #009ada, #364fb7);
+    font-weight: 500;
+    width: 20%;
+    height: 35px;
+    color: aliceblue;
+    margin: 1%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+}
+
+
+.buttonX:hover {
+    opacity: 80%;
+}
+
+
+.zoom:hover {
+    transform: scale(1.1);
+    transition: 0.5s;
+}
+
+.zoom {
+    transition: transform 0.2s;
+}
+
+
+
+@media (max-width: 992px) {
+
+    .contenedor-inputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 100%;
+        padding-bottom: 3%;
+    }
+
+
+    .contenedor-inputs div {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        padding: 3% 0% 0.3% 0%
+    }
+
+
+    .contenedor-inputs2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-top: 3%;
+        margin-bottom: 3%;
+
+    }
+
+
+    .contenedor-inputs2 div {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        align-items: center;
+        padding: 3% 0% 0.3% 0%
+    }
+
+    .contenedor-boxes {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .contenedor-boxes div {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 3% 0% 0.3% 0%
+    }
+
+    #buttonoption {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+    }
+
+
+    #container-rentabilidad {
+        background-color: #e5e5e547;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        margin-bottom: 4%;
+        height: 161vw;
+
+    }
+
+
+
+    #Aceptar {
+        border: solid 0px #546bce;
+        background: linear-gradient(183deg, #009ada, #364fb7);
+        font-weight: 500;
+        width: 40%;
+        height: 28px;
+        color: aliceblue;
+        margin: 2%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+
+
+
+    #Cerrar {
+        border: solid 0px #546bce;
+        background: linear-gradient(183deg, #009ada, #364fb7);
+        font-weight: 500;
+        width: 40%;
+        height: 28px;
+        color: aliceblue;
+        margin: 2%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+}

@@ -30,6 +30,7 @@
         <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
         <script src="node_modules/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
+        <script src="node_modules/datatables.net-keytable/js/dataTables.keyTable.min.js" type="text/javascript>"></script>
 
         <script src="<?php echo sc3CacheButer("js/utils/funciones.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("js/utils/app.js");?>" type="text/javascript"></script>
@@ -129,7 +130,7 @@
                 </section>
             </main>
 
-            <footer class="app-footer" style="bottom: 0; position:fixed;">
+            <footer id="app-footer" class="app-footer" style="bottom: 0; position:fixed;">
                 <div class="app-footer-container container-fluid">
                     <div class="row">
                         <div class="col-lg-3">
@@ -197,6 +198,7 @@
 
         <!-- Componente botón mi carrito -->
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/grid-carrito/grid-carrito.js")?>" type="text/javascript"></script>
         <!-- <script src="components/catalogo/mi-carrito/mi-carrito.js" type="text/javascript"></script> -->
         <!-- <script src="components/catalogo/mi-carrito/grid-carrito/grid-carrito.js" type="text/javascript"></script> -->
 

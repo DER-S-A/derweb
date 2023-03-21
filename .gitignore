@@ -10,3 +10,9 @@
 /app/services/test/
 /backups/
 derweb_upgrades/.vscode
+
+/app/js/tmpcache/
+/app/css/tmpcache/
+/app/components/catalogo/tmpcache/
+/app/components/catalogo/confirmacion-pedido/tmpcache/
+/app/components/catalogo/ingreso-pedidos-rapidos/tmpcache/
