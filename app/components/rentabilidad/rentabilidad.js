@@ -32,7 +32,7 @@ class Rentabilidad extends ComponentManager {
                 this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
                 this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
                 this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
-                this.cargarTabla();
+                this.cargarTabla(marcas, rubros, subrubros);
                 //dataTableRenta.row.add(['Omer', 'Todas', 'Todas', '10.00', '0']);
                 //dataTableRenta.draw();
                 this.confirmar(id_cliente, arrayInputs, inputsArrayValue, miSession);
@@ -132,6 +132,9 @@ class Rentabilidad extends ComponentManager {
         })
     }
 
+    /**
+     * Permite llenar los box filtrados segun combinacion q se vaya eligiendo.
+     */
     __llenarBoxFiltrado(query_selector, marcas, rubros, subrubros) {
         const objMarcas = query_selector[0];
         const objRubros = query_selector[1];
@@ -153,6 +156,9 @@ class Rentabilidad extends ComponentManager {
         })
     }
 
+    /**
+     * Permite llenar los boxes de rubro y subrubros en base a la marca elegida.
+     */
     __filtrarBoxesParaMarcas(consulta, objMarcas, objRubros, objSubrubros, rubros, subrubros, marcas) {
         const url = new App().getUrlApi('boxesFiltrados');
 
@@ -480,35 +486,61 @@ class Rentabilidad extends ComponentManager {
         return consulta;
     }
 
-    cargarTabla() {
+    cargarTabla(marcas, rubros, subrubros) {
         let dataTableRenta = $("#contenedor-tabla-renta").DataTable({
             searching: true,
             paging: true,
             responsive: true,
             scrollY: 260
         });
+        let quitarBoton = document.querySelector('#container-rentabilidad #buttonX');
         let botonAgregar = document.querySelector('#container-rentabilidad #buttonM');
         let selectMarcas = document.querySelector('#container-rentabilidad #marcas');
         let selectRubros = document.querySelector('#container-rentabilidad #rubros');
         let selectSubrubros = document.querySelector('#container-rentabilidad #subrubros');
         let margen1 = document.querySelector('#container-rentabilidad .contenedor-mgEsp input[name="margen1"]');
         let margen2 = document.querySelector('#container-rentabilidad .contenedor-mgEsp input[name="margen2"]');
-        let objTabla = [];        
+        let objTabla = []; 
+        let objTablaEliminar = [];       
 
         botonAgregar.addEventListener('click', () => {
             let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
+            if(!this.__validarElegirUnaMinimo(objTemporal.marca, objTemporal.rubro, objTemporal.subrubro)) {
+                return;
+            }
+            if(!this.__validarValoresMargen(objTemporal.margen1, objTemporal.margen2)) {
+               return; 
+            }
             let resultadoValidar = this.__validarRepetido(objTabla, objTemporal);
-            this.__pintarTabla(resultadoValidar, dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2);
+            this.__pintarTabla(resultadoValidar, dataTableRenta, objTabla, objTemporal, selectMarcas, selectRubros, selectSubrubros, margen1, margen2);
             
+        });
+
+        quitarBoton.addEventListener('click', () => {
+            if(!objTabla.length > 0) {
+                return swal('Error...!', 'Tabla vacia, nada para eliminar', 'error');
+            }
+            let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
+            //let resultado = this.__buscarCombinacion(objTabla, objTemporal);
+            let index = objTabla.findIndex(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
+            console.log(index)
+            if(index === -1) {
+                return swal('Error...!', 'No existe combinacion', 'error');
+            }
+            //objTablaEliminar.push(resultado);
+            objTablaEliminar.push(objTabla.splice(index, 1));
+            this.__repintarTabla(objTabla, dataTableRenta, marcas, rubros, subrubros);
+            console.log(objTablaEliminar);
         })
     }
 
-    __pintarTabla(resultadoValidar, dataTableRenta, objTabla, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
+    __pintarTabla(resultadoValidar, dataTableRenta, objTabla, objTemporal, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
         if(resultadoValidar) {
             swal('Error...!', 'Combinacion existente', 'error');
             return;
         }
-        objTabla.push({id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value});
+        //objTabla.push({id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value});
+        objTabla.push(objTemporal);
         console.log(objTabla);
         dataTableRenta.row.add([selectMarcas.options[selectMarcas.selectedIndex].text, selectRubros.options[selectRubros.selectedIndex].text, selectSubrubros.options[selectSubrubros.selectedIndex].text, margen1.value, margen2.value]);
         dataTableRenta.draw();
@@ -516,7 +548,7 @@ class Rentabilidad extends ComponentManager {
 
     __validarRepetido(objTabla, objTemporal) {
         if(objTabla.length > 0){
-            let resultado = objTabla.find(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
+            let resultado = this.__buscarCombinacion(objTabla, objTemporal);
             console.log(resultado);
             if(resultado !== undefined){
                 return true;
@@ -530,6 +562,42 @@ class Rentabilidad extends ComponentManager {
         botonlimpiar.addEventListener('click', () => {
             this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
         })
+    }
+
+    __buscarCombinacion(objTabla, objTemporal) {
+        return objTabla.find(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
+    }
+
+    __repintarTabla(objTabla, dataTableRenta, marcas, rubros, subrubros) {
+        dataTableRenta.clear().draw();
+        //objTablaEliminar.push(objTabla.splice(index, 1));
+        console.log(marcas)
+        console.log(objTabla);
+        objTabla.map(tabla => {
+            let marcaDesc = marcas.find( marca => tabla.marca == marca.id);
+            let rubroDesc = rubros.find( rubro => tabla.rubro == rubro.id);
+            let subrubroDesc = subrubros.find( subrubro => tabla.subrubro == subrubro.id);
+            console.log(subrubroDesc);
+            marcaDesc ? marcaDesc = marcaDesc.descripcion : marcaDesc = 'Todas';
+            rubroDesc ? rubroDesc = rubroDesc.descripcion : rubroDesc = 'Todas';
+            subrubroDesc ? subrubroDesc = subrubroDesc.descripcion : subrubroDesc = 'Todas';
+            dataTableRenta.row.add([marcaDesc, rubroDesc, subrubroDesc, tabla.margen1, tabla.margen2]);
+            dataTableRenta.draw();
+        });
+    }
+
+    __validarElegirUnaMinimo(valor1, valor2, valor3) {
+        if(valor1 == 'TODAS' && valor2 == 'TODAS' && valor3 == 'TODAS') {
+            return false;
+        }
+        return true;
+    }
+
+    __validarValoresMargen(valor1, valor2) {
+        if(valor1 > 0 || valor2 > 0) {
+            return true;
+        }
+        return false;
     }
 
 }
