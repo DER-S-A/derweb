@@ -327,16 +327,12 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __buscarArticulo() {
         let txtCodArt = document.getElementById("txtCodArt").value;
         let url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
-        let aClienteSeleccionado;
         let aSesion = (new CacheUtils("derweb")).get("sesion");
         let sesion;
         let filter = "frase=" + txtCodArt;
 
         this.__modalBusquedaAbierto = false;
         
-        aClienteSeleccionado = JSON.parse(document.getElementById("sel-cliente").dataset.value);
-        //aSesion["id_cliente"] = aClienteSeleccionado["id"];
-        //aSesion["id_sucursal"] = aClienteSeleccionado["id_sucursal"];
         sesion = "sesion=" + JSON.stringify(aSesion);
         
         (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
@@ -389,7 +385,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     searching: true,
                     paging: true,
                     responsive: true,
+<<<<<<< HEAD
+                    scrollY: 260
+=======
                     scrollY: 260
+>>>>>>> e57ea11b7f348da94d53e7ae58e438740b40ae5c
                 });        
             });
         }
