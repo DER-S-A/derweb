@@ -43,13 +43,16 @@ class MargenesEspController extends APIController {
         $aRegistro = [];
         for ($i = 0; $i < sizeof($xrecord); $i++) {
             $aRegistro[$i]["id"] = $xrecord[$i]["id"];
-            $aRegistro[$i]["id_rubro"] = $xrecord[$i]["id_rubro"];
-            $aRegistro[$i]["id_subrubro"] = $xrecord[$i]["id_subrubro"];
-            $aRegistro[$i]["id_marca"] = $xrecord[$i]["id_marca"];
+            $aRegistro[$i]["rubro"] = $xrecord[$i]["id_rubro"] == '' ? 'TODAS' : $xrecord[$i]["id_rubro"];
+            $aRegistro[$i]["rubroNom"] = $xrecord[$i]["rubroNom"];
+            $aRegistro[$i]["subrubro"] = $xrecord[$i]["id_subrubro"] == '' ? 'TODAS' : $xrecord[$i]["id_subrubro"];
+            $aRegistro[$i]["subrubroNom"] = $xrecord[$i]["subrubroNom"];
+            $aRegistro[$i]["marca"] = $xrecord[$i]["id_marca"] == '' ? 'TODAS' : $xrecord[$i]["id_marca"];
+            $aRegistro[$i]["marcaNom"] = $xrecord[$i]["marcaNom"];
             $aRegistro[$i]["id_sucursal"] = $xrecord[$i]["id_sucursal"];
             $aRegistro[$i]["habilitado"] = $xrecord[$i]["habilitado"];
-            $aRegistro[$i]["rentabilidad_1"] = $xrecord[$i]["rentabilidad_1"];
-            $aRegistro[$i]["rentabilidad_2"] = $xrecord[$i]["rentabilidad_2"];
+            $aRegistro[$i]["margen1"] = $xrecord[$i]["rentabilidad_1"];
+            $aRegistro[$i]["margen2"] = $xrecord[$i]["rentabilidad_2"];
         }
 
         return $aRegistro;
@@ -65,8 +68,9 @@ class MargenesEspController extends APIController {
         if ($this->usePostMethod()) {
             try {
                 $datos = $this->getURIParameters("datos");
+                $id_suc = $this->getURIParameters("id_suc");
                 $objModel = new MargenesEspModel();
-                $responseData = json_encode($objModel->cargarMargenesEspeciales($datos));
+                $responseData = json_encode($objModel->cargarMargenesEspeciales($datos, $id_suc));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }
@@ -89,9 +93,9 @@ class MargenesEspController extends APIController {
         // Valido que la llamada venga por método GET o POST.
         if ($this->useDeleteMethod()) {
             try {
-                $id = $this->getURIParameters("id");
+                $datos = $this->getURIParameters("datos");
                 $objModel = new MargenesEspModel();
-                $responseData = json_encode($objModel->borrarMargenesEspeciales($id));
+                $responseData = json_encode($objModel->borrarMargenesEspeciales($datos));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);
             }

@@ -32,11 +32,10 @@ class Rentabilidad extends ComponentManager {
                 this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
                 this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
                 this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
-                let objTabla = [];
-                let objTablaEliminar = []; 
-                this.cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec);
+                let objTabla = []; 
+                this.cargarTabla(marcas, rubros, subrubros, objTabla);
                 
-                this.confirmar(id_cliente, arrayInputs, inputsArrayValue, miSession, objTabla, objTablaEliminar);
+                this.confirmar(id_cliente, arrayInputs, inputsArrayValue, miSession, objTabla);
                 this.cerrar();
                 
             })
@@ -80,9 +79,9 @@ class Rentabilidad extends ComponentManager {
     /**
      * Permite confirmar las rentabilidades editadas en la pantalla.
      */
-    confirmar(id, arrayInputs, inputsValueSession, session, objTabla, objTablaEliminar) {
+    confirmar(id, arrayInputs, inputsValueSession, session, objTabla) {
         const botonConfirmar = document.querySelector('#container-rentabilidad #Aceptar');
-        botonConfirmar.addEventListener('click', () => {console.log(objTabla)
+        botonConfirmar.addEventListener('click', () => {
             
             let arrayRenta = [];
             arrayInputs.forEach((inp, index) => {
@@ -95,8 +94,6 @@ class Rentabilidad extends ComponentManager {
             //objTabla[0].id_sucursal = session.id_sucursal;
             const parametros = `id=${id}&renta=${JSON.stringify(arrayRenta)}`;
             const parametrosEsp = `datos=${JSON.stringify(objTabla)}&id_suc=${session.id_sucursal}`;
-            console.log(objTablaEliminar)
-            const parametrosBorrar = `datos=${JSON.stringify(objTablaEliminar)}`;
             
             let url = new App().getUrlApi('rentabilidad');
             console.log(url + '?'+ parametros);
@@ -110,10 +107,6 @@ class Rentabilidad extends ComponentManager {
                 }
                 url = new App().getUrlApi('margenesEspeciales-cargar');
                 new APIs().call(url, parametrosEsp, 'POST', respuesta => {
-                    console.log(respuesta);
-                });
-                url = new App().getUrlApi('margenesEspeciales-borrar');
-                new APIs().call(url, parametrosBorrar, 'DELETE', respuesta => {
                     console.log(respuesta);
                 })
                 swal(respuesta.result_titulo, respuesta.result_message, respuesta.result_code)
@@ -498,7 +491,7 @@ class Rentabilidad extends ComponentManager {
         return consulta;
     }
 
-    cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec) {
+    cargarTabla(marcas, rubros, subrubros, objTabla) {
         let dataTableRenta = $("#contenedor-tabla-renta").DataTable({
             searching: true,
             paging: true,
@@ -515,8 +508,8 @@ class Rentabilidad extends ComponentManager {
         
         this.__recuperarTablaBD(objTabla, dataTableRenta);
         console.log(objTabla);
-        
-        //let objTablaEliminar = [];       
+        /*
+        let objTablaEliminar = [];       
 
         botonAgregar.addEventListener('click', () => {console.log(objTabla);
             let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
@@ -535,19 +528,18 @@ class Rentabilidad extends ComponentManager {
             if(!objTabla.length > 0) {
                 return swal('Error...!', 'Tabla vacia, nada para eliminar', 'error');
             }
-            console.log(objTabla)
             let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
-            console.log(objTemporal)
+            //let resultado = this.__buscarCombinacion(objTabla, objTemporal);
             let index = objTabla.findIndex(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
             console.log(index)
             if(index === -1) {
                 return swal('Error...!', 'No existe combinacion', 'error');
             }
+            //objTablaEliminar.push(resultado);
             objTablaEliminar.push(objTabla.splice(index, 1));
             this.__repintarTabla(objTabla, dataTableRenta, marcas, rubros, subrubros);
             console.log(objTablaEliminar);
-            this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
-        })
+        })*/
     }
 
     __pintarTabla(resultadoValidar, dataTableRenta, objTabla, objTemporal, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
@@ -620,14 +612,11 @@ class Rentabilidad extends ComponentManager {
         let url = new App().getUrlApi('margenesEspeciales-get');
         const miSession = new CacheUtils('derweb').get('sesion');
         const parametros = `filter=id_sucursal=${miSession.id_sucursal}`
-        new APIs().call(url, parametros, 'GET', respuesta => {console.log(respuesta)
-            respuesta.forEach(respuesta => { 
-                objTabla.push(respuesta)
-                //objGrid.row.add([respuesta.marcaNom, respuesta.rubroNom, respuesta.subrubroNom, respuesta.margen1, respuesta.margen2]);
-                objGrid.row.add([respuesta.marcaNom == '' ? 'TODAS' : respuesta.marcaNom, respuesta.rubroNom == '' ? 'TODAS' : respuesta.rubroNom, respuesta.subrubroNom == '' ? 'TODAS' : respuesta.subrubroNom, respuesta.margen1, respuesta.margen2]);
-                objGrid.draw();
-            });
-            
+        new APIs().call(url, parametros, 'GET', respuesta => {
+            respuesta.forEach(respuesta => objTabla.push(respuesta));
+            console.log(objTabla)
+            objGrid.row.add(['OMER', respuesta.rubro, respuesta.subrubro, respuesta.margen1, respuesta.margen2]);
+            objGrid.draw();
         })
     }
 

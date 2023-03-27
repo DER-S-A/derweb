@@ -78,7 +78,7 @@
 .contenedor-boxes div select {
     width: 62%;
     border-radius: 10px;
-    border: 1px solid;
+    border: 2px solid;
     border-color: #009ada
     
 }
@@ -128,11 +128,10 @@
 
 .contenedor-inputs div input {
     width: 62%;
-    height: 30px;
     border-radius: 10px;
-    border: 1px solid;
-    border-color: #009ada;
-    text-align: right;
+    border: 2px solid;
+    border-color: #009ada
+
 }
 
 .contenedor-inputs div label {
@@ -169,11 +168,10 @@
 
 .contenedor-inputs2 div input {
     width: 62%;
-    height: 30px;
     border-radius: 10px;
-    border: 1px solid;
-    border-color: #009ada;
-    text-align: right;
+    border: 2px solid;
+    border-color: #009ada
+
 }
 
 .contenedor-inputs2 div label {
@@ -393,21 +391,16 @@
  
 
 @media (max-width: 992px){
-    
-    #container-rentabilidad {
-        font-size: 24px;
-        margin-top: 35%;
-    }
     .contenedor-inputs {
         margin-right: 15%;
         width: 100%;
-    }
+}
 
 
 
 .contenedor-boxes div {
     margin-right: 0%
-    }
+}
 
 
 
@@ -415,8 +408,18 @@
 
 .contenedor-inputs2 div {
     margin-right: 0%;
-    }
+}
 
+
+
+}
+
+
+
+
+
+
+@media (max-width: 992px) { 
 
     #container-rentabilidad {
     margin-bottom: 4%;
@@ -428,7 +431,7 @@
 
 
     #container-rentabilidad h6 {
-        font-size: 36px;
+        font-size: 52px;
         text-align: center;
     }
     
@@ -461,6 +464,24 @@
     }
 
 
+
+    .contenedor-inputs div label {
+        font-size: 47px;
+
+    }
+
+
+
+    .contenedor-inputs div input {
+         font-size: 47px;
+    
+    }
+    
+
+
+
+
+
     .contenedor-boxes {
         flex-direction: column;
         justify-content: space-around;
@@ -473,6 +494,23 @@
         padding: 3% 0% 0.3% 0%;
         margin-bottom: 9%;
     }
+
+
+    .contenedor-boxes div label {
+        font-size: 47px;
+    }
+    
+
+    .contenedor-boxes div select {
+        font-size: 47px;
+    
+    }
+
+
+
+
+
+
 
 
     .contenedor-inputs2 {
@@ -493,13 +531,21 @@
 
     .contenedor-inputs2 div label {
         width: 37%;
+        font-size: 47px;
 
     }
+    
+    .contenedor-inputs2 div input {
+        font-size: 47px;
+   
+   }
+   
 
 
     .contenedor-inputs2 button {
         width: 100%;
-        height: 42px;
+        height: 65px;
+        font-size: 41px;
         margin: 0%;
     }
 
@@ -515,7 +561,7 @@
     #buttonposition 
 {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     margin: 15px auto 15px auto;
 }
@@ -527,13 +573,13 @@
     #buttonM {
         border: solid 0px;
         background: none;
-        width: 20%;
+        width: 130px;
     }
     
     #buttonX {
         border: solid 0px;
         background: none;
-        width: 20%;
+        width: 130px;
     }
     
     
@@ -549,7 +595,8 @@
     
     #Aceptar {
     width: 100%;
-    height: 42px;
+    height: 65px;
+    font-size: 41px;
     margin: 0%;
     margin-bottom: 3%;
     margin-top: 3%;
@@ -560,7 +607,8 @@
 
     #Cerrar {
     width: 100%;
-    height: 42px;
+    height: 65px;
+    font-size: 41px;
     margin: 0%;
     }
 

@@ -82,7 +82,7 @@ class Rentabilidad extends ComponentManager {
      */
     confirmar(id, arrayInputs, inputsValueSession, session, objTabla, objTablaEliminar) {
         const botonConfirmar = document.querySelector('#container-rentabilidad #Aceptar');
-        botonConfirmar.addEventListener('click', () => {console.log(objTabla)
+        botonConfirmar.addEventListener('click', () => {
             
             let arrayRenta = [];
             arrayInputs.forEach((inp, index) => {
@@ -535,9 +535,7 @@ class Rentabilidad extends ComponentManager {
             if(!objTabla.length > 0) {
                 return swal('Error...!', 'Tabla vacia, nada para eliminar', 'error');
             }
-            console.log(objTabla)
             let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
-            console.log(objTemporal)
             let index = objTabla.findIndex(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
             console.log(index)
             if(index === -1) {
@@ -623,8 +621,7 @@ class Rentabilidad extends ComponentManager {
         new APIs().call(url, parametros, 'GET', respuesta => {console.log(respuesta)
             respuesta.forEach(respuesta => { 
                 objTabla.push(respuesta)
-                //objGrid.row.add([respuesta.marcaNom, respuesta.rubroNom, respuesta.subrubroNom, respuesta.margen1, respuesta.margen2]);
-                objGrid.row.add([respuesta.marcaNom == '' ? 'TODAS' : respuesta.marcaNom, respuesta.rubroNom == '' ? 'TODAS' : respuesta.rubroNom, respuesta.subrubroNom == '' ? 'TODAS' : respuesta.subrubroNom, respuesta.margen1, respuesta.margen2]);
+                objGrid.row.add([respuesta.marcaNom, respuesta.rubroNom, respuesta.subrubroNom, respuesta.margen1, respuesta.margen2]);
                 objGrid.draw();
             });
             

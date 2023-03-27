@@ -13,39 +13,48 @@ class MargenesEspModel extends Model {
      */
     function get($filter) {
         $sql = "SELECT 
-                    * 
+                    marcas.descripcion AS marcaNom, rubros.descripcion AS rubroNom, subrubros.descripcion AS subrubroNom, m.* 
                 FROM 
-                    margenes_especiales ";
+                    margenes_especiales AS m
+                LEFT JOIN marcas ON marcas.id = m.id_marca
+                LEFT JOIN rubros ON rubros.id = m.id_rubro
+                LEFT JOIN subrubros ON subrubros.id = m.id_subrubro ";
         $this->setWhere($sql, $filter);
         return $this->getQuery($sql);
     }
 
-    function cargarMargenesEspeciales($datos) {
+    function cargarMargenesEspeciales($datos, $id_suc) {
         $objBD = new BDObject();
         $datos = json_decode($datos, true);
+        $contar =0;
+        //return $datos;
         $aResult = [];
         $objBD->beginT();
-        try {       
-            $sql = "INSERT INTO margenes_especiales 
-            (id_rubro, id_subrubro, id_marca, id_sucursal, rentabilidad_1, rentabilidad_2, habilitado)
-            VALUES (xid_rubro, xid_subrubro, xid_marca, xidsucursal, xrentabilidad_1, xrentabilidad_2, 1)";
+        try {
+            foreach ($datos as $dato) {       
+                if($dato['id'] == '') {
+                    $sql = "INSERT INTO margenes_especiales 
+                (id_rubro, id_subrubro, id_marca, id_sucursal, rentabilidad_1, rentabilidad_2, habilitado)
+                VALUES (xid_rubro, xid_subrubro, xid_marca, xid_sucursal, xrentabilidad_1, xrentabilidad_2, 1)";
 
 
+                $dato["rubro"] != 'TODAS' ? $this->setParameter($sql, "xid_rubro", $dato["rubro"]) : $this->setParameter($sql, "xid_rubro", null);
+                $dato["subrubro"] != 'TODAS' ? $this->setParameter($sql, "xid_subrubro", $dato["subrubro"]) : $this->setParameter($sql, "xid_subrubro", null);
+                $dato["marca"] != 'TODAS' ? $this->setParameter($sql, "xid_marca", $dato["marca"]) : $this->setParameter($sql, "xid_marca", null);
+                $this->setParameter($sql, "xid_sucursal", $id_suc);
+                $this->setParameter($sql, "xrentabilidad_1", doubleval($dato["margen1"]));
+                $this->setParameter($sql, "xrentabilidad_2", doubleval($dato["margen2"]));
+
+                $objBD->execInsert($sql);
+                }
+
+            } 
             
-            $this->setParameter($sql, "xidsucursal", $datos["id_sucursal"]);
-            $this->setParameter($sql, "xid_rubro", $datos["id_rubro"]);
-            $this->setParameter($sql, "xid_subrubro", $datos["id_subrubro"]);
-            $this->setParameter($sql, "xid_marca", $datos["id_marca"]);
-            $this->setParameter($sql, "xrentabilidad_1", doubleval($datos["rentabilidad_1"]));
-            $this->setParameter($sql, "xrentabilidad_2", doubleval($datos["rentabilidad_2"]));
-
-            $objBD->execInsert($sql);
-
             $objBD->commitT();
 
             $aResult["codigo"] = "success";
             $aResult["title"] = "OK";
-            $aResult["mensaje"] = "El margen especial se agregó satisfactoriamente";
+            $aResult["mensaje"] = "Operacion realizada satisfactoriamente";
         } catch (Exception $e) {
             $objBD->rollbackT();
             $aResult["codigo"] = "DB_ERROR";
@@ -57,14 +66,19 @@ class MargenesEspModel extends Model {
         return $aResult;
     }
 
-    function borrarMargenesEspeciales($id) {
+    function borrarMargenesEspeciales($datos) {
         $objBD = new BDObject();
         $aResult = [];
+        $datos = json_decode($datos, true);
         $objBD->beginT();
-        try {       
-            $sql = "DELETE FROM margenes_especiales WHERE id=$id";
+        try {
+            foreach ($datos as $dato) {
+                $id = $dato[0]['id'];
+                $sql = "DELETE FROM margenes_especiales WHERE id=$id";
 
-            $objBD->execInsert($sql);
+                $objBD->execInsert($sql);
+            }
+            
 
             $objBD->commitT();
 

@@ -128,11 +128,10 @@
 
 .contenedor-inputs div input {
     width: 62%;
-    height: 30px;
     border-radius: 10px;
     border: 1px solid;
-    border-color: #009ada;
-    text-align: right;
+    border-color: #009ada
+
 }
 
 .contenedor-inputs div label {
@@ -169,11 +168,10 @@
 
 .contenedor-inputs2 div input {
     width: 62%;
-    height: 30px;
     border-radius: 10px;
     border: 1px solid;
-    border-color: #009ada;
-    text-align: right;
+    border-color: #009ada
+
 }
 
 .contenedor-inputs2 div label {

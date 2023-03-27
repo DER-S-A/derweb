@@ -536,8 +536,8 @@ class Rentabilidad extends ComponentManager {
                 return swal('Error...!', 'Tabla vacia, nada para eliminar', 'error');
             }
             console.log(objTabla)
-            let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
             console.log(objTemporal)
+            let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
             let index = objTabla.findIndex(tabla => tabla.marca == objTemporal.marca && tabla.rubro == objTemporal.rubro && tabla.subrubro == objTemporal.subrubro);
             console.log(index)
             if(index === -1) {
