@@ -26,13 +26,11 @@ class MargenesEspModel extends Model {
     function cargarMargenesEspeciales($datos, $id_suc) {
         $objBD = new BDObject();
         $datos = json_decode($datos, true);
-        $contar =0;
-        //return $datos;
         $aResult = [];
         $objBD->beginT();
         try {
             foreach ($datos as $dato) {       
-                if($dato['id'] == '') {
+                if($dato['id'] == '' && ($dato['margen1'] > 0 || $dato['margen2'] > 0)) {
                     $sql = "INSERT INTO margenes_especiales 
                 (id_rubro, id_subrubro, id_marca, id_sucursal, rentabilidad_1, rentabilidad_2, habilitado)
                 VALUES (xid_rubro, xid_subrubro, xid_marca, xid_sucursal, xrentabilidad_1, xrentabilidad_2, 1)";

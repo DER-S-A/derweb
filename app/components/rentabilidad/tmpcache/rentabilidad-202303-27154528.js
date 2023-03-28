@@ -1,6 +1,7 @@
 class Rentabilidad extends ComponentManager {
     constructor () {
         super();
+        this.objTabla = [];
         this.clearContainer("app-container");
     }
 
@@ -13,7 +14,7 @@ class Rentabilidad extends ComponentManager {
 
             const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
             const miSession = new CacheUtils('derweb').get('sesion');
-            const id_sucursal = miSession.id_sucursal;
+            const id_cliente = miSession.id_cliente;
             const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
             this.llenarInputs(inputsArrayValue, arrayInputs);
             let url = new App().getUrlApi('catalogo-marcas-get');
@@ -35,7 +36,7 @@ class Rentabilidad extends ComponentManager {
                 let objTablaEliminar = []; 
                 this.cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec);
                 
-                this.confirmar(id_sucursal, arrayInputs, inputsArrayValue, miSession, objTabla, objTablaEliminar);
+                this.confirmar(id_cliente, arrayInputs, inputsArrayValue, miSession, objTabla, objTablaEliminar);
                 this.cerrar();
                 
             })
@@ -79,9 +80,9 @@ class Rentabilidad extends ComponentManager {
     /**
      * Permite confirmar las rentabilidades editadas en la pantalla.
      */
-    confirmar(id_sucursal, arrayInputs, inputsValueSession, session, objTabla, objTablaEliminar) {
+    confirmar(id, arrayInputs, inputsValueSession, session, objTabla, objTablaEliminar) {
         const botonConfirmar = document.querySelector('#container-rentabilidad #Aceptar');
-        botonConfirmar.addEventListener('click', () => {
+        botonConfirmar.addEventListener('click', () => {console.log(objTabla)
             
             let arrayRenta = [];
             arrayInputs.forEach((inp, index) => {
@@ -92,8 +93,8 @@ class Rentabilidad extends ComponentManager {
                 }
             })
             //objTabla[0].id_sucursal = session.id_sucursal;
-            const parametros = `id_suc=${id_sucursal}&renta=${JSON.stringify(arrayRenta)}`;
-            const parametrosEsp = `datos=${JSON.stringify(objTabla)}&id_suc=${id_sucursal}`;
+            const parametros = `id=${id}&renta=${JSON.stringify(arrayRenta)}`;
+            const parametrosEsp = `datos=${JSON.stringify(objTabla)}&id_suc=${session.id_sucursal}`;
             console.log(objTablaEliminar)
             const parametrosBorrar = `datos=${JSON.stringify(objTablaEliminar)}`;
             
@@ -507,7 +508,7 @@ class Rentabilidad extends ComponentManager {
     }
 
     /**
-     * Permite cargar la tabla del front.
+     * Permite llenar los boxes de marca y subrubros en base al rubro elegido.
      */
 
     cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec) {
@@ -530,10 +531,7 @@ class Rentabilidad extends ComponentManager {
         
         //let objTablaEliminar = [];       
 
-        botonAgregar.addEventListener('click', () => {
-            if(margen1.value < 1 || margen2.value < 1) {
-                return swal('Error...!', 'valor invalido en el campo margen', 'error');
-            }
+        botonAgregar.addEventListener('click', () => {console.log(objTabla);
             let objTemporal = {id:'', marca:selectMarcas.value, rubro:selectRubros.value, subrubro:selectSubrubros.value, margen1: margen1.value, margen2: margen2.value};
             if(!this.__validarElegirUnaMinimo(objTemporal.marca, objTemporal.rubro, objTemporal.subrubro)) {
                 return;
@@ -565,10 +563,6 @@ class Rentabilidad extends ComponentManager {
         })
     }
 
-    /**
-     * Permite pintar la tabla del front.
-     */
-
     __pintarTabla(resultadoValidar, dataTableRenta, objTabla, objTemporal, selectMarcas, selectRubros, selectSubrubros, margen1, margen2) {
         if(resultadoValidar) {
             swal('Error...!', 'Combinacion existente', 'error');
@@ -580,10 +574,6 @@ class Rentabilidad extends ComponentManager {
         dataTableRenta.row.add([selectMarcas.options[selectMarcas.selectedIndex].text, selectRubros.options[selectRubros.selectedIndex].text, selectSubrubros.options[selectSubrubros.selectedIndex].text, margen1.value, margen2.value]);
         dataTableRenta.draw();
     }
-
-    /**
-     * Permite saber si hay repetidos.
-     */
 
     __validarRepetido(objTabla, objTemporal) {
         if(objTabla.length > 0){
