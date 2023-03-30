@@ -17,7 +17,7 @@
         <link href="<?php echo sc3CacheButer("components/catalogo/grid-articulos/grid-articulos.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/catalogo/ficha-articulo/ficha.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.css");?>" rel="stylesheet">
-        <link href="<?php echo sc3CacheButer("components/catalogo/mi-carrito/mi-carrito.css");?> rel="stylesheet">
+        <link href="<?php echo sc3CacheButer("components/catalogo/mi-carrito/mi-carrito.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/catalogo/mi-carrito/grid-carrito/grid-carrito.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil_style.css");?>" rel="stylesheet">
         <link rel="stylesheet" href="terceros/Glider-js/css/normalize.css">

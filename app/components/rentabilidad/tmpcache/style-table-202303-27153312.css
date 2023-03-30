@@ -1,0 +1,12 @@
+.dataTables_wrapper {
+    margin: 3% 0;
+}
+
+#contenedor-tabla-renta_wrapper{
+}
+
+table.dataTable thead th, table.dataTable thead td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+}
