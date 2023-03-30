@@ -608,7 +608,7 @@ class Rentabilidad extends ComponentManager {
     }
 
     /**
-      * Permite resetear los filtros
+      * Permite resetear los filtros.
       */
 
     __buscarCombinacion(objTabla, objTemporal) {
