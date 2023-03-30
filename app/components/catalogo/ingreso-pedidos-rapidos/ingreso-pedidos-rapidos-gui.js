@@ -398,7 +398,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     searching: true,
                     paging: true,
                     responsive: true,
-                    scrollY: 260
+                    scrollY: 260
                 });        
             });
         }
