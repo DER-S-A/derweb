@@ -79,7 +79,7 @@ class SucursalesController extends APIController {
             try {
                 $rentabilidad = $this->getURIParameters("renta");
                 $id = $this->getURIParameters("id_suc");
-                $objModel = new entidadesModel();
+                $objModel = new SucursalesModel();
                 $responseData = json_encode($objModel->updateRentabilidad($id, $rentabilidad));
             } catch (Exception $ex) {
                 $this->setErrorFromException($ex);

@@ -398,6 +398,14 @@ class ArticulosModel extends Model {
         return $response;
 
     }
+
+    function generarRentabilidadGral($id_sucursal) {
+        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id_sucursal = $id_sucursal";
+        $arrayRenta = getRs($sql, true);
+
+
+    }
+
 }
 
 ?>
