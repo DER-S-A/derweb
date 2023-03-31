@@ -405,7 +405,7 @@ class PedidosModel extends Model {
                     items.id, items.id_pedido, art.id AS id_articulo, items.cantidad,
                     foto.archivo, art.codigo, art.descripcion AS descripcion_articulo,
                     rub.descripcion AS descripcion_rubro, srb.descripcion AS descripcion_subrubro,
-                    precio.precio_lista, art.alicuota_iva
+                    precio.precio_lista, art.alicuota_iva,env.codigo AS codigo_envio
                 FROM
                     pedidos_items items
                         INNER JOIN articulos art ON art.id = items.id_articulo
@@ -415,6 +415,7 @@ class PedidosModel extends Model {
                         INNER JOIN estados_pedidos estado ON estado.id = ped.id_estado
                         INNER JOIN rubros rub ON rub.id = art.id_rubro
                         INNER JOIN subrubros srb ON srb.id = art.id_subrubro
+                        INNER JOIN formas_envios env ON ped.id_formaenvio = env.id
                         LEFT OUTER JOIN art_fotos foto ON foto.id_articulo = art.id
                 WHERE
                     estado.estado_inicial = 1 AND
@@ -431,6 +432,7 @@ class PedidosModel extends Model {
         $indice = 0;
         while (!$rs->EOF()) {
             $id_pedido = $rs->getValueInt("id_pedido");
+            $codigoEnvio = $rs->getValueInt("codigo_envio");
             $aResponse["items"][$indice]["id"] = $rs->getValueInt("id");
             $aResponse["items"][$indice]["id_articulo"] = $rs->getValueInt("id_articulo");
             $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
@@ -456,6 +458,7 @@ class PedidosModel extends Model {
         $aResponse["id_pedido"] = $id_pedido;
         $aResponse["total_pedido"] = $totalPedido;
         $aResponse["total_con_iva"] = $totalPedidoConIVA;
+        $aResponse["codigo_envio"] = $codigoEnvio;
         $rs->close();
 
         return $aResponse;
@@ -511,7 +514,7 @@ class PedidosModel extends Model {
                 WHERE
                     id_pedido = $xid_pedido";
 
-             $sql2 = "DELETE
+            $sql2 = "DELETE
                     FROM pedidos
                     WHERE
                     id = $xid_pedido"; 
@@ -634,7 +637,6 @@ class PedidosModel extends Model {
      * @return void
      */
     private function enviarPedido_a_SAP($xsesion, $xid_pedido) {
-        $aBody = [];
         $aPedidoEnviar = [];
         $aItems = [];
         $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
@@ -642,15 +644,7 @@ class PedidosModel extends Model {
         $objSucursal = new SucursalesModel();
         $sucursalGet = [];
         $aDireccionEnvio = [];
-        $aSesion = json_decode($xsesion, true);
-        // Establezco la comunicación con el ETL.
-        $token = $this->getToken();
         // Establezco los headers
-        $header =[ 
-            "Content-Type: application/json",
-            "Authorization : Bearer ".$token
-        ];
-        $objAPISap->setHeaders($header);
         $objAPISap->setTestMode(); // Modo testing
         /* // ! METODO SIN USO
 
@@ -663,28 +657,37 @@ class PedidosModel extends Model {
         $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
+    
+        $aPedidoActual = $this->getPedidoActual($xsesion);
 
         $aPedidoEnviar["CardCode"] = $objSucursal->getEntidadSucursal($xsesion); // Agrego el numero cliente
         $aPedidoEnviar["NumAtCard"] = 'DERWEB-'. $xid_pedido; // Agrego el numero de Pedido
         $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
+        $aPedidoEnviar["Comments"] = ""; // ! COMENTARIO PEDIDO, RODRI TIENE QUE AGREGAR EL FRONT PARA TOMAR LAS COSAS DE LA BASE DE DATOS
         $aPedidoEnviar["DocDate"] = date('Y-m-d', time()); // Agrego Fecha
         $aPedidoEnviar["DocDueDate"] = date('Y-m-d', time()); // Agrego Fecha
         $aPedidoEnviar["TaxDate"] = date('Y-m-d',time()); // Agrego Fecha
         $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
+        $aPedidoEnviar["TransportationCode"] = sprintf('%s',$aPedidoActual["codigo_envio"]); // Agrego el codigo de la forma de envio
         $aPedidoEnviar["DocCurrency"] = 'ARS'; // Agrego Tipo Moneda
+        $aPedidoEnviar["Project"] = "ADMIN01"; // ! TENGO Q HARDCODEAR SI ES CTA1 o CTA2 (ADMIN01 ES CTA1)
+        
 
 
         // * Recupero el pedido actual
-        $aPedidoActual = $this->getPedidoActual($xsesion);
         for ($i = 0; $i < sizeof($aPedidoActual["items"]); $i++) { 
             $aItems[$i]["ItemCode"] = $aPedidoActual["items"][$i]["codigo"]; // Codigo Articulo
             $aItems[$i]["Quantity"] = doubleval($aPedidoActual["items"][$i]["cantidad"]); // Cantidad Articulo
-            $aItems[$i]["Price"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]); // Precio Articulo
+            $aItems[$i]["UnitPrice"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]); // Precio Articulo
+            $aItems[$i]["WarehouseCode"] = "001"; // ! LO TENGO Q HARDCODEAR YA QUE SAP NUNCA NOS BRINDO UN LISTADO SOBRE ESTO
+            $aItems[$i]["ShipDate"] = date('Y-m-m',time()); //FECHA ACTUAL
+            $aItems[$i]["ProjectCode"] = "ADMIN01"; 
+            // ! LOS CAMPOS WarehouseCode y ProjectCode los tuve q hardcodear ya que no tenemos informacion acerca de eso. Warehouse es el almacen y ProjectCode es Cuenta1 o Cuenta2(ADMIN01 Hace referencia a CTA1)
         }
-
-        $aPedidoEnviar["DocumentLines"] = $aItems; // Hago JSON la parte de Items y lo coloco con todo el pedido
+            $aPedidoEnviar["DocumentLines"] = $aItems; // Hago JSON la parte de Items y lo coloco con todo el pedido
         
-        // * Recupero la direccion de envío
+        // * Recupero la direccion de envío 
+        // * Direccion de envio
         $sucursalGet = $objSucursal->getDireccionSucursal($xsesion);
         $aDireccionEnvio["ShipToState"] = $sucursalGet['ShipToState']; //Numero Provincia
         $aDireccionEnvio["ShipToCountry"] = 'AR'; // Pais
@@ -695,14 +698,31 @@ class PedidosModel extends Model {
         $aDireccionEnvio["ShipToCity"] = $sucursalGet['ShipToCity'];
         $aDireccionEnvio["ShipToZipCode"] = $sucursalGet['ShipToZipCode'];
         $aDireccionEnvio["ShipToCounty"] = ''; // ! ????????
+        // * Direccion de Factura
+        $aDireccionEnvio["BillToState"] = $sucursalGet['ShipToState']; //Numero Provincia
+        $aDireccionEnvio["BillToCountry"] = 'AR'; // Pais
+        $aDireccionEnvio["BillToStreet"] = $sucursalGet['ShipToStreet']; // Direccion de envío 1
+        $aDireccionEnvio["BillToStreetNo"] = ''; //  ! Direccion de envío 2
+        $aDireccionEnvio["BillToBlock"] = ''; // ! ??????
+        $aDireccionEnvio["BillToBuilding"] = ''; // ! ??????
+        $aDireccionEnvio["BillToCity"] = $sucursalGet['ShipToCity'];
+        $aDireccionEnvio["BillToZipCode"] = $sucursalGet['ShipToZipCode'];
+        $aDireccionEnvio["BillToCounty"] = ''; 
 
         // * Agrego al JSON General el Adress
         $aPedidoEnviar["AddressExtension"] = $aDireccionEnvio;
-    
 
 
         // $aBody["data"] = json_encode($aPedidoEnviar,true);
         $objAPISap->setData(json_encode($aPedidoEnviar));
+        // Establezco la comunicación con BindAPP.
+        $token = $this->getToken();
+        $header =array( 
+            "Content-Type: application/json",
+            "Authorization : Bearer ".$token,
+            'Content-Length: ' . strlen(json_encode($aPedidoEnviar))
+        );
+        $objAPISap->setHeaders($header);
         $objAPISap->send();
         return $objAPISap->getInfo();
     }

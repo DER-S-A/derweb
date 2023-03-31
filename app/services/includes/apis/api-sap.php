@@ -101,26 +101,35 @@ class APISap {
      * Envía la solicitud a la API de SAP.
      * @return void
      */
+
     public function send() {
         $curlHandler = curl_init();
         curl_setopt($curlHandler, CURLOPT_URL, $this->url);
-        
         if (sonIguales($this->method, "POST"))
             curl_setopt($curlHandler, CURLOPT_POST, true);
-        curl_setopt($curlHandler, CURLOPT_HEADER, $this->headerOutput);
+        // curl_setopt($curlHandler, CURLOPT_HEADER, $this->headerOutput);
         curl_setopt($curlHandler, CURLOPT_POSTFIELDS,$this->data);
         curl_setopt($curlHandler, CURLOPT_SSL_VERIFYHOST, $this->ssl_verify);
         curl_setopt($curlHandler, CURLOPT_SSL_VERIFYPEER, $this->ssl_verify);
         curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $this->aHeaders);
         curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($curlHandler);
+        if (curl_errno($curlHandler)){
+            $this->aInfo["codigo"] = "OK";
+            $this->aInfo["mensaje"] = json_decode($result);
+            $this->aInfo["info"] = $result;
+            $this->aInfo["curlInfo"] = curl_getinfo($curlHandler);
+            $this->aInfo["error"] = curl_error($curlHandler);
+        }
         if (sonIguales($result, "")) {
             $this->aInfo["codigo"] = "API_ERROR";
             $this->aInfo["info"] = curl_getinfo($curlHandler);
             $this->aInfo["mensaje"] = "Error de conexión";
         } else {
             $this->aInfo["codigo"] = "OK";
-            $this->aInfo["mensaje"] = json_decode($result, true);
+            $this->aInfo["mensaje"] = json_decode($result);
+            $this->aInfo["info"] = $result;
+            $this->aInfo["curlInfo"] = curl_getinfo($curlHandler);
         }
         curl_close($curlHandler);
 
@@ -128,7 +137,6 @@ class APISap {
         if ($this->testMode)
             file_put_contents("test/recibido-" . date("Ymd", time()) . ".json", $this->output);
     }
-
 
     /**
      * getInfo
