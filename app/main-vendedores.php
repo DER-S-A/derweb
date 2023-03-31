@@ -31,6 +31,7 @@
         <script src="node_modules/datatables.net/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="node_modules/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
         <script src="node_modules/datatables.net-keytable/js/dataTables.keyTable.min.js" type="text/javascript>"></script>
+        <script src="node_modules/datatables.net-editor/js/dataTables.editor.min.js" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("js/utils/funciones.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("js/utils/app.js");?>" type="text/javascript"></script>
@@ -205,6 +206,7 @@
 
         <script src="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-pendientes/pedidos-pendientes.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-pendientes/edicion-pedidos-pendientes.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/funciones.js")?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapidos-gui.js");?>" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil.js");?>" type="text/javascript"></script>

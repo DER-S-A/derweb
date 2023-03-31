@@ -85,6 +85,9 @@ class Model {
                 $sqlCommand = str_replace($parameterName, 
                         self::getStringValue($value), $sqlCommand);
                 break;
+            case 'NULL':
+                $sqlCommand = str_replace($parameterName, 'NULL', $sqlCommand);
+                break;
         }	
     }
     

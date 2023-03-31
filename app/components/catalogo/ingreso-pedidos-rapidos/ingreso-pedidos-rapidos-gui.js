@@ -8,18 +8,20 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Constructor de clase
      * @param {string} xidcontainer Establece el id. del contenedor.
      */
-    constructor(xidcontainer) {
+    constructor(xidcontainer = null) {
         super();
         this.__idContainer = xidcontainer;
         this.__idSelectorClientes = "";
         this.__idSelectorClientesDataList = "";
         this.__modalBusquedaAbierto = false;
-        this.__objGridArticulos = null;
+        this.__objDataGrid = null;
         this.__tablaArticulos = null;
         this.__nroRenglon = 0;
+        this.__nombreCacheItems = "ipr_pedido_actual";
 
         // Limpio el contenedor principal.
-        this.clearContainer(xidcontainer);
+        if (xidcontainer !== null)
+            this.clearContainer(xidcontainer);
     }
 
     /**
@@ -105,11 +107,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                         this.__ejecutarBuscadorDeArticulos();
                     });
 
-                    // Evento blur del input de cantidad.
-                    document.getElementById("txtCantidad").addEventListener("blur", () => {
-                        this.__agregarArticuloAlPedido();                    
-                    });
-
                     document.getElementById("txtCodArt").focus();
                 });                            
             });
@@ -119,6 +116,18 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 // Selecciono el contenido del input.
                 document.getElementById("txtCantidad").select();
             });
+
+            // Evento keydown del input de cantidad.
+            document.getElementById("txtCantidad").addEventListener("keydown", (event) => {
+                if (event.key === "Enter") {
+                    this.__agregarArticuloAlPedido();
+                }
+            });
+
+            // Evento click del botón agregar ítem
+            document.getElementById("btnAgregar").addEventListener("click", () => {
+                this.__agregarArticuloAlPedido();
+            })
 
             // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
             // dos veces el modal.
@@ -169,7 +178,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             let xid_articulo = JSON.parse(txtCodArt.dataset.value);
             xid_articulo = xid_articulo.values[0].id;
             this.__guardarPedido(xid_articulo, txtCantidad);
-            new CacheUtils("derven", false).set("id_pedido_sel", 179);
+            this.__blanquearInputsItems();
         }
     }
 
@@ -204,16 +213,17 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             responsive: true,
             scrollY: 260,
             keys: true,
+            order: false,
             columns: [
                 {data: "id", title: "Renglón N°", type: 'num', width: '100px'},
                 {data: "codart", title: "Código", type: 'string', width: '150px'},
                 {data: "descripcion", title: "Descripción", type: 'string', width: '300px'},
-                {data: "cantidad", title: "Cantidad", type: 'num', width: '100px', 
+                {data: "cantidad", title: "Cantidad", type: 'num', width: '100px',
                     render: (data, type, row, meta) => {
                         if (type === "display")
                             return "<div style='text-align: right;'>" + data + '</div>';
                         else
-                            return data;                    
+                            return data;
                     }
                 },
                 {data: "precio_unitario", title: "Precio Unit.", type: 'num', width: '100px', 
@@ -271,15 +281,18 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __recuperarPedido() {
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
+
+        // Limpio el datatable
+        this.__objDataGrid.clear().draw();
+
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
             let arrItems = response.items;
-
+            
             if (arrItems !== undefined) {
-                var opciones = "<a href='#'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
-                opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
-
-                this.__objDataGrid.clear().draw();
                 arrItems.forEach((item, index) => {
+                    var opciones = "<a href='javascript:editarItem(\"" + item.codigo + "\");'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
+                    opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
+
                     item = {
                         "id": index + 1,
                         "codart": item.codigo,
@@ -297,7 +310,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 this.__nroRenglon = 0;
             }
 
-            this.__objDataGrid.draw();
+            this.__refrescarGrillaItemsPedido();
             this.__acomodarFooter();
             this.__calcularTotalPedido();
         })
@@ -385,11 +398,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     searching: true,
                     paging: true,
                     responsive: true,
-<<<<<<< HEAD
-                    scrollY: 260
-=======
                     scrollY: 260
->>>>>>> e57ea11b7f348da94d53e7ae58e438740b40ae5c
                 });        
             });
         }
@@ -426,9 +435,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             return false;
         }
 
-        this.__nroRenglon++;
         item = {
-            "id": this.__nroRenglon,
+            "id": this.__nroRenglon + 1,
             "codart": articulo.values[0].codigo,
             "descripcion": articulo.values[0].desc,
             "cantidad": parseFloat(document.getElementById("txtCantidad").value),
@@ -437,22 +445,42 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             "opciones": opciones
         };
 
-        if (this.validarItemRepetido(item) == false)
-            this.__objDataGrid.row.add(item).draw();
+        if (!this.validarItemRepetido(item)) {
+            // Agregar el ítem en la grilla.
+            this.__objDataGrid.row.add(item);
+            this.__refrescarGrillaItemsPedido();
+            this.__nroRenglon++;
+        }
             
-
         this.__calcularTotalPedido();
-        this.__blanquearInputsItems();
         this.__acomodarFooter();
 
         return true;
     }
 
     /**
+     * Permite refrescar la grilla de los ítems del pedido actual.
+     */
+    __refrescarGrillaItemsPedido() {
+        this.__objDataGrid.draw(false);
+        this.__guardarItemsEnCache();
+    }
+
+    /**
+     * Permite guardar los ítems de la grilla en cache para poder manipular la información
+     * desde la interfaz de usuario.
+     */
+    __guardarItemsEnCache() {
+        let items = this.__objDataGrid.rows().data().toArray();
+        let objCache = new CacheUtils("derweb");
+        objCache.set(this.__nombreCacheItems, items);
+    }
+
+    /**
      * Calcula el total del pedido en base a los ítems agregados.
      */
     __calcularTotalPedido() {
-        let total = 0.00
+        let total = 0.00;
         let items = this.__objDataGrid.rows().data().toArray();
         items.forEach(element => {
             total += parseFloat(element.subtotal);
@@ -586,7 +614,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let items = this.__objDataGrid.rows().data().toArray();
         let resultado = false;
         items.forEach((element, index) => {
-            if (element.codart == xitem.codart) {
+            if (element.codart === xitem.codart) {
                 this.__sumarCantidadAlItemRepetido(xitem, element, index);
                 resultado = true;
                 return;
@@ -605,33 +633,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     __sumarCantidadAlItemRepetido(xitem, element, index) {
         xitem.cantidad += parseFloat(element.cantidad);
         xitem.subtotal = parseFloat(xitem.cantidad) * parseFloat(element.precio_unitario);
-        this.__objDataGrid.row(index).data(xitem).draw();
+        this.__objDataGrid.row(index).data(xitem);
+        this.__refrescarGrillaItemsPedido();
     }
-}
-
-// Funciones a medida de esta operación.
-
-/**
- * Selecciona un artículo de la grilla.
- * @param {int} xid Id. de artículo seleccionado.
- */
-function seleccionar_articulo(xid) {
-    let url = (new App()).getUrlApi("catalogo-articulos-get");
-    let sesion_tmp = (new CacheUtils("derweb")).get("sesion_temporal");
-    let parametros = "sesion=" + JSON.stringify(sesion_tmp) + "&pagina=0&filter=\"art.id=" + xid + "\"";
-
-    (new APIs()).call(url, parametros, "GET", response => {
-        document.getElementById("txtCodArt").value = response.values[0]["codigo"];
-        document.getElementById("txtDescripcion").value = response.values[0]["desc"];
-
-        // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
-        document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
-        this.__modalBusquedaAbierto = false;
-        (new CacheUtils("derweb")).remove("sesion_temporal");
-
-        // Cierro el modal
-        document.getElementById("main").removeChild(document.getElementById("modal_articulos"));
-        document.querySelector("#page-container > div.modal-backdrop.fade.show").remove();
-        document.getElementById("txtCantidad").focus();
-    });
 }

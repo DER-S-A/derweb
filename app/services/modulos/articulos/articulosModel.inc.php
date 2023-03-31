@@ -157,10 +157,9 @@ class ArticulosModel extends Model {
         $aResponse = $this->loadResponseArray($rsArticulos, 
                 $xpagina, 
                 $this->descuento_p1, 
-                $this->descuento_p2, 
-                $this->rentabilidad);
+                $this->descuento_p2,
+                $this->generarRentabilidadGral($this->idSucursal)); 
         $rsArticulos->close();
-        
         return $aResponse;
     }
     
@@ -280,7 +279,7 @@ class ArticulosModel extends Model {
                 LIMIT 40 OFFSET $xpagina";
 
         $rsArticulos = getRs($sql, true);
-        $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->rentabilidad);
+        $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->generarRentabilidadGral($this->idSucursal));
         $rsArticulos->close();
         return $aResponse;
     }
@@ -320,20 +319,6 @@ class ArticulosModel extends Model {
         }
     }
     public function generarFichaArt($xid_articulo,$xid_cliente) {
-        
-        // $sql = "SELECT 
-        //         articulos.id, articulos.descripcion, 
-        //         articulos_precios.precio_lista,
-        //         articulos.codigo,
-        //         articulos.informacion_general,
-        //         ori.codigo,
-        //         articulos.datos_tecnicos,
-        //         articulos.diametro
-        //         FROM articulos
-        //         INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
-        //         inner join art_codigos_originales AS ori ON ori.id_articulo = articulos.id
-        //         WHERE articulos.codigo = '316708SAC'"
-        //     ;
     
         $sql = "SELECT 
                 articulos.id AS ID_Articulo,
@@ -398,6 +383,13 @@ class ArticulosModel extends Model {
         return $response;
 
     }
+
+    function generarRentabilidadGral($id_sucursal) {
+        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id = 30455";
+        $arrayRenta = getRs($sql, true)->getAsArray();
+        return $arrayRenta;
+    }
+
 }
 
 ?>

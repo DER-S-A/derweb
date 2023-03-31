@@ -198,6 +198,58 @@ class SucursalesModel extends Model {
         return $cardCode;
 
     }
+
+    /**
+    * updateRentabilidadGral
+    * Actualiza la rentabilidad de la entidad.
+    * @param  int $id_cliente (este es el id de entidades, osea el id del cliente).
+    * @param  array $arrayRentabilidad (este es el valor a updatear en el campo rentabilidad de entidades).
+    * @return array
+    */
+
+    public function updateRentabilidad($id_suc, $jsonRentabilidad) {
+        $bd = new BDObject();
+        $aResult = [];
+        $arrayRentabilidad = json_decode($jsonRentabilidad, true);
+
+        if (is_countable($arrayRentabilidad)) {
+            $count = count($arrayRentabilidad);
+        } else {
+            $count = 0;
+            $aResult["result_code"] = "error";
+            $aResult["result_message"] = "No es contable.";
+            $aResult["result_titulo"] = "ERROR";   
+            return $aResult;
+        }
+        
+        $bd->beginT();
+            try {
+                for($i=0;$i<$count;$i++) {
+                    $rentabilidad = 'rentabilidad_'.($i+1);
+                    $sql = "UPDATE sucursales SET $rentabilidad = $arrayRentabilidad[$i]
+                    WHERE id = $id_suc";
+                    $bd->execInsert($sql);
+                }
+                
+                // Actualizo el checksum de la tabla.
+                sc3UpdateTableChecksum("entidades", $bd);
+
+                $bd->commitT();
+
+                $aResult["result_code"] = "success";
+                $aResult["result_message"] = "Rentabilidad cargada correctamente.";
+                $aResult["result_titulo"] = "EXITO";            
+            } catch (Exception $e) {
+                $bd->rollbackT();
+                $aResult["result_code"] = "ERROR";
+                $aResult["result_message"] = $e->getMessage();
+                $aResult["result_titulo"] = "ERROR";
+            } finally {
+                $bd->close();
+            }
+
+        return $aResult;
+    }
 }
 
 ?>

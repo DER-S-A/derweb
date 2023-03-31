@@ -192,6 +192,16 @@ class APIController {
         $metodoRequest = $_SERVER["REQUEST_METHOD"];
         return sonIguales(strtoupper($metodoRequest), "PUT");
     }
+
+    /**
+     * useDeleteMethod
+     * Verifica si se debe usar el método DELETE.
+     * @return bool
+     */
+    public function useDeleteMethod() {
+        $metodoRequest = $_SERVER["REQUEST_METHOD"];
+        return sonIguales(strtoupper($metodoRequest), "DELETE");
+    }
     
     /**
      * getURIParameters
