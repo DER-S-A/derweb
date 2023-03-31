@@ -37,11 +37,12 @@ class EntidadesModel extends Model {
                     clave,
                     id_tipoentidad,
                     tipo_login,
-                    rentabilidad_1,
-                    rentabilidad_2
+                    sucursales.rentabilidad_1,
+                    sucursales.rentabilidad_2
                 FROM 
                     entidades
                         INNER JOIN tipos_entidades ON tipos_entidades.id = entidades.id_tipoentidad
+                        INNER JOIN  sucursales ON entidades.id = sucursales.id_entidad
                 WHERE 
                     usuario = '$xusuario'";
         $aDatos = $this->getQuery($sql);
