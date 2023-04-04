@@ -427,12 +427,11 @@ class PedidosModel extends Model {
         
         // if (sonIguales($tipoLogin, "C"))
         //     $sql .= "AND ped.id_sucursal = " . $idSucursal;
-
         $rs = getRs($sql);
         $indice = 0;
         while (!$rs->EOF()) {
             $id_pedido = $rs->getValueInt("id_pedido");
-            $codigoEnvio = $rs->getValueInt("codigo_envio");
+            $codigoEnvio = $rs->getValue("codigo_envio");
             $aResponse["items"][$indice]["id"] = $rs->getValueInt("id");
             $aResponse["items"][$indice]["id_articulo"] = $rs->getValueInt("id_articulo");
             $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
@@ -454,7 +453,6 @@ class PedidosModel extends Model {
             $indice++;
             $rs->next();
         }
-
         $aResponse["id_pedido"] = $id_pedido;
         $aResponse["total_pedido"] = $totalPedido;
         $aResponse["total_con_iva"] = $totalPedidoConIVA;
@@ -514,7 +512,7 @@ class PedidosModel extends Model {
                 WHERE
                     id_pedido = $xid_pedido";
 
-            $sql2 = "DELETE
+             $sql2 = "DELETE
                     FROM pedidos
                     WHERE
                     id = $xid_pedido"; 
@@ -637,6 +635,7 @@ class PedidosModel extends Model {
      * @return void
      */
     private function enviarPedido_a_SAP($xsesion, $xid_pedido) {
+        $aBody = [];
         $aPedidoEnviar = [];
         $aItems = [];
         $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
@@ -644,7 +643,15 @@ class PedidosModel extends Model {
         $objSucursal = new SucursalesModel();
         $sucursalGet = [];
         $aDireccionEnvio = [];
+        $aSesion = json_decode($xsesion, true);
+        // Establezco la comunicación con el ETL.
+        $token = $this->getToken();
         // Establezco los headers
+        $header =[ 
+            "Content-Type: application/json",
+            "Authorization: Bearer ".$token
+        ];
+        $objAPISap->setHeaders($header);
         $objAPISap->setTestMode(); // Modo testing
         /* // ! METODO SIN USO
 
@@ -657,7 +664,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["ShipToCode"] = $this->
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
-    
+
         $aPedidoActual = $this->getPedidoActual($xsesion);
 
         $aPedidoEnviar["CardCode"] = $objSucursal->getEntidadSucursal($xsesion); // Agrego el numero cliente
@@ -668,7 +675,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["DocDueDate"] = date('Y-m-d', time()); // Agrego Fecha
         $aPedidoEnviar["TaxDate"] = date('Y-m-d',time()); // Agrego Fecha
         $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
-        $aPedidoEnviar["TransportationCode"] = sprintf('%s',$aPedidoActual["codigo_envio"]); // Agrego el codigo de la forma de envio
+        $aPedidoEnviar["TransportationCode"] = $aPedidoActual["codigo_envio"]; // Agrego el codigo de la forma de envio
         $aPedidoEnviar["DocCurrency"] = 'ARS'; // Agrego Tipo Moneda
         $aPedidoEnviar["Project"] = "ADMIN01"; // ! TENGO Q HARDCODEAR SI ES CTA1 o CTA2 (ADMIN01 ES CTA1)
         
@@ -711,18 +718,11 @@ class PedidosModel extends Model {
 
         // * Agrego al JSON General el Adress
         $aPedidoEnviar["AddressExtension"] = $aDireccionEnvio;
+    
 
 
         // $aBody["data"] = json_encode($aPedidoEnviar,true);
         $objAPISap->setData(json_encode($aPedidoEnviar));
-        // Establezco la comunicación con BindAPP.
-        $token = $this->getToken();
-        $header =array( 
-            "Content-Type: application/json",
-            "Authorization : Bearer ".$token,
-            'Content-Length: ' . strlen(json_encode($aPedidoEnviar))
-        );
-        $objAPISap->setHeaders($header);
         $objAPISap->send();
         return $objAPISap->getInfo();
     }

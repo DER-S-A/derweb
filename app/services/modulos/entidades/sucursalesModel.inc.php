@@ -111,7 +111,12 @@ class SucursalesModel extends Model {
                 WHERE 
                 sucursales.id = ". $session["id_sucursal"];
         $rsSuc = $this->getQuery2($sql);
-        $aDireccion["ShipToState"] = sprintf('%02d', $rsSuc->getValue("codigo"));
+        if ($rsSuc->getValueInt("codigo") < 10){
+            $aDireccion["ShipToState"] = sprintf('%02d', $rsSuc->getValue("codigo"));
+        }
+        else {
+            $aDireccion["ShipToState"] = $rsSuc->getValue("codigo");
+        }
         $aDireccion["ShipToStreet"] = $rsSuc->getValue("calle");
         $aDireccion["ShipToCity"] = $rsSuc->getValue("ciudad");
         $aDireccion["ShipToZipCode"] = sprintf('%s',$rsSuc->getValueInt("codigo_postal"));
