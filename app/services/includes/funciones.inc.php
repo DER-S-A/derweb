@@ -16,8 +16,11 @@
  */
 function calcular_costo($xmodo, $xprecioLista, $xdescuento_1, $xdescuento_2) {
     $costo = 0.00;
-    if (sonIguales($xmodo, "PED"))
+    if (sonIguales($xmodo, "PED")) {
         $costo = $xprecioLista - ($xprecioLista * ($xdescuento_1 / 100));
+        $costo = $costo - ($costo * ($xdescuento_2 / 100));
+    }
+        
     elseif (sonIguales($xmodo, "PRE"))
         $costo = $xprecioLista - ($xprecioLista * ($xdescuento_2 / 100));
     return $costo;

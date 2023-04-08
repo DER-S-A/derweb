@@ -154,11 +154,12 @@ class ArticulosModel extends Model {
 
         $sql = "CALL sp_articulos_getByRubroAndRubro($this->id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
         $rsArticulos = getRs($sql, true);
+        $arrayRenta = $this->generarRentabilidadGral($this->idSucursal);
         $aResponse = $this->loadResponseArray($rsArticulos, 
                 $xpagina, 
                 $this->descuento_p1, 
                 $this->descuento_p2,
-                $this->generarRentabilidadGral($this->idSucursal)); 
+                $arrayRenta); 
         $rsArticulos->close();
         return $aResponse;
     }
@@ -288,7 +289,6 @@ class ArticulosModel extends Model {
                 LIMIT 40 OFFSET $xpagina";
 
         $rsArticulos = getRs($sql, true);
-        //$arrayRenta = $this->generarRentabilidadEspecial($this->idSucursal, $rsArticulos['id']);
         $arrayRenta = $this->generarRentabilidadGral($this->idSucursal);
         
         $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $arrayRenta);
