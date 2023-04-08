@@ -531,11 +531,7 @@ class Rentabilidad extends ComponentManager {
         //let objTablaEliminar = [];       
 
         botonAgregar.addEventListener('click', () => {
-            // if (margen1.value < 1 || margen2.value < 1) {
-            //     return swal('Error...!', 'valor invalido en el campo margen', 'error');
-            // }
-            console.log(margen1.value, ',', margen2.value)
-            if (!this.__validarValoresMargen(margen1.value, margen2.value)) {
+            if (margen1.value < 1 || margen2.value < 1) {
                 return swal('Error...!', 'valor invalido en el campo margen', 'error');
             }
             let objTemporal = { id: '', marca: selectMarcas.value, rubro: selectRubros.value, subrubro: selectSubrubros.value, margen1: margen1.value, margen2: margen2.value };
@@ -656,7 +652,7 @@ class Rentabilidad extends ComponentManager {
      */
 
     __validarValoresMargen(valor1, valor2) {
-        if (valor1 > 0 || valor2 > 0) {
+        if (valor1 > 0 && valor2 > 0) {
             return true;
         }
         return false;

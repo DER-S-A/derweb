@@ -656,7 +656,7 @@ class Rentabilidad extends ComponentManager {
      */
 
     __validarValoresMargen(valor1, valor2) {
-        if (valor1 > 0 || valor2 > 0) {
+        if (valor1 > 0 && valor2 > 0) {
             return true;
         }
         return false;

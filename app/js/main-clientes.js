@@ -383,14 +383,13 @@ function miPerfil() {
  * @param {object} panelesOpciones objeto que lleva el estado de los check de los paneles de opciones de precios.
  */
 
-function crearFicha(xid) {
+function crearFicha(xid, oPrecios) {
     let panelesOpciones = {
         precioLista: document.querySelector("#opcion-lista-precio").checked,
         precioCosto: document.querySelector("#opcion-costo").checked,
         precioVenta: document.querySelector("#opcion-venta").checked 
     };
     
-    
-    new FichaArticulo().generateComponent(xid, panelesOpciones);
+    new FichaArticulo().generateComponent(xid, panelesOpciones, oPrecios);
 }
 
