@@ -12,6 +12,7 @@
 derweb_upgrades/.vscode
 
 /app/js/tmpcache/
+/app/js/utils/tmpcache/
 /app/css/tmpcache/
 /app/components/catalogo/tmpcache/
 /app/components/catalogo/confirmacion-pedido/tmpcache/
