@@ -11,29 +11,22 @@ class Rentabilidad extends ComponentManager {
         this.getTemplate(new App().getUrlTemplate("rentabilidad"), html => {
             section.innerHTML = html;
 
-            //const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
+            const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
             const miSession = new CacheUtils('derweb').get('sesion');
             const id_sucursal = miSession.id_sucursal;
-            //const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
-            //this.llenarInputs(inputsArrayValue, arrayInputs);
+            const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
+            this.llenarInputs(inputsArrayValue, arrayInputs);
             let url = new App().getUrlApi('catalogo-marcas-get');
             const marcaPromise = fetch(url, { method: 'GET' }).then(response => response.json());
             url = new App().getUrlApi('catalogo-rubros-get');
             const rubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
             url = new App().getUrlApi('catalogo-subrubros-get');
             const subrubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
-            url = new App().getUrlApi('margenesGenerales-get');
-            url = `${url}?id=${id_sucursal}`;
-            const inputsPromise = fetch(url, { method: 'GET' }).then(response => response.json());
 
 
             // Esperar a que todas las promesas se resuelvan
-            Promise.all([marcaPromise, rubroPromise, subrubroPromise, inputsPromise])
-                .then(([marcas, rubros, subrubros, retaGral]) => {
-                    const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
-                    let inputsArrayValue = [];
-                    for(let prop in retaGral[0]) {inputsArrayValue.push(retaGral[0][prop]);}
-                    this.llenarInputs(inputsArrayValue, arrayInputs);
+            Promise.all([marcaPromise, rubroPromise, subrubroPromise])
+                .then(([marcas, rubros, subrubros]) => {
                     const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
                     this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
                     this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);

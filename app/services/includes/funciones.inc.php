@@ -16,8 +16,11 @@
  */
 function calcular_costo($xmodo, $xprecioLista, $xdescuento_1, $xdescuento_2) {
     $costo = 0.00;
-    if (sonIguales($xmodo, "PED"))
+    if (sonIguales($xmodo, "PED")) {
         $costo = $xprecioLista - ($xprecioLista * ($xdescuento_1 / 100));
+        $costo = $costo - ($costo * ($xdescuento_2 / 100));
+    }
+        
     elseif (sonIguales($xmodo, "PRE"))
         $costo = $xprecioLista - ($xprecioLista * ($xdescuento_2 / 100));
     return $costo;
@@ -32,7 +35,8 @@ function calcular_costo($xmodo, $xprecioLista, $xdescuento_1, $xdescuento_2) {
  */
 function calcular_precio_venta($xcosto, $xrentabilidad) {
     $precio_venta = 0.00;
-    $precio_venta = $xcosto + ($xcosto * ($xrentabilidad / 100));
+    $precio_venta = $xcosto + ($xcosto * ($xrentabilidad[0]['rentabilidad_1'] / 100));
+    $precio_venta = $precio_venta + ($precio_venta * ($xrentabilidad[0]['rentabilidad_2'] / 100));
     return $precio_venta;
 }
 ?>

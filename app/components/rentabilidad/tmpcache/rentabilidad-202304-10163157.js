@@ -29,10 +29,8 @@ class Rentabilidad extends ComponentManager {
 
             // Esperar a que todas las promesas se resuelvan
             Promise.all([marcaPromise, rubroPromise, subrubroPromise, inputsPromise])
-                .then(([marcas, rubros, subrubros, retaGral]) => {
+                .then(([marcas, rubros, subrubros, inputsArrayValue]) => { console.log(inputsArrayValue)
                     const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
-                    let inputsArrayValue = [];
-                    for(let prop in retaGral[0]) {inputsArrayValue.push(retaGral[0][prop]);}
                     this.llenarInputs(inputsArrayValue, arrayInputs);
                     const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
                     this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
@@ -149,6 +147,12 @@ class Rentabilidad extends ComponentManager {
             inp.value = inputsArrayValue[index];
         })
     }
+
+    // llenarInputs(arrayInputs) {
+    //     arrayInputs.forEach((inp, index) => {
+    //         inp.value = inputsArrayValue[index];
+    //     })
+    // }
 
     /**
      * Permite llenar los box filtrados segun combinacion q se vaya eligiendo.

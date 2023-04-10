@@ -193,7 +193,7 @@ class CatalogoGridComponent extends ComponentManager {
 
         objContenedorGeneral.id = "info-articulo-general";
         objContenedorGeneral.classList.add("info-articulo-general");
-        objAnchorCodigo.href = "javascript:crearFicha(" + xid + "," + JSON.stringify(oPrecios) + ")";
+        objAnchorCodigo.href = "javascript:crearFicha(" + xid + "," + oPrecios + ")";
 
         objSpanDescripcion.textContent = xdescripcion;
         objSpanDescripcion.classList.add("descripcion");

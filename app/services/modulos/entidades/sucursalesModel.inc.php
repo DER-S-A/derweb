@@ -90,7 +90,7 @@ class SucursalesModel extends Model {
         $codigoSucursal = intval($session["id_sucursal"]);
         $sql = "SELECT codigo_vendedor FROM sucursales INNER JOIN entidades ON sucursales.id_entidad = entidades.id WHERE sucursales.ID = ". $codigoSucursal;   
         $rs = getRs($sql, true);
-        $aVendedor = $rs->getValueInt("codigo_vendedor");
+        $aVendedor = sprintf('%s',$rs->getValueInt("codigo_vendedor"));
         $rs->close();
         return $aVendedor;
     }
@@ -111,10 +111,15 @@ class SucursalesModel extends Model {
                 WHERE 
                 sucursales.id = ". $session["id_sucursal"];
         $rsSuc = $this->getQuery2($sql);
-        $aDireccion["ShipToState"] = $rsSuc->getValueInt("codigo");
+        if ($rsSuc->getValueInt("codigo") < 10){
+            $aDireccion["ShipToState"] = sprintf('%02d', $rsSuc->getValue("codigo"));
+        }
+        else {
+            $aDireccion["ShipToState"] = $rsSuc->getValue("codigo");
+        }
         $aDireccion["ShipToStreet"] = $rsSuc->getValue("calle");
         $aDireccion["ShipToCity"] = $rsSuc->getValue("ciudad");
-        $aDireccion["ShipToZipCode"] = $rsSuc->getValueInt("codigo_postal");
+        $aDireccion["ShipToZipCode"] = sprintf('%s',$rsSuc->getValueInt("codigo_postal"));
         return $aDireccion;
     }
 
@@ -249,6 +254,11 @@ class SucursalesModel extends Model {
             }
 
         return $aResult;
+    }
+
+    function ejecutarGetRenta($filter) {
+        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id=$filter";
+        return getRs($sql, true)->getAsArray();
     }
 }
 

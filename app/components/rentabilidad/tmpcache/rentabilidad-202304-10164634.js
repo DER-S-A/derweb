@@ -8,46 +8,87 @@ class Rentabilidad extends ComponentManager {
      * Permite generar la estructura de la pantalla de rentabilidad.
      */
     generateComponent(section) {
-        this.getTemplate(new App().getUrlTemplate("rentabilidad"), html => {
-            section.innerHTML = html;
+        let urlEspecial = url = new App().getUrlApi('margenesGenerales-get');
+        urlEspecial = `${urlEspecial}?id=30455`;
+        fetch(urlEspecial).then(response => response.json()).then(data => {
 
-            //const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
-            const miSession = new CacheUtils('derweb').get('sesion');
-            const id_sucursal = miSession.id_sucursal;
-            //const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
-            //this.llenarInputs(inputsArrayValue, arrayInputs);
-            let url = new App().getUrlApi('catalogo-marcas-get');
-            const marcaPromise = fetch(url, { method: 'GET' }).then(response => response.json());
-            url = new App().getUrlApi('catalogo-rubros-get');
-            const rubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
-            url = new App().getUrlApi('catalogo-subrubros-get');
-            const subrubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
-            url = new App().getUrlApi('margenesGenerales-get');
-            url = `${url}?id=${id_sucursal}`;
-            const inputsPromise = fetch(url, { method: 'GET' }).then(response => response.json());
-
-
-            // Esperar a que todas las promesas se resuelvan
-            Promise.all([marcaPromise, rubroPromise, subrubroPromise, inputsPromise])
-                .then(([marcas, rubros, subrubros, retaGral]) => {
-                    const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
-                    let inputsArrayValue = [];
-                    for(let prop in retaGral[0]) {inputsArrayValue.push(retaGral[0][prop]);}
-                    this.llenarInputs(inputsArrayValue, arrayInputs);
-                    const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
-                    this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
-                    this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
-                    this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
-                    let objTabla = [];
-                    let objTablaEliminar = [];
-                    this.cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec);
-
-                    this.confirmar(id_sucursal, arrayInputs, inputsArrayValue, miSession, objTabla, objTablaEliminar);
-                    this.cerrar();
-
-                })
-
+            this.getTemplate(new App().getUrlTemplate("rentabilidad"), html => {
+                section.innerHTML = html;
+    
+                const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
+                const miSession = new CacheUtils('derweb').get('sesion');
+                const id_sucursal = miSession.id_sucursal;
+                const inputsArrayValue = data;
+                this.llenarInputs(inputsArrayValue, arrayInputs);
+                let url = new App().getUrlApi('catalogo-marcas-get');
+                const marcaPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+                url = new App().getUrlApi('catalogo-rubros-get');
+                const rubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+                url = new App().getUrlApi('catalogo-subrubros-get');
+                const subrubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+                url = new App().getUrlApi('margenesGenerales-get');
+                url = `${url}?id=${id_sucursal}`;
+                const inputsPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+    
+    
+                // Esperar a que todas las promesas se resuelvan
+                Promise.all([marcaPromise, rubroPromise, subrubroPromise])
+                    .then(([marcas, rubros, subrubros, inputsArrayValue]) => {
+                        //const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
+                        //this.llenarInputs(inputsArrayValue, arrayInputs);
+                        const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
+                        this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
+                        this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
+                        this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
+                        let objTabla = [];
+                        let objTablaEliminar = [];
+                        this.cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec);
+    
+                        this.confirmar(id_sucursal, arrayInputs, inputsArrayValue, miSession, objTabla, objTablaEliminar);
+                        this.cerrar();
+    
+                    })
+    
+            })
         })
+        // this.getTemplate(new App().getUrlTemplate("rentabilidad"), html => {
+        //     section.innerHTML = html;
+
+        //     //const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
+        //     const miSession = new CacheUtils('derweb').get('sesion');
+        //     const id_sucursal = miSession.id_sucursal;
+        //     //const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
+        //     //this.llenarInputs(inputsArrayValue, arrayInputs);
+        //     let url = new App().getUrlApi('catalogo-marcas-get');
+        //     const marcaPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+        //     url = new App().getUrlApi('catalogo-rubros-get');
+        //     const rubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+        //     url = new App().getUrlApi('catalogo-subrubros-get');
+        //     const subrubroPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+        //     url = new App().getUrlApi('margenesGenerales-get');
+        //     url = `${url}?id=${id_sucursal}`;
+        //     const inputsPromise = fetch(url, { method: 'GET' }).then(response => response.json());
+
+
+        //     // Esperar a que todas las promesas se resuelvan
+        //     Promise.all([marcaPromise, rubroPromise, subrubroPromise, inputsPromise])
+        //         .then(([marcas, rubros, subrubros, inputsArrayValue]) => {
+        //             const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
+        //             this.llenarInputs(inputsArrayValue, arrayInputs);
+        //             const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
+        //             this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
+        //             this.__llenarBoxFiltrado(arrayQuerySelec, marcas, rubros, subrubros);
+        //             this.limpiarFiltro(marcas, rubros, subrubros, arrayQuerySelec);
+        //             let objTabla = [];
+        //             let objTablaEliminar = [];
+        //             this.cargarTabla(marcas, rubros, subrubros, objTabla, objTablaEliminar, arrayQuerySelec);
+
+        //             this.confirmar(id_sucursal, arrayInputs, inputsArrayValue, miSession, objTabla, objTablaEliminar);
+        //             this.cerrar();
+
+        //         })
+
+        // })
     }
 
     /**
@@ -144,11 +185,17 @@ class Rentabilidad extends ComponentManager {
     /**
      * Permite llenar los inputs con las rentabilidades que tiene el cliente.
      */
-    llenarInputs(inputsArrayValue, arrayInputs) {
+    llenarInputs(inputsArrayValue, arrayInputs) {console.log(arrayInputs)
         arrayInputs.forEach((inp, index) => {
             inp.value = inputsArrayValue[index];
         })
     }
+
+    // llenarInputs(arrayInputs) {
+    //     arrayInputs.forEach((inp, index) => {
+    //         inp.value = inputsArrayValue[index];
+    //     })
+    // }
 
     /**
      * Permite llenar los box filtrados segun combinacion q se vaya eligiendo.

@@ -43,7 +43,6 @@ const aAPIs = [
     {"ficha-articulos"                          : "services/articulos.php/getFicha"},
     {"rentabilidad"                             : "services/sucursales.php/editarRentabilidad"},
     {"boxesFiltrados"                           : "services/articulos.php/filtrarBoxes"},
-    {"margenesGenerales-get"                    : "services/sucursales.php/getRentabilidadesSuc"},
     {"margenesEspeciales-get"                   : "services/margenes_especiales.php/get"},
     {"margenesEspeciales-cargar"                : "services/margenes_especiales.php/cargarMargenesEspeciales"},
     {"margenesEspeciales-borrar"                : "services/margenes_especiales.php/borrarMargenesEspeciales"},

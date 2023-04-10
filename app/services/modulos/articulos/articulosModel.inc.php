@@ -154,13 +154,13 @@ class ArticulosModel extends Model {
 
         $sql = "CALL sp_articulos_getByRubroAndRubro($this->id_listaprecio, $id_rubro, $id_subrubro, $xpagina)";
         $rsArticulos = getRs($sql, true);
+        $arrayRenta = $this->generarRentabilidadGral($this->idSucursal);
         $aResponse = $this->loadResponseArray($rsArticulos, 
                 $xpagina, 
                 $this->descuento_p1, 
-                $this->descuento_p2, 
-                $this->rentabilidad);
+                $this->descuento_p2,
+                $arrayRenta); 
         $rsArticulos->close();
-        
         return $aResponse;
     }
     
@@ -178,6 +178,15 @@ class ArticulosModel extends Model {
         $aResponse["next"] = $xpagina + 40;
         $index = 0;
         while (!$rsArticulos->EOF()) {
+            $renta = $this->generarRentabilidadEspecial($this->idSucursal, $rsArticulos->getValueInt('id'));
+            //$renta = [];
+            //$renta[0]['rentabilidad_1'] = 100; 
+            //$renta[0]['rentabilidad_2'] = 100; 
+            //$renta = $this->generarRentabilidadEspecial(30455, 786061);
+            if(!empty($renta)) {
+                $xrentabilidad = $renta;
+            }
+
             $aArticulosResponse[$index]["id"] = $rsArticulos->getValueInt('id');
             $aArticulosResponse[$index]["codigo"] = $rsArticulos->getValue('codigo');
             $aArticulosResponse[$index]["desc"] = utf8_encode($rsArticulos->getValue('descripcion'));
@@ -280,7 +289,9 @@ class ArticulosModel extends Model {
                 LIMIT 40 OFFSET $xpagina";
 
         $rsArticulos = getRs($sql, true);
-        $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->rentabilidad);
+        $arrayRenta = $this->generarRentabilidadGral($this->idSucursal);
+        
+        $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $arrayRenta);
         $rsArticulos->close();
         return $aResponse;
     }
@@ -320,29 +331,10 @@ class ArticulosModel extends Model {
         }
     }
     public function generarFichaArt($xid_articulo,$xid_cliente) {
-        
-        // $sql = "SELECT 
-        //         articulos.id, articulos.descripcion, 
-        //         articulos_precios.precio_lista,
-        //         articulos.codigo,
-        //         articulos.informacion_general,
-        //         ori.codigo,
-        //         articulos.datos_tecnicos,
-        //         articulos.diametro
-        //         FROM articulos
-        //         INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
-        //         inner join art_codigos_originales AS ori ON ori.id_articulo = articulos.id
-        //         WHERE articulos.codigo = '316708SAC'"
-        //     ;
     
         $sql = "SELECT 
                 articulos.id AS ID_Articulo,
                 articulos.descripcion AS Descripcion,
-                (SELECT round(precio_lista * (100-(SELECT descuento_1 FROM entidades WHERE id = $xid_cliente) )/100,2)
-                FROM articulos_precios WHERE id_articulo = $xid_articulo) AS Precio_costo,
-                articulos_precios.precio_lista AS Precio_lista,
-                (SELECT round(precio_lista * (100+(SELECT rentabilidad_1 FROM entidades WHERE id = $xid_cliente) )/100,2)
-                FROM articulos_precios WHERE id_articulo = $xid_articulo) AS Precio_venta,
                 articulos.existencia_stock AS Stock,
                 articulos.codigo AS Codigo,
                 articulos.informacion_general AS Informacion_general,
@@ -398,6 +390,80 @@ class ArticulosModel extends Model {
         return $response;
 
     }
+
+    /**
+     * generarRentabilidadGral
+     * Genera el array con las rentabilidad_1 y rentabilidad_2.
+     * @param  int $id_sucursal
+     * @return array
+     */
+
+    private function generarRentabilidadGral($id_sucursal) {
+
+        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id = $id_sucursal";
+        $arrayRenta = getRs($sql, true)->getAsArray();
+        return $arrayRenta;
+    }
+
+    /**
+     * generarRentabilidadEspecial
+     * Genera el array con las rentabilidad_1 y rentabilidad_2, si el array q devuelve esta vacio entonces no sera tomado 
+     * en cuenta, y el articulo colocara el margen general.
+     * @param  int $id_sucursal
+     * @param  int $id_articulo
+     * @return array
+     */
+
+    private function generarRentabilidadEspecial($id_sucursal, $id_articulo) {
+        $sql = "SELECT * FROM margenes_especiales WHERE id_sucursal = $id_sucursal";
+        $aResult = getRs($sql, true)->getAsArray();
+        $aRentaEsp = [];
+        
+        if(empty($aResult)) {
+            return $aRentaEsp;
+        }
+   
+        $articulo = $this->generarMarcaRubroSubrubro($id_articulo);
+
+        
+        foreach($aResult as $row) {
+            $coincidencia = true;
+            if(!empty($row['id_rubro'])) {
+                if($row['id_rubro'] != $articulo[0]['id_rubro']) {
+                    $coincidencia = false;
+                }
+            }
+            if(!empty($row['id_subrubro'])) {
+                if($row['id_subrubro'] != $articulo[0]['id_subrubro']) {
+                    $coincidencia = false;
+                }
+            }
+            if(!empty($row['id_marca'])) {
+                if($row['id_marca'] != $articulo[0]['id_marca']) {
+                    $coincidencia = false;
+                }
+            }
+            if($coincidencia) {
+                $aRentaEsp[0]['rentabilidad_1'] = $row['rentabilidad_1'];
+                $aRentaEsp[0]['rentabilidad_2'] = $row['rentabilidad_2'];
+            }
+        }
+        return $aRentaEsp;
+    }
+
+    /**
+     * generarMarcaRubroSubrubro
+     * Genera el array con los id de marcas, rubros y subrubros que usaremos para comparar con los datos de la 
+     * tabla margenes especiales.
+     * @param  int $articulo
+     * @return array
+     */
+    private function generarMarcaRubroSubrubro($articulo) {
+        $sql = "SELECT id_rubro, id_subrubro, id_marca FROM articulos WHERE id = $articulo";
+        $result = getRs($sql, true)->getAsArray();
+        return $result;
+    }
+
 }
 
 ?>

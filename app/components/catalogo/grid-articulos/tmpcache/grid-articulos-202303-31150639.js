@@ -138,8 +138,7 @@ class CatalogoGridComponent extends ComponentManager {
 
             
             objItemCol1.appendChild(this.__crearColumnaFoto());
-            const oPrecios = {Precio_lista: xelement["prlista"], Precio_costo: xelement["cped"], Precio_venta: xelement["vped"]};
-            objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"], oPrecios));
+            objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"]));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
             objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"]));
 
@@ -180,7 +179,7 @@ class CatalogoGridComponent extends ComponentManager {
      * @param {int} xid Id. Articulo.
      * @returns {DOMElement}
      */
-    __crearColumnaDescripcion(xdescripcion, xcodigo, xid, oPrecios) {
+    __crearColumnaDescripcion(xdescripcion, xcodigo, xid) {
         var objContenedorGeneral = document.createElement("div");
         var objInfoTitulo = document.createElement("div");
         var objInfoCodigo = document.createElement("div");
@@ -193,7 +192,7 @@ class CatalogoGridComponent extends ComponentManager {
 
         objContenedorGeneral.id = "info-articulo-general";
         objContenedorGeneral.classList.add("info-articulo-general");
-        objAnchorCodigo.href = "javascript:crearFicha(" + xid + "," + JSON.stringify(oPrecios) + ")";
+        objAnchorCodigo.href = "javascript:crearFicha(" + xid + ")";
 
         objSpanDescripcion.textContent = xdescripcion;
         objSpanDescripcion.classList.add("descripcion");

@@ -20,7 +20,7 @@ class FichaArticulo extends ComponentManager {
         console.log(url + parametro);
             this.getTemplate((new App()).getUrlTemplate("ficha-articulo"), html => {
                 let arrayConRubroYSub = this.extraerCodigoRubroYSub();
-                html = this.completarTemplate(xdatos,html, xid_art, arrayConRubroYSub, oPrecios);
+                html = this.completarTemplate(xdatos,html, xid_art, arrayConRubroYSub);
                 html = this.checkedGrilla(html, panelesOpciones);
                 document.getElementById("app-container").innerHTML = html;
                 let objCodigosOriginales = document.querySelector("#ficha-codigos-originales");
@@ -36,6 +36,8 @@ class FichaArticulo extends ComponentManager {
                 let objOpcionVenta = document.querySelector("#ficha-opcion-venta");
                 let objinput = document.querySelector("#txtcantidad_"+xid_art);
                 
+                
+                console.log(panelesOpciones);
 
                 this.mostrarPrecios(objPrecioLista, objPrecioCosto, objPrecioVenta, objOpcionLista, objOpcionCosto, objOpcionVenta);
                 this.pintarFotosArticulosCarrusel(objCarruselInner, xdatos.fotos, objCarruselIndicador);
@@ -49,13 +51,13 @@ class FichaArticulo extends ComponentManager {
 
     }
 
-    completarTemplate(xdatos,html, xid_art, arrayConRubroYSub, oPrecios) {
+    completarTemplate(xdatos,html, xid_art, arrayConRubroYSub) {
         html = this.setTemplateParameters(html, "id_art", xid_art);
         html = this.setTemplateParameters(html, "id_articulo", xid_art);
         html = this.setTemplateParameters(html, "descripcion", xdatos.informacion[0].Descripcion);
-        html = this.setTemplateParameters(html, "precio_lista", oPrecios.Precio_lista);
-        html = this.setTemplateParameters(html, "precio_costo", oPrecios.Precio_costo);
-        html = this.setTemplateParameters(html, "precio_venta", oPrecios.Precio_venta);
+        html = this.setTemplateParameters(html, "precio_lista", xdatos.informacion[0].Precio_lista);
+        html = this.setTemplateParameters(html, "precio_costo", xdatos.informacion[0].Precio_costo);
+        html = this.setTemplateParameters(html, "precio_venta", xdatos.informacion[0].Precio_venta);
         html = this.setTemplateParameters(html, "codigo", xdatos.informacion[0].Codigo);
         html = this.setTemplateParameters(html, "informacion_general", xdatos.informacion[0].Informacion_general);
         html = this.setTemplateParameters(html, "datos_tecnicos", xdatos.informacion[0].Datos_tecnicos);
