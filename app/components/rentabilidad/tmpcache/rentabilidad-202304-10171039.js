@@ -31,8 +31,9 @@ class Rentabilidad extends ComponentManager {
             Promise.all([marcaPromise, rubroPromise, subrubroPromise, inputsPromise])
                 .then(([marcas, rubros, subrubros, retaGral]) => {
                     const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
-                    let inputsArrayValue = [];
-                    for(let prop in retaGral[0]) {inputsArrayValue.push(retaGral[0][prop]);}
+                    console.log(retaGral)
+                    for(prop in retaGral) console.log(prop);
+                    const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
                     this.llenarInputs(inputsArrayValue, arrayInputs);
                     const arrayQuerySelec = [document.querySelector('#container-rentabilidad #marcas'), document.querySelector('#container-rentabilidad #rubros'), document.querySelector('#container-rentabilidad #subrubros')];
                     this.llenarBoxes(marcas, rubros, subrubros, arrayQuerySelec);
@@ -145,10 +146,16 @@ class Rentabilidad extends ComponentManager {
      * Permite llenar los inputs con las rentabilidades que tiene el cliente.
      */
     llenarInputs(inputsArrayValue, arrayInputs) {
-        arrayInputs.forEach((inp, index) => {
+        arrayInputs.forEach((inp, index) => {console.log(inputsArrayValue)
             inp.value = inputsArrayValue[index];
         })
     }
+
+    // llenarInputs(arrayInputs) {
+    //     arrayInputs.forEach((inp, index) => {
+    //         inp.value = inputsArrayValue[index];
+    //     })
+    // }
 
     /**
      * Permite llenar los box filtrados segun combinacion q se vaya eligiendo.

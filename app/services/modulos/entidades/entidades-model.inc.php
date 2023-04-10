@@ -36,13 +36,10 @@ class EntidadesModel extends Model {
                     usuario, 
                     clave,
                     id_tipoentidad,
-                    tipo_login,
-                    sucursales.rentabilidad_1,
-                    sucursales.rentabilidad_2
+                    tipo_login
                 FROM 
                     entidades
                         INNER JOIN tipos_entidades ON tipos_entidades.id = entidades.id_tipoentidad
-                        INNER JOIN  sucursales ON entidades.id = sucursales.id_entidad
                 WHERE 
                     usuario = '$xusuario'";
         $aDatos = $this->getQuery($sql);
@@ -64,8 +61,6 @@ class EntidadesModel extends Model {
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
                 $aResult["id_tipoentidad"] = intval($aDatos[0]["id_tipoentidad"]);
                 $aResult["tipo_login"] = $aDatos[0]["tipo_login"];
-                $aResult["rentabilidad_1"] = $aDatos[0]["rentabilidad_1"];
-                $aResult["rentabilidad_2"] = $aDatos[0]["rentabilidad_2"];
 
             } else {
                 $aResult["result"] = "ERR_CLAVE";

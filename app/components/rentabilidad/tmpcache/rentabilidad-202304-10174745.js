@@ -145,10 +145,16 @@ class Rentabilidad extends ComponentManager {
      * Permite llenar los inputs con las rentabilidades que tiene el cliente.
      */
     llenarInputs(inputsArrayValue, arrayInputs) {
-        arrayInputs.forEach((inp, index) => {
+        arrayInputs.forEach((inp, index) => {console.log(inputsArrayValue)
             inp.value = inputsArrayValue[index];
         })
     }
+
+    // llenarInputs(arrayInputs) {
+    //     arrayInputs.forEach((inp, index) => {
+    //         inp.value = inputsArrayValue[index];
+    //     })
+    // }
 
     /**
      * Permite llenar los box filtrados segun combinacion q se vaya eligiendo.

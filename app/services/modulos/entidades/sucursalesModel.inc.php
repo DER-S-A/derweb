@@ -250,6 +250,11 @@ class SucursalesModel extends Model {
 
         return $aResult;
     }
+
+    function ejecutarGetRenta($filter) {
+        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id=$filter";
+        return getRs($sql, true)->getAsArray();
+    }
 }
 
 ?>
