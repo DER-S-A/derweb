@@ -250,7 +250,7 @@ class ArticulosModel extends Model {
      * @return void
      */
     public function getByFrase($xsesion, $xfrase, $xpagina) {
-        if (strlen($xfrase) <= 3) {
+        if (strlen($xfrase) <= 2) {
             $aResponse["error"] = "VALID_ERROR";
             $aResponse["message"] = "Debe ingresar al menos 5 caracteres para buscar";
             return $aResponse;

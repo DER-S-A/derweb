@@ -181,7 +181,7 @@ function mostrar_articulos(xidRubro, xidSubrubro) {
  */
 function buscarPorFrase () {
     let valor = document.getElementById("txtValorBuscado").value;
-    if(valor.length > 3){
+    if(valor.length > 1){
         var objGUI = new CatalogoGUIComponent("app-container");
         var aParametros;
         objGUI.generateComponent();
