@@ -69,7 +69,7 @@ class Catalogo {
      */
     agregarArticuloEnCarrito(xaSesion, xidarticulo, xcantidad, xaCabecera) {
         // Recupero los datos del artículo que necesito.
-        this.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {
+        this.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {console.log('llega')
             let aArticulo = {
                 "id_articulo": parseInt(xidarticulo),
                 "cantidad": parseFloat(xcantidad),

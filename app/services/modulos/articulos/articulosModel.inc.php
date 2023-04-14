@@ -36,7 +36,7 @@ class ArticulosModel extends Model {
         $this->setWhere($sql, $xfilter);
         //return $this->getQuery($sql);
         $rsArticulo = getRs($sql, true);
-        $aResponse = $this->loadResponseArray($rsArticulo, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->rentabilidad);
+        $aResponse = $this->loadResponseArray($rsArticulo, $xpagina, $this->descuento_p1, $this->descuento_p2, $this->generarRentabilidadGral($this->idSucursal));
         return $aResponse;
     }
     
