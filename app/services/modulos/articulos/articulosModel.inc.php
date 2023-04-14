@@ -415,7 +415,7 @@ class ArticulosModel extends Model {
      */
 
     private function generarRentabilidadEspecial($id_sucursal, $id_articulo) {
-        $sql = "SELECT * FROM margenes_especiales WHERE id_sucursal = $id_sucursal";
+        $sql = "SELECT * FROM margenes_especiales WHERE id_sucursal = $id_sucursal ORDER BY id";
         $aResult = getRs($sql, true)->getAsArray();
         $aRentaEsp = [];
         

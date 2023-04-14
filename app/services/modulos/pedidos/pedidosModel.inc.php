@@ -431,7 +431,8 @@ class PedidosModel extends Model {
         $indice = 0;
         while (!$rs->EOF()) {
             $id_pedido = $rs->getValueInt("id_pedido");
-            $codigoEnvio = $rs->getValue("codigo_envio");
+            //$codigoEnvio = $rs->getValue("codigo_envio");
+            $aResponse["codigo_envio"] = $rs->getValue("codigo_envio");
             $aResponse["items"][$indice]["id"] = $rs->getValueInt("id");
             $aResponse["items"][$indice]["id_articulo"] = $rs->getValueInt("id_articulo");
             $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
@@ -456,7 +457,7 @@ class PedidosModel extends Model {
         $aResponse["id_pedido"] = $id_pedido;
         $aResponse["total_pedido"] = $totalPedido;
         $aResponse["total_con_iva"] = $totalPedidoConIVA;
-        $aResponse["codigo_envio"] = $codigoEnvio;
+        //$aResponse["codigo_envio"] = $codigoEnvio;
         $rs->close();
 
         return $aResponse;
