@@ -34,4 +34,5 @@ function editarItem(xcodigoArticulo) {
     let items = objCache.get(objIpr.__nombreCacheItems);
     let itemAEditar = items.filter((element) => element.codart === xcodigoArticulo);
     console.log(itemAEditar);
+    objIpr.editarItem(itemAEditar);
 }

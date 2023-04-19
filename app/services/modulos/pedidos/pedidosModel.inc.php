@@ -400,7 +400,6 @@ class PedidosModel extends Model {
         $descuento_p2 = doubleval($aCliente[0]["descuento_2"]);
         $idSucursal = intval($aSesion["id_sucursal"]);
         $tipoLogin = $aSesion["tipo_login"];
-
         $sql = "SELECT
                     items.id, items.id_pedido, art.id AS id_articulo, items.cantidad,
                     foto.archivo, art.codigo, art.descripcion AS descripcion_articulo,

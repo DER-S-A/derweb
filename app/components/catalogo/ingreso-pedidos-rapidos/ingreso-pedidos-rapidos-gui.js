@@ -81,6 +81,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 // Al salirse del foco realizo una búsqueda inicial.
                 if (!this.__validarSeleccionCliente())
                     return;
+                //this.__buscarArticulo();
             });
             
             this.__crearGridItems();
@@ -285,7 +286,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         // Limpio el datatable
         this.__objDataGrid.clear().draw();
 
-        (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
+        (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => {
             let arrItems = response.items;
             
             if (arrItems !== undefined) {
@@ -310,7 +311,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 this.__nroRenglon = 0;
             }
 
-            this.__refrescarGrillaItemsPedido();
+            this.__refrescarGrillaItemsPedido(arrItems);
             this.__acomodarFooter();
             this.__calcularTotalPedido();
         })
@@ -467,11 +468,33 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     }
 
     /**
+     * Permite refrescar la grilla de los ítems del pedido actual.
+     * @param {Object} arrItems
+     */
+    __refrescarGrillaItemsPedido(arrItems) {
+        this.__objDataGrid.draw(false);
+        this.__guardarItemsEnCache(arrItems);
+    }
+
+    /**
      * Permite guardar los ítems de la grilla en cache para poder manipular la información
      * desde la interfaz de usuario.
      */
     __guardarItemsEnCache() {
         let items = this.__objDataGrid.rows().data().toArray();
+        let objCache = new CacheUtils("derweb");
+        objCache.set(this.__nombreCacheItems, items);
+    }
+
+    /**
+     * Permite guardar los ítems de la grilla en cache para poder manipular la información
+     * desde la interfaz de usuario.
+     * @param {Object} arrItems
+     */
+    __guardarItemsEnCache(arrItems) {
+        let items = this.__objDataGrid.rows().data().toArray();
+        console.log(items)
+        // ACA TENGO QUE HACER UN MAP PARA ARMAR UN NUEVO ARRAY CON EL ID_ARTICULO
         let objCache = new CacheUtils("derweb");
         objCache.set(this.__nombreCacheItems, items);
     }
@@ -635,5 +658,14 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         xitem.subtotal = parseFloat(xitem.cantidad) * parseFloat(element.precio_unitario);
         this.__objDataGrid.row(index).data(xitem);
         this.__refrescarGrillaItemsPedido();
+    }
+
+    editarItem(item) {
+        swal("Cantidad:", {
+            content: "input",
+          })
+          .then((value) => {
+            swal(`You typed: ${value}`);
+          });
     }
 }
