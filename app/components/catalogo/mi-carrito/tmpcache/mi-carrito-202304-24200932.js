@@ -162,9 +162,12 @@ class MiCarritoModalComponent extends ComponentManager {
 
     eliminar_item_carrito(xUrl, xidpedido, xId) {
         let xparametros = "id_pedido=" + xidpedido + "&id_pedidos_items=" + xId;
+        console.log(xUrl);
+        console.log(xId);
         (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
             xdatos = JSON.parse(xdatos);
-            xdatos.codigo == 'OK' ? swal(xdatos.codigo, xdatos.mensaje, 'success') : swal(xdatos.codigo, xdatos.mensaje, 'error');
+            console.log(xdatos);
+            alert(xdatos.mensaje);
         });
     }
 
@@ -173,7 +176,7 @@ class MiCarritoModalComponent extends ComponentManager {
         
         (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
             xdatos = JSON.parse(xdatos);
-            xdatos.codigo == 'OK' ? swal(xdatos.codigo, xdatos.mensaje, 'success') : swal(xdatos.codigo, xdatos.mensaje, 'error');
+            alert(xdatos.mensaje);
         });
     } 
 

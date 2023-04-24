@@ -27,11 +27,11 @@ function seleccionar_articulo(xid) {
         document.getElementById("txtCantidad").focus();
     });
 }
-
+let objIpr = new IngresoPedidosRapidoGUI;
 function editarItem(xid) {
-    let objIpr = new IngresoPedidosRapidoGUI();
-    //let objCache = new CacheUtils("derweb");
-    //let items = objCache.get(objIpr.__nombreCacheItems);
-    //let itemAEditar = items.filter((element) => element.codart === xcodigoArticulo);
     objIpr.editarItem(xid);
+}
+
+function eliminarItem(xidpedido, xId) {
+    objIpr.borrarItem(xidpedido, xId);
 }

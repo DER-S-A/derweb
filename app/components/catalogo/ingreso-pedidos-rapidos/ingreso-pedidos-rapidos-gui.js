@@ -279,7 +279,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Permite recuprar el pedido que se encuentra actualmente pendiente de
      * confirmar.
      */
-    __recuperarPedido() {console.log(this.__objDataGrid);
+    __recuperarPedido() {
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
 
@@ -293,7 +293,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             if (arrItems !== undefined) {
                 arrItems.forEach((item, index) => {
                     var opciones = "<a href='javascript:editarItem(\"" + item.id + "\");'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
-                    opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
+                    opciones += `<a href='javascript:eliminarItem(${response.id_pedido},${item.id})'><i class='fa-solid fa-trash-can fa-xl'></i></a>`
 
                     item = {
                         "id": index + 1,
@@ -650,7 +650,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     }
 
     editarItem(id) {
-        console.log($('#ipr_grid_items').DataTable());
         this.__objDataGrid = $('#ipr_grid_items').DataTable();
         const aPedidoItem = (new CacheUtils("derweb")).get("pedido-item");
         swal("Cantidad:", {
@@ -670,12 +669,36 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             let urlAPI = objApp.getUrlApi("catalogo-pedidos-modificar-items");
             let objAPI = new APIs();
             objAPI.call(urlAPI, "data=" + JSON.stringify(Ojson[0]), "PUT", (response) => {
-                console.log(response);
                 swal(response.codigo, response.mensaje, 'success')
                 .then( () => {
                     this.__recuperarPedido();
                 })
             });
         });
+    }
+
+    /**
+     * Permite eliminar un item al hacer clic en "tash"
+     */
+    borrarItem(xidpedido, xId) {
+        this.__objDataGrid = $('#ipr_grid_items').DataTable();
+        const url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
+        const pedidoStorage = JSON.parse(sessionStorage.getItem("derweb_ipr_pedido_actual"));
+        if(pedidoStorage.length>1) {
+            let objCarrito = new MiCarritoModalComponent;
+            objCarrito.eliminar_item_carrito(url, xidpedido, xId);
+        } else {
+            this.__vaciar_carrito(xidpedido);
+        }
+        this.__recuperarPedido();
+    }
+
+    /**
+     * Permite vaciar mi carrito al hacer clic en "Vaciar mi carrito"
+     */
+    __vaciar_carrito(xidpedido) {
+        const url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");
+        let objCarrito = new MiCarritoModalComponent;
+        objCarrito.vaciarMiCarrito(url, xidpedido);
     }
 }
