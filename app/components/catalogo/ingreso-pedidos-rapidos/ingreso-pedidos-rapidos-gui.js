@@ -279,7 +279,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Permite recuprar el pedido que se encuentra actualmente pendiente de
      * confirmar.
      */
-    __recuperarPedido() {
+    __recuperarPedido() {console.log(this.__objDataGrid);
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
 
@@ -288,10 +288,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
 
         (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => {
             let arrItems = response.items;
+            this.__guardarPedidoItemEnCache(response)
             
             if (arrItems !== undefined) {
                 arrItems.forEach((item, index) => {
-                    var opciones = "<a href='javascript:editarItem(\"" + item.codigo + "\");'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
+                    var opciones = "<a href='javascript:editarItem(\"" + item.id + "\");'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
                     opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
 
                     item = {
@@ -311,7 +312,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 this.__nroRenglon = 0;
             }
 
-            this.__refrescarGrillaItemsPedido(arrItems);
+            this.__refrescarGrillaItemsPedido();
             this.__acomodarFooter();
             this.__calcularTotalPedido();
         })
@@ -468,15 +469,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
     }
 
     /**
-     * Permite refrescar la grilla de los ítems del pedido actual.
-     * @param {Object} arrItems
-     */
-    __refrescarGrillaItemsPedido(arrItems) {
-        this.__objDataGrid.draw(false);
-        this.__guardarItemsEnCache(arrItems);
-    }
-
-    /**
      * Permite guardar los ítems de la grilla en cache para poder manipular la información
      * desde la interfaz de usuario.
      */
@@ -491,12 +483,9 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * desde la interfaz de usuario.
      * @param {Object} arrItems
      */
-    __guardarItemsEnCache(arrItems) {
-        let items = this.__objDataGrid.rows().data().toArray();
-        console.log(items)
-        // ACA TENGO QUE HACER UN MAP PARA ARMAR UN NUEVO ARRAY CON EL ID_ARTICULO
+    __guardarPedidoItemEnCache(arrItems) {
         let objCache = new CacheUtils("derweb");
-        objCache.set(this.__nombreCacheItems, items);
+        objCache.set('pedido-item', arrItems);
     }
 
     /**
@@ -660,12 +649,33 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         this.__refrescarGrillaItemsPedido();
     }
 
-    editarItem(item) {
+    editarItem(id) {
+        console.log($('#ipr_grid_items').DataTable());
+        this.__objDataGrid = $('#ipr_grid_items').DataTable();
+        const aPedidoItem = (new CacheUtils("derweb")).get("pedido-item");
         swal("Cantidad:", {
             content: "input",
-          })
-          .then((value) => {
-            swal(`You typed: ${value}`);
-          });
+        })
+        .then((value) => {
+            let dat = aPedidoItem["items"].filter(datos => datos.id == id);
+            let Ojson = dat;
+            Ojson[0].id_pedido = aPedidoItem.id_pedido;
+            Ojson[0].cantidad = value;
+            Ojson[0].costo_unitario = dat[0]["costo"];
+            Ojson[0].total = dat[0].subtotal_final;
+            delete Ojson[0].costo;
+            delete Ojson[0].subtotal_final;
+            // Preparo el api para enviar al php.
+            let objApp = new App();
+            let urlAPI = objApp.getUrlApi("catalogo-pedidos-modificar-items");
+            let objAPI = new APIs();
+            objAPI.call(urlAPI, "data=" + JSON.stringify(Ojson[0]), "PUT", (response) => {
+                console.log(response);
+                swal(response.codigo, response.mensaje, 'success')
+                .then( () => {
+                    this.__recuperarPedido();
+                })
+            });
+        });
     }
 }

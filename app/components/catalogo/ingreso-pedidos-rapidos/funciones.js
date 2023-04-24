@@ -28,11 +28,10 @@ function seleccionar_articulo(xid) {
     });
 }
 
-function editarItem(xcodigoArticulo) {
+function editarItem(xid) {
     let objIpr = new IngresoPedidosRapidoGUI();
-    let objCache = new CacheUtils("derweb");
-    let items = objCache.get(objIpr.__nombreCacheItems);
-    let itemAEditar = items.filter((element) => element.codart === xcodigoArticulo);
-    console.log(itemAEditar);
-    objIpr.editarItem(itemAEditar);
+    //let objCache = new CacheUtils("derweb");
+    //let items = objCache.get(objIpr.__nombreCacheItems);
+    //let itemAEditar = items.filter((element) => element.codart === xcodigoArticulo);
+    objIpr.editarItem(xid);
 }

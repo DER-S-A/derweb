@@ -11,6 +11,7 @@ class UpdateVersionRentabilidades extends UpdateVersion
      */
     public static function actualizar() {
         self::instalarTablaRentabilidades();
+        self::instalarDefaultRentabilidadSucursales();
     }
 
     /**
@@ -64,5 +65,17 @@ class UpdateVersionRentabilidades extends UpdateVersion
             sc3addlink($query, "id_sucursal", $querySuc);
             sc3AgregarQueryAPerfil($query, "root");
         }
+    }
+
+    public static function instalarDefaultRentabilidadSucursales() {
+        $tabla = "sucursales";
+        $query = $tabla;
+
+        $sql = "ALTER TABLE $tabla CHANGE COLUMN rentabilidad_1 rentabilidad_1 DECIMAL(5, 2) NOT NULL DEFAULT 0";
+        self::ejecutarSQL($sql);
+        sc3generateFieldsInfo($tabla);
+        $sql = "ALTER TABLE $tabla CHANGE COLUMN rentabilidad_2 rentabilidad_2 DECIMAL(5, 2) DEFAULT 0";
+        self::ejecutarSQL($sql);
+        sc3generateFieldsInfo($tabla);
     }
 }
