@@ -69,7 +69,7 @@ class Catalogo {
      */
     agregarArticuloEnCarrito(xaSesion, xidarticulo, xcantidad, xaCabecera) {
         // Recupero los datos del artículo que necesito.
-        this.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {console.log('llega')
+        this.getArticuloById(xaSesion, xidarticulo, (xarticulo) => {
             let aArticulo = {
                 "id_articulo": parseInt(xidarticulo),
                 "cantidad": parseFloat(xcantidad),
@@ -142,7 +142,6 @@ class Catalogo {
     
         // Envío el pedido al API para grabarlo en la( base de datos.
         let argumentos = "sesion=" + JSON.stringify(xaSesion) + "&" + "datos=" + JSON.stringify(parametros);
-        console.log(url_carrito + '?' + argumentos);
         (new APIs()).call(url_carrito, argumentos, "PUT", (xdatos) => {
             alert(xdatos.mensaje);
         });

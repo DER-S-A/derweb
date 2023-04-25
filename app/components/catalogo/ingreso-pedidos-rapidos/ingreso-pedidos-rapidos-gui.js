@@ -126,8 +126,25 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             });
 
             // Evento click del botón agregar ítem
-            document.getElementById("btnAgregar").addEventListener("click", () => {
+            document.getElementById("btnAgregar").addEventListener("click", async () => {
                 this.__agregarArticuloAlPedido();
+                //Tuve q hacer esta funcion asincronica porq el recuperar pedido se ejecutaba antes que agregararticulo.
+                const recuperarPedidoAsync = () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          try {
+                            resolve(this.__recuperarPedido());
+                          } catch (error) {
+                            reject(error);
+                          }
+                        }, 2000); // Tiempo en milisegundos que deseas esperar antes de ejecutar la función sincrónica
+                    });
+                }
+                try {
+                    const pedido = await recuperarPedidoAsync();
+                } catch (error) {
+                console.error(error);
+                }
             })
 
             // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
@@ -174,13 +191,17 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      */
     __agregarArticuloAlPedido() {
         let txtCantidad = document.querySelector('#txtCantidad').value;
-        if (this.__agregarItem()) {
+        let xid_articulo = JSON.parse(txtCodArt.dataset.value);
+        xid_articulo = xid_articulo.values[0].id;
+        this.__guardarPedido(xid_articulo, txtCantidad);
+        this.__blanquearInputsItems();
+        /*if (this.__agregarItem()) {
             const txtCodArt = document.querySelector('#txtCodArt');
             let xid_articulo = JSON.parse(txtCodArt.dataset.value);
             xid_articulo = xid_articulo.values[0].id;
             this.__guardarPedido(xid_articulo, txtCantidad);
             this.__blanquearInputsItems();
-        }
+        }*/
     }
 
     /**
@@ -279,7 +300,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Permite recuprar el pedido que se encuentra actualmente pendiente de
      * confirmar.
      */
-    __recuperarPedido() {
+    __recuperarPedido() {console.log(this.__objDataGrid);
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
 
@@ -600,7 +621,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {int} xidarticulo Id. de artículo
      * @param {double} xcantidad Cantidad
      */
-    __guardarItemEnBD(xaSesion, xaSucursal, xobjCatalogo, xidarticulo, xcantidad) {
+    __guardarItemEnBD(xaSesion, xaSucursal, xobjCatalogo, xidarticulo, xcantidad) {console.log('pregrabo')
         let aCabecera = {
             "id_cliente": parseInt(xaSesion["id_cliente"]),
             "id_tipoentidad": parseInt(xaSesion["id_tipoentidad"]),
