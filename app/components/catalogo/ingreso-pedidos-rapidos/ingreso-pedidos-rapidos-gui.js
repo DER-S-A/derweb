@@ -119,9 +119,26 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             });
 
             // Evento keydown del input de cantidad.
-            document.getElementById("txtCantidad").addEventListener("keydown", (event) => {
+            document.getElementById("txtCantidad").addEventListener("keydown", async (event) => {
                 if (event.key === "Enter") {
                     this.__agregarArticuloAlPedido();
+                    //Tuve q hacer esta funcion asincronica porq el recuperar pedido se ejecutaba antes que agregararticulo.
+                    const recuperarPedidoAsync = () => {
+                        return new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                            try {
+                                resolve(this.__recuperarPedido());
+                            } catch (error) {
+                                reject(error);
+                            }
+                            }, 2000); // Tiempo en milisegundos que deseas esperar antes de ejecutar la función sincrónica
+                        });
+                    }
+                    try {
+                        const pedido = await recuperarPedidoAsync();
+                    } catch (error) {
+                    console.error(error);
+                    }
                 }
             });
 
@@ -677,6 +694,9 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             content: "input",
         })
         .then((value) => {
+            if(value < 1 ) {
+                return;
+            }
             let dat = aPedidoItem["items"].filter(datos => datos.id == id);
             let Ojson = dat;
             Ojson[0].id_pedido = aPedidoItem.id_pedido;
