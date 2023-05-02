@@ -36,6 +36,7 @@ class CatalogoGUIComponent extends ComponentManager {
      */
     __createListaContainer() {
         if (!this.__existsComponent(this.__idCatalogoContainer)) {
+            this.__objAppContainer.className = 'container';
             this.__objListaContainer = document.createElement("div");
             this.__objListaContainer.classList.add("catalogo-container");
             this.__objListaContainer.id = this.__idCatalogoContainer;
@@ -146,7 +147,7 @@ class CatalogoGUIComponent extends ComponentManager {
      * Permite obtener una lista de artículos buscando por una frase.
      * @param {array} $xaParametros Array con los parámetors a pasar
      */
-    getByFrase($xaParametros) {
+    getByFrase($xaParametros) {console.log(this.__idAppContainer)
         this.__objGrilla = new CatalogoGridComponent("grilla-articulos", $xaParametros);
         this.__objGrilla.generateComponent(this.__idAppContainer);
     }
