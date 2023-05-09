@@ -206,6 +206,7 @@
         <script src="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-pendientes/pedidos-pendientes.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-pendientes/edicion-pedidos-pendientes.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapidos-gui.js");?>" type="text/javascript"></script>
+        <script src="components/buscador/buscador.js" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/funciones.js");?>" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil.js");?>" type="text/javascript"></script>

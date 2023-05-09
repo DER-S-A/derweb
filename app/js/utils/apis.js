@@ -43,11 +43,10 @@ class APIs {
      */
     call(xurl, xargs, xmethod, xcallback) { 
         let url = xurl + "?" + xargs;
-        fetch(url, {
-            method: xmethod
-            }).then(xresponse => xresponse.json())
-            .then(xdata => {
-                xcallback(xdata);
-            });
+        fetch(url, { method: xmethod})
+        .then(xresponse => xresponse.json())
+        .then(xdata => {
+            xcallback(xdata);
+        });
     }
 }

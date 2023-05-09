@@ -361,7 +361,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * blur de txtCodArt.
      * @returns {void}
      */
-    __ejecutarBuscadorDeArticulos() {
+    async __ejecutarBuscadorDeArticulos() {
         // Al salirse del foco realizo una búsqueda inicial.
         if (!this.__validarSeleccionCliente())
             return;
@@ -370,8 +370,28 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             //swal('warning','Debes completar el campo articulo');
             return;
         }
-
-        this.__buscarArticulo();        
+        const boxText = document.getElementById("txtCodArt");
+        const url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
+        const sesion = JSON.stringify((new CacheUtils("derweb")).get("sesion"));
+        const objbuscador = new Buscador(boxText, 1, url, undefined, sesion, 0);
+        const response = await objbuscador.initComponent();
+        console.log(response)
+        //usar aca el response
+        if (response.values.length === 1) {
+            document.getElementById("txtCodArt").value = response.values[0]["codigo"];
+            document.getElementById("txtDescripcion").value = response.values[0]["desc"];
+            document.getElementById("txtCantidad").focus();
+            
+            // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
+            document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
+            this.__modalBusquedaAbierto = false;
+        } else {
+            // En este caso tengo que abrir el modal.
+            //this.__buscarArticuloEnGrilla(url, sesion, 0, filter);
+            this.__buscarArticuloEnGrilla(boxText, url, sesion, 0);
+            (new CacheUtils("derweb")).set("sesion_temporal", new CacheUtils("derweb").get("sesion"));
+        }
+        //this.__buscarArticulo();        
     }    
 
     /**
@@ -385,7 +405,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let filter = "frase=" + txtCodArt;
 
         this.__modalBusquedaAbierto = false;
-        
         sesion = "sesion=" + JSON.stringify(aSesion);
         
         (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
@@ -412,9 +431,9 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {int} xpagina 
      * @param {string} xfilter 
      */
-    __buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter) {
+    async __buscarArticuloEnGrilla(xboxText, xurl, xsesion, xpagina/*, xfilter*/) {
         var tablaArticulos = null;
-        if (!this.__modalBusquedaAbierto) {
+        if (!this.__modalBusquedaAbierto) {console.log('queondawey')
             this.getTemplate((new App()).getUrlTemplate("ipr-grid-articulos"), (htmlResponse) => {
                 let objModal = new LFWModalBS(
                     "main", 
@@ -444,6 +463,20 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         }
 
         // Cargo el datatable con los resultados obtenidos.
+        this.__modalBusquedaAbierto = false;
+        const objbuscador = new Buscador(xboxText, 1, xurl, undefined, xsesion, xpagina);
+        const response = await objbuscador.initComponent();
+        if (response.values.length !== 0) {
+            xpagina += 40;
+            this.__buscarArticuloEnGrilla(xboxText, xurl, xsesion, xpagina/*, xfilter*/);
+            response.values.forEach((row) => {
+                let linkSelect = "<a href='javascript:seleccionar_articulo(" + row.id + ");' title='Seleccionar'><i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>";
+                this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
+            });
+            this.__tablaArticulos.draw();
+        }
+
+        /*
         (new APIs().call(xurl, xsesion + "&pagina=" + xpagina + "&" + xfilter, "GET", 
             response => {
                 if (response.values.length !== 0) {
@@ -455,7 +488,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                     });
                     this.__tablaArticulos.draw();
                 }
-            }));
+        }));
+        */
     }
 
     /**
