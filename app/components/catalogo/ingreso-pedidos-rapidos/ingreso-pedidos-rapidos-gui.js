@@ -373,9 +373,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         const boxText = document.getElementById("txtCodArt");
         const url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
         const sesion = JSON.stringify((new CacheUtils("derweb")).get("sesion"));
-        const objbuscador = new Buscador(boxText, 1, url, undefined, sesion, 0);
+        const objbuscador = new Buscador(boxText, 3, url, undefined, sesion, 0);
         const response = await objbuscador.initComponent();
-        console.log(response)
         //usar aca el response
         if (response.values.length === 1) {
             document.getElementById("txtCodArt").value = response.values[0]["codigo"];
@@ -387,42 +386,11 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             this.__modalBusquedaAbierto = false;
         } else {
             // En este caso tengo que abrir el modal.
-            //this.__buscarArticuloEnGrilla(url, sesion, 0, filter);
             this.__buscarArticuloEnGrilla(boxText, url, sesion, 0);
             (new CacheUtils("derweb")).set("sesion_temporal", new CacheUtils("derweb").get("sesion"));
         }
         //this.__buscarArticulo();        
     }    
-
-    /**
-     * Busca un artículo por frase.
-     */
-    __buscarArticulo() {
-        let txtCodArt = document.getElementById("txtCodArt").value;
-        let url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
-        let aSesion = (new CacheUtils("derweb")).get("sesion");
-        let sesion;
-        let filter = "frase=" + txtCodArt;
-
-        this.__modalBusquedaAbierto = false;
-        sesion = "sesion=" + JSON.stringify(aSesion);
-        
-        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
-            if (response.values.length === 1) {
-                document.getElementById("txtCodArt").value = response.values[0]["codigo"];
-                document.getElementById("txtDescripcion").value = response.values[0]["desc"];
-                document.getElementById("txtCantidad").focus();
-                
-                // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
-                document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
-                this.__modalBusquedaAbierto = false;
-            } else {
-                // En este caso tengo que abrir el modal.
-                this.__buscarArticuloEnGrilla(url, sesion, 0, filter);
-                (new CacheUtils("derweb")).set("sesion_temporal", aSesion);
-            }
-        });
-    }
 
     /**
      * Permite llenar la grilla de búsqueda de artículos con las coíncidencias.
@@ -433,7 +401,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      */
     async __buscarArticuloEnGrilla(xboxText, xurl, xsesion, xpagina/*, xfilter*/) {
         var tablaArticulos = null;
-        if (!this.__modalBusquedaAbierto) {console.log('queondawey')
+        console.log(this.__modalBusquedaAbierto)
+        if (!this.__modalBusquedaAbierto) {
             this.getTemplate((new App()).getUrlTemplate("ipr-grid-articulos"), (htmlResponse) => {
                 let objModal = new LFWModalBS(
                     "main", 
@@ -450,7 +419,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 document.getElementById("modal_articulos_btnclose").addEventListener("click", () => {
                     this.__modalBusquedaAbierto = false;
                     objModal.close();
-                });
+                });                
 
                 // Inicializo el datatable
                 this.__tablaArticulos = $("#ipr_grid_articulos").DataTable({
@@ -463,10 +432,9 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         }
 
         // Cargo el datatable con los resultados obtenidos.
-        this.__modalBusquedaAbierto = false;
         const objbuscador = new Buscador(xboxText, 1, xurl, undefined, xsesion, xpagina);
         const response = await objbuscador.initComponent();
-        if (response.values.length !== 0) {
+        if (response.values.length !== 0) {console.log("a2")
             xpagina += 40;
             this.__buscarArticuloEnGrilla(xboxText, xurl, xsesion, xpagina/*, xfilter*/);
             response.values.forEach((row) => {
@@ -474,22 +442,8 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
             });
             this.__tablaArticulos.draw();
-        }
+        } else this.__modalBusquedaAbierto = false;
 
-        /*
-        (new APIs().call(xurl, xsesion + "&pagina=" + xpagina + "&" + xfilter, "GET", 
-            response => {
-                if (response.values.length !== 0) {
-                    xpagina += 40;
-                    this.__buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter);
-                    response.values.forEach((row) => {
-                        let linkSelect = "<a href='javascript:seleccionar_articulo(" + row.id + ");' title='Seleccionar'><i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>";
-                        this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
-                    });
-                    this.__tablaArticulos.draw();
-                }
-        }));
-        */
     }
 
     /**
@@ -776,4 +730,6 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let objCarrito = new MiCarritoModalComponent;
         objCarrito.vaciarMiCarrito(url, xidpedido);
     }
+
+    set
 }

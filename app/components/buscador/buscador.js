@@ -1,7 +1,7 @@
 class Buscador extends ComponentManager {
     constructor(boxText, longitud, url, metodo = 'GET', session = '', paginado = -1) {
         super();
-        this.boxText = boxText;
+        this.boxText = boxText; //input q contiene la frase.
         this.filter = 'frase=';
         this.url = url;
         this.session = session;
@@ -11,12 +11,14 @@ class Buscador extends ComponentManager {
         this.data;
     }
 
+    /**
+     * Inicio el componente, se usa con async ya que tiene una promesa adentro q resolver.
+     */
     async initComponent() {
         this.__validarLongitud();
         this.data = this.filter + this.boxText.value;
         this.pagina > -1 ? this.data += `&pagina=${this.pagina.toString()}` : null;
         this.session != '' ? this.data += `&sesion=${this.session}` : null;
-        //console.log(this.url+ this.method+ '?'+this.data)
         try {
             const response = await this.__promesa(); 
             return response;
@@ -26,8 +28,11 @@ class Buscador extends ComponentManager {
         }
     }
 
+    /**
+     * Valido la longitud minima que debe tener la frase a buscar.
+     */
     __validarLongitud() {
-        if(this.boxText.value < this.lengthMin) {
+        if(this.boxText.value.length < this.lengthMin) {
             swal('ERROR...!', 'Debes poner mas caracteres para que funcione.', 'error')
             .then( () => {
                 return;
@@ -35,6 +40,9 @@ class Buscador extends ComponentManager {
         }
     }
 
+    /**
+     * Promesa que devuelve el resultado del CALL(fetch).
+     */
     __promesa() {
         return new Promise((resolve, reject) => {
             new APIs().call(this.url, this.data, this.method, response => {
