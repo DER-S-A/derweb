@@ -99,7 +99,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
         if (!sc3existeTabla($tabla)) {
             $sql = "CREATE TABLE $tabla (
                 id bigint not null unique auto_increment,
-                id_aviso_pago int not null,
+                id_rendicion int not null,
                 id_entidad int not null,
                 id_sucursal bigint not null,
                 fecha datetime not null default current_timestamp,
@@ -112,14 +112,14 @@ class UpdateAvisosDePagos extends UpdateVersion {
                 PRIMARY KEY (id)) ENGINE=InnoDB";
 
             self::ejecutarSQL($sql);
-            sc3addFk($tabla, "id_aviso_pago", $tablaRendiciones);
+            sc3addFk($tabla, "id_rendicion", $tablaRendiciones);
             sc3addFk($tabla, "id_entidad", $tablaEntidades);
             sc3addFk($tabla, "id_sucursal", $tablaSucursales);
 
             sc3agregarQuery($query, $tabla, "Avisos de pagos", "", "", 0, 0, 0, "id", 11, "", 1);
             sc3generateFieldsInfo($tabla);
-            sc3updateField($query, "id", "ID. Item");
-            sc3updateField($query, "id_aviso_pago", "Aviso N°", 1);
+            sc3updateField($query, "id", "Aviso N°");
+            sc3updateField($query, "id_rendicion", "Rendición N°", 1);
             sc3updateField($query, "id_entidad", "Cliente", 1);
             sc3updateField($query, "id_sucursal", "Sucursal", 1);
             sc3updateField($query, "fecha", "Fecha", 1);
@@ -130,7 +130,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
             sc3updateField($query, "importe_retenciones", "Retenciones", 1);
             sc3updateField($query, "total_recibo", "Importe Recibo", 1);
             
-            sc3addlink($query, "id_aviso_pago", $queryAvisosPagos, 1);
+            sc3addlink($query, "id_rendicion", $queryAvisosPagos, 1);
             sc3addlink($query, "id_entidad", $queryEntidades);
             sc3addlink($query, "id_sucursal", $querySucursales);
 
