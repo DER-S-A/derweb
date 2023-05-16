@@ -40,7 +40,11 @@ class Avp_rendicionesController extends APIController {
         return json_encode($objModel->get($xfilter));
     }
 
-    // TODO: Desarrollar métodos extras acá abajo.
+    /**
+     * agregarAvisoPago
+     * Este API permite agregar un aviso de pago a un determinado vendedor.
+     * @return void
+     */
     public function agregarAvisoPago() {
         if ($this->usePostMethod()) {
             try {
@@ -58,6 +62,30 @@ class Avp_rendicionesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+    
+    /**
+     * generarRendicion
+     * Este API permite generar la rendición y marcarlo como enviado para
+     * que administración lo reciba.
+     * @return void
+     */
+    public function generarRendicion() {
+        if ($this->usePostMethod()) {
+            try {
+                $datos = $this->getBodyParameter();
+                $objModel = new Avp_rendicionesModel();
+                $responseData = json_encode($objModel->generarRendicion($datos));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    } 
 }
 
 ?>

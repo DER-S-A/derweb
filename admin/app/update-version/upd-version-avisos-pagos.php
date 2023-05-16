@@ -44,7 +44,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
             $sql = "CREATE TABLE $tabla (
                 id int not null unique auto_increment,
                 id_entidad int not null,
-                fecha int not null default current_timestamp,
+                fecha datetime not null default current_timestamp,
                 fecha_enviado datetime null,
                 total_efectivo decimal(20, 2) not null default 0,
                 total_cheques decimal(20, 2) not null default 0,

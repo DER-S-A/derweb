@@ -22,7 +22,7 @@ class Avp_rendicionesModel extends Model {
     /**
      * agregarAvisoPago
      * Permite agregar un aviso de pago
-     * @return void
+     * @return array
      */
     public function agregarAvisoPago($xdatos) {
         $aResponse = [];
@@ -45,6 +45,39 @@ class Avp_rendicionesModel extends Model {
         $result = getRs($sql);
         $aResponse["result"] = $result->getValue("result");
         $aResponse["mensaje"] = $result->getValue("mensaje");
+        $result->close();
+        return $aResponse;
+    }
+        
+    /**
+     * generarRendicion
+     * Permite generar y enviar la rendición.
+     * @param  mixed $xdatos
+     * @return array
+     */
+    public function generarRendicion($xdatos) {
+        $aResponse = [];
+        $aDatos = json_decode($xdatos, true);
+
+        $sql = "CALL sp_avp_generarRendicion (
+            xidRendicion,
+            xImporteRetiro,
+            xEfectivoDepositado,
+            xGastosTransporte,
+            xGastosGenerales,
+            xObservaciones        
+        )";
+        $this->setParameter($sql, "xidRendicion", intval($aDatos["idRendicion"]));
+        $this->setParameter($sql, "xImporteRetiro", doubleval($aDatos["importe_retiro"]));
+        $this->setParameter($sql, "xEfectivoDepositado", doubleval($aDatos["efectivo_depositado"]));
+        $this->setParameter($sql, "xGastosTransporte", doubleval($aDatos["gastos_transporte"]));
+        $this->setParameter($sql, "xGastosGenerales", doubleval($aDatos["gastos_generales"]));
+        $this->setParameter($sql, "xObservaciones", $aDatos["observaciones"]);
+
+        $result = getRs($sql);
+        $aResponse["result"] = $result->getValue("result");
+        $aresponse["mensaje"] = $result->getValue("mensaje");
+        $aResponse["id_rendicion"] = $result->getValue("id_rendicion");
         $result->close();
         return $aResponse;
     }
