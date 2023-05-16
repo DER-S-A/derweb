@@ -77,7 +77,7 @@ class Avp_rendicionesModel extends Model {
         $result = getRs($sql);
         $aResponse["result"] = $result->getValue("result");
         $aresponse["mensaje"] = $result->getValue("mensaje");
-        $aResponse["id_rendicion"] = $result->getValue("id_rendicion");
+        $aResponse["id_rendicion"] = $result->getValueInt("id_rendicion");
         $result->close();
         return $aResponse;
     }
