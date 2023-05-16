@@ -46,6 +46,11 @@ class UpdateAvisosDePagos extends UpdateVersion {
                 id_entidad int not null,
                 fecha int not null default current_timestamp,
                 fecha_enviado datetime null,
+                total_efectivo decimal(20, 2) not null default 0,
+                total_cheques decimal(20, 2) not null default 0,
+                total_deposito decimal(20, 2) not null default 0,
+                total_retensiones decimal(20, 2) not null default 0,
+                total_recibos decimal(20, 2) not null default 0,
                 importe_retiro decimal(20, 2) not null default 0,
                 efectivo_depositado decimal(20, 2) not null default 0,
                 gastos_transporte decimal(20, 2) not null default 0,
@@ -53,7 +58,6 @@ class UpdateAvisosDePagos extends UpdateVersion {
                 efectivo_entregado decimal(20, 2) not null default 0,
                 observaciones text null,
                 archivo_pdf varchar(255) null,
-                rendido tinyint(3) not null default 0,
                 enviado tinyint(3) not null default 0,
                 PRIMARY KEY (id)
             ) ENGINE=InnoDB";
@@ -65,6 +69,11 @@ class UpdateAvisosDePagos extends UpdateVersion {
             sc3updateField($query, "id", "Aviso N°");
             sc3updateField($query, "id_entidad", "Entidad", 1);
             sc3updateField($query, "fecha", "Fecha", 1);
+            sc3updateField($query, "total_efectivo", "Total Efvo.", 1, "0");
+            sc3updateField($query, "total_cheques", "Total Cheques", 1, "0");
+            sc3updateField($query, "total_deposito", "Total Depósito", 1, "0");
+            sc3updateField($query, "total_retensiones", "Total Retensiones", 1, "0");
+            sc3updateField($query, "total_recibos", "Total Recibos", 1, "0");
             sc3updateField($query, "importe_retiro", "Retiró", 1, "0");
             sc3updateField($query, "efectivo_depositado", "Efectivo depositado", 1, "0");
             sc3updateField($query, "gasto_transporte", "Gastos transporte", 1, "0");
@@ -72,7 +81,6 @@ class UpdateAvisosDePagos extends UpdateVersion {
             sc3updateField($query, "efectivo_entregado", "Efectivo entregado", 1, "0");
             sc3updateField($query, "archivo_pdf", "Rendición PDF", 0, "", 1);
             sc3updateField($query, "observaciones", "Observaciones");
-            sc3updateField($query, "rendido", "Rendido", 1);
             sc3updateField($query, "enviado", "Enviado", 1);
             
             sc3addlink($query, "id_entidad", $queryEntidades, 0);

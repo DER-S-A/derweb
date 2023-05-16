@@ -55,4 +55,6 @@ include("modulos/entidades/sucursalesModel.inc.php");
 include("modulos/entidades/sucursalesController.php");
 include("modulos/entidades/margenesEspeciales-model.inc.php");
 include("modulos/entidades/margenesEspeciales-controller.php");
+include("modulos/rendiciones/avp-rendicionesModel.inc.php");
+include("modulos/rendiciones/avp-rendicionesController.php");
 ?>

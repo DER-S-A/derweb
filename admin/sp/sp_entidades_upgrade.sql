@@ -1,12 +1,14 @@
-﻿USE db_derweb;
-
-DROP PROCEDURE IF EXISTS sp_entidades_upgrade;
-
-DELIMITER $$
-
-CREATE
-DEFINER = 'root'@'localhost'
-PROCEDURE sp_entidades_upgrade (IN xid_tipoentidad int, IN xcliente_cardcode varchar(20), IN xnro_cuit varchar(15), IN xnombre varchar(100), IN xdireccion varchar(200), IN xemail varchar(200), IN xtelefono varchar(20), IN xdescuento_1 decimal(5, 2), IN xdescuento_2 decimal(5, 2), IN xSlpCode varchar(20))
+CREATE PROCEDURE sp_entidades_upgrade (
+  xid_tipoentidad int, 
+  xcliente_cardcode varchar(20), 
+  xnro_cuit varchar(15), 
+  xnombre varchar(100), 
+  xdireccion varchar(200), 
+  xemail varchar(200), 
+  xtelefono varchar(20), 
+  xdescuento_1 decimal(5, 2), 
+  xdescuento_2 decimal(5, 2), 
+  xSlpCode varchar(20))
 BEGIN
   DECLARE vCantReg int;
   DECLARE vIdEncontrado int;
@@ -63,6 +65,3 @@ BEGIN
   COMMIT;
 
 END
-$$
-
-DELIMITER ;
