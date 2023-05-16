@@ -18,7 +18,6 @@ function seleccionar_articulo(xid) {
 
         // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
         document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
-        this.__modalBusquedaAbierto = false;
         (new CacheUtils("derweb")).remove("sesion_temporal");
 
         // Cierro el modal
