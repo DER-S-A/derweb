@@ -28,7 +28,7 @@ BEGIN
 		GET DIAGNOSTICS CONDITION 1 vMensaje = MESSAGE_TEXT;
         INSERT INTO log_sp (nombre_sp, mensaje_error)
         VALUES ('sp_avp_agregarAvisoPago', vMensaje);
-        SELECT 'BD_ERROR' AS 'result', vMensaje AS 'mensaje';
+        SELECT 'error' AS 'result', vMensaje AS 'mensaje';
     END;
 
     SET vtotal_efectivo = 0.00;
@@ -108,5 +108,5 @@ BEGIN
 
     COMMIT;
 
-    SELECT 'OK' AS 'result', 'El aviso de pago se agregó con éxito' AS 'mensaje';
+    SELECT 'success' AS 'result', 'El aviso de pago se agregó con éxito' AS 'mensaje';
 END

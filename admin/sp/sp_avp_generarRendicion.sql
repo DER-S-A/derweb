@@ -17,7 +17,7 @@ BEGIN
 		GET DIAGNOSTICS CONDITION 1 vMensaje = MESSAGE_TEXT;
         INSERT INTO log_sp (nombre_sp, mensaje_error)
         VALUES ('sp_avp_generarRendicion', vMensaje);
-        SELECT 'BD_ERROR' AS 'result', vMensaje AS 'mensaje', xidRendicion AS 'id_rendicion';
+        SELECT 'error' AS 'result', vMensaje AS 'mensaje', xidRendicion AS 'id_rendicion';
     END;
 
     START TRANSACTION;
@@ -51,5 +51,5 @@ BEGIN
 
     COMMIT;
 
-    SELECT 'OK' AS 'result', 'Rendición generada con éxito' AS 'mensaje', xidRendicion AS 'id_rendicion';
+    SELECT 'success' AS 'result', 'Rendición generada con éxito' AS 'mensaje', xidRendicion AS 'id_rendicion';
 END
