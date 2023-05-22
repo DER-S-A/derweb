@@ -81,6 +81,78 @@ class Avp_rendicionesModel extends Model {
         $result->close();
         return $aResponse;
     }
+    
+    /**
+     * getRendicionByID
+     * Permite obtener una rendición por su ID.
+     * @param  int $xidRendicion
+     * @return BDObject
+     */
+    public function getRendicionByID($xidRendicion) {
+        $sql = "SELECT
+                    rend.*,
+                    e.nombre AS 'vendedor'
+                FROM
+                    avp_rendiciones rend
+                        INNER JOIN entidades e ON e.id = rend.id_entidad
+                WHERE
+                    rend.id = 1";
+
+        return getRs($sql);
+    }
+    
+    /**
+     * getMovimientosByIdRendicion
+     * Obtiene los movimientos (avisos de pagos) a partir de un id. de rendición.
+     * @param  int $xidRendicion
+     * @return BDObject
+     */
+    public function getMovimientosByIdRendicion($xidRendicion) {
+        $sql = "SELECT
+                    movs.id,
+                    movs.id_rendicion,
+                    movs.fecha,
+                    movs.id_sucursal,
+                    e.cliente_cardcode,
+                    e.nombre AS 'cliente',
+                    s.codigo_sucursal,
+                    s.nombre AS 'sucursal',
+                    movs.numero_recibo,
+                    movs.importe_efectivo,
+                    movs.importe_deposito,
+                    movs.importe_cheques,
+                    movs.importe_retenciones,
+                    movs.total_recibo
+                FROM
+                    avp_movimientos movs
+                        INNER JOIN entidades e ON e.id = movs.id_entidad
+                        INNER JOIN sucursales s ON s.id = movs.id_sucursal
+                WHERE
+                    movs.id_rendicion = $xidRendicion
+                ORDER BY
+                    movs.fecha ASC";
+        return getRs($sql);
+    }
+    
+    /**
+     * actualizarPDFLink
+     * Permite actualizar el link y adjuntar el PDF a la rendición
+     * que se generó.
+     * @param  int $xidRendicion
+     * @param  string $xlink
+     * @return void
+     */
+    public function actualizarPDFLink($xidRendicion, $xlink) {
+        $sql = "UPDATE
+                    avp_rendiciones
+                SET
+                    avp_rendiciones.archivo_pdf = '$xlink'
+                WHERE
+                    avp_rendiciones.id = $xidRendicion";
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        $bd->close();
+    }
 }
 
 ?>
