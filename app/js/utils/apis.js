@@ -41,12 +41,24 @@ class APIs {
      * @param {string} xmethod Método que soporta la API: GET, POST, PUT, DELETE, etc.
      * @param {callback} xcallback Función callback
      */
-    call(xurl, xargs, xmethod, xcallback) { 
-        let url = xurl + "?" + xargs;
-        fetch(url, { method: xmethod})
-        .then(xresponse => xresponse.json())
-        .then(xdata => {
-            xcallback(xdata);
-        });
+    call(xurl, xargs, xmethod, xcallback, body = false) { 
+        if(body) {
+            fetch(xurl, {
+                method: xmethod,
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(xargs)
+            })
+            .then(xresponse => xresponse.json())
+            .then(xdata => {
+                xcallback(xdata);
+            })
+        }else {
+            let url = xurl + "?" + xargs;
+            fetch(url, { method: xmethod})
+            .then(xresponse => xresponse.json())
+            .then(xdata => {
+                xcallback(xdata);
+            });
+        }
     }
 }
