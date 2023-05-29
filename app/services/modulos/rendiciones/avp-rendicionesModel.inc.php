@@ -137,7 +137,7 @@ class Avp_rendicionesModel extends Model {
                     movs.id_rendicion = $xidRendicion
                 ORDER BY
                     movs.fecha ASC";
-        return getRs($sql);
+        return getRs($sql, true);
     }
     
     /**
