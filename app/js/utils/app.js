@@ -60,6 +60,7 @@ const aTemplates = [
     {"ingreso-pedido-rapido"                    : "components/catalogo/ingreso-pedidos-rapidos/template.html"},
     {"rentabilidad"                             : "components/rentabilidad/template.html"},
     {"ficha-articulo"                           : "components/catalogo/ficha-articulo/template.html"},
+    {"aviso-pago"                               : "components/aviso_pago/template.html"},
     {"ipr-grid-articulos"                       : "components/catalogo/ingreso-pedidos-rapidos/grid-articulos-template.html"}
 ]
 

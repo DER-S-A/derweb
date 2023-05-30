@@ -335,3 +335,7 @@ function reset_cli_suc() {
         new CacheUtils("derweb", false).set("sesion", aSesion);
     }
 }
+
+function abrirAvisoPago() {
+    new AvisoPago().generateComponent();
+}
