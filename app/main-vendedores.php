@@ -209,6 +209,7 @@
         <script src="components/buscador/buscador.js" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/funciones.js");?>" type="text/javascript"></script>
 
+        <script src="components/form/form.js" type="text/javascript"></script>
         <script src="components/aviso_pago/avisoPago.js" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil.js");?>" type="text/javascript"></script>
