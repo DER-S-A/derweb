@@ -678,7 +678,8 @@ class PedidosModel extends Model {
         $aPedidoEnviar["TransportationCode"] = $aPedidoActual["codigo_envio"]; // Agrego el codigo de la forma de envio
         $aPedidoEnviar["DocCurrency"] = 'ARS'; // Agrego Tipo Moneda
         $aPedidoEnviar["Project"] = "ADMIN01"; // ! TENGO Q HARDCODEAR SI ES CTA1 o CTA2 (ADMIN01 ES CTA1)
-        
+        $aPedidoEnviar["SistemaOrigenNumero"] = $xid_pedido;
+        $aPedidoEnviar["SistemaOrigen"] = "1";
 
 
         // * Recupero el pedido actual
@@ -941,5 +942,3 @@ class PedidosModel extends Model {
         return true;
     }
 }
-
-?>

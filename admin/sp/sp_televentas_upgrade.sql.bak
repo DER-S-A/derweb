@@ -45,7 +45,7 @@ BEGIN
       descuento_2,
       fecha_alta,
       fecha_modificado)
-        VALUES (2, xClienteCardCode, xCuit, xNombre, xDireccion, xTelefono, cliente_cardcode, 'derweb', @idListaPrecio, 0, 0, NOW(), NOW());
+        VALUES (2, xClienteCardCode, xCuit, xNombre, xDireccion, xTelefono, cliente_cardcode, 'derweb', @idListaPrecioi, 0, 0, NOW(), NOW());
     ELSE
       SELECT
         id INTO vIdEncontrado

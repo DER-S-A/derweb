@@ -248,14 +248,7 @@ class Catalogo:
                 sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','No','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
                 mysql.execute(sql)
                 clientes += 1
-                # print(f"Clientes Procesados: {clientes}")
-                #    strParametro = "registro=" + json.dumps(entidad)
-                #    strParametro = strParametro.replace("&", "y")
-                #    repuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
-                # print(repuesta)
-                # entidades = sap.getData("clientes", None, pagina)
-                # pagina += 20
-                # print("Procesando página: " + str(pagina))
+                print(f"Clientes Procesados: {clientes}")
             mysql.closeDB()
             elapsed_time = time.perf_counter() - start_time
             minute = int(elapsed_time / 60)
@@ -297,11 +290,6 @@ class Catalogo:
                         if articulo["ItemCode"] == aDER[0]:
                             Noencontrado = False
                             if  dt != str(aDER[1]):   
-                                # strParametro = "registro=" + json.dumps(articulo)
-                                # strParametro = strParametro.replace("&", "y")
-                                # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()                        
-                                # print(f"Code: {respuesta['result_code']}")
-                                # print(f"Mensaje: {respuesta['result_mensaje']}") 
                                 if(articulo['RubroCod'] != None and articulo['MarcaCod'] != None and articulo['SubRubroCod'] != None):    
                                     articulo['ItemName'] = articulo["ItemName"].replace("'","")
                                     sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"    
@@ -309,21 +297,13 @@ class Catalogo:
                                     actualizados+=1
                             else : NoActualizados+=1   
                     if (Noencontrado):
-                        # strParametro = "registro=" + json.dumps(articulo)
-                        # strParametro = strParametro.replace("&", "y")
-                        # respuesta = requests.put(url=strUrl + "?" + strParametro, headers=headers).json()
                         if(articulo['RubroCod'] != '' and articulo['MarcaCod'] != '' and articulo['SubRubroCod'] != ''): 
                             articulo['ItemName'] = articulo["ItemName"].replace("'","")
                             sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"  
                             mysql.execute(sql)
-                            # print(f"Code: {respuesta['result_code']} ")
-                            # print(f"Mensaje: {respuesta['result_mensaje']}")
                             nuevos+= 1
                     arti+= 1
                     print (f"Articulos Procesados: {arti}")
-            # pagina += 10000
-                #print(f"Procesando página: {str(pagina)}")
-                #articulos = sap.getData("articulos", None, pagina)
                     
             mysql.closeDB()
             print ("Articulos Finalizado ")
@@ -418,6 +398,7 @@ class Catalogo:
                     mysql.execute(sql)
                     procesados += 1
                     print(f"Televentas Procesados {procesados}")
+                    
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             print(tv)
