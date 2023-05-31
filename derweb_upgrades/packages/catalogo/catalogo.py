@@ -17,9 +17,18 @@ import json
 import sys
 from requests.packages import urllib3
 import time 
+import concurrent.futures
 
 class Catalogo:
 
+
+    def verificar_caracteres_validos(self,cadena):
+        caracteres_validos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefjhyjklmnñopqrstuvwxyz _!/.\"(),0123456789+-´," # conjunto de caracteres válidos
+        caracteres_invalidos = "".join([char for char in cadena if char not in caracteres_validos])
+        cadena = cadena.translate(str.maketrans("", "", caracteres_invalidos))
+        return cadena
+
+    
     def updatePaises(self):
         """
             Actualiza los paises
@@ -234,9 +243,9 @@ class Catalogo:
             # while len(entidades["value"]) != 0 :
             for entidad in entidades["value"]:
                 if entidad['CardName'] is not None:
+                    entidad['CardName'] = self.verificar_caracteres_validos(entidad['CardName'])
                     entidad['CardName'] = entidad['CardName'].replace("'","")
                 sql = f"call sp_entidades_upgrade (1, '{entidad['CardCode']}','{entidad['TaxId']}','{entidad['CardName']}','No','{entidad['E_Mail']}','{entidad['Phone1']}',{entidad['DescuentoP1']},{entidad['DescuentoP2']},{entidad['SlpCode']})"
-                print(sql)
                 mysql.execute(sql)
                 clientes += 1
                 # print(f"Clientes Procesados: {clientes}")
@@ -268,7 +277,7 @@ class Catalogo:
         # strUrl = "http://localhost/derweb/app/services/articulos/upgrade"
         # headers = {
         #     "Content-Type": "application/json"
-        # } 
+        # }
         try :
             artDER = mysql.getQuery("SELECT CODIGO, FECHA_MODIFICADO FROM ARTICULOS;")
             sap.login()
@@ -295,7 +304,7 @@ class Catalogo:
                                 # print(f"Mensaje: {respuesta['result_mensaje']}") 
                                 if(articulo['RubroCod'] != None and articulo['MarcaCod'] != None and articulo['SubRubroCod'] != None):    
                                     articulo['ItemName'] = articulo["ItemName"].replace("'","")
-                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"             
+                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"    
                                     mysql.execute(sql)
                                     actualizados+=1
                             else : NoActualizados+=1   
@@ -374,20 +383,26 @@ class Catalogo:
 
                         if sucursales['Calle'] != None:
                             sucursales['Calle'] = sucursales['Calle'].replace("'","")
-                        sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}',{sucursales['EstadoCode']},'{sucursales['ZipCode']}',{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
+                        if sucursales['Ciudad'] != None:
+                            sucursales['Ciudad'] = sucursales['Ciudad'].replace("'","")
+                        sucursales['SucursalCode'] = sucursales['SucursalCode'].replace("'","")
+                        sucursales['SucursalCode'] = self.verificar_caracteres_validos(sucursales['SucursalCode']) 
+                        sucursales['SucursalName'] = sucursales['SucursalName'].replace("'","")            
+                        sucursales['SucursalName'] = self.verificar_caracteres_validos(sucursales['SucursalName'])         
+                        sql = f"call sp_Sucursales_upgrade('{sucursales['SucursalCode']}','{sucursales['SucursalName']}','{sucursales['CardCode']}','{sucursales['TipoCode']}','{sucursales['Calle']}','{sucursales['Ciudad']}','{sucursales['EstadoCode']}','{sucursales['ZipCode']}',{sucursales['Gln'] if sucursales['Gln'] != None else 0},{sucursales['CardCodeDER'] if sucursales['CardCodeDER'] != None else 0},'{sucursales['CreateDate']}')"
                         mysql.execute(sql)
+
                 # print("Procesando página: " + str(pagina))
 
             print("Proceso Finalizado Correctamente")
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            print(sucursales)
             sap.logout()
             
     def updateTeleVentas(self):
         """
             Este método permite actualizar los televentas del catalogo
-        """
+        """ 
         
         sap = SAPManager()
         mysql = MySqlManager()
@@ -407,3 +422,36 @@ class Catalogo:
             print(f"Unexpected {err=}, {type(err)=}")
             print(tv)
             sap.logout()
+    def updateListasDePrecios(self):
+        """
+            ESTE METODO PERMITE ACTUALIZAR LAS LISTAS DE PRECIO
+        """
+        procesados = 0
+        sap = SAPManager()
+        mysql = MySqlManager()
+        try:
+            sap.login()
+            listaPrecios = sap.getData("listaPrecios")
+            for lp in listaPrecios["value"]:
+                sql = f"CALL sp_listaPrecios_upgrade({lp['ListNum']},'{lp['ListName']}')"
+                mysql.execute(sql)
+                procesados += 1
+                print(f"Listas Procesadas {procesados}")
+            print(f"Listas de Precios Terminada")
+            precio = sap.getData("precioArt")
+            procesados = 0
+            for precios in precio["value"]:
+                sql = f"CALL sp_artPrecios_upgrade('{precios['ItemCode']}',{precios['PriceList']},{precios['Price']});"
+                mysql.execute(sql)
+                procesados += 1
+                print(f"Precios procesados{procesados}")
+            print(f"Precios Articulos Finalizo")
+            mysql.closeDB()
+            sap.logout()
+        except BaseException as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            sap.logout()
+            
+            
+            
+            

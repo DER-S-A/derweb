@@ -18,7 +18,9 @@
         "paises": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Paises_B1SLQuery",
         "tasas_IVA": "https://181.119.123.148:50000/b1s/v1/SalesTaxCodes",
         "sucursales": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_Sucursales_B1SLQuery",
-        "televentas": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_EmpleadoVenta_B1SLQuery"
+        "televentas": "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_DW_EmpleadoVenta_B1SLQuery",
+        "listaPrecios" :"https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_SL_ListasPrecio_B1SLQuery",
+        "precioArt" :   "https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_SL_PreciosProductos_B1SLQuery"
     },
     "mysql": {
         "host": "localhost",
