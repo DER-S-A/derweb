@@ -18,7 +18,6 @@ function seleccionar_articulo(xid) {
 
         // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
         document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
-        this.__modalBusquedaAbierto = false;
         (new CacheUtils("derweb")).remove("sesion_temporal");
 
         // Cierro el modal
@@ -27,11 +26,11 @@ function seleccionar_articulo(xid) {
         document.getElementById("txtCantidad").focus();
     });
 }
+let objIpr = new IngresoPedidosRapidoGUI;
+function editarItem(xid) {
+    objIpr.editarItem(xid);
+}
 
-function editarItem(xcodigoArticulo) {
-    let objIpr = new IngresoPedidosRapidoGUI();
-    let objCache = new CacheUtils("derweb");
-    let items = objCache.get(objIpr.__nombreCacheItems);
-    let itemAEditar = items.filter((element) => element.codart === xcodigoArticulo);
-    console.log(itemAEditar);
+function eliminarItem(xidpedido, xId) {
+    objIpr.borrarItem(xidpedido, xId);
 }

@@ -1,7 +1,5 @@
-﻿CREATE
-DEFINER = 'root'@'localhost'
-PROCEDURE sp_televentas_upgrade (IN xTipoEntidad int, IN xClienteCardCode varchar(20), IN xNombre varchar(100), IN xTelefono varchar(20), IN xDireccion varchar(200), IN xEmail varchar(200), IN xCuit varchar(50))
-COMMENT 'Este Store Procedure permite Actualizar y agregar nuevos televentas a la tabla de entidades'
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_televentas_upgrade`(IN xTipoEntidad INT, IN xClienteCardCode VARCHAR(20), IN xNombre VARCHAR(100), IN xTelefono VARCHAR(20), IN xDireccion VARCHAR(200), IN xEmail VARCHAR(200), IN xCuit VARCHAR(50))
+    COMMENT 'Este Store Procedure permite Actualizar y agregar nuevos televentas a la tabla de entidades'
 BEGIN
   DECLARE vCantReg int;
   DECLARE vIdEncontrado int;

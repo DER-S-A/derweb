@@ -9,6 +9,7 @@
 include_once("../../admin/config.php");
 include_once("../../admin/funcionesSConsola.php");
 include_once("../../admin/dbcommand.php");
+include_once("../../admin/terceros/fpdf/fpdf.php");
 include_once("includes/funciones.inc.php");
 
 include("includes/apis/configuracion-sap.php");
@@ -54,5 +55,8 @@ include("modulos/transportes/transportesController.php");
 include("modulos/entidades/sucursalesModel.inc.php");
 include("modulos/entidades/sucursalesController.php");
 include("modulos/entidades/margenesEspeciales-model.inc.php");
-include("modulos/entidades/margenesEspeciales-Controller.php");
+include("modulos/entidades/margenesEspeciales-controller.php");
+include("modulos/rendiciones/avp-rendicionesModel.inc.php");
+include("modulos/rendiciones/avp-rendicionesController.php");
+include("modulos/rendiciones/avp-rendiciones-pdf.php");
 ?>

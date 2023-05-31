@@ -81,6 +81,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 // Al salirse del foco realizo una búsqueda inicial.
                 if (!this.__validarSeleccionCliente())
                     return;
+                //this.__buscarArticulo();
             });
             
             this.__crearGridItems();
@@ -118,15 +119,49 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             });
 
             // Evento keydown del input de cantidad.
-            document.getElementById("txtCantidad").addEventListener("keydown", (event) => {
+            document.getElementById("txtCantidad").addEventListener("keydown", async (event) => {
                 if (event.key === "Enter") {
                     this.__agregarArticuloAlPedido();
+                    //Tuve q hacer esta funcion asincronica porq el recuperar pedido se ejecutaba antes que agregararticulo.
+                    const recuperarPedidoAsync = () => {
+                        return new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                            try {
+                                resolve(this.__recuperarPedido());
+                            } catch (error) {
+                                reject(error);
+                            }
+                            }, 2000); // Tiempo en milisegundos que deseas esperar antes de ejecutar la función sincrónica
+                        });
+                    }
+                    try {
+                        const pedido = await recuperarPedidoAsync();
+                    } catch (error) {
+                    console.error(error);
+                    }
                 }
             });
 
             // Evento click del botón agregar ítem
-            document.getElementById("btnAgregar").addEventListener("click", () => {
+            document.getElementById("btnAgregar").addEventListener("click", async () => {
                 this.__agregarArticuloAlPedido();
+                //Tuve q hacer esta funcion asincronica porq el recuperar pedido se ejecutaba antes que agregararticulo.
+                const recuperarPedidoAsync = () => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          try {
+                            resolve(this.__recuperarPedido());
+                          } catch (error) {
+                            reject(error);
+                          }
+                        }, 2000); // Tiempo en milisegundos que deseas esperar antes de ejecutar la función sincrónica
+                    });
+                }
+                try {
+                    const pedido = await recuperarPedidoAsync();
+                } catch (error) {
+                console.error(error);
+                }
             })
 
             // Estos eventos los agrego acá porque sino cuando voy al confirmar pedido me abre
@@ -173,13 +208,17 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      */
     __agregarArticuloAlPedido() {
         let txtCantidad = document.querySelector('#txtCantidad').value;
-        if (this.__agregarItem()) {
+        let xid_articulo = JSON.parse(txtCodArt.dataset.value);
+        xid_articulo = xid_articulo.values[0].id;
+        this.__guardarPedido(xid_articulo, txtCantidad);
+        this.__blanquearInputsItems();
+        /*if (this.__agregarItem()) {
             const txtCodArt = document.querySelector('#txtCodArt');
             let xid_articulo = JSON.parse(txtCodArt.dataset.value);
             xid_articulo = xid_articulo.values[0].id;
             this.__guardarPedido(xid_articulo, txtCantidad);
             this.__blanquearInputsItems();
-        }
+        }*/
     }
 
     /**
@@ -278,20 +317,21 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Permite recuprar el pedido que se encuentra actualmente pendiente de
      * confirmar.
      */
-    __recuperarPedido() {
+    __recuperarPedido() {console.log(this.__objDataGrid);
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
 
         // Limpio el datatable
         this.__objDataGrid.clear().draw();
 
-        (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => { 
+        (new APIs()).call(urlPed, "sesion=" + aSesion, "GET", response => {
             let arrItems = response.items;
+            this.__guardarPedidoItemEnCache(response)
             
             if (arrItems !== undefined) {
                 arrItems.forEach((item, index) => {
-                    var opciones = "<a href='javascript:editarItem(\"" + item.codigo + "\");'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
-                    opciones += "<a href='#'><i class='fa-solid fa-trash-can fa-xl'></i></a>"
+                    var opciones = "<a href='javascript:editarItem(\"" + item.id + "\");'><i class='fa-regular fa-pen-to-square fa-xl'></i></a>&nbsp;&nbsp;&nbsp;";
+                    opciones += `<a href='javascript:eliminarItem(${response.id_pedido},${item.id})'><i class='fa-solid fa-trash-can fa-xl'></i></a>`
 
                     item = {
                         "id": index + 1,
@@ -321,7 +361,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * blur de txtCodArt.
      * @returns {void}
      */
-    __ejecutarBuscadorDeArticulos() {
+    async __ejecutarBuscadorDeArticulos() {
         // Al salirse del foco realizo una búsqueda inicial.
         if (!this.__validarSeleccionCliente())
             return;
@@ -330,40 +370,27 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
             //swal('warning','Debes completar el campo articulo');
             return;
         }
-
-        this.__buscarArticulo();        
+        const boxText = document.getElementById("txtCodArt");
+        const url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
+        const sesion = JSON.stringify((new CacheUtils("derweb")).get("sesion"));
+        const objbuscador = new Buscador(boxText, 3, url, undefined, sesion, 0);
+        const response = await objbuscador.initComponent();
+        //usar aca el response
+        if (response.values.length === 1) {
+            document.getElementById("txtCodArt").value = response.values[0]["codigo"];
+            document.getElementById("txtDescripcion").value = response.values[0]["desc"];
+            document.getElementById("txtCantidad").focus();
+            
+            // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
+            document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
+            this.__modalBusquedaAbierto = false;
+        } else {
+            // En este caso tengo que abrir el modal.
+            this.__buscarArticuloEnGrilla(boxText, url, sesion, 0);
+            (new CacheUtils("derweb")).set("sesion_temporal", new CacheUtils("derweb").get("sesion"));
+        }
+        //this.__buscarArticulo();        
     }    
-
-    /**
-     * Busca un artículo por frase.
-     */
-    __buscarArticulo() {
-        let txtCodArt = document.getElementById("txtCodArt").value;
-        let url = (new App()).getUrlApi("catalogo-articulos-getByFranse");
-        let aSesion = (new CacheUtils("derweb")).get("sesion");
-        let sesion;
-        let filter = "frase=" + txtCodArt;
-
-        this.__modalBusquedaAbierto = false;
-        
-        sesion = "sesion=" + JSON.stringify(aSesion);
-        
-        (new APIs()).call(url, sesion + "&pagina=0&" + filter, "GET", response  => {
-            if (response.values.length === 1) {
-                document.getElementById("txtCodArt").value = response.values[0]["codigo"];
-                document.getElementById("txtDescripcion").value = response.values[0]["desc"];
-                document.getElementById("txtCantidad").focus();
-                
-                // Pongo el JSON del artículo seleccionado en data-value en txtCodArt
-                document.getElementById("txtCodArt").dataset.value = JSON.stringify(response);
-                this.__modalBusquedaAbierto = false;
-            } else {
-                // En este caso tengo que abrir el modal.
-                this.__buscarArticuloEnGrilla(url, sesion, 0, filter);
-                (new CacheUtils("derweb")).set("sesion_temporal", aSesion);
-            }
-        });
-    }
 
     /**
      * Permite llenar la grilla de búsqueda de artículos con las coíncidencias.
@@ -372,8 +399,9 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {int} xpagina 
      * @param {string} xfilter 
      */
-    __buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter) {
+    async __buscarArticuloEnGrilla(xboxText, xurl, xsesion, xpagina/*, xfilter*/) {
         var tablaArticulos = null;
+        console.log(this.__modalBusquedaAbierto)
         if (!this.__modalBusquedaAbierto) {
             this.getTemplate((new App()).getUrlTemplate("ipr-grid-articulos"), (htmlResponse) => {
                 let objModal = new LFWModalBS(
@@ -391,7 +419,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
                 document.getElementById("modal_articulos_btnclose").addEventListener("click", () => {
                     this.__modalBusquedaAbierto = false;
                     objModal.close();
-                });
+                });                
 
                 // Inicializo el datatable
                 this.__tablaArticulos = $("#ipr_grid_articulos").DataTable({
@@ -404,18 +432,18 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         }
 
         // Cargo el datatable con los resultados obtenidos.
-        (new APIs().call(xurl, xsesion + "&pagina=" + xpagina + "&" + xfilter, "GET", 
-            response => {
-                if (response.values.length !== 0) {
-                    xpagina += 40;
-                    this.__buscarArticuloEnGrilla(xurl, xsesion, xpagina, xfilter);
-                    response.values.forEach((row) => {
-                        let linkSelect = "<a href='javascript:seleccionar_articulo(" + row.id + ");' title='Seleccionar'><i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>";
-                        this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
-                    });
-                    this.__tablaArticulos.draw();
-                }
-            }));
+        const objbuscador = new Buscador(xboxText, 1, xurl, undefined, xsesion, xpagina);
+        const response = await objbuscador.initComponent();
+        if (response.values.length !== 0) {console.log("a2")
+            xpagina += 40;
+            this.__buscarArticuloEnGrilla(xboxText, xurl, xsesion, xpagina/*, xfilter*/);
+            response.values.forEach((row) => {
+                let linkSelect = "<a href='javascript:seleccionar_articulo(" + row.id + ");' title='Seleccionar'><i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>";
+                this.__tablaArticulos.row.add([row.id, row.codigo, row.desc, linkSelect]);
+            });
+            this.__tablaArticulos.draw();
+        } else this.__modalBusquedaAbierto = false;
+
     }
 
     /**
@@ -474,6 +502,16 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let items = this.__objDataGrid.rows().data().toArray();
         let objCache = new CacheUtils("derweb");
         objCache.set(this.__nombreCacheItems, items);
+    }
+
+    /**
+     * Permite guardar los ítems de la grilla en cache para poder manipular la información
+     * desde la interfaz de usuario.
+     * @param {Object} arrItems
+     */
+    __guardarPedidoItemEnCache(arrItems) {
+        let objCache = new CacheUtils("derweb");
+        objCache.set('pedido-item', arrItems);
     }
 
     /**
@@ -588,7 +626,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * @param {int} xidarticulo Id. de artículo
      * @param {double} xcantidad Cantidad
      */
-    __guardarItemEnBD(xaSesion, xaSucursal, xobjCatalogo, xidarticulo, xcantidad) {
+    __guardarItemEnBD(xaSesion, xaSucursal, xobjCatalogo, xidarticulo, xcantidad) {console.log('pregrabo')
         let aCabecera = {
             "id_cliente": parseInt(xaSesion["id_cliente"]),
             "id_tipoentidad": parseInt(xaSesion["id_tipoentidad"]),
@@ -636,4 +674,62 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         this.__objDataGrid.row(index).data(xitem);
         this.__refrescarGrillaItemsPedido();
     }
+
+    editarItem(id) {
+        this.__objDataGrid = $('#ipr_grid_items').DataTable();
+        const aPedidoItem = (new CacheUtils("derweb")).get("pedido-item");
+        swal("Cantidad:", {
+            content: "input",
+        })
+        .then((value) => {
+            if(value < 1 ) {
+                return;
+            }
+            let dat = aPedidoItem["items"].filter(datos => datos.id == id);
+            let Ojson = dat;
+            Ojson[0].id_pedido = aPedidoItem.id_pedido;
+            Ojson[0].cantidad = value;
+            Ojson[0].costo_unitario = dat[0]["costo"];
+            Ojson[0].total = dat[0].subtotal_final;
+            delete Ojson[0].costo;
+            delete Ojson[0].subtotal_final;
+            // Preparo el api para enviar al php.
+            let objApp = new App();
+            let urlAPI = objApp.getUrlApi("catalogo-pedidos-modificar-items");
+            let objAPI = new APIs();
+            objAPI.call(urlAPI, "data=" + JSON.stringify(Ojson[0]), "PUT", (response) => {
+                swal(response.codigo, response.mensaje, 'success')
+                .then( () => {
+                    this.__recuperarPedido();
+                })
+            });
+        });
+    }
+
+    /**
+     * Permite eliminar un item al hacer clic en "tash"
+     */
+    borrarItem(xidpedido, xId) {
+        this.__objDataGrid = $('#ipr_grid_items').DataTable();
+        const url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
+        const pedidoStorage = JSON.parse(sessionStorage.getItem("derweb_ipr_pedido_actual"));
+        if(pedidoStorage.length>1) {
+            let objCarrito = new MiCarritoModalComponent;
+            objCarrito.eliminar_item_carrito(url, xidpedido, xId);
+        } else {
+            this.__vaciar_carrito(xidpedido);
+        }
+        this.__recuperarPedido();
+    }
+
+    /**
+     * Permite vaciar mi carrito al hacer clic en "Vaciar mi carrito"
+     */
+    __vaciar_carrito(xidpedido) {
+        const url =  app.getUrlApi("catalogo-pedidos-vaciarCarrito");
+        let objCarrito = new MiCarritoModalComponent;
+        objCarrito.vaciarMiCarrito(url, xidpedido);
+    }
+
+    set
 }

@@ -31,6 +31,8 @@
     display: none;
     border-right: 2px solid lightgray;
     position: fixed;
+    max-height: 95vh;
+    overflow: auto;
 }
 
 .lista-articulos-ul {

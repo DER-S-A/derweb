@@ -51,6 +51,7 @@ class Seguridad {
                     document.getElementById("selector-sucursales-container").style = "display:block";
 
                     // Cargo el select de sucursales.
+                    document.getElementById("cboSucursales").innerHTML = '';
                     response[0]["sucursales"].forEach(element => {
                         let opciones = document.createElement("option");
                         opciones.value = element["id"];

@@ -11,11 +11,8 @@ class Rentabilidad extends ComponentManager {
         this.getTemplate(new App().getUrlTemplate("rentabilidad"), html => {
             section.innerHTML = html;
 
-            //const arrayInputs = document.querySelectorAll('#container-rentabilidad .contenedor-inputs input');
             const miSession = new CacheUtils('derweb').get('sesion');
             const id_sucursal = miSession.id_sucursal;
-            //const inputsArrayValue = [miSession.rentabilidad_1, miSession.rentabilidad_2];
-            //this.llenarInputs(inputsArrayValue, arrayInputs);
             let url = new App().getUrlApi('catalogo-marcas-get');
             const marcaPromise = fetch(url, { method: 'GET' }).then(response => response.json());
             url = new App().getUrlApi('catalogo-rubros-get');
@@ -671,6 +668,7 @@ class Rentabilidad extends ComponentManager {
         let url = new App().getUrlApi('margenesEspeciales-get');
         const miSession = new CacheUtils('derweb').get('sesion');
         const parametros = `filter=id_sucursal=${miSession.id_sucursal}`
+        console.log(url+'?'+parametros)
         new APIs().call(url, parametros, 'GET', respuesta => {
             console.log(respuesta)
             respuesta.forEach(respuesta => {
