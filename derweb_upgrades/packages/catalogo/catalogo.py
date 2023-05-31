@@ -422,7 +422,10 @@ class Catalogo:
             precio = sap.getData("precioArt")
             procesados = 0
             for precios in precio["value"]:
+                if precios['Price'] == 0:
+                    continue
                 sql = f"CALL sp_artPrecios_upgrade('{precios['ItemCode']}',{precios['PriceList']},{precios['Price']});"
+                print(sql)
                 mysql.execute(sql)
                 procesados += 1
                 print(f"Precios procesados{procesados}")

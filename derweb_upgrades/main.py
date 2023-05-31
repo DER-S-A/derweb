@@ -10,10 +10,10 @@ oCatalogo = Catalogo()
 # oCatalogo.updateSubrubros()
 # oCatalogo.updateMarcas()
 # oCatalogo.updateArticulos()
-# oCatalogo.updateListasDePrecios()
-oCatalogo.updateTeleVentas()
-oCatalogo.updateClientes()
-oCatalogo.updateSucursales()
+oCatalogo.updateListasDePrecios()
+# oCatalogo.updateTeleVentas()
+# oCatalogo.updateClientes()
+# oCatalogo.updateSucursales()
 
 
 
