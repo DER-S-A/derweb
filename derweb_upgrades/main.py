@@ -3,17 +3,17 @@ import time
 
 start_time = time.perf_counter()
 oCatalogo = Catalogo()
-# oCatalogo.updatePaises()
-# oCatalogo.updateProvincias()
-# oCatalogo.updateFormasEnvios()
-# oCatalogo.updateRubros()
-# oCatalogo.updateSubrubros()
-# oCatalogo.updateMarcas()
-# oCatalogo.updateArticulos()
+oCatalogo.updatePaises()
+oCatalogo.updateProvincias()
+oCatalogo.updateFormasEnvios()
+oCatalogo.updateRubros()
+oCatalogo.updateSubrubros()
+oCatalogo.updateMarcas()
+oCatalogo.updateArticulos()
 oCatalogo.updateListasDePrecios()
-# oCatalogo.updateTeleVentas()
-# oCatalogo.updateClientes()
-# oCatalogo.updateSucursales()
+oCatalogo.updateTeleVentas()
+oCatalogo.updateClientes()
+oCatalogo.updateSucursales()
 
 
 
