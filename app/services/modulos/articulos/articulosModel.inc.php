@@ -287,7 +287,6 @@ class ArticulosModel extends Model {
                 ORDER BY 
                     id ASC
                 LIMIT 40 OFFSET $xpagina";
-
         $rsArticulos = getRs($sql, true);
         $arrayRenta = $this->generarRentabilidadGral($this->idSucursal);
         
