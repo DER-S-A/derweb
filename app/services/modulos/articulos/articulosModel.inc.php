@@ -252,7 +252,7 @@ class ArticulosModel extends Model {
     public function getByFrase($xsesion, $xfrase, $xpagina) {
         if (strlen($xfrase) <= 2) {
             $aResponse["error"] = "VALID_ERROR";
-            $aResponse["message"] = "Debe ingresar al menos 5 caracteres para buscar";
+            $aResponse["message"] = "Debe ingresar al menos 2 caracteres para buscar";
             return $aResponse;
             
         }
@@ -283,12 +283,12 @@ class ArticulosModel extends Model {
                     art.eliminado = 0 AND
                     art.habilitado = 1 AND
                     $filtro AND
-                    pre.id_listaprecio = 1
+                    pre.id_listaprecio = $this->id_listaprecio
                 ORDER BY 
                     id ASC
-                LIMIT 40 OFFSET $xpagina";
+                LIMIT 40 OFFSET $xpagina"; 
         $rsArticulos = getRs($sql, true);
-        $arrayRenta = $this->generarRentabilidadGral($this->idSucursal);
+        $arrayRenta = $this->generarRentabilidadGral();
         
         $aResponse = $this->loadResponseArray($rsArticulos, $xpagina, $this->descuento_p1, $this->descuento_p2, $arrayRenta);
         $rsArticulos->close();
@@ -397,9 +397,9 @@ class ArticulosModel extends Model {
      * @return array
      */
 
-    private function generarRentabilidadGral($id_sucursal) {
+    private function generarRentabilidadGral() {
 
-        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id = $id_sucursal";
+        $sql = "SELECT rentabilidad_1, rentabilidad_2 FROM sucursales WHERE id = ". $this->idSucursal;
         $arrayRenta = getRs($sql, true)->getAsArray();
         return $arrayRenta;
     }
@@ -421,7 +421,7 @@ class ArticulosModel extends Model {
         if(empty($aResult)) {
             return $aRentaEsp;
         }
-   
+
         $articulo = $this->generarMarcaRubroSubrubro($id_articulo);
 
         

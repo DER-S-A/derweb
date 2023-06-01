@@ -83,5 +83,23 @@
             self::ejecutarSQL($sql);
             sc3addFk($tabla, $campo, "entidades");
         }
+
+        // Agrego campo observaciones.
+        if (!sc3existeCampo($tabla, "observacion")) {
+            $sql = "ALTER TABLE pedidos ADD COLUMN observacion text";
+            self::ejecutarSQL($sql);
+        }
+
+        // Agrego si fué transferido o no a SAP
+        if (!sc3existeCampo($tabla, "transferido_sap")) {
+            $sql = "ALTER TABLE pedidos ADD COLUMN transferido_sap TINYINT(3) NULL DEFAULT 0";
+            self::ejecutarSQL($sql);
+        }
+
+        // Agrego si fué enviado por el cliente
+        if (!sc3existeCampo($tabla, "fecha_enviado")) {
+            $sql = "ALTER TABLE pedidos ADD COLUMN fecha_enviado datetime";
+            self::ejecutarSQL($sql);
+        }
     }
 }

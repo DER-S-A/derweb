@@ -34,7 +34,9 @@ class SubrubrosModel extends Model {
                 WHERE
                     t2.id_rubro = $xid_rubro
                 GROUP BY
-                    t1.id";
+                    t1.id
+                ORDER BY 
+                    t1.descripcion";
         return $this->getQuery($sql);
     }
     
