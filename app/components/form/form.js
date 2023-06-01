@@ -22,7 +22,7 @@ class Form extends ComponentManager {
             const oDiv = this.crearElementDom("div", "mb-3");
             oDiv.innerHTML = 
                 `<label for="${element.id}" class="form-label">${element.content}</label>
-                 <input type="${element.type}" class="form-control" id="${element.id}" aria-describedby="emailHelp">`
+                 <input type="${element.type}" class="form-control" name="${element.id}" id="${element.id}" aria-describedby="emailHelp">`
             this.form.appendChild(oDiv);
         });
         if(this.button != null) {
