@@ -48,7 +48,7 @@ class AvisoPago extends ComponentManager {
     }
 
     generateDataForm() {
-        const obj = [
+        /*const obj = [
             {id:'input-cod_cliente', name:'cod_cliente', type:'text', content:'Cliente:'},
             {id:'input-cod_suc', name:'cod_suc', type:'text', content:'Sucursal:'},
             {id:'input-numeroRec', name:'numeroRec', type:'text', content:'Nº Recibo:'},
@@ -57,6 +57,24 @@ class AvisoPago extends ComponentManager {
             {id:'input-importeCheque', name:'importeCheque', type:'number', content:'Importe en cheques:'},
             {id:'input-importeDepo', name:'importeDepo', type:'number', content:'Importe en depositos:'},
             {id:'input-importeRet', name:'importeRet', type:'number', content:'Importe en retenciones:'}
+        ]*/
+        const obj = [
+            {tag:'select', id:'sec-cod_cliente', name:'cod_cli', options:[{
+
+                value:0, text:'Selecciona un cliente'},
+                {value:15402, text:'cliente prueba'}
+            ]},
+            {tag:'select', id:'sec-cod_suc', name:'cod_suc', options:[{
+
+                value:0, text:'Selecciona una sucursal'},
+                {value:98412, text:'sucursal Principal'}
+            ]},
+            {tag:'input', id:'input-numeroRec', name:'numeroRec', type:'text', content:'Nº Recibo:'},
+            {tag:'input', id:'input-importeRec', name:'importeRec', type:'number', content:'Importe Recibo:'},
+            {tag:'input', id:'input-importeEfec', name:'importeEfec', type:'number', content:'Importe en efectivo:'},
+            {tag:'input', id:'input-importeCheque', name:'importeCheque', type:'number', content:'Importe en cheques:'},
+            {tag:'input', id:'input-importeDepo', name:'importeDepo', type:'number', content:'Importe en depositos:'},
+            {tag:'input', id:'input-importeRet', name:'importeRet', type:'number', content:'Importe en retenciones:'}
         ]
         return obj;
     }

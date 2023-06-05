@@ -20,9 +20,16 @@ class Form extends ComponentManager {
     generateComponent() {
         this.formData.forEach(element => {
             const oDiv = this.crearElementDom("div", "mb-3");
-            oDiv.innerHTML = 
+            if(element.tag == 'select') {
+                let select = this.crearElementDom(element.tag, 'form-select', element.id, ['name', element.name]);
+                select = this.__generarOptions(select, element.options);
+                oDiv.append(select);
+            }
+            if(element.tag == 'input') {
+                oDiv.innerHTML = 
                 `<label for="${element.id}" class="form-label">${element.content}</label>
-                 <input type="${element.type}" class="form-control" name="${element.id}" id="${element.id}" aria-describedby="emailHelp">`
+                 <${element.tag} type="${element.type}" class="form-control" name="${element.id}" id="${element.id}" aria-describedby="emailHelp">`
+            }
             this.form.appendChild(oDiv);
         });
         if(this.button != null) {
@@ -31,5 +38,14 @@ class Form extends ComponentManager {
             this.form.append(oButton);
         }
         return this.form;
+    }
+    __generarOptions(select, options) {
+        options.forEach(option => {
+            const objOption = document.createElement("option");
+            objOption.value = option.value;
+            objOption.textContent = option.text;
+            select.append(objOption);
+        });
+        return select;
     }
 }
