@@ -28,6 +28,10 @@ class Avp_rendicionesModel extends Model {
         $aResponse = [];
         $aDatos = json_decode($xdatos, true);
 
+        // Valido que los datos de los avisos de pagos sean correctos.
+        if (!$this->validarAvisosDePagos($aDatos, $aResponse))
+            return $aResponse;
+
         $sql = "CALL sp_avp_agregarAvisoPago (
             xid_vendedor, xid_entidad, xid_sucursal, xfecha,
             xnumero_recibo, ximporte_efectivo, ximporte_cheques, 
@@ -47,6 +51,83 @@ class Avp_rendicionesModel extends Model {
         $aResponse["mensaje"] = $result->getValue("mensaje");
         $result->close();
         return $aResponse;
+    }
+    
+    /**
+     * validarAvisosDePagos
+     * Valida que venga correctamente todos los datos de un aviso de pago.
+     * @param  array $aDatos Registro del aviso
+     * @param  array $aResponse Array de respuesta.
+     * @return bool
+     */
+    private function validarAvisosDePagos(&$aDatos, &$aResponse) {
+        if (sonIguales(gettype($aDatos["id_vendedor"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo id_vendedor debe ser un valor numérico";
+            return false;
+        }
+
+        if (sonIguales(gettype($aDatos["id_cliente"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo id_cliente debe ser un valor numérico";
+            return false;
+        }
+
+        if (sonIguales(gettype($aDatos["id_sucursal"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo id_sucursal debe ser un valor numérico";
+            return false;
+        }
+
+        if ($aDatos["id_vendedor"] == 0) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El id_vendedor no puede ser 0 (cero)";
+            return false;
+        }
+
+        if ($aDatos["id_cliente"] == 0) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El id_cliente no puede ser 0 (cero)";
+            return false;
+        }
+
+        if ($aDatos["id_sucursal"] == 0) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El id_sucursal no puede ser 0 (cero)";
+            return false;
+        }
+
+        if (sonIguales($aDatos["numero_recibo"], "")) {
+            $aResponse["result"] = "PARAMETER_ERROR";
+            $aResponse["mensje"] = "Falta ingresar el número de recibo";
+            return false;
+        }
+
+        if (sonIguales(gettype($aDatos["importe_efectivo"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo importe efectivo debe ser un valor numérico";
+            return false;
+        }
+
+        if (sonIguales(gettype($aDatos["importe_cheques"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo importe cheque debe ser un valor numérico";
+            return false;
+        }
+
+        if (sonIguales(gettype($aDatos["importe_deposito"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo importe depósito debe ser un valor numérico";
+            return false;
+        }
+
+        if (sonIguales(gettype($aDatos["importe_retenciones"]), "string")) {
+            $aResponse["result"] = "PARAMETERS_ERROR";
+            $aResponse["mensaje"] = "El campo importe retenciones debe ser un valor numérico";
+            return false;
+        }
+
+        return true;
     }
         
     /**

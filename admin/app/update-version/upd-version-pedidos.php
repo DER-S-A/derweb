@@ -101,5 +101,10 @@
             $sql = "ALTER TABLE pedidos ADD COLUMN fecha_enviado datetime";
             self::ejecutarSQL($sql);
         }
+
+        
+
+        //Agrego los indices para el getByFrase
+
     }
 }
