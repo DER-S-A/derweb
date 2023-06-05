@@ -45,9 +45,9 @@ class Buscador extends ComponentManager {
      */
     __promesa() {
         return new Promise((resolve, reject) => {
-            new APIs().call(this.url, this.data, this.method, response => {
+            new APIs().call(this.url, this.data, "GET", response => {
                 resolve(response);
-            }, error => {
+            }, false, error => {
                 reject(error);
             });
         });
