@@ -20,8 +20,10 @@ class AvisoPago extends ComponentManager {
                 bodyModal.append(this.generateForm());
                 const modal = new bootstrap.Modal(document.querySelector('#modalAvisoPago'));
                 modal.show();
-                const botonApli = document.querySelector("#modalAvisoPago #aplicar");
                 this.__llamarEventos();
+                const botonApli = document.querySelector("#modalAvisoPago #aplicar");
+
+
                 botonApli.addEventListener("click", ()=> {
                     const FecDat = new Date();
                     const fecha = `${FecDat.getFullYear()}-${FecDat.getMonth()}-${FecDat.getDay()}`
@@ -54,8 +56,16 @@ class AvisoPago extends ComponentManager {
 
     generateForm() {
         const formData = this.generateDataForm();
-        const objForm = new Form(formData, "form-avisoPago").generateComponent();
+        let objForm = new Form(formData, "form-avisoPago").generateComponent();
+        this.__validarCamposFront(objForm)
         return objForm;
+    }
+
+    __validarCamposFront(objForm) {
+        const inputs = objForm.querySelectorAll('.form-control');
+        inputs.forEach(element => {
+            element.setAttribute('disabled', '');
+        });
     }
 
     generateDataForm() {
