@@ -1140,7 +1140,8 @@ function sc3GetIDQueryByName($xqueryname) {
 			WHERE queryname = '$xqueryname'";
     $rs = getRs($sql);
     return $rs->getId();
-}
+}	
+
 
 /**
  * sc3SetMenuAQuery

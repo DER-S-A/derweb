@@ -1,9 +1,13 @@
 class AvisoPago extends ComponentManager {
     constructor(){
         super();
+        this.arrayCli;
     }
-    generateComponent() {
-        const miSession = new CacheUtils('derweb').get('sesion');
+    async generateComponent() {
+        try {
+           const clientes = await this.__getClientes();
+           this.arrayCli = clientes;
+           const miSession = new CacheUtils('derweb').get('sesion');
         if(!document.querySelector("#modalAvisoPago")) {
             const nodoContainer = document.querySelector("#app-container");
             this.getTemplate(new App().getUrlTemplate("aviso-pago"), html => {
@@ -38,6 +42,10 @@ class AvisoPago extends ComponentManager {
         } else {
             const modal = new bootstrap.Modal(document.querySelector('#modalAvisoPago'));
             modal.show();
+        } 
+        } catch (error) {
+            console.error(error);
+            return null;
         }
     }
 
@@ -48,15 +56,22 @@ class AvisoPago extends ComponentManager {
     }
 
     generateDataForm() {
+        const arrayOptions = this.__generarOptions();
+        console.log(arrayOptions)
+        arrayOptions.unshift({value:0,text:'Selecciona un cliente'});
         const obj = [
-            {id:'input-cod_cliente', name:'cod_cliente', type:'text', content:'Cliente:'},
-            {id:'input-cod_suc', name:'cod_suc', type:'text', content:'Sucursal:'},
-            {id:'input-numeroRec', name:'numeroRec', type:'text', content:'Nº Recibo:'},
-            {id:'input-importeRec', name:'importeRec', type:'number', content:'Importe Recibo:'},
-            {id:'input-importeEfec', name:'importeEfec', type:'number', content:'Importe en efectivo:'},
-            {id:'input-importeCheque', name:'importeCheque', type:'number', content:'Importe en cheques:'},
-            {id:'input-importeDepo', name:'importeDepo', type:'number', content:'Importe en depositos:'},
-            {id:'input-importeRet', name:'importeRet', type:'number', content:'Importe en retenciones:'}
+            {tag:'select', id:'sec-cod_cliente', name:'cod_cli', options:arrayOptions},
+            {tag:'select', id:'sec-cod_suc', name:'cod_suc', options:[{
+
+                value:0, text:'Selecciona una sucursal'},
+                {value:98412, text:'sucursal Principal'}
+            ]},
+            {tag:'input', id:'input-numeroRec', name:'numeroRec', type:'text', content:'Nº Recibo:'},
+            {tag:'input', id:'input-importeRec', name:'importeRec', type:'number', content:'Importe Recibo:'},
+            {tag:'input', id:'input-importeEfec', name:'importeEfec', type:'number', content:'Importe en efectivo:'},
+            {tag:'input', id:'input-importeCheque', name:'importeCheque', type:'number', content:'Importe en cheques:'},
+            {tag:'input', id:'input-importeDepo', name:'importeDepo', type:'number', content:'Importe en depositos:'},
+            {tag:'input', id:'input-importeRet', name:'importeRet', type:'number', content:'Importe en retenciones:'}
         ]
         return obj;
     }
@@ -67,5 +82,23 @@ class AvisoPago extends ComponentManager {
             console.log(datos)
         }, value)
 
+    }
+
+    __getClientes() {
+        return new Promise((resolve, reject) => {
+            let objCacheUtils = new CacheUtils("derweb", false);
+            const aSesion = objCacheUtils.get("sesion");
+            const url = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
+            fetch(url + "?id_vendedor=" + aSesion["id_vendedor"])
+            .then(response => response.json())
+            .then(clientes => {
+                resolve(clientes);
+            },  error => reject(error));      
+        })
+    }
+
+    __generarOptions() {
+        const options = this.arrayCli.map(({id,codusu}) => ({value:id,text:codusu}));
+        return options;
     }
 }
