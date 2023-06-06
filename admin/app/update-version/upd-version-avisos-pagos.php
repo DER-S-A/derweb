@@ -23,7 +23,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
      * @return void
      */
     private static function crearMenu() {
-        sc3AgregarMenu("Avisos de pagos", 5, "fa-ticket");
+        sc3AgregarMenu("Administración", 5, "fa-paperclip");
     }
     
     /**
@@ -64,28 +64,45 @@ class UpdateAvisosDePagos extends UpdateVersion {
             self::ejecutarSQL($sql);
             sc3addFk($tabla, "id_entidad", $tablaEntidades);
 
-            sc3agregarQuery($query, $tabla, "Avisos de pagos", "", "", 0, 0, 0, "", 5);
-            sc3generateFieldsInfo($tabla);
-            sc3updateField($query, "id", "Aviso N°");
-            sc3updateField($query, "id_entidad", "Entidad", 1);
-            sc3updateField($query, "fecha", "Fecha", 1);
-            sc3updateField($query, "total_efectivo", "Total Efvo.", 1, "0");
-            sc3updateField($query, "total_cheques", "Total Cheques", 1, "0");
-            sc3updateField($query, "total_deposito", "Total Depósito", 1, "0");
-            sc3updateField($query, "total_retensiones", "Total Retensiones", 1, "0");
-            sc3updateField($query, "total_recibos", "Total Recibos", 1, "0");
-            sc3updateField($query, "importe_retiro", "Retiró", 1, "0");
-            sc3updateField($query, "efectivo_depositado", "Efectivo depositado", 1, "0");
-            sc3updateField($query, "gasto_transporte", "Gastos transporte", 1, "0");
-            sc3updateField($query, "gastos_generales", "Gastos generales", 1, "0");
-            sc3updateField($query, "efectivo_entregado", "Efectivo entregado", 1, "0");
-            sc3updateField($query, "archivo_pdf", "Rendición PDF", 0, "", 1);
-            sc3updateField($query, "observaciones", "Observaciones");
-            sc3updateField($query, "enviado", "Enviado", 1);
-            
+            sc3agregarQuery($query, $tabla, "Avisos de pagos", "Administración", "", 0, 0, 0, "", 5);
+            sc3generateFieldsInfo($tabla);            
             sc3addlink($query, "id_entidad", $queryEntidades, 0);
-            sc3AgregarQueryAPerfil($query, "Root");
         }
+
+        if (!sc3existeCampo($tabla, "revisado")) {
+            $sql = "ALTER TABLE $tabla ADD revisado tinyint(3) NOT NULL DEFAULT 0";
+            self::ejecutarSQL($sql);
+            sc3generateFieldsInfo($tabla);
+        }
+
+        if (!sc3existeCampo($tabla, "fecha_revision")) {
+            $sql = "ALTER TABLE $tabla ADD fecha_revision DATETIME NULL";
+            self::ejecutarSQL($sql);
+            sc3generateFieldsInfo($tabla);
+        }
+
+        // Armo la configuración de campos
+        sc3updateField($query, "id", "Aviso N°");
+        sc3updateField($query, "id_entidad", "Entidad", 1);
+        sc3updateField($query, "fecha", "Fecha", 1);
+        sc3updateField($query, "total_efectivo", "Total Efvo.", 1, "0", 0, "Totales");
+        sc3updateField($query, "total_cheques", "Total Cheques", 1, "0", 0, "Totales");
+        sc3updateField($query, "total_deposito", "Total Depósito", 1, "0", 0, "Totales");
+        sc3updateField($query, "total_retensiones", "Total Retensiones", 1, "0", 0, "Totales");
+        sc3updateField($query, "total_recibos", "Total Recibos", 1, "0", 0, "Totales");
+        sc3updateField($query, "importe_retiro", "Retiró", 1, "0", 0, "Importes");
+        sc3updateField($query, "efectivo_depositado", "Efectivo depositado", 1, "0", 0, "Importes");
+        sc3updateField($query, "gasto_transporte", "Gastos transporte", 1, "0", 0, "Importes");
+        sc3updateField($query, "gastos_generales", "Gastos generales", 1, "0", 0, "Importes");
+        sc3updateField($query, "efectivo_entregado", "Efectivo entregado", 1, "0", 0, "Importes");
+        sc3updateField($query, "archivo_pdf", "Rendición PDF", 0, "", 1, "Descargar PDF");
+        sc3updateField($query, "observaciones", "Observaciones", 0, "Observaciones");
+        sc3updateField($query, "enviado", "Enviado", 1, "0");
+        sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Revisión");
+        sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Revisión");
+        
+        sc3SetMenuAQuery($query, "Administración");
+        sc3AgregarQueryAPerfil($query, "Administración");
     }
     
     /**
@@ -126,23 +143,25 @@ class UpdateAvisosDePagos extends UpdateVersion {
 
             sc3agregarQuery($query, $tabla, "Avisos de pagos", "", "", 0, 0, 0, "id", 11, "", 1);
             sc3generateFieldsInfo($tabla);
-            sc3updateField($query, "id", "Aviso N°");
-            sc3updateField($query, "id_rendicion", "Rendición N°", 1);
-            sc3updateField($query, "id_entidad", "Cliente", 1);
-            sc3updateField($query, "id_sucursal", "Sucursal", 1);
-            sc3updateField($query, "fecha", "Fecha", 1);
-            sc3updateField($query, "Número de recibo", "numero_recibo", 1);
-            sc3updateField($query, "importe_efectivo", "Efectivo", 1);
-            sc3updateField($query, "importe_cheques", "Cheques", 1);
-            sc3updateField($query, "importe_deposito", "Depósito", 1);
-            sc3updateField($query, "importe_retenciones", "Retenciones", 1);
-            sc3updateField($query, "total_recibo", "Importe Recibo", 1);
             
             sc3addlink($query, "id_rendicion", $queryAvisosPagos, 1);
             sc3addlink($query, "id_entidad", $queryEntidades);
             sc3addlink($query, "id_sucursal", $querySucursales);
-
-            sc3AgregarQueryAPerfil($query, "Root");
         }
+
+        // Configuro los campos de la tabla
+        sc3updateField($query, "id", "Aviso N°");
+        sc3updateField($query, "id_rendicion", "Rendición N°", 1);
+        sc3updateField($query, "id_entidad", "Cliente", 1);
+        sc3updateField($query, "id_sucursal", "Sucursal", 1);
+        sc3updateField($query, "fecha", "Fecha", 1);
+        sc3updateField($query, "Número de recibo", "numero_recibo", 1);
+        sc3updateField($query, "importe_efectivo", "Efectivo", 1, "0", 0, "Importes");
+        sc3updateField($query, "importe_cheques", "Cheques", 1, "0", 0, "Importes");
+        sc3updateField($query, "importe_deposito", "Depósito", 1, "0", 0, "Importes");
+        sc3updateField($query, "importe_retenciones", "Retenciones", 1, "0", 0, "Importes");
+        sc3updateField($query, "total_recibo", "Total del recibo", 1, "0", 0, "Importes");
+
+        sc3AgregarQueryAPerfil($query, "Administración");
     }
 }
