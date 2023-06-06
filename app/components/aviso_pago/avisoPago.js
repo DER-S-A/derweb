@@ -2,6 +2,8 @@ class AvisoPago extends ComponentManager {
     constructor(){
         super();
         this.arrayCli;
+        this.arraySuc;
+        this.objCacheUtils = new CacheUtils("derweb", false);
     }
     async generateComponent() {
         try {
@@ -19,6 +21,7 @@ class AvisoPago extends ComponentManager {
                 const modal = new bootstrap.Modal(document.querySelector('#modalAvisoPago'));
                 modal.show();
                 const botonApli = document.querySelector("#modalAvisoPago #aplicar");
+                this.__llamarEventos();
                 botonApli.addEventListener("click", ()=> {
                     const FecDat = new Date();
                     const fecha = `${FecDat.getFullYear()}-${FecDat.getMonth()}-${FecDat.getDay()}`
@@ -56,16 +59,12 @@ class AvisoPago extends ComponentManager {
     }
 
     generateDataForm() {
-        const arrayOptions = this.__generarOptions();
-        console.log(arrayOptions)
-        arrayOptions.unshift({value:0,text:'Selecciona un cliente'});
+        const arrayOptionsCli = this.__generarOptions();
+        arrayOptionsCli.unshift({value:0,text:'Selecciona un cliente'});
+        const arrayOptionsSuc = [{value:0, text:'Selecciona una sucursal'}]
         const obj = [
-            {tag:'select', id:'sec-cod_cliente', name:'cod_cli', options:arrayOptions},
-            {tag:'select', id:'sec-cod_suc', name:'cod_suc', options:[{
-
-                value:0, text:'Selecciona una sucursal'},
-                {value:98412, text:'sucursal Principal'}
-            ]},
+            {tag:'select', id:'sec-cod_cliente', name:'cod_cli', options:arrayOptionsCli},
+            {tag:'select', id:'sec-cod_suc', name:'cod_suc', options:arrayOptionsSuc},
             {tag:'input', id:'input-numeroRec', name:'numeroRec', type:'text', content:'Nº Recibo:'},
             {tag:'input', id:'input-importeRec', name:'importeRec', type:'number', content:'Importe Recibo:'},
             {tag:'input', id:'input-importeEfec', name:'importeEfec', type:'number', content:'Importe en efectivo:'},
@@ -86,8 +85,7 @@ class AvisoPago extends ComponentManager {
 
     __getClientes() {
         return new Promise((resolve, reject) => {
-            let objCacheUtils = new CacheUtils("derweb", false);
-            const aSesion = objCacheUtils.get("sesion");
+            const aSesion = this.objCacheUtils.get("sesion");
             const url = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
             fetch(url + "?id_vendedor=" + aSesion["id_vendedor"])
             .then(response => response.json())
@@ -97,8 +95,55 @@ class AvisoPago extends ComponentManager {
         })
     }
 
+    __getSuc() {
+        return new Promise((resolve, reject) => {
+            const clienteSession = this.objCacheUtils.get("clienteSession");
+            const url = new App().getUrlApi("app-entidades-getSucursalesByEntidad");
+            new APIs().call(url, 'id_entidad=' + clienteSession, 'GET', clientes => {
+                resolve(clientes);
+            }, false, error => reject(error));
+        })
+    }
+
     __generarOptions() {
         const options = this.arrayCli.map(({id,codusu}) => ({value:id,text:codusu}));
         return options;
+    }
+
+    async __llamarEventos() {
+        const objSelect = document.querySelector('#sec-cod_cliente');
+        objSelect.addEventListener('change', async () => {
+            this.objCacheUtils.set('clienteSession', objSelect.value);
+            this.arraySuc = await this.__getSuc();
+            const arrayOptionsSuc = this.__generarOptionsSuc();
+            this.__limpiarOptionsSuc();
+            this.__llenarOptionsSuc(arrayOptionsSuc);
+        });
+    }
+
+    __generarOptionsSuc() {
+        const options = this.arraySuc.map(({id,nombre}) => ({value:id,text:nombre}));
+        return options
+    }
+
+    __llenarOptionsSuc(arrayOptions) {
+        const select = document.querySelector('#sec-cod_suc');
+        console.log(arrayOptions)
+        arrayOptions.forEach(element => {
+            const option = document.createElement('option');
+            option.value = element.value;
+            option.textContent = element.text;
+            select.append(option);
+        });
+    }
+
+    __limpiarOptionsSuc() {
+        const select = document.querySelector('#sec-cod_suc');
+        let options = select.querySelectorAll('option')
+        options.forEach((element, index) => {
+            if(index != 0) {
+                element.remove();
+            }
+        });
     }
 }
