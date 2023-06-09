@@ -19,6 +19,7 @@ require("app/update-version/upd-version-avisos-pagos.php");
 
 // DERWEB Core
 agregarOperGenerarEndPoint();
+agregarPerfiles();
 
 // Clientes potenciales.
 agregarOperCliPot_CambiarEstado();
@@ -71,5 +72,9 @@ function agregarOperGenerarEndPoint() {
 		"", 
 		0, 
 		"");
+}
+
+function agregarPerfiles() {
+	sc3AgregarPerfil("Administración");
 }
 ?>

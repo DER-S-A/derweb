@@ -1143,5 +1143,25 @@ function sc3GetIDQueryByName($xqueryname) {
 }	
 
 
-
+/**
+ * sc3SetMenuAQuery
+ * Establece un menú a un determinado query.
+ * @param  string $xqueryname
+ * @param  string $xmenuName
+ * @return void
+ */
+function sc3SetMenuAQuery($xqueryname, $xmenuName) {
+	$sql = "SELECT *
+			FROM sc_menuconsola 
+			WHERE Item = '$xmenuName'";
+	$rsMenu = getRs($sql);
+	$idMenu = $rsMenu->getValueInt("idItemMenu");
+	$rsMenu->close();
+	$sql = "UPDATE sc_querys 
+			SET idmenu = $idMenu
+			WHERE queryname = '$xqueryname'";
+	$bd = new BDObject();
+	$bd->execQuery($sql);
+	$bd->close();
+}
 ?>
