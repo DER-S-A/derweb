@@ -21,14 +21,14 @@ class Form extends ComponentManager {
         this.formData.forEach(element => {
             const oDiv = this.crearElementDom("div", "mb-3");
             if(element.tag == 'select') {
-                let select = this.crearElementDom(element.tag, 'form-select', element.id, ['name', element.name]);
+                let select = this.crearElementDom(element.tag, element.class, element.id, ['name', element.name]);
                 select = this.__generarOptions(select, element.options);
                 oDiv.append(select);
             }
             if(element.tag == 'input') {
                 oDiv.innerHTML = 
-                `<label for="${element.id}" class="form-label">${element.content}</label>
-                 <${element.tag} type="${element.type}" class="form-control" name="${element.id}" id="${element.id}" aria-describedby="emailHelp">`
+                `<label for="${element.id}" class="${element.classL}">${element.content}</label>
+                 <${element.tag} type="${element.type}" class="${element.class}" name="${element.id}" id="${element.id}" aria-describedby="emailHelp" ${element.requerid}>`
             }
             this.form.appendChild(oDiv);
         });
