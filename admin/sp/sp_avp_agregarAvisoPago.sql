@@ -15,6 +15,9 @@ BEGIN
     DECLARE vRendicionAbierta decimal(20, 2);
     DECLARE vIdRendicion int;
 
+    /* Validaciones */
+    DECLARE vReciboDuplicado int;
+
     /* Totales para grabar en la tabla avp_rendiciones. */
     DECLARE vtotal_efectivo decimal(20, 2);
     DECLARE vtotal_cheques decimal(20, 2);
@@ -36,6 +39,23 @@ BEGIN
     SET vtotal_deposito = 0.00;
     SET vtotal_retensiones = 0.00;
     SET vtotal_recibos = 0.00;
+
+    /* Valido que no se pueda enviar un recibo duplicado */ 
+    SELECT
+        COUNT(*)
+    INTO
+        vReciboDuplicado
+    FROM
+        avp_movimientos mov
+            INNER JOIN avp_rendiciones rend ON mov.id_rendicion = rend.id
+    WHERE
+        rend.id_entidad = xid_vendedor AND
+        mov.numero_recibo = xnumero_recibo;
+
+    IF vReciboDuplicado > 0 THEN
+        /* Si el recibo está duplicado genero una Excepción para que salga por SQLEXCEPTION */
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El número de recibo se encuentra duplicado';
+    END IF;
 
     START TRANSACTION;
 
@@ -72,8 +92,7 @@ BEGIN
             avp_rendiciones
         WHERE
             avp_rendiciones.id_entidad = xid_vendedor AND
-            avp_rendiciones.enviado = 0;
-            
+            avp_rendiciones.enviado = 0;         
     END IF;
 
     /* Calculo el total del recibo. */
