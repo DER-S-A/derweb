@@ -31,6 +31,9 @@ class AvisoPago extends ComponentManager {
         }
     }
 
+    /**
+    * Permite generar componente formulario.
+    */
     generateForm() {
         const formData = this.generateDataForm();
         let objForm = new Form(formData, "form-avisoPago").generateComponent();
@@ -38,6 +41,9 @@ class AvisoPago extends ComponentManager {
         return objForm;
     }
 
+    /**
+    * Permite ingresar a la operación de pedidos rápidos.
+    */
     __validarCamposFront(objForm) {
         const inputs = objForm.querySelectorAll('.form-control');
         inputs.forEach(element => {

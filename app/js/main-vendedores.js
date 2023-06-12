@@ -336,6 +336,9 @@ function reset_cli_suc() {
     }
 }
 
+/**
+ * Inicio el componente aviso de pagos.
+ */
 function abrirAvisoPago() {
     new AvisoPago().generateComponent();
 }
