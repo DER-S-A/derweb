@@ -1048,7 +1048,6 @@ function sc3InicializarAutoincrement($xtabla, $xvalor) {
 	$bd->close();
 }
 
-
 /**
  * sc3DropPK
  * Elimina la clave primaria de una tabla
@@ -1160,6 +1159,25 @@ function sc3SetMenuAQuery($xqueryname, $xmenuName) {
 	$sql = "UPDATE sc_querys 
 			SET idmenu = $idMenu
 			WHERE queryname = '$xqueryname'";
+	$bd = new BDObject();
+	$bd->execQuery($sql);
+	$bd->close();
+}
+
+/**
+ * sc3SetNombreQuery
+ * Establece el nombre del query en caso de querer modificarlo
+ * @param  mixed $xqueryName
+ * @param  mixed $xNombre
+ * @return void
+ */
+function sc3SetNombreQuery($xqueryName, $xNombre) {
+	$sql = "UPDATE 
+				sc_querys 
+			SET 
+				querydescription = '$xNombre' 
+			WHERE 
+				queryname = '$xqueryName'";
 	$bd = new BDObject();
 	$bd->execQuery($sql);
 	$bd->close();

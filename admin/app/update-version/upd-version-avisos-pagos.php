@@ -15,6 +15,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
         self::crearMenu();
         self::instalarTablaAvpRendiciones();
         self::instalarOActualizarTablaAVPMovimientos();
+        self::instalarOpControlarRecibos();
     }
     
     /**
@@ -103,6 +104,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
         
         sc3SetMenuAQuery($query, "Administración");
         sc3AgregarQueryAPerfil($query, "Administración");
+        sc3SetNombreQuery($query, "Rendiciones");
     }
     
     /**
@@ -163,5 +165,32 @@ class UpdateAvisosDePagos extends UpdateVersion {
         sc3updateField($query, "total_recibo", "Total del recibo", 1, "0", 0, "Importes");
 
         sc3AgregarQueryAPerfil($query, "Administración");
+
+        /** Agrego campo revisado */
+        if (!sc3existeCampo($tabla, "revisado")) {
+            $sql = "ALTER TABLE $tabla ADD revisado tinyint(3) NOT NULL DEFAULT 0";
+            self::ejecutarSQL($sql);
+            sc3updateField($query, "revisado", "Revisado", 1, "0");
+        }
     }
+    
+    /**
+     * instalarOpControlarRecibos
+     * Instala la operación para controlar los recibos en avisos de pagos.
+     * @return void
+     */
+    public static function instalarOpControlarRecibos() {
+        $opid = sc3AgregarOperacion(
+            "Controlar recibos", 
+            "der-avp-controlar-recibos.php", 
+            "ico/check1.ico", 
+            "Permite controlar los avisos de pagos.", 
+            "avp_rendiciones", 
+            "", 
+            0, 
+            "Administración", 
+            "", 
+            0, 
+            "qavprendiciones");
+    }    
 }
