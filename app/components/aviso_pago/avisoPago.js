@@ -37,12 +37,13 @@ class AvisoPago extends ComponentManager {
     generateForm() {
         const formData = this.generateDataForm();
         let objForm = new Form(formData, "form-avisoPago").generateComponent();
-        this.__validarCamposFront(objForm)
+        this.__validarCamposFront(objForm);
         return objForm;
     }
 
     /**
-    * Permite ingresar a la operación de pedidos rápidos.
+    * habilita los campos input siempre y cuando haya un cliente y una sucursal seleccionada y tambien pone los valores de los input en cero.
+    * @param {nodoContainer} objForm
     */
     __validarCamposFront(objForm) {
         const inputs = objForm.querySelectorAll('.form-control');
@@ -154,12 +155,18 @@ class AvisoPago extends ComponentManager {
 
             }
             console.log(bodyJson);
+            this.__setearCamposVacios(bodyJson);
             const {importe_recibo, importe_efectivo, importe_cheques, importe_deposito, importe_retenciones} = bodyJson;
             const arrayImp = [importe_recibo, importe_efectivo, importe_cheques, importe_deposito, importe_retenciones]
+            if(this.__validarValorenImpRec(importe_recibo)) {
+                swal("IMPORTE RECIBO ERROR", "Debe poner un importe mayor a cero en el campo IMPORTE RECIBO", "info");
+                return;
+            }
             if(!this.__validarImpTotalRec(arrayImp)) {
                 swal("IMPORTE RECIBO ERROR", "El importe debe coincidir con lo que sume los importes de efectivo, cheques, deposito y retenciones", "info");
                 return;
             }
+            console.log(bodyJson)
             this.enviarAviso(bodyJson);
         });
     }
@@ -192,8 +199,33 @@ class AvisoPago extends ComponentManager {
 
     __validarImpTotalRec(array) {
         let subtotal = 0;
-        for(let i = 1; i < array.length; i++) {subtotal += array[i]}
+        for(let i = 1; i < array.length; i++) {console.log(array[i]);
+            //array[i] = isNaN(array[i]) ? 0 : array[i];
+            console.log(array[i]);
+            subtotal += array[i]
+        }
         const resultado = array[0] === subtotal ? true : false;
         return resultado;
+    }
+
+    __validarValorenImpRec(importe) {
+        //importe = importe == null ? 0 : importe;
+        const resultado = importe < 1 ? true : false;
+        return resultado;
+    }
+
+    __setearCamposVacios(obj) {
+        if(isNaN(obj.importe_efectivo)) {
+            obj.importe_efectivo = 0;
+        }
+        if(isNaN(obj.importe_cheques)) {
+            obj.importe_cheques = 0;
+        }
+        if(isNaN(obj.importe_deposito)) {
+            obj.importe_deposito = 0;
+        }
+        if(isNaN(obj.importe_retenciones)) {
+            obj.importe_retenciones = 0;
+        }
     }
 }
