@@ -58,6 +58,10 @@ class AvisoPago extends ComponentManager {
         });
     }
 
+    /**
+    * Permite preparar los datos para generar el formulario.
+    * @return {objElement}
+    */
     generateDataForm() {
         const arrayOptionsCli = this.__generarOptions();
         arrayOptionsCli.unshift({value:0,text:'Selecciona un cliente'});
@@ -77,6 +81,10 @@ class AvisoPago extends ComponentManager {
         return obj;
     }
 
+    /**
+    * Envio aviso de pago al endpoint.
+    * @param {Object} value
+    */
     enviarAviso(value) {
         const url = (new App()).getUrlApi("aviso-pago");
         new APIs().call(url, value, "POST", (datos) => {
@@ -89,6 +97,9 @@ class AvisoPago extends ComponentManager {
 
     }
 
+    /**
+     * Trae la lista de clientes, es una promesa que devuelve el resultado del CALL(fetch).
+     */
     __getClientes() {
         return new Promise((resolve, reject) => {
             const aSesion = this.objCacheUtils.get("sesion");
@@ -101,6 +112,9 @@ class AvisoPago extends ComponentManager {
         })
     }
 
+    /**
+     * Trae la lista de sucursales, es una promesa que devuelve el resultado del CALL(fetch).
+     */
     __getSuc() {
         return new Promise((resolve, reject) => {
             const clienteSession = this.objCacheUtils.get("clienteSession");
@@ -111,11 +125,17 @@ class AvisoPago extends ComponentManager {
         })
     }
 
+    /**
+     * Genero las etiquetas options con los datos que necesito.
+     */
     __generarOptions() {
         const options = this.arrayCli.map(({id,codusu}) => ({value:id,text:codusu}));
         return options;
     }
 
+    /**
+     * Tengo todos los eventos que usa el componente, es async porq utilizo promesas.
+     */
     async __llamarEventos() {
         const objSelect = document.querySelector('#sec-cod_cliente');
         objSelect.addEventListener('change', async () => {
@@ -154,7 +174,6 @@ class AvisoPago extends ComponentManager {
                 "importe_retenciones":parseFloat(document.querySelector("#input-importeRet").value),
 
             }
-            console.log(bodyJson);
             this.__setearCamposVacios(bodyJson);
             const {importe_recibo, importe_efectivo, importe_cheques, importe_deposito, importe_retenciones} = bodyJson;
             const arrayImp = [importe_recibo, importe_efectivo, importe_cheques, importe_deposito, importe_retenciones]
@@ -166,16 +185,23 @@ class AvisoPago extends ComponentManager {
                 swal("IMPORTE RECIBO ERROR", "El importe debe coincidir con lo que sume los importes de efectivo, cheques, deposito y retenciones", "info");
                 return;
             }
-            console.log(bodyJson)
             this.enviarAviso(bodyJson);
         });
     }
 
+    /**
+     * Genero las etiquetas options de sucursale con los datos que necesito.
+     * @return {array}
+     */
     __generarOptionsSuc() {
         const options = this.arraySuc.map(({id,nombre}) => ({value:id,text:nombre}));
         return options
     }
 
+    /**
+     * Agrego los options de sucursales en el nodo padre que necesito. 
+     * @param {array} arrayOptions
+     */
     __llenarOptionsSuc(arrayOptions) {
         const select = document.querySelector('#sec-cod_suc');
         console.log(arrayOptions)
@@ -187,6 +213,9 @@ class AvisoPago extends ComponentManager {
         });
     }
 
+    /**
+     * Limpio los options de sucursales. 
+     */
     __limpiarOptionsSuc() {
         const select = document.querySelector('#sec-cod_suc');
         let options = select.querySelectorAll('option')
@@ -197,23 +226,34 @@ class AvisoPago extends ComponentManager {
         });
     }
 
+    /**
+     * Valido el campo importe total del recibo.
+     * @param {array} array
+     * @return {boolean}
+     */
     __validarImpTotalRec(array) {
         let subtotal = 0;
-        for(let i = 1; i < array.length; i++) {console.log(array[i]);
-            //array[i] = isNaN(array[i]) ? 0 : array[i];
-            console.log(array[i]);
+        for(let i = 1; i < array.length; i++) {
             subtotal += array[i]
         }
         const resultado = array[0] === subtotal ? true : false;
         return resultado;
     }
 
+    /**
+     * Valido el campo importe total del recibo sea mayor a cero.
+     * @param {float} importe
+     * @return {boolean}
+     */
     __validarValorenImpRec(importe) {
-        //importe = importe == null ? 0 : importe;
         const resultado = importe < 1 ? true : false;
         return resultado;
     }
 
+    /**
+     * edito los campos de valor numericos a cero si en el momento de ejecutar el evento de enviar tienen el campo vacio. 
+     * @param {object} obj
+     */
     __setearCamposVacios(obj) {
         if(isNaN(obj.importe_efectivo)) {
             obj.importe_efectivo = 0;
