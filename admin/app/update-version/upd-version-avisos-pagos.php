@@ -82,6 +82,12 @@ class UpdateAvisosDePagos extends UpdateVersion {
             sc3generateFieldsInfo($tabla);
         }
 
+        if (!sc3existeCampo($tabla, "archivo_pdf_ok")) {
+            $sql = "ALTER TABLE $tabla ADD archivo_pdf_ok varchar(255)";
+            self::ejecutarSQL($sql);
+            sc3generateFieldsInfo($tabla);
+        }
+
         // Armo la configuración de campos
         sc3updateField($query, "id", "Aviso N°");
         sc3updateField($query, "id_entidad", "Entidad", 1);
@@ -101,6 +107,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
         sc3updateField($query, "enviado", "Enviado", 1, "0");
         sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Revisión");
         sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Revisión");
+        sc3updateField($query, "archivo_pdf_ok", "Rendición corregida", 0, "Descargar PDF");
         
         sc3SetMenuAQuery($query, "Administración");
         sc3AgregarQueryAPerfil($query, "Administración");
