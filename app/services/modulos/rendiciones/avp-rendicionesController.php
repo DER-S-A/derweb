@@ -95,7 +95,12 @@ class Avp_rendicionesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
-
+    
+    /**
+     * getMovimientosByRendicion
+     * Obtiene los movimientos de una determinada rendición
+     * @return void
+     */
     public function getMovimientosByRendicion() {
         if ($this->usePostMethod()) {
             try {
