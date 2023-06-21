@@ -7,6 +7,24 @@
 
 class RendicionesAdminModel extends Model {    
     /**
+     * getRendicion
+     * Devuelve los datos de la rendición.
+     * @param  mixed $xidRendicion Id. Rendición
+     * @return BDObject
+     */
+    public function getRendicion($xidRendicion) {
+        $sql = "SELECT
+                    r.*,
+                    e.nombre
+                FROM
+                    avp_rendiciones r
+                        INNER JOIN entidades e ON e.id = r.id_entidad
+                WHERE
+                    r.id = 3";
+        return getRs($sql, true);
+    }
+
+    /**
      * getMovimientosByRendicion
      * Devuelve los avisos de pagos de una dererminada rendición
      * @param  int $xidRendicion

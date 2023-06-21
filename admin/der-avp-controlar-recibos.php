@@ -78,14 +78,56 @@ if (enviado()) {
             $tab = new HtmlTabs2();
             $btnOkCancel = new HtmlBotonOkCancel(true, false);
             $query = "qavpmovimientos";
-
             $objModelRendiciones = new RendicionesAdminModel();
+
+            $rsRendicion = $objModelRendiciones->getRendicion($mid);
+            $objSelVend = new HtmlSelector("sel_vendedor", "entidades", $rsRendicion->getValueInt("id_entidad"));
+            $objSelVend->setReadOnly();
+            $cpoVendedor = new HtmlEtiquetaValor("Vendedor:", $objSelVend->toHtml());
+
+            // Agrego los importes de la rendición.
+            $objInputImporteRetiro = new HtmlInputText("importe_retiro", $rsRendicion->getValueFloat("importe_retiro"));
+            $objInputImporteRetiro->setTypeFloat();
+            $objInputImporteRetiro->setReadOnly();
+            $cpoImporteRetiro = new HtmlEtiquetaValor("Retiró:", $objInputImporteRetiro->toHtml());
+            $objInputEfvoDepositado = new HtmlInputText("efectivo_depositado", $rsRendicion->getValueFloat("efectivo_depositado"));
+            $objInputEfvoDepositado->setTypeFloat();
+            $objInputEfvoDepositado->setReadOnly();
+            $cpoEfectivoDepositado = new HtmlEtiquetaValor("Efectivo depositado:", $objInputEfvoDepositado->toHtml());
+            $objInputGastosTransporte = new HtmlInputText("gastos_transportes", $rsRendicion->getValueFloat("gastos_transporte"));
+            $objInputGastosTransporte->setTypeFloat();
+            $objInputGastosTransporte->setReadOnly();
+            $cpoGastosTransporte = new HtmlEtiquetaValor("Gastos transporte:", $objInputGastosTransporte->toHtml());
+            $objInputGastosGenerales = new HtmlInputText("gastos_generales", $rsRendicion->getValueFloat("gastos_generales"));
+            $objInputGastosGenerales->setTypeFloat();
+            $objInputGastosGenerales->setReadOnly();
+            $cpoGastosGenerales = new HtmlEtiquetaValor("Gastos generales:", $objInputGastosGenerales->toHtml());
+            $objInputEfvoEntregado = new HtmlInputText("txt_efectivo_entregado", $rsRendicion->getValueFloat("efectivo_entregado"));
+            $objInputEfvoEntregado->setTypeFloat();
+            $objInputEfvoEntregado->setReadOnly();
+            $cpoEfectivoEntregado = new HtmlEtiquetaValor("Efectivo entregado:", $objInputEfvoEntregado->toHtml());
+
+            $objInputObservaciones = new HtmlInputTextarea("txt_observaciones", $rsRendicion->getValue("observaciones"));
+            $objInputObservaciones->readonly = true;
+            $cpoObservaciones = new HtmlEtiquetaValor("Observaciones: ", $objInputObservaciones->toHtml());
+
+            $rsRendicion->close();
+
             $rsRecibos = $objModelRendiciones->getMovimientosByRendicion($mid);
 			$gridAvisosPagos = new HtmlGrid($rsRecibos);
+            $gridAvisosPagos->setTotalizar(["importe_efectivo", "importe_cheques", "importe_deposito", "importe_retenciones", "total_recibo"]);
             $gridAvisosPagos->addOperacion("Revisar", "fa-pencil-square-o", "javascript:revisar_aviso(:PARAM);");
-			$tab->agregarSolapa("Recibos", '', $gridAvisosPagos->toHtml());
+			$tab->agregarSolapa("Recibos", '', $cpoVendedor->toHtml() . $gridAvisosPagos->toHtml());
 
             $rsRecibos->close();
+
+            $tab->agregarSolapa("Importes", "", $cpoImporteRetiro->toHtml()
+                . $cpoEfectivoDepositado->toHtml()
+                . $cpoGastosTransporte->toHtml()
+                . $cpoGastosGenerales->toHtml()
+                . $cpoEfectivoEntregado->toHtml());
+
+            $tab->agregarSolapa("Observaciones", "", $cpoObservaciones->toHtml());
         ?>   
 
         <form id="form1" action="der-avp-controlar-recibos.php" method="post" id="form1" name="form1">
