@@ -94,7 +94,30 @@ class Avp_rendicionesController extends APIController {
             $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
-    } 
+    }
+
+    public function getMovimientosByRendicion() {
+        if ($this->usePostMethod()) {
+            try {
+                $parametros = $this->getBodyParameter();
+                $objModel = new Avp_rendicionesModel();
+                $aParametros = json_decode($parametros, true);
+                $rsMovimientos = $objModel->getMovimientosByIdRendicion($aParametros["id_rendicion"]);
+                $aMovimientos = $rsMovimientos->getAsArray();
+                $rsMovimientos->close();
+                $responseData = json_encode($aMovimientos);
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+        $this->setErrorMetodoNoSoportado();
+
+    if ($this->isOK())
+        $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+    else
+        $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+
+    }
 }
 
 ?>
