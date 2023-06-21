@@ -40,7 +40,9 @@ BEGIN
     SET vtotal_retensiones = 0.00;
     SET vtotal_recibos = 0.00;
 
-    /* Valido que no se pueda enviar un recibo duplicado */ 
+    START TRANSACTION;
+
+/* Valido que no se pueda enviar un recibo duplicado */ 
     SELECT
         COUNT(*)
     INTO
@@ -54,78 +56,76 @@ BEGIN
 
     IF vReciboDuplicado > 0 THEN
         /* Si el recibo está duplicado genero una Excepción para que salga por SQLEXCEPTION */
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El número de recibo se encuentra duplicado';
-    END IF;
-
-    START TRANSACTION;
-
-    /* Verifico si la cabecera ya está creada */
-    SELECT
-        COUNT(*)
-    INTO
-        vRendicionAbierta
-    FROM
-        avp_rendiciones
-    WHERE
-        avp_rendiciones.id_entidad = xid_vendedor AND
-        avp_rendiciones.enviado = 0;
-
-    IF vRendicionAbierta = 0 THEN
-        /* Si no hay cabecera genero una nueva con todo los importes en cero.
-         La fecha pone la actual como predeterminada. */
-        INSERT INTO avp_rendiciones (
-            id_entidad, fecha
-        ) VALUES (
-            xid_vendedor, CAST(current_timestamp AS DATE));
-
-        SET vIdRendicion = LAST_INSERT_ID();
+        SELECT 'error' AS 'result', 'El número de recibo está duplicado' AS 'mensaje';
     ELSE
-        /* Si hay una cabecera creada, entonces tomo el ID. de la
-            cabecera abierta. */
-        SELECT 
-            id, total_efectivo, total_cheques, total_deposito,
-            total_retensiones, total_recibos            
+        /* Verifico si la cabecera ya está creada */
+        SELECT
+            COUNT(*)
         INTO
-            vIdRendicion, vtotal_efectivo, vtotal_cheques, vtotal_deposito,
-            vtotal_retensiones, vtotal_recibos
+            vRendicionAbierta
         FROM
             avp_rendiciones
         WHERE
             avp_rendiciones.id_entidad = xid_vendedor AND
-            avp_rendiciones.enviado = 0;         
+            avp_rendiciones.enviado = 0;
+
+        IF vRendicionAbierta = 0 THEN
+            /* Si no hay cabecera genero una nueva con todo los importes en cero.
+            La fecha pone la actual como predeterminada. */
+            INSERT INTO avp_rendiciones (
+                id_entidad, fecha
+            ) VALUES (
+                xid_vendedor, CAST(current_timestamp AS DATE));
+
+            SET vIdRendicion = LAST_INSERT_ID();
+        ELSE
+            /* Si hay una cabecera creada, entonces tomo el ID. de la
+                cabecera abierta. */
+            SELECT 
+                id, total_efectivo, total_cheques, total_deposito,
+                total_retensiones, total_recibos            
+            INTO
+                vIdRendicion, vtotal_efectivo, vtotal_cheques, vtotal_deposito,
+                vtotal_retensiones, vtotal_recibos
+            FROM
+                avp_rendiciones
+            WHERE
+                avp_rendiciones.id_entidad = xid_vendedor AND
+                avp_rendiciones.enviado = 0;         
+        END IF;
+
+        /* Calculo el total del recibo. */
+        SET vTotalRecibo = ximporte_efectivo + ximporte_cheques + ximporte_deposito + ximporte_retenciones;
+        SET vtotal_efectivo = vtotal_efectivo + ximporte_efectivo;
+        SET vtotal_cheques = vtotal_cheques + ximporte_cheques;
+        SET vtotal_deposito = vtotal_deposito + ximporte_deposito;
+        SET vtotal_retensiones = vtotal_retensiones + ximporte_retenciones;
+        SET vtotal_recibos = vtotal_recibos + vTotalRecibo;
+
+        /* Agrego el movimiento (aviso de pago). */
+        INSERT INTO avp_movimientos (
+            id_rendicion, id_entidad, id_sucursal, fecha,
+            numero_recibo, importe_efectivo, importe_cheques, importe_deposito,
+            importe_retenciones, total_recibo)
+        VALUES (
+            vIdRendicion, xid_entidad, xid_sucursal, xfecha,
+            xnumero_recibo, ximporte_efectivo, ximporte_cheques, ximporte_deposito,
+            ximporte_retenciones, vTotalRecibo);
+
+        /* Actualizo los totales en la cabecera de rendiciones */
+        UPDATE
+            avp_rendiciones
+        SET
+            avp_rendiciones.total_efectivo = vtotal_efectivo,
+            avp_rendiciones.total_cheques = vtotal_cheques,
+            avp_rendiciones.total_deposito = vtotal_deposito,
+            avp_rendiciones.total_retensiones = vtotal_retensiones,
+            avp_rendiciones.total_recibos = vtotal_recibos
+        WHERE
+            avp_rendiciones.id = vIdRendicion;
+
+        COMMIT;
+
+        SELECT 'success' AS 'result', 'El aviso de pago se agregó con éxito' AS 'mensaje';
     END IF;
-
-    /* Calculo el total del recibo. */
-    SET vTotalRecibo = ximporte_efectivo + ximporte_cheques + ximporte_deposito + ximporte_retenciones;
-    SET vtotal_efectivo = vtotal_efectivo + ximporte_efectivo;
-    SET vtotal_cheques = vtotal_cheques + ximporte_cheques;
-    SET vtotal_deposito = vtotal_deposito + ximporte_deposito;
-    SET vtotal_retensiones = vtotal_retensiones + ximporte_retenciones;
-    SET vtotal_recibos = vtotal_recibos + vTotalRecibo;
-
-    /* Agrego el movimiento (aviso de pago). */
-    INSERT INTO avp_movimientos (
-        id_rendicion, id_entidad, id_sucursal, fecha,
-        numero_recibo, importe_efectivo, importe_cheques, importe_deposito,
-        importe_retenciones, total_recibo)
-    VALUES (
-        vIdRendicion, xid_entidad, xid_sucursal, xfecha,
-        xnumero_recibo, ximporte_efectivo, ximporte_cheques, ximporte_deposito,
-        ximporte_retenciones, vTotalRecibo);
-
-    /* Actualizo los totales en la cabecera de rendiciones */
-    UPDATE
-        avp_rendiciones
-    SET
-        avp_rendiciones.total_efectivo = vtotal_efectivo,
-        avp_rendiciones.total_cheques = vtotal_cheques,
-        avp_rendiciones.total_deposito = vtotal_deposito,
-        avp_rendiciones.total_retensiones = vtotal_retensiones,
-        avp_rendiciones.total_recibos = vtotal_recibos
-    WHERE
-        avp_rendiciones.id = vIdRendicion;
-
-    COMMIT;
-
-    SELECT 'success' AS 'result', 'El aviso de pago se agregó con éxito' AS 'mensaje';
 END
