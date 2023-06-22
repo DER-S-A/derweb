@@ -211,6 +211,7 @@
 
         <script src="components/form/form.js" type="text/javascript"></script>
         <script src="components/aviso_pago/avisoPago.js" type="text/javascript"></script>
+        <script src="components/rendiciones/rendiciones.js" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/cambiar_contraseña.js");?>" type="text/javascript"></script>

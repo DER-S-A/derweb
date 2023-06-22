@@ -342,3 +342,10 @@ function reset_cli_suc() {
 function abrirAvisoPago() {
     new AvisoPago().generateComponent();
 }
+
+/**
+ * Inicio el componente rendiciones.
+ */
+function abrirRendiciones() {
+    new Rendiciones('app-container').generateComponent();
+}
