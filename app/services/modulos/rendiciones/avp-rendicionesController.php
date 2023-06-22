@@ -117,11 +117,35 @@ class Avp_rendicionesController extends APIController {
         } else
         $this->setErrorMetodoNoSoportado();
 
-    if ($this->isOK())
-        $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
-    else
-        $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+    
+    /**
+     * getRendicionAbiertaPorVendedor
+     * Obtiene la rendición abierta para un determinado vendedor
+     * @return void
+     */
+    public function getRendicionAbiertaPorVendedor() {
+        if ($this->usePostMethod()) {
+            try {
+                $parametros = $this->getBodyParameter();
+                $objModel = new Avp_rendicionesModel();
+                $aParametros = json_decode($parametros, true);
+                $aMovimientos = $objModel->getRendicionAbiertaPorVendedor($aParametros["id_vendedor"]);
+                $responseData = json_encode($aMovimientos);
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+        $this->setErrorMetodoNoSoportado();
 
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
 }
 
