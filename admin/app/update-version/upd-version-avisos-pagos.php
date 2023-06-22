@@ -15,6 +15,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
         self::crearMenu();
         self::instalarTablaAvpRendiciones();
         self::instalarOActualizarTablaAVPMovimientos();
+        self::instalarOpControlarRecibos();
     }
     
     /**
@@ -81,6 +82,12 @@ class UpdateAvisosDePagos extends UpdateVersion {
             sc3generateFieldsInfo($tabla);
         }
 
+        if (!sc3existeCampo($tabla, "archivo_pdf_ok")) {
+            $sql = "ALTER TABLE $tabla ADD archivo_pdf_ok varchar(255)";
+            self::ejecutarSQL($sql);
+            sc3generateFieldsInfo($tabla);
+        }
+
         // Armo la configuración de campos
         sc3updateField($query, "id", "Aviso N°");
         sc3updateField($query, "id_entidad", "Entidad", 1);
@@ -100,9 +107,11 @@ class UpdateAvisosDePagos extends UpdateVersion {
         sc3updateField($query, "enviado", "Enviado", 1, "0");
         sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Revisión");
         sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Revisión");
+        sc3updateField($query, "archivo_pdf_ok", "Rendición corregida", 0, "Descargar PDF");
         
         sc3SetMenuAQuery($query, "Administración");
         sc3AgregarQueryAPerfil($query, "Administración");
+        sc3SetNombreQuery($query, "Rendiciones");
     }
     
     /**
@@ -163,5 +172,32 @@ class UpdateAvisosDePagos extends UpdateVersion {
         sc3updateField($query, "total_recibo", "Total del recibo", 1, "0", 0, "Importes");
 
         sc3AgregarQueryAPerfil($query, "Administración");
+
+        /** Agrego campo revisado */
+        if (!sc3existeCampo($tabla, "revisado")) {
+            $sql = "ALTER TABLE $tabla ADD revisado tinyint(3) NOT NULL DEFAULT 0";
+            self::ejecutarSQL($sql);
+            sc3updateField($query, "revisado", "Revisado", 1, "0");
+        }
     }
+    
+    /**
+     * instalarOpControlarRecibos
+     * Instala la operación para controlar los recibos en avisos de pagos.
+     * @return void
+     */
+    public static function instalarOpControlarRecibos() {
+        $opid = sc3AgregarOperacion(
+            "Controlar recibos", 
+            "der-avp-controlar-recibos.php", 
+            "ico/check1.ico", 
+            "Permite controlar los avisos de pagos.", 
+            "avp_rendiciones", 
+            "", 
+            0, 
+            "Administración", 
+            "", 
+            0, 
+            "qavprendiciones");
+    }    
 }

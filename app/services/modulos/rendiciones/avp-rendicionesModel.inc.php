@@ -183,7 +183,7 @@ class Avp_rendicionesModel extends Model {
                     avp_rendiciones rend
                         INNER JOIN entidades e ON e.id = rend.id_entidad
                 WHERE
-                    rend.id = 1";
+                    rend.id = $xidRendicion";
 
         return getRs($sql);
     }
@@ -239,6 +239,33 @@ class Avp_rendicionesModel extends Model {
         $bd = new BDObject();
         $bd->execQuery($sql);
         $bd->close();
+    }
+    
+    /**
+     * getRendicionAbiertaPorVendedor
+     * Obtiene la rendición abierta por vendedor
+     * @param  int $xid_vendedor
+     * @return BDObject
+     */
+    public function getRendicionAbiertaPorVendedor($xid_vendedor) {
+        $aResponse = [];
+        $sql = "SELECT
+                    rend.*,
+                    e.nombre AS 'vendedor'
+                FROM
+                    avp_rendiciones rend
+                        INNER JOIN entidades e ON e.id = rend.id_entidad
+                WHERE
+                    e.id = $xid_vendedor AND
+                    rend.enviado = 0";
+
+        $aResponse = getRs($sql, true)->getAsArray();
+        $idRendicion = $aResponse[0]["id"];
+
+        $rsMovimientos = $this->getMovimientosByIdRendicion($idRendicion);
+        $aResponse["movimientos"] = $rsMovimientos->getAsArray();
+        $rsMovimientos->close();
+        return $aResponse;
     }
 }
 
