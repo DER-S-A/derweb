@@ -1,0 +1,8 @@
+.contenedor-totales {
+    background-color: #585656;
+    /*border: 1px solid #585656; */
+}
+
+.form-totalesRendiciones {
+    display: flex;
+}

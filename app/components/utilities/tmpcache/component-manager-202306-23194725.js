@@ -100,20 +100,21 @@ class ComponentManager {
      * @return {objDomElement} 
      */
 
-    crearElementDom(xvalue, xclass="", xid="", xatributes = []) {
+    crearElementDom(xvalue, xclass="", xid="", ...xatributes) {
         let objDomElement = document.createElement(xvalue);
         if(xclass != "") objDomElement.className = xclass;
         if(xid != "") objDomElement.id = xid;
         if(xatributes.length!=0) {
             let valorA;
             let valorB;
-            xatributes.forEach((value,i)=>{
-                if(i===0||i%2===0){
+            xatributes.forEach((value,i)=>{console.log(value)
+                if(i===0||i%2===0){console.log('1')
                     valorA = value;
                 } else {
                     valorB = value;
                     objDomElement.setAttribute(valorA, valorB);
                 }
+                console.log(objDomElement)
             })
         }   
         return objDomElement;

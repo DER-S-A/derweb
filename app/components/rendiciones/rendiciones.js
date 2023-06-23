@@ -16,6 +16,15 @@ class Rendiciones extends ComponentManager {
 
     async generateComponent() {
         this.getRendiciones();
+        const formTotales = this.__generateForm('form-totalesRendiciones mx-3');
+        const contenedorTotales = this.crearElementDom('div', 'contenedor-totales my-4', 'contenedorTotales');
+        contenedorTotales.innerHTML = "<h5 class='mx-2 mt-1'>Totales</h4><hr>";
+        this.appContainer.appendChild(contenedorTotales).appendChild(formTotales);
+        const contenedorEnvioRendi = this.crearElementDom('div', 'contenedor-envioRendi my-4', 'c-envioRendi');
+        this.appContainer.append(contenedorEnvioRendi);
+        const formEnvio = this.__generateForm('form-enviarRendicion', true);
+        contenedorEnvioRendi.append(formEnvio);
+
     }
 
     /**
@@ -51,16 +60,18 @@ class Rendiciones extends ComponentManager {
         const id_vendedor = objCacheUtils.get("sesion")["id_vendedor"];
         const body = {id_vendedor: id_vendedor}
         const movimientos = await new Promise((resolve, reject) => {
-            new APIs().call(url, body, "POST", datos => {console.log('0')
+            new APIs().call(url, body, "POST", datos => {
                 resolve(datos.movimientos)
             }, true, error => {reject(error)})
         });
         console.log(movimientos)
         movimientos.forEach(movto => {
+            const ofecha = new Date(movto.fecha);
+            let sfecha = ofecha.getDate().toString() + "/" + (ofecha.getMonth()+1).toString() + "/" + ofecha.getFullYear().toString();
             const arrTabla = [
                 movto.cliente_cardcode,
                 movto.cliente,
-                movto.fecha,
+                sfecha,
                 movto.numero_recibo,
                 movto.importe_efectivo,
                 movto.importe_cheques,
@@ -76,27 +87,52 @@ class Rendiciones extends ComponentManager {
     /**
     * Permite generar componente formulario.
     */
-    __generateForm() {
-        const formData = this.__generateDataForm();
-        let objForm = new Form(formData, "form-totalesRendiciones").generateComponent();
+    __generateForm(clase, option2 = false) {
+        let objForm;
+        let formData;
+        if(option2) {
+            formData = this.__generateDataForm('textarea', 'form-control', 3);
+            objForm = new Form(formData, clase, 'Enviar').generateComponent();
+        } else {console.log('1')
+            formData = this.__generateDataForm();
+            objForm = new Form(formData, clase).generateComponent();
+        }
         //this.__validarCamposFront(objForm);
         return objForm;
     }
 
     /**
     * Permite preparar los datos para generar el formulario.
+    * @param {string} textArea establece la etiqueta a usar.
+    * @param {string} clase establece la clase css a usar.
+    * @param {string} row establece un atributo a usar (tiene q ser numerico). 
     * @return {objElement}
     */
-    __generateDataForm() {
+    __generateDataForm(textArea, clase, row) {
         const claseLabel = "form-label";
         const claseInput = "form-control";
-        const obj = [
-            {tag:'input', id:'input-importeEfec-ret', class:claseInput, classL:claseLabel, name:'importeEfec', type:'number', content:'Efectivo:'},
-            {tag:'input', id:'input-importeCheque-ret', class:claseInput, classL:claseLabel, name:'importeCheque', type:'number', content:'Cheques:'},
-            {tag:'input', id:'input-importeDepo-ret', class:claseInput, classL:claseLabel, name:'importeDepo', type:'number', content:'Depósitos / Transferencias:'},
-            {tag:'input', id:'input-importeRet-ret', class:claseInput, classL:claseLabel, name:'importeRet', type:'number', content:'Retenciones:'},
-            {tag:'input', id:'input-importeRec-ret', class:claseInput, classL:claseLabel, name:'importeRec', type:'number', content:'Total Recibos:'}
-        ]
+        let obj;
+        if(textArea == null) {
+            obj = [
+                {tag:'input', id:'input-importeEfec-ret', class:claseInput, classL:claseLabel, name:'importeEfec', type:'number', content:'Efectivo:'},
+                {tag:'input', id:'input-importeCheque-ret', class:claseInput, classL:claseLabel, name:'importeCheque', type:'number', content:'Cheques:'},
+                {tag:'input', id:'input-importeDepo-ret', class:claseInput, classL:claseLabel, name:'importeDepo', type:'number', content:'Depósitos / Transferencias:'},
+                {tag:'input', id:'input-importeRet-ret', class:claseInput, classL:claseLabel, name:'importeRet', type:'number', content:'Retenciones:'},
+                {tag:'input', id:'input-importeRec-ret', class:claseInput, classL:claseLabel, name:'importeRec', type:'number', content:'Total Recibos:'}
+            ]
+        } else {
+            obj = [
+                {tag:'input', id:'input-totEfecCobrado', class:claseInput, classL:claseLabel, name:'totalEfec', type:'number', content:'Total efectivo cobrado:'},
+                {tag:'input', id:'input-ret', class:claseInput, classL:claseLabel, name:'retiro', type:'number', content:'Retiró:'},
+                {tag:'input', id:'input-efectDepo', class:claseInput, classL:claseLabel, name:'efectDepo', type:'number', content:'Efectivo depositado:'},
+                {tag:'input', id:'input-gastosTrans', class:claseInput, classL:claseLabel, name:'gastosTransporte', type:'number', content:'Gastos de transporte:'},
+                {tag:'input', id:'input-gastosGral', class:claseInput, classL:claseLabel, name:'gastosGral', type:'number', content:'Gastos generales:'},
+                {tag:'input', id:'input-efvoEntdo', class:claseInput, classL:claseLabel, name:'efvoEntregado', type:'number', content:'Efectivo entregado:'},
+                {tag:textArea, id:'textarea-observaciones', name:'observaciones', class:clase, classL:claseLabel, row:row, content:'Observaciones:'}
+            ]
+        }
+        
         return obj;
     }
+
 }
