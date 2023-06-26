@@ -65,7 +65,9 @@ class Rendiciones extends ComponentManager {
             }, true, error => {reject(error)})
         });
         console.log(movimientos)
+        let totales = [0, 0, 0, 0, 0]; //imp efectivo, impor chques, imp dep, imp ret, tot reb 
         movimientos.forEach(movto => {
+            totales = this.__generarTotalesInputs(totales, [movto.importe_efectivo, movto.importe_cheques, movto.importe_deposito, movto.importe_retenciones, movto.total_recibo]);
             const ofecha = new Date(movto.fecha);
             let sfecha = ofecha.getDate().toString() + "/" + (ofecha.getMonth()+1).toString() + "/" + ofecha.getFullYear().toString();
             const arrTabla = [
@@ -82,6 +84,7 @@ class Rendiciones extends ComponentManager {
             dataTableMov.row.add(arrTabla);
         });
         dataTableMov.draw();
+        this.__llenarInputsTotales(totales);
     }
 
     /**
@@ -93,11 +96,20 @@ class Rendiciones extends ComponentManager {
         if(option2) {
             formData = this.__generateDataForm('textarea', 'form-control', 3);
             objForm = new Form(formData, clase, 'Enviar').generateComponent();
-        } else {console.log('1')
+            objForm.querySelector('#input-totEfecCobrado').setAttribute('disabled', '');
+            objForm.querySelector('#input-efvoEntdo').setAttribute('disabled', '');
+            let inputs = objForm.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = 0;
+            });
+        } else {
             formData = this.__generateDataForm();
             objForm = new Form(formData, clase).generateComponent();
+            let inputs = objForm.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.setAttribute('disabled', '');
+            });
         }
-        //this.__validarCamposFront(objForm);
         return objForm;
     }
 
@@ -133,6 +145,63 @@ class Rendiciones extends ComponentManager {
         }
         
         return obj;
+    }
+
+    /**
+    * Permite generar los totales que se usaran para completar los inputs de totales.
+    * @param {Array} arrTotales los totales en cero.
+    * @param {Array} arrParciales los valores parciales de los campos de importes de cada registro. 
+    * @return {Array}
+    */
+    __generarTotalesInputs(arrTotales, arrParciales) {
+        const nuevosTotales = arrTotales.map((total, i) => total + parseFloat(arrParciales[i]));
+        return nuevosTotales;
+    }
+
+    /**
+    * Permite llenar los inputs de totales.
+    * @param {Array} arrTotales los totales para pegar en los inputs. 
+    */
+    __llenarInputsTotales(arrTotales) {
+        // Primmeros campos
+        let arrElements = ['input-importeEfec-ret', 'input-importeCheque-ret', 'input-importeDepo-ret', 'input-importeRet-ret', 'input-importeRec-ret'];
+        arrElements.forEach((element, i) => {
+            document.getElementById(element).value = arrTotales[i].toFixed(2);
+        });
+        // Segundos campos
+        document.getElementById('input-totEfecCobrado').value = arrTotales[0].toFixed(2);
+        let totalEntre = arrTotales[0];
+        document.getElementById('input-efvoEntdo').value = totalEntre.toFixed(2);
+        this.__generarEventoChange(totalEntre);
+    }
+
+    /**
+    * Permite realizar la operacion que muestra el input de efectivo entregado.
+    * @param {float} total Es el total de efectivo declarado.
+    * @return {number} 
+    */
+    __generarTotalEntregar(total) {
+        let retiro = parseFloat(document.getElementById('input-ret').value);
+        let depositado = parseFloat(document.getElementById('input-efectDepo').value);
+        let transporte = parseFloat(document.getElementById('input-gastosTrans').value);
+        let generales = parseFloat(document.getElementById('input-gastosGral').value);
+        total = total - (retiro + depositado + transporte + generales);
+        return total;
+    }
+
+    /**
+    * Permite realizar la operacion que muestra el input de efectivo entregado.
+    * @param {number} total Es el total de efectivo declarado.
+    */
+    __generarEventoChange(totalEntre) {
+        let domEntregado = document.getElementById('input-efvoEntdo');
+        const inputs = document.querySelectorAll('input:not([disabled])');
+        inputs.forEach(input => {
+            input.addEventListener('change', () => {
+                const total = this.__generarTotalEntregar(totalEntre);
+                domEntregado.value = total.toFixed(2);
+            });
+        });
     }
 
 }
