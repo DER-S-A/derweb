@@ -234,7 +234,7 @@ class Rendiciones extends ComponentManager {
             console.log(datos)
             swal({title:datos.mensaje, icon:datos.result})
             .then(() => {
-                location.reload(true);
+                window.location.href = datos.archivo_pdf;
             })
         }, true)
 
