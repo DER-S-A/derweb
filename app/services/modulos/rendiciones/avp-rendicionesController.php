@@ -72,16 +72,19 @@ class Avp_rendicionesController extends APIController {
     public function generarRendicion() {
         if ($this->usePostMethod()) {
             try {
+                $url = "http";
                 $datos = $this->getBodyParameter();
                 $objModel = new Avp_rendicionesModel();
-                $resultado_generar_rendicion = $objModel->generarRendicion($datos); 
+                $resultado_generar_rendicion = $objModel->generarRendicion($datos);
+
+                $url = "../../../admin/ufiles/";
                 
                 // Genero el archivo PDF.
                 $pdf = new AVPRendicionesPDF();
                 $pdf->idRendicion = $resultado_generar_rendicion["id_rendicion"];
                 $aLink = $pdf->imprimir();
                 $objModel->actualizarPDFLink($pdf->idRendicion, $aLink["path_to_update"]);
-                $resultado_generar_rendicion["archivo_pdf"] = $aLink["path_to_update"];
+                $resultado_generar_rendicion["archivo_pdf"] = $url . $aLink["path_to_update"];
                 
                 $responseData = json_encode($resultado_generar_rendicion);
             } catch (Exception $ex) {
