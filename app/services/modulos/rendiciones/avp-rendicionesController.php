@@ -77,7 +77,7 @@ class Avp_rendicionesController extends APIController {
                 $objModel = new Avp_rendicionesModel();
                 $resultado_generar_rendicion = $objModel->generarRendicion($datos);
 
-                $url = "../../../admin/ufiles/";
+                $url = "/derweb/admin/ufiles/";
                 
                 // Genero el archivo PDF.
                 $pdf = new AVPRendicionesPDF();
