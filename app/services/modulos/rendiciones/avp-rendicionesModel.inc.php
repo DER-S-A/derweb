@@ -164,6 +164,7 @@ class Avp_rendicionesModel extends Model {
         // Recupero los movimientos de la rendición
         $rsMovimientos = $this->getMovimientosByIdRendicion(intval($aDatos["idRendicion"]));
         $aResponse["movimientos"] = $rsMovimientos->getAsArray();
+        $aResponse["mensaje"] = $result->getValue("mensaje");
         $rsMovimientos->close();
 
         return $aResponse;
