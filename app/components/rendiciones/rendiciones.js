@@ -24,7 +24,7 @@ class Rendiciones extends ComponentManager {
         this.appContainer.append(contenedorEnvioRendi);
         const formEnvio = this.__generateForm('form-enviarRendicion', true);
         contenedorEnvioRendi.append(formEnvio);
-
+        this.__enviarRendicion();
     }
 
     /**
@@ -65,6 +65,7 @@ class Rendiciones extends ComponentManager {
             }, true, error => {reject(error)})
         });
         console.log(movimientos)
+        objCacheUtils.set("id_rendicion", movimientos[0].id_rendicion);
         let totales = [0, 0, 0, 0, 0]; //imp efectivo, impor chques, imp dep, imp ret, tot reb 
         movimientos.forEach(movto => {
             totales = this.__generarTotalesInputs(totales, [movto.importe_efectivo, movto.importe_cheques, movto.importe_deposito, movto.importe_retenciones, movto.total_recibo]);
@@ -204,4 +205,38 @@ class Rendiciones extends ComponentManager {
         });
     }
 
+    __enviarRendicion() {
+        const objCacheUtils = new CacheUtils("derweb", false);
+        const oEnviar = document.getElementById('btn-form-enviarRendicion');
+        oEnviar.addEventListener('click', e => {
+            e.preventDefault();
+            const id_rendicion = objCacheUtils.get("id_rendicion");
+            const objBody = {
+                idRendicion: id_rendicion,
+                importe_retiro: document.getElementById('input-ret').value,
+                efectivo_depositado: document.getElementById('input-efectDepo').value,
+                gastos_transporte: document.getElementById('input-gastosTrans').value,
+                gastos_generales: document.getElementById('input-gastosGral').value,
+                observaciones: document.getElementById('textarea-observaciones').value
+            }
+            console.log(objBody)
+            this.__enviarAviso(objBody);
+        });
+    }
+
+    /**
+    * Envio aviso de pago al endpoint.
+    * @param {Object} value
+    */
+    __enviarAviso(value) {
+        const url = (new App()).getUrlApi("enviarRendi");
+        new APIs().call(url, value, "POST", (datos) => {
+            console.log(datos)
+            swal({title:datos.mensaje, icon:datos.result})
+            .then(() => {
+                location.reload(true);
+            })
+        }, true)
+
+    }
 }
