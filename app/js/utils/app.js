@@ -49,6 +49,7 @@ const aAPIs = [
     {"margenesEspeciales-borrar"                : "services/margenes_especiales.php/borrarMargenesEspeciales"},
     {"aviso-pago"                               : "services/avp-rendiciones.php/agregarAvisoPago"},
     {"rendiAbi"                                 : "services/avp-rendiciones.php/getRendicionAbiertaPorVendedor"},
+    {"enviarRendi"                              : "services/avp-rendiciones.php/generarRendicion"},
     {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
     
 
