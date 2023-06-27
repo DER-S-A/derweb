@@ -16,10 +16,9 @@
         <link href="<?php echo sc3CacheButer("components/catalogo/panel-opciones/panel-opciones.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/catalogo/grid-articulos/grid-articulos.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.css");?>" rel="stylesheet">
-        <!--<link href="components/catalogo/mi-carrito/mi-carrito.css" rel="stylesheet">
-        <link href="components/catalogo/mi-carrito/grid-carrito/grid-carrito.css" rel="stylesheet">-->
         <link href="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-vendedores-gui.css");?>" rel="stylesheet">
         <link href="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil_style.css");?>" rel="stylesheet">
+        <link href="<?php echo sc3CacheButer("components/rendiciones/rendiciones.css");?>" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glider-js@1.7.3/glider.min.css">
         <link rel="stylesheet" href="terceros/Glider-js/css/estilos.css">
@@ -211,6 +210,7 @@
 
         <script src="components/form/form.js" type="text/javascript"></script>
         <script src="components/aviso_pago/avisoPago.js" type="text/javascript"></script>
+        <script src="components/rendiciones/rendiciones.js" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/cambiar_contraseña.js");?>" type="text/javascript"></script>

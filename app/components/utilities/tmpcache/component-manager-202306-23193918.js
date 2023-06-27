@@ -100,11 +100,11 @@ class ComponentManager {
      * @return {objDomElement} 
      */
 
-    crearElementDom(xvalue, xclass="", xid="", xatributes = []) {
+    crearElementDom(xvalue, xclass="", xid="", ...xatributes) {
         let objDomElement = document.createElement(xvalue);
         if(xclass != "") objDomElement.className = xclass;
         if(xid != "") objDomElement.id = xid;
-        if(xatributes.length!=0) {
+        if(xatributes.length!=0) {console.log('pasa')
             let valorA;
             let valorB;
             xatributes.forEach((value,i)=>{

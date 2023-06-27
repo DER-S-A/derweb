@@ -26,13 +26,20 @@ class Form extends ComponentManager {
                 oDiv.append(select);
             }
             if(element.tag == 'input') {
+                element.requerid = element.required != null ? element.required : "";
                 oDiv.innerHTML = 
                 `<label for="${element.id}" class="${element.classL}">${element.content}</label>
-                 <${element.tag} type="${element.type}" class="${element.class}" name="${element.id}" id="${element.id}" aria-describedby="emailHelp" ${element.requerid}>`
+                 <${element.tag} type="${element.type}" class="${element.class}" name="${element.id}" id="${element.id}" aria-describedby="emailHelp"  ${element.requerid}>`
+            }
+            if(element.tag == 'textarea') {
+                oDiv.classList.add('contenedor-textarea');
+                oDiv.innerHTML = 
+                `<label for="${element.id}" class="${element.classL}">${element.content}</label>
+                 <${element.tag} class="${element.class}" name="${element.id}" id="${element.id}" row="${element.row}">`
             }
             this.form.appendChild(oDiv);
         });
-        if(this.button != null) {
+        if(this.button != null) {console.log('1')
             const oButton = this.crearElementDom("button", "btn btn-primary", "btn-"+this.id, ["type", "submit"]);
             oButton.textContent = this.button
             this.form.append(oButton);

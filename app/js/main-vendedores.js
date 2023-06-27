@@ -232,6 +232,7 @@ function getClientes() {
                 let link = "<a href='javascript:entrar_al_cliente(" + element.id + ")'>\
                     <i class='fa fa-arrow-right-to-bracket fa-lg'></i></a>"
                 dataTableClientes.row.add([element.codent, element.nombre, element.cuit, link]);
+                //dataTableClientes.row.add(['akdfadha1','akdfadha2','akdfadha3','akdfadha4']);
             });
             dataTableClientes.draw();
         }
@@ -341,4 +342,11 @@ function reset_cli_suc() {
  */
 function abrirAvisoPago() {
     new AvisoPago().generateComponent();
+}
+
+/**
+ * Inicio el componente rendiciones.
+ */
+function abrirRendiciones() {
+    new Rendiciones('app-container').generateComponent();
 }
