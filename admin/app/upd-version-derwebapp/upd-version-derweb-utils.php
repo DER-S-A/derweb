@@ -1,5 +1,5 @@
 <?php
-include_once "../../funcionesSConsola.php";
+include_once "funcionesSConsola.php";
 
 class UPDVersionWebAppUtils {    
     /**
