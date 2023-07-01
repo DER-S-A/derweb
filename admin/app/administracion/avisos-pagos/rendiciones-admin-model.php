@@ -20,7 +20,7 @@ class RendicionesAdminModel extends Model {
                     avp_rendiciones r
                         INNER JOIN entidades e ON e.id = r.id_entidad
                 WHERE
-                    r.id = 3";
+                    r.id = $xidRendicion";
         return getRs($sql, true);
     }
 
@@ -84,6 +84,39 @@ class RendicionesAdminModel extends Model {
                     avisos.id = $xidMovimiento";
         return getRs($sql, true)->getAsArray();
     }
+
+    /**
+     * getMovimientosByIdRendicion
+     * Obtiene los movimientos (avisos de pagos) a partir de un id. de rendición.
+     * @param  int $xidRendicion
+     * @return BDObject
+     */
+    public function getMovimientosByIdRendicion($xidRendicion) {
+        $sql = "SELECT
+                    movs.id,
+                    movs.id_rendicion,
+                    movs.fecha,
+                    movs.id_sucursal,
+                    e.cliente_cardcode,
+                    e.nombre AS 'cliente',
+                    s.codigo_sucursal,
+                    s.nombre AS 'sucursal',
+                    movs.numero_recibo,
+                    movs.importe_efectivo,
+                    movs.importe_deposito,
+                    movs.importe_cheques,
+                    movs.importe_retenciones,
+                    movs.total_recibo
+                FROM
+                    avp_movimientos movs
+                        INNER JOIN entidades e ON e.id = movs.id_entidad
+                        INNER JOIN sucursales s ON s.id = movs.id_sucursal
+                WHERE
+                    movs.id_rendicion = $xidRendicion
+                ORDER BY
+                    movs.fecha ASC";
+        return getRs($sql, true);
+    }
     
     /**
      * actualizarMovimiento
@@ -103,5 +136,75 @@ class RendicionesAdminModel extends Model {
         $this->setParameter($sql, "xRevisado", doubleval($aDatos["revisado"]));
         $this->setParameter($sql, "xid", intval($aDatos["id"]));
         return getRs($sql, true)->getAsArray();
+    }
+    
+    /**
+     * confirmarRevision
+     * Permite confirmar una rendición que fue confirmada.
+     * @param  int $xidRendicion
+     * @return string
+     */
+    public function confirmarRevision($xidRendicion) {
+        $linkPDF = $this->generarRendicionPDF($xidRendicion);
+        $sql = "UPDATE
+                    avp_rendiciones
+                SET 
+                    avp_rendiciones.revisado = 1,
+                    avp_rendiciones.fecha_revision = CURRENT_TIMESTAMP(),
+                    avp_rendiciones.archivo_pdf_ok = '$linkPDF'
+                WHERE
+                    avp_rendiciones.id = $xidRendicion";
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        $bd->close();
+        return "ufiles/" . $linkPDF;
+    }
+    
+    /**
+     * generarRendicionPDF
+     * Permite generar la rendición en PDF.
+     * @param int $xidRendicion
+     * @return string
+     */
+    private function generarRendicionPDF($xidRendicion) {
+        $pdf = new AVPRendicionesPDF();
+        $pdf->idRendicion = $xidRendicion;
+        $aLink = $pdf->imprimir();
+        $linkPDF = $aLink["path_to_update"];
+        return $linkPDF;
+    }
+    
+    /**
+     * validar_revision
+     * Verifica que todos los avisos hayan sido revisados
+     * @param  int $xidRendicion
+     * @return int
+     */
+    public function validar_revision($xidRendicion) {
+        $ok = false;
+        $sql = "SELECT 
+                    COUNT(*) AS 'cantidad'
+                FROM 
+                    avp_movimientos
+                WHERE
+                    avp_movimientos.id_rendicion = $xidRendicion";
+        $rsMovimientos = getRs($sql, true);
+        $cantidad_movimientos = $rsMovimientos->getValueInt("cantidad");
+        $rsMovimientos->close();
+        $sql = "SELECT 
+                    COUNT(*) AS 'cantidad'
+                FROM 
+                    avp_movimientos
+                WHERE
+                    avp_movimientos.revisado = 1 AND
+                    avp_movimientos.id_rendicion = $xidRendicion";
+        $rsRevisados = getRs($sql);
+        $cantidad_revisado = $rsRevisados->getValueInt("cantidad");
+        $rsRevisados->close();
+
+        if (!sonIguales($cantidad_movimientos, $cantidad_revisado))
+            return false;
+
+        return true;
     }
 }

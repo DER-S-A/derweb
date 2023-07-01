@@ -26,3 +26,5 @@ app/components/rentabilidad/tmpcache/
 app/components/seguridad/tmpcache/
 app/components/catalogo/lista-articulos/tmpcache/
 /admin/app/administracion/avisos-pagos/tmpcache/
+app/components/rendiciones/tmpcache/
+app/components/utilities/tmpcache/

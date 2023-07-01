@@ -16,6 +16,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
         self::instalarTablaAvpRendiciones();
         self::instalarOActualizarTablaAVPMovimientos();
         self::instalarOpControlarRecibos();
+        self::instalarOpGenerarRendicion();
     }
     
     /**
@@ -102,12 +103,12 @@ class UpdateAvisosDePagos extends UpdateVersion {
         sc3updateField($query, "gasto_transporte", "Gastos transporte", 1, "0", 0, "Importes");
         sc3updateField($query, "gastos_generales", "Gastos generales", 1, "0", 0, "Importes");
         sc3updateField($query, "efectivo_entregado", "Efectivo entregado", 1, "0", 0, "Importes");
-        sc3updateField($query, "archivo_pdf", "Rendición PDF", 0, "", 1, "Descargar PDF");
+        sc3updateField($query, "archivo_pdf", "Rendición PDF", 0, "", 1, "PDF Recibido");
         sc3updateField($query, "observaciones", "Observaciones", 0, "Observaciones");
         sc3updateField($query, "enviado", "Enviado", 1, "0");
-        sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Revisión");
-        sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Revisión");
-        sc3updateField($query, "archivo_pdf_ok", "Rendición corregida", 0, "Descargar PDF");
+        sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Control de Administración");
+        sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Control de Administración");
+        sc3updateField($query, "archivo_pdf_ok", "Rendición corregida", 0, "", 1, "Control de Administración");
         
         sc3SetMenuAQuery($query, "Administración");
         sc3AgregarQueryAPerfil($query, "Administración");
@@ -199,5 +200,26 @@ class UpdateAvisosDePagos extends UpdateVersion {
             "", 
             0, 
             "qavprendiciones");
-    }    
+    }
+    
+    /**
+     * instalarOpGenerarRendicion
+     * Permite instalar la operación para generar la rendición desde
+     * el área de administración.
+     * @return void
+     */
+    public static function instalarOpGenerarRendicion() {
+        $opid = sc3AgregarOperacion(
+            "Generar rendición", 
+            "der-avp-generar-rendicion.php", 
+            "ico/recibo.ico", 
+            "Permite generar la rendición después de haber corregido la información.", 
+            "avp_rendiciones", 
+            "", 
+            0, 
+            "Administración", 
+            "", 
+            0, 
+            "qavprendiciones");
+    }
 }
