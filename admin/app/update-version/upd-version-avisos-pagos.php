@@ -219,7 +219,7 @@ class UpdateAvisosDePagos extends UpdateVersion {
             0, 
             "Administración", 
             "", 
-            1, 
+            0, 
             "qavprendiciones");
     }
 }
