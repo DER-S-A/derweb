@@ -39,7 +39,7 @@ class Form extends ComponentManager {
             }
             this.form.appendChild(oDiv);
         });
-        if(this.button != null) {console.log('1')
+        if(this.button != null) {
             const oButton = this.crearElementDom("button", "btn btn-primary", "btn-"+this.id, ["type", "submit"]);
             oButton.textContent = this.button
             this.form.append(oButton);
