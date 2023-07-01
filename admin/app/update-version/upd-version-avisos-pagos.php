@@ -106,9 +106,9 @@ class UpdateAvisosDePagos extends UpdateVersion {
         sc3updateField($query, "archivo_pdf", "Rendición PDF", 0, "", 1, "PDF Recibido");
         sc3updateField($query, "observaciones", "Observaciones", 0, "Observaciones");
         sc3updateField($query, "enviado", "Enviado", 1, "0");
-        sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Administración");
-        sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Administración");
-        sc3updateField($query, "archivo_pdf_ok", "Rendición corregida", 0, "", 1, "Administración");
+        sc3updateField($query, "revisado", "Revisado", 1, "0", 0, "Control de Administración");
+        sc3updateField($query, "fecha_revision", "Revisado el", 0, "", 0, "Control de Administración");
+        sc3updateField($query, "archivo_pdf_ok", "Rendición corregida", 0, "", 1, "Control de Administración");
         
         sc3SetMenuAQuery($query, "Administración");
         sc3AgregarQueryAPerfil($query, "Administración");
