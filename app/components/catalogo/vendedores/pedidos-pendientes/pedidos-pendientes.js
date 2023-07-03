@@ -76,5 +76,19 @@ class PedidosPendientes extends ComponentManager {
      __guardarPedidosPendientesEnCache(xdatos) {
         let objCache = new CacheUtils(_APPNAME, false);
         objCache.set("pedido-actual", xdatos);
-    }    
+    }
+    
+    __eliminarItem(xId) {
+        const url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
+        const pedidoStorage = JSON.parse(sessionStorage.getItem("app_grid_container_rows"));
+        console.log(pedidoStorage)
+        console.log(pedidoStorage.rows[0].id_pedido)
+        if(pedidoStorage.rows.length>1) {
+            let objCarrito = new MiCarritoModalComponent;
+            objCarrito.eliminar_item_carrito(url, pedidoStorage.rows[0].id_pedido, xId);
+        } else {console.log("else")
+            //this.__vaciar_carrito(xidpedido);
+        }
+        //this.__recuperarPedido();
+    }
 }
