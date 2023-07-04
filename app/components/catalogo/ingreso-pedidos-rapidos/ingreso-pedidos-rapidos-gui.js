@@ -730,6 +730,4 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let objCarrito = new MiCarritoModalComponent;
         objCarrito.vaciarMiCarrito(url, xidpedido);
     }
-
-    set
 }

@@ -79,16 +79,15 @@ class PedidosPendientes extends ComponentManager {
     }
     
     __eliminarItem(xId) {
-        const url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
+        let url =  app.getUrlApi("catalogo-pedidos-eliminarItem");
         const pedidoStorage = JSON.parse(sessionStorage.getItem("app_grid_container_rows"));
-        console.log(pedidoStorage)
-        console.log(pedidoStorage.rows[0].id_pedido)
+        let objCarrito = new MiCarritoModalComponent;
         if(pedidoStorage.rows.length>1) {
-            let objCarrito = new MiCarritoModalComponent;
             objCarrito.eliminar_item_carrito(url, pedidoStorage.rows[0].id_pedido, xId);
-        } else {console.log("else")
-            //this.__vaciar_carrito(xidpedido);
+        } else {
+            url = app.getUrlApi("catalogo-pedidos-vaciarCarrito");
+            objCarrito.vaciarMiCarrito(url, pedidoStorage.rows[0].id_pedido);
         }
-        //this.__recuperarPedido();
+        ver_pedidos_pendientes();
     }
 }
