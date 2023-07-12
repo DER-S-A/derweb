@@ -279,6 +279,8 @@ class CatalogoGridComponent extends ComponentManager {
         var objPedidoContainter = document.createElement("div");
         var objContainerCarrito = document.createElement("div");
         var objInputCantidad = document.createElement("input");
+        objInputCantidad.type = "number";
+        objInputCantidad.min = "0";
         var objBotonCarrito = document.createElement("a");
         
         objPedidoContainter.classList.add("pedido-container");
