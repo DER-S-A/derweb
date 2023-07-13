@@ -140,6 +140,9 @@ class Avp_rendicionesModel extends Model {
         $aResponse = [];
         $aDatos = json_decode($xdatos, true);
 
+        if (!$this->validarGenerarRendicion($aDatos, $aResponse))
+            return $aResponse;
+
         $sql = "CALL sp_avp_generarRendicion (
             xidRendicion,
             xImporteRetiro,
@@ -168,6 +171,47 @@ class Avp_rendicionesModel extends Model {
         $rsMovimientos->close();
 
         return $aResponse;
+    }
+    
+    /**
+     * validarGenerarRendicion
+     * Valida los tipos de datos del API generarRendicion
+     * @param  array $xaDatos
+     * @param  array $xaResponse
+     * @return bool
+     */
+    private function validarGenerarRendicion(&$xaDatos, &$xaResponse) {
+        if (sonIguales(gettype($xaDatos["idRendicion"]), "string")) {
+            $xaResponse["result"] = "PARAMETERS_ERROR";
+            $xaResponse["mensaje"] = "El idRendicion debe ser un valor numérico";
+            return false;            
+        }
+
+        if (sonIguales(gettype($xaDatos["importe_retiro"]), "string")) {
+            $xaResponse["result"] = "PARAMETERS_ERROR";
+            $xaResponse["mensaje"] = "El campo importe retiro debe ser un valor numérico";
+            return false;                        
+        }
+
+        if (sonIguales(gettype($xaDatos["efectivo_depositado"]), "string")) {
+            $xaResponse["result"] = "PARAMETERS_ERROR";
+            $xaResponse["mensaje"] = "El campo importe depositado debe ser un valor numérico";
+            return false;                        
+        }
+
+        if (sonIguales(gettype($xaDatos["gastos_transporte"]), "string")) {
+            $xaResponse["result"] = "PARAMETERS_ERROR";
+            $xaResponse["mensaje"] = "El campo gastos de transporte debe ser un valor numérico";
+            return false;                        
+        }
+
+        if (sonIguales(gettype($xaDatos["gastos_generales"]), "string")) {
+            $xaResponse["result"] = "PARAMETERS_ERROR";
+            $xaResponse["mensaje"] = "El campo gastos generales debe ser un valor numérico";
+            return false;                        
+        }
+
+        return true;
     }
     
     /**
