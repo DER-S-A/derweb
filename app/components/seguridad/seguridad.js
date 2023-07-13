@@ -41,7 +41,6 @@ class Seguridad {
         // si tengo que mostrar sucursales o no.
         document.getElementById("txtNroCliente").addEventListener("blur", () => {
             let url = (new App()).getUrlApi("app-entidades-get");
-            //let filter = "filter=\"cliente_cardcode = '" + document.getElementById("txtNroCliente").value + "'\"";
             let filter = "filter=\"usuario = '" + document.getElementById("txtNroCliente").value + "'\"";
 
             (new APIs).call(url, filter, "GET", (response) => {
@@ -72,6 +71,13 @@ class Seguridad {
             else
                 document.getElementById("txtPassword").removeAttribute("readonly");
         });
+
+        // Agrego el evento change en donde se ingresa el usuario para limpiar la contraseña y hacer q hagan tab y
+        // la vuelvan a poner y que genere sucursal si es q la tiene.
+        document.getElementById("txtNroCliente").addEventListener("change", () => {
+            console.log("aca cambiar")
+            document.getElementById("txtPassword").value = "";
+        })
     }
 
     /**
