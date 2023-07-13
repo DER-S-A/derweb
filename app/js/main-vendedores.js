@@ -318,6 +318,10 @@ function editar_pedido(xidpedido_item) {
     (new EdicionPedidosPendientes()).editarItem(xidpedido_item);
 }
 
+function app_grid_container_delete(xId) {
+    new PedidosPendientes().__eliminarItem(xId);
+}
+
 /**
  * Permite ingresar a la operación de pedidos rápidos.
  */

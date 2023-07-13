@@ -160,7 +160,7 @@ class MiCarritoModalComponent extends ComponentManager {
         });
     }
 
-    eliminar_item_carrito(xUrl, xidpedido, xId) {
+    eliminar_item_carrito(xUrl, xidpedido, xId) {console.log(xId)
         let xparametros = "id_pedido=" + xidpedido + "&id_pedidos_items=" + xId;
         (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
             xdatos = JSON.parse(xdatos);

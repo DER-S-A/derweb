@@ -317,7 +317,7 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Permite recuprar el pedido que se encuentra actualmente pendiente de
      * confirmar.
      */
-    __recuperarPedido() {console.log(this.__objDataGrid);
+    __recuperarPedido() {
         const urlPed = new App().getUrlApi("catalogo-pedidos-getPedidoActual");
         aSesion = sessionStorage.getItem("derweb_sesion");
 
@@ -730,6 +730,4 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         let objCarrito = new MiCarritoModalComponent;
         objCarrito.vaciarMiCarrito(url, xidpedido);
     }
-
-    set
 }

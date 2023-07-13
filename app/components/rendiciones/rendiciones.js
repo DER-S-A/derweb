@@ -60,11 +60,13 @@ class Rendiciones extends ComponentManager {
         const id_vendedor = objCacheUtils.get("sesion")["id_vendedor"];
         const body = {id_vendedor: id_vendedor}
         const movimientos = await new Promise((resolve, reject) => {
-            new APIs().call(url, body, "POST", datos => {
+            new APIs().call(url, body, "POST", datos => {console.log(datos)
                 resolve(datos.movimientos)
             }, true, error => {reject(error)})
         });
-        console.log(movimientos)
+        if(movimientos == "") {
+            return;
+        }
         objCacheUtils.set("id_rendicion", movimientos[0].id_rendicion);
         let totales = [0, 0, 0, 0, 0]; //imp efectivo, impor chques, imp dep, imp ret, tot reb 
         movimientos.forEach(movto => {
@@ -210,7 +212,11 @@ class Rendiciones extends ComponentManager {
         const oEnviar = document.getElementById('btn-form-enviarRendicion');
         oEnviar.addEventListener('click', e => {
             e.preventDefault();
-            const id_rendicion = objCacheUtils.get("id_rendicion");
+            let id_rendicion = objCacheUtils.get("id_rendicion");
+            if(id_rendicion == "") {
+                swal('ERROR', 'No tiene pre-rendiciones pendientes a enviar', 'error')
+                return;
+            }
             const objBody = {
                 idRendicion: id_rendicion,
                 importe_retiro: document.getElementById('input-ret').value,
@@ -220,7 +226,13 @@ class Rendiciones extends ComponentManager {
                 observaciones: document.getElementById('textarea-observaciones').value
             }
             console.log(objBody)
-            this.__enviarAviso(objBody);
+            if(parseFloat(document.getElementById('input-efvoEntdo').value) > -1 ) {
+                this.__enviarAviso(objBody);
+                objCacheUtils.set("id_rendicion", "");
+            } else {
+                swal('ERROR RECAUDACION', 'El campo de efectivo entregado tiene q ser ceo o un numero mayor.', 'error');
+                return;
+            }
         });
     }
 
@@ -234,7 +246,8 @@ class Rendiciones extends ComponentManager {
             console.log(datos)
             swal({title:datos.mensaje, icon:datos.result})
             .then(() => {
-                location.reload(true);
+                window.open(datos.archivo_pdf, "_blank");
+                window.location.href = "/derweb/app/main-vendedores.php";
             })
         }, true)
 

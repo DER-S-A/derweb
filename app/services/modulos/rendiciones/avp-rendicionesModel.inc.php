@@ -305,11 +305,22 @@ class Avp_rendicionesModel extends Model {
                     rend.enviado = 0";
 
         $aResponse = getRs($sql, true)->getAsArray();
-        $idRendicion = $aResponse[0]["id"];
+        if (empty($aResponse)) {
+            // El array está vacío, no se encontraron resultados
+            // Puedes agregar el código necesario para manejar esta situación
+            $aResponse["movimientos"] = "";
+        } else {
+            // El array contiene resultados, puedes acceder a los datos
+            $idRendicion = $aResponse[0]["id"];
+            $rsMovimientos = $this->getMovimientosByIdRendicion($idRendicion);
+            $aResponse["movimientos"] = $rsMovimientos->getAsArray();
+            $rsMovimientos->close();
+        }
+        //$idRendicion = $aResponse[0]["id"];
 
-        $rsMovimientos = $this->getMovimientosByIdRendicion($idRendicion);
-        $aResponse["movimientos"] = $rsMovimientos->getAsArray();
-        $rsMovimientos->close();
+        //$rsMovimientos = $this->getMovimientosByIdRendicion($idRendicion);
+        //$aResponse["movimientos"] = $rsMovimientos->getAsArray();
+        //$rsMovimientos->close();
         return $aResponse;
     }
 }
