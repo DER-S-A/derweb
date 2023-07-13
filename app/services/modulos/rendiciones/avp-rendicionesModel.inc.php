@@ -149,7 +149,7 @@ class Avp_rendicionesModel extends Model {
             xEfectivoDepositado,
             xGastosTransporte,
             xGastosGenerales,
-            xObservaciones        
+            xObservaciones
         )";
         $this->setParameter($sql, "xidRendicion", intval($aDatos["idRendicion"]));
         $this->setParameter($sql, "xImporteRetiro", doubleval($aDatos["importe_retiro"]));
