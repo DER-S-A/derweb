@@ -31,7 +31,7 @@
     display: none;
     border-right: 2px solid lightgray;
     position: fixed;
-    max-height: 95vh;
+    max-height: 100vh;
     overflow: auto;
 }
 
