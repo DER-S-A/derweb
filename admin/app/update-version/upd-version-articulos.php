@@ -15,6 +15,10 @@ class UpdateVersionArticulos extends UpdateVersion {
         self::agregarCampoAMarcas();
         self::instalarTablaUnidadesVentas();
         self::instalarOpEquivalencias();
+        self::instalarTablaMarcasVehiculos();
+        self::instalarTablaModelo();
+        self::instalarTablaAnio();
+        self::instalarTablaTiposVehiculos();
     }
     
     /**
@@ -82,6 +86,91 @@ class UpdateVersionArticulos extends UpdateVersion {
             "", 
             0, 
             "articulos");
-    }    
+    }
+
+    private static function instalarTablaMarcasVehiculos() {
+        $tabla = "apl_marcas_vehiculos";
+        $query = getQueryName($tabla);
+
+        if(!sc3existeTabla($tabla)) {
+            $sql = "CREATE TABLE $tabla (
+                        id int not null unique auto_increment,
+                        codigo int not null unique,
+                        descripcion varchar(60) not null unique,
+                    PRIMARY KEY (id))";
+            self::ejecutarSQL($sql);
+        }
+
+        sc3agregarQuery($query, $tabla, "Marcas vehículos", "Panel", "descripcion", 1, 1, 1, "descripcion", 3);
+        sc3generateFieldsInfo($tabla);
+        sc3updateField($query, "id", "ID. Interno");
+        sc3updateField($query, "codigo", "Código", 1);
+        sc3updateField($query, "descripcion", "Descripción", 1);
+        sc3AgregarQueryAPerfil($query, "Root");
+    }
+
+    private static function instalarTablaModelo() {
+        $tabla = "apl_modelos_vehiculos";
+        $query = getQueryName($tabla);
+
+        if(!sc3existeTabla($tabla)) {
+            $sql = "CREATE TABLE $tabla (
+                        id int not null unique auto_increment,
+                        codigo int not null unique,
+                        descripcion varchar(60) not null unique,
+                    PRIMARY KEY (id))";
+            self::ejecutarSQL($sql);
+        }
+
+        sc3agregarQuery($query, $tabla, "Modelos Vehículos", "Panel", "descripcion", 1, 1, 1, "descripcion", 3);
+        sc3generateFieldsInfo($tabla);
+        sc3updateField($query, "id", "ID. Interno");
+        sc3updateField($query, "codigo", "Código", 1);
+        sc3updateField($query, "descripcion", "Descripción", 1);
+        sc3AgregarQueryAPerfil($query, "Root");
+    }
+
+    private static function instalarTablaAnio() {
+        $tabla = "apl_anio_vehiculos";
+        $query = getQueryName($tabla);
+
+        if(!sc3existeTabla($tabla)) {
+            $sql = "CREATE TABLE $tabla (
+                        id int not null unique auto_increment,
+                        codigo int not null unique,
+                        descripcion varchar(60) not null unique,
+                    PRIMARY KEY (id))";
+            self::ejecutarSQL($sql);
+        }
+
+        sc3agregarQuery($query, $tabla, "Años Vehículos", "Panel", "descripcion", 1, 1, 1, "descripcion", 3);
+        sc3generateFieldsInfo($tabla);
+        sc3updateField($query, "id", "ID. Interno");
+        sc3updateField($query, "codigo", "Código", 1);
+        sc3updateField($query, "descripcion", "Descripción", 1);
+        sc3AgregarQueryAPerfil($query, "Root");
+    }
+
+    private static function instalarTablaTiposVehiculos() {
+        $tabla = "apl_tipos_vehiculos";
+        $query = getQueryName($tabla);
+
+        if(!sc3existeTabla($tabla)) {
+            $sql = "CREATE TABLE $tabla (
+                        id int not null unique auto_increment,
+                        codigo int not null unique,
+                        descripcion varchar(60) not null unique,
+                    PRIMARY KEY (id))";
+            self::ejecutarSQL($sql);
+        }
+
+        sc3agregarQuery($query, $tabla, "Tipos Vehículos", "Panel", "descripcion", 1, 1, 1, "descripcion", 3);
+        sc3generateFieldsInfo($tabla);
+        sc3updateField($query, "id", "ID. Interno");
+        sc3updateField($query, "codigo", "Código", 1);
+        sc3updateField($query, "descripcion", "Descripción", 1);
+        sc3AgregarQueryAPerfil($query, "Root");
+    }
+
 }
 ?>
