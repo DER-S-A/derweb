@@ -1,0 +1,40 @@
+/*
+ * Contiene el estilo para la GUI de la gestión de pedidos para vendedores.
+*/
+
+.contenedor-cabecera {
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    border-bottom: solid thin gray;
+    margin-bottom: 5px;
+}
+
+.detalle-pedido-row {
+    border-bottom: solid thin gray;
+}
+
+.div-total-pedido-seleccionado {
+    position: relative;
+    float: right;
+}
+
+.div-total-pedido-seleccionado input {
+    font-size: 12px;
+}
+
+.select-suscursal {
+    margin-top: 2px;
+}
+
+.select-formasEnvios {
+    margin-top: 2px;
+}
+
+.select-transportes {
+    margin-top: 2px;
+}
+
+#btn-finalizar-pedido {
+    margin-top: 5px;
+}
