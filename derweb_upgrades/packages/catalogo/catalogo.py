@@ -401,40 +401,34 @@ class Catalogo:
                     
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            print(tv)
             sap.logout()
-    def updateListasDePrecios(self):
+
+        
+    def updateStock(self):
         """
-            ESTE METODO PERMITE ACTUALIZAR LAS LISTAS DE PRECIO
-        """
-        procesados = 0
+            Este método permite actualizar los televentas del catalogo
+        """ 
+        
         sap = SAPManager()
         mysql = MySqlManager()
+        
         try:
-            sap.login()
-            listaPrecios = sap.getData("listaPrecios")
-            for lp in listaPrecios["value"]:
-                sql = f"CALL sp_listaPrecios_upgrade({lp['ListNum']},'{lp['ListName']}')"
-                mysql.execute(sql)
-                procesados += 1
-                print(f"Listas Procesadas {procesados}")
-            print(f"Listas de Precios Terminada")
-            precio = sap.getData("precioArt")
             procesados = 0
-            for precios in precio["value"]:
-                if precios['Price'] == 0:
-                    continue
-                sql = f"CALL sp_artPrecios_upgrade('{precios['ItemCode']}',{precios['PriceList']},{precios['Price']});"
-                print(sql)
-                mysql.execute(sql)
-                procesados += 1
-                print(f"Precios procesados{procesados}")
-            print(f"Precios Articulos Finalizo")
-            mysql.closeDB()
-            sap.logout()
+            sap.login()
+            stock = sap.getData('stockArt')
+            for stk in stock["value"]:
+                
+                if stk['CantVenta'] > 0:
+                    sql = f"CALL sp_articulosStock_upgrade('{stk['ItemCode']}',{stk['CantVenta']})"
+                    mysql.execute(sql)
+                    procesados += 1
+                    print(f"Stock procesados: {procesados}")
+
         except BaseException as err:
             print(f"Unexpected {err=}, {type(err)=}")
             sap.logout()
+            mysql.closeDB()
+            
             
             
             
