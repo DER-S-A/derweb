@@ -105,6 +105,10 @@
     position: fixed;
 }
 
+.lista-articulos-subrubros-container h5 {
+    margin: 5%;
+}
+
 .titulo-rubro-seleccionado {
     font-family: "futura";
     font-weight: bold;
