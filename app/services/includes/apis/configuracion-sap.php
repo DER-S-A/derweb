@@ -5,10 +5,10 @@
 
 // URLs para consumir APIs de SAP.
 // ! Login Viejo -> define ("URL_LOGIN_ETL", "https://181.119.112.208:5444/dev/api/ETL/GetToken");
-define ("URL_LOGIN_ETL", "https://back.dev.onesolutions.com.ar/bindapp/v1/sys/svc/Login");
+define ("URL_LOGIN_ETL", "https://back.bindapp.net/v1/sys/svc/Login");
 
 // ! Enviar Pedido Viejo ->define ("URL_ENVIAR_PEDIDO", "https://181.119.112.208:5444/dev/api/ETL/GetAndProcessNews"); 
-define ("URL_ENVIAR_PEDIDO","https://back.dev.onesolutions.com.ar/bindapp/v1/mps/svc/ExecuteProcess/SQ2SAP");
+define ("URL_ENVIAR_PEDIDO","https://back.bindapp.net/v1/mps/svc/ExecuteProcess/SQ2SAP");
 
 
 // Establece la configuración de logueo al ETL.
@@ -17,8 +17,8 @@ define ("URL_ENVIAR_PEDIDO","https://back.dev.onesolutions.com.ar/bindapp/v1/mps
     "userName" => "ETL", 
     "password" => "1234"));*/
 define ("BODY_LOGIN_ETL",array(
-    "userName" => "bindapp@der.dev",
-    "password" => "1234"));
+    "userName" => "user1@der",
+    "password" => "uSeR1$27-35"));
 
 // Parametros de conexión para enviar en el body de las APIs del ETL
 define ("CONNECTOR_CODE", "DercliWeb");
