@@ -3,14 +3,15 @@
 */
 
 .app-footer {
-    /*position: absolute;*/
+    /*position: absolute;
     bottom: 0;
-    background-color: #003d7c;
     color:white;
     padding: 3px;
     width: 100%;
+    justify-content: center;*/
+    background-color: #003d7c;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;  
 }
 
@@ -22,6 +23,149 @@
     margin-right: auto;
 }
 
+.elementos{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: #003d7c;
+    width: 100vmax;
+    /* height: 5vmax; */
+    margin: 0;
+    /* position: absolute; */
+    padding: .5rem 5.5rem;
+}
+
+.img-footer{
+    width: 2.5vmax;
+}
+
+.fa-instagram, .fa-facebook, .fa-youtube{
+    font-size: 2.5vmax;
+   }
+
+.redes{
+    display: flex;
+    justify-content: space-evenly;
+    width: 14vmax;
+    /* margin-left: 10vmax; */
+}
+
+.redes a {
+    color: white;
+}
+
+.atclientes h2{
+    color: #1081e0;
+    font-size: 17px;
+    margin: 0;
+}
+
+.atclientes p{
+    color: aliceblue; 
+    font-size: 12px;
+    margin: 0;
+}
+
+.telefono p, .ubicacion p {
+    margin: 0;
+}
+
+
+
+.ubicacion, .telefono{
+    display: flex;
+    align-items: center;
+    color: aliceblue;
+    font-size: 15px; 
+}
+
+
+@media screen and (max-width:979px){
+    .elementos{
+        padding: 0.5rem 2.5rem
+    }
+
+    /* .fa-instagram, .fa-facebook, .fa-youtube{
+        font-size: 25px;
+       } */
+
+    .atclientes h2{
+        font-size: 14px;
+    }
+
+    .atclientes p{
+        font-size: 10px;
+    }
+
+    .ubicacion, .telefono{
+        font-size: 12px;
+    }
+    
+}
+
+
+@media screen and (max-width:768px){
+    .elementos{
+        padding: .5rem 1.5rem;
+    }
+    
+    .ubicacion, .telefono{
+        font-size: 10px;
+    }
+
+    .atclientes p{
+        font-size: 10px;
+    }
+
+    .atclientes h2{
+        font-size: 12px;
+    }
+    
+}
+
+
+
+@media screen and (max-width: 660px) {
+   .elementos{
+    flex-direction: column;
+    /* padding: 1%; */
+   }
+
+   .redes{
+    margin-left: 0;
+   }
+
+   /* .fa-instagram, .fa-facebook, .fa-youtube{
+    font-size: 20px;
+   } */
+
+   .atclientes h2{
+    font-size: 14px;
+   }
+
+   .atclientes p{
+    font-size: 10px;
+   }
+
+   .ubicacion{
+    margin-right: 0;
+   }
+
+   .telefono{
+    padding: 1% 0 1% 0
+   }
+
+   .ubicacion, .telefono{
+    font-size: 12px
+   }
+
+   a{
+    padding: 0 .3rem;
+   }
+    
+}
+
+/*
 .app-footer-container .row {
     align-items: center;
     justify-content: center;
@@ -78,4 +222,4 @@
     .app-footer-container {
         text-align: center;
     }
-}
+}*/

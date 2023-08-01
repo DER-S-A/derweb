@@ -32,7 +32,7 @@ class BotonMiCarritoComponent extends ComponentManager {
         objhref.classList.add("btn");
         objhref.classList.add("btn-mi-carrito");
         objhref.href = "javascript:" + this.__jsFunction + "();";
-        objhref.innerHTML = `<img src="assets/imagenes/icons/changuitoConCeleste.png">`
+        objhref.innerHTML = `<img src="/assets/imagenes/icons/changuitoConCeleste.png">`
         //objhref.innerHTML = "<i class=\"fa-solid fa-cart-shopping fa-lg\"></i>";
         this.__objContainer.appendChild(objhref);
     }

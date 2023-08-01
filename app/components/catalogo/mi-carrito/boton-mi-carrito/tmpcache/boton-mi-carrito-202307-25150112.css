@@ -28,3 +28,9 @@
 .btn-mi-carrito i {
     font-size: 2em;
 }
+
+@media screen and (max-width: 1024px) {
+    .boton-mi-carrito-container {
+        right: 0;
+    }
+}

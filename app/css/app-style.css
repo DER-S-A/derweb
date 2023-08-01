@@ -126,6 +126,7 @@ body {
     Esto soluciona el problema de que en modo celu el footer tapaba el formulario.
 */
 
+
 @media screen and (max-width: 580px) {
     #app-header-content {
         margin-left: 35%;

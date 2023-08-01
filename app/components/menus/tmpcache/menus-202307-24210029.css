@@ -9,7 +9,7 @@
     padding: 5px;
 }*/
 
-.clientes-header .nav-menu {
+#top-menu {
     position:relative;
     float: left;
     height: 30px;
@@ -57,6 +57,5 @@
 #top-menu .menu_options a:hover {
     background-color: #d8d8d8;
 }
-
 
 /* Agregar responsive. */

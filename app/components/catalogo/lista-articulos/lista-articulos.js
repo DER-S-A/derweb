@@ -17,7 +17,7 @@ class ListaArticuloComponent {
      * Crea el componente Lista de artículos.
      */
     generateComponent() {
-        this.__createButton();
+        //this.__createButton();
         this.__crearOpcionesRubros();
 
         // Creo el evento click del botón

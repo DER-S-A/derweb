@@ -18,24 +18,24 @@ class MenuComponent {
      */
     generarMenu() {
         //getTemplate("components/menus/menus.html", (xhtml) => {
-        //    this.menuContainer.innerHTML = xhtml;
+            //this.menuContainer.innerHTML = xhtml;
             this.__leerOpciones();
 
             document.getElementById("btnPushMenu").addEventListener("click", () => {
             if (document.getElementById("menu-options").style.display === "none" 
                     || document.getElementById("menu-options").style.display === "") {
                 document.getElementById("menu-options").style.display = "block";
-                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fa-solid fa-chevron-up'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fa-solid fa-chevron-up'></i>";
             }
             else {
                 document.getElementById("menu-options").style.display = "none";
-                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fa-solid fa-chevron-down'></i>";
+                document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fa-solid fa-chevron-down'></i>";
             }
             });
             document.getElementById("btnPushMenu").addEventListener("keyup", (e)=>{
                 if(e.keyCode === 27){
                     document.getElementById("menu-options").style.display = "none";
-                    //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fas fa-bars'></i>";
+                    document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fas fa-bars'></i>";
                 }
             })
         //});
@@ -56,7 +56,7 @@ class MenuComponent {
         var aOperaciones = objAPIs.getFromAPI(this.__objApp.getUrlApi("app-operaciones-getByTipoEntidad") 
             + "?idTipoEntidad=" + idTipoEntidad);
 
-        aOperaciones.forEach(xElement => {console.log(objMenuOptions)
+        aOperaciones.forEach(xElement => {
             let objLink = document.createElement("a");
             objLink.href = xElement.url;
             objLink.innerHTML = "<i class='" + xElement.icono + "'></i>&nbsp;" + xElement.nombre;

@@ -10,15 +10,153 @@
     width: 99vw;
 }
 
-.row {
-    align-items: center !important;
-}
-
 .app-header {
     background-color: #003d7c;
     max-width: 100%;
     margin: auto;
+    color: white;
 }
+
+.cont-buscadorSimple {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cont-logoYlista .logo img {
+    width: 100%;
+    height: 70px;
+}
+
+.cont-logoYlista, .cont-buscador, .cont-perfil {
+    width: 350px;
+    margin: 1% 0;
+}
+
+.cont-logoYlista {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.lista_articulos {
+    border: 1px solid white;
+    border-radius: 5%;
+    height: 50%;
+    padding: 5% 10%;
+    box-shadow: 1px 2px 5px black;
+    background: transparent;
+    color: white;
+    display: flex;
+}
+
+.cont-buscador {
+    text-align: center;
+}
+
+.cont-buscador input {
+    background-color: #003d7c;
+    border: none;
+    border-bottom: 1px solid white;
+    padding: 1%;
+    color: white;
+}
+
+.cont-buscador i {
+    color: white;
+}
+
+.cont-buscador input:focus {
+    border: none; /* Eliminamos el borde al enfocar el campo */
+    border-bottom: 1px solid white;
+    outline: none; /* Quitamos el borde de enfoque (cuando se hace clic en el campo) */
+  }
+
+.cont-perfil {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.cont-perfil i {
+    font-size: 1.5em;
+}
+
+.cont-perfil a {
+    text-decoration: none;
+    color: white;
+}
+
+#top-menu i {
+    cursor: pointer;
+}
+
+.nombre-suc {
+    border: 1px solid white;
+    border-radius: 5%;
+    height: 50%;
+    padding: 1% 2%;
+    box-shadow: 1px 2px 5px black;
+    font-weight: bold;
+}
+
+.cont-buscadorAvan {
+    display: flex;
+    justify-content: center;
+    font-size: 0.7em;
+}
+
+.buscadorAvan {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    text-align: center;
+}
+
+.buscadorAvan div {
+    width: 15%;
+    padding: 0 1%;
+}
+
+.buscadorAvan select {
+    border-radius: 10px;
+    height: 25px;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+.app-header-btnbuscar {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 2em;
+}
+
+.header-ven {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-ven .img-con {
+    width: 100px;
+    height: 4rem;
+}
+
+.header-ven .menu-container {
+    font-size: 1.7rem;
+    /*height: 4rem;*/
+}
+
+
+/*
+
+.row {
+    align-items: center !important;
+}
+
 
 .app-header-logo {
     width: 100px;
@@ -154,9 +292,9 @@
     padding: 5px;
     width:50px;
     /*position: relative;
-    left:40px;*/
+    left:40px;*
     
-    /* Le agrego 2px de resplandor exterior*/
+    /* Le agrego 2px de resplandor exterior*
     -moz-box-shadow: 0px 0px 2px #ffffff;
     -webkit-box-shadow: 0px 0px 2px #ffffff;
     box-shadow: 0px 0px 2px #ffffff;     
@@ -188,11 +326,51 @@
 
 .menu-perfil li a hr {
     width: 160px;
+}*/
+
+@media screen and (max-width: 1024px) {
+    .cont-perfil {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .buscadorAvan {
+        width: 85%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cont-buscadorAvan {
+        font-size: 0.538rem;
+    }
 }
 
 @media screen and (max-width: 580px) {
     .app-header-buscar {
         max-width: 80%;
     }
+    .app-header {
+        display: block;
+        position: unset;
+    }
+
+    .cont-logoYlista {
+        justify-content: space-between;
+    }
+
+    .lista_articulos {
+        padding: 10px;
+    }
     
+    .cont-perfil {
+        margin: 2% auto;
+    }
+
+    .buscadorAvan div {
+        width: 90%;
+    }
+
+    .buscadorAvan {
+        display: block;
+    }
 }

@@ -313,9 +313,6 @@ function esconderHamburguesa() {
     let objBtnPush =  document.querySelector("#btnPushMenu");
     objBotonLista.addEventListener ("click", () => {
         objHambur.style.display = "none";
-        //objBotonMenu.classList.replace("fa-chevron-up", "fa-chevron-down");
-        //objBotonMenu.className = "fa-solid fa-chevron-down";
-        objBtnPush.innerHTML = '<i id="botonMenu" class="fa-solid fa-chevron-down"></i>';
         document.querySelector("#botonHambur").className = "fas fa-bars";
     })
 }

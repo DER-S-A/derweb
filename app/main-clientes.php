@@ -42,7 +42,81 @@
     </head>
     <body id="page-container">
         <div id="content-wrap">
-            <header class="clientes-header">
+            
+        <header class="clientes-header app-header">
+            <div class="cont-buscadorSimple my-2">
+                <div class="cont-logoYlista ms-3">
+                    <div class="logo"><a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" alt=""></a></div>
+                    <div id="lista-articulos-container">
+                        <button class="lista_articulos ms-3" id="btnPushListaArticulo" name="btnPushListaArticulo">
+                            <i class="fa-solid fa-bars mx-1"></i>
+                            <span class="mx-1" >ARTíCULOS</span>
+                        </button>
+                    </div> 
+                </div>
+                <div class=cont-buscador>
+                <a href="javascript:buscarPorFrase()"><i class="fa-solid fa-magnifying-glass"></i></a><input type="text" id="txtValorBuscado" name="txtValorBuscado" placeholder="Buscar" autocomplete="off">
+                </div>
+                <div class="cont-perfil me-3" id="menu-container">
+                    <div class="nombre-suc me-3" id="num-cliente">SIN NOMBRE</div>
+                    <div id="menu-container" class="menu-container">
+                        <nav id="top-menu" class="nav-menu">
+                            <i class="fa-solid fa-user" id="btnPushMenu"></i> 
+                            <div id="menu-options" class="menu_options"></div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="cont-buscadorAvan">
+                <div class="buscadorAvan">
+                    <div class="mb-3">
+                        <label for="select_marca_repuesto" class="form-label">MARCA DE REPUESTO</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select_marca_repuesto">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="select_marca_vehiculo" class="form-label">MARCA DE VEHICULO</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select_marca_vehiculo">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="select_repuesto" class="form-label">REPUESTO</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select_repuesto">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="select_model" class="form-label">MODELO</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select_modelo">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="select_motor" class="form-label">MOTOR</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select_motor">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="select_anio" class="form-label">AÑO</label>
+                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="select_anio">
+                            <option selected>Open this select menu</option>
+                        </select>
+                    </div>
+                    <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
+                        <i class="fa-solid fa-magnifying-glass"></i> 
+                    </button>
+                </div>
+            </div>
+        </header>
+
+
+
+
+        <!-- ! Header viejo comentado -->
+        <!-- <header class="clientes-header">
                 <div class="row app-header">
                     <div class="col-md-1">
                         <a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
@@ -115,16 +189,16 @@
                     </div>
                 </div>                    
 
-                <!-- Acá armar el menú principal -->
+                 Acá armar el menú principal 
                 <div id="toolbar" class="toolbar-container">
                     <ul>
-                        <!-- <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li> -->
+                        <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
                         <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
-                        <!-- <li class="toolbar-col-3"><div id="num-cliente" class="num-cliente"></div></li> -->
+                         <li class="toolbar-col-3"><div id="num-cliente" class="num-cliente"></div></li> 
                         <li class="toolbar-col-4"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
                 </div>
-            </header>
+            </header> -->
 
             <main class="container-fluid main-miperfil">
                 <section id="app-container">
@@ -147,28 +221,52 @@
                         </div>              
                     </div>
                 </section>
+                <div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div>
             </main>
 
             <footer class="app-footer">
+                <div class="elementos">
+                    <div class="redes">
+                        <a href="https://www.facebook.com/derdistribuciones/?locale=es_LA" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/der.distribuciones/channel/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@derdistribuciones" target="_blank"><i class="fa-brands fa-youtube"></a></i>
+                    </div>
+
+                    <div class="atclientes" style="text-align: center; font-size: 1vmax;">
+                            <h2>Atencion al Cliente</h2>
+                            <p>LUN - VIE 8h/19h SAB 8h/12h</p>
+                    </div>
+                    
+                    <div class="telefono">
+                        <img class="img-footer"src="assets/imagenes/phone.png" alt="telefono">
+                        <p>(+5411) 4845-7500 / 69588882</p>
+                    </div>
+
+                    <div class="ubicacion">
+                        <img class="img-footer" src="assets/imagenes/pin.png" alt="ubicacion">
+                        <p>Colectora Este Panamericana 27887</p>
+                    </div>
+
+                
+
+                </div>
+            </footer>
+            
+            
+            <!-- <footer class="app-footer">
                 <div class="app-footer-container container-fluid">
                     <div class="row">
                         <div class="col-lg-3">
                             <ul class="app-social-bar">
                                 <li>
-                                    <!-- <a href="https://www.facebook.com/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a> -->
                                     <a href="https://www.facebook.com/derdistribuciones/"><i class="fa-brands fa-facebook"></i></a>
                                 </li>
 
                                 <li>
-                                    <!-- <a href="https://www.instagram.com/der.distribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a> -->
                                     <a href="https://www.instagram.com/der.distribuciones/"><i class="fa-brands fa-instagram"></i></a>
                                 </li>
 
                                 <li>
-                                    <!-- <a href="https://www.youtube.com/user/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a> -->
                                     <a href="https://www.youtube.com/user/derdistribuciones/"><i class="fa-brands fa-youtube"></i></a>
                                 </li>
                             </ul>
@@ -177,23 +275,14 @@
                         <div class="col-md-4 contenedor-info">
                             <p class="app-footer-info">
                                 <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span>
-                                        <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h
-                                        <i class="fa-solid fa-phone"></i> (+5411) 4846 7500</small>
+                                    <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h
+                                    <i class="fa-solid fa-phone"></i> (+5411) 4846 7500
+                                </small>
                             </p>
-                            <!-- <ul class="app-footer-info">
-                                <li>
-                                    <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span><br>
-                                        <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h</small>
-                                </li>
-
-                                <li>
-                                    <small class="home-texto-footer"><i class="fa-solid fa-phone"></i> (+5411) 4846 7500</small>
-                                </li>
-                            </ul> -->
                         </div>
                     </div>
                 </div>
-            </footer>    
+            </footer>     -->
 
 
         </div>

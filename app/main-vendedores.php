@@ -43,7 +43,18 @@
     </head>
     <body id="page-container">
         <div id="content-wrap">
-            <header>
+            
+            <header class="header-ven app-header mb-2">
+                <div class="img-con my-1 mx-2"><a href="main-vendedores.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo w-100" alt=""></a></div>
+                <div id="menu-container" class="menu-container my-1 mx-2">
+                    <nav id="top-menu" class="nav-menu">
+                        <i id="btnPushMenu" class="fa-solid fa-user"></i></button>
+                        <div id="menu-options" class="menu_options"></div>
+                    </nav>
+                </div>
+            </header>
+        
+            <!-- <header>
                 <div class="row app-header">
                     <div class="col-md-1">
                         <a href="main-vendedores.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
@@ -102,21 +113,26 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <div id="menu-container" class="menu-container"></div>
+                                <div id="menu-container" class="menu-container">
+                                    <nav id="top-menu">
+                                        <i id="btnPushMenu" class="fa-solid fa-chevron-down"></i></button>
+                                        <div id="menu-options" class="menu_options"></div>
+                                    </nav>
+                                </div>
                             </div>                                
                         </div>
                     </div>
                 </div>                    
 
-                <!-- Acá armar el menú principal -->
+                <!- Acá armar el menú principal ->
                 <div id="toolbar" class="toolbar-container">
                     <ul>
-                        <!-- <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li> -->
+                        <!- <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li> ->
                         <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
                         <li class="toolbar-col-3"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
                     </ul>
                 </div>
-            </header>
+            </header> -->
 
             <main class="container">
                 <section id="app-container">
@@ -130,26 +146,50 @@
                 </section>
             </main>
 
-            <footer id="app-footer" class="app-footer" style="bottom: 0; position:fixed;">
+            <footer class="app-footer">
+                <div class="elementos">
+                    <div class="redes">
+                        <a href="https://www.facebook.com/derdistribuciones/?locale=es_LA" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/der.distribuciones/channel/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@derdistribuciones" target="_blank"><i class="fa-brands fa-youtube"></a></i>
+                    </div>
+
+                    <div class="atclientes" style="text-align: center; font-size: 1vmax;">
+                            <h2>Atencion al Cliente</h2>
+                            <p>LUN - VIE 8h/19h SAB 8h/12h</p>
+                    </div>
+                    
+                    <div class="telefono">
+                        <img class="img-footer"src="assets/imagenes/phone.png" alt="telefono">
+                        <p>(+5411) 4845-7500 / 69588882</p>
+                    </div>
+
+                    <div class="ubicacion">
+                        <img class="img-footer" src="assets/imagenes/pin.png" alt="ubicacion">
+                        <p>Colectora Este Panamericana 27887</p>
+                    </div>
+
+                
+
+                </div>
+            </footer>
+            
+            
+            
+            <!-- <footer id="app-footer" class="app-footer" style="bottom: 0; position:fixed;">
                 <div class="app-footer-container container-fluid">
                     <div class="row">
                         <div class="col-lg-3">
                             <ul class="app-social-bar">
                             <li>
-                                    <!-- <a href="https://www.facebook.com/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/facebook-8.png" alt=""></a> -->
                                     <a href="https://www.facebook.com/derdistribuciones/"><i class="fa-brands fa-facebook"></i></a>
                                 </li>
 
                                 <li>
-                                    <!-- <a href="https://www.instagram.com/der.distribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/instagram-8.png" alt=""></a> -->
                                     <a href="https://www.instagram.com/der.distribuciones/"><i class="fa-brands fa-instagram"></i></a>
                                 </li>
 
                                 <li>
-                                    <!-- <a href="https://www.youtube.com/user/derdistribuciones/">
-                                        <img class="home-footer-icon" src="assets/imagenes/icons/youtube-8.png" alt=""></a> -->
                                     <a href="https://www.youtube.com/user/derdistribuciones/"><i class="fa-brands fa-youtube"></i></a>
                                 </li>
                             </ul>
@@ -169,7 +209,7 @@
                         </div>
                     </div>
                 </div>
-            </footer>    
+            </footer>     -->
 
 
         </div>
@@ -205,12 +245,12 @@
         <script src="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-pendientes/pedidos-pendientes.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/vendedores/pedidos-pendientes/edicion-pedidos-pendientes.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/ingreso-pedidos-rapidos-gui.js");?>" type="text/javascript"></script>
-        <script src="components/buscador/buscador.js" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/buscador/buscador.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/ingreso-pedidos-rapidos/funciones.js");?>" type="text/javascript"></script>
 
-        <script src="components/form/form.js" type="text/javascript"></script>
-        <script src="components/aviso_pago/avisoPago.js" type="text/javascript"></script>
-        <script src="components/rendiciones/rendiciones.js" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/form/form.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/aviso_pago/avisoPago.js"); ?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/rendiciones/rendiciones.js");?>" type="text/javascript"></script>
 
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/mi_perfil.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/menus/mi_perfil/cambiar_contraseña.js");?>" type="text/javascript"></script>

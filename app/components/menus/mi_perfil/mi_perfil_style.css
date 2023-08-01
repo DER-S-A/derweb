@@ -139,6 +139,12 @@
     text-decoration: none;
 }
 
+@media screen and (max-width: 1024px) {
+    .main-miperfil {
+        margin-top: 23%;
+    }
+}
+
 @media screen and (max-width: 580px) {
     .container-miPerfil {
         display: grid;

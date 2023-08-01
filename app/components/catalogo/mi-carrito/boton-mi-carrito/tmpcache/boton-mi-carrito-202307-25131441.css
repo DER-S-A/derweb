@@ -4,14 +4,14 @@
 
 .boton-mi-carrito-container {
     position: fixed;
-    right: -30px;
+    right: 0;
     bottom: 5px;
     /*float: right;
     background-color: #009ada; */
     border-radius: 90px;
     margin-top: 5px;
-    height: 150px;
-    width: 150px;
+    height: 100px;
+    width: 100px;
     padding: 5px;
 }
 
