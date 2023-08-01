@@ -23,7 +23,7 @@ class Catalogo:
 
 
     def verificar_caracteres_validos(self,cadena):
-        caracteres_validos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefjhyjklmnñopqrstuvwxyz _!/.\"(),0123456789+-´," # conjunto de caracteres válidos
+        caracteres_validos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgjhyjklmnñopqrstuvwxyz _!/.\"(),0123456789+-´," # conjunto de caracteres válidos
         caracteres_invalidos = "".join([char for char in cadena if char not in caracteres_validos])
         cadena = cadena.translate(str.maketrans("", "", caracteres_invalidos))
         return cadena
@@ -292,7 +292,7 @@ class Catalogo:
                             if  dt != str(aDER[1]):   
                                 if(articulo['RubroCod'] != None and articulo['MarcaCod'] != None and articulo['SubRubroCod'] != None):    
                                     articulo['ItemName'] = articulo["ItemName"].replace("'","")
-                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"    
+                                    sql = f"call sp_articulos_upgrade({articulo['RubroCod']},{articulo['SubRubroCod']},{articulo['MarcaCod']},'{articulo['ItemCode']}','','{articulo['ItemName']}',21,0,0,1,'{dt}')"   
                                     mysql.execute(sql)
                                     actualizados+=1
                             else : NoActualizados+=1   
@@ -406,7 +406,7 @@ class Catalogo:
         
     def updateStock(self):
         """
-            Este método permite actualizar los televentas del catalogo
+            Este método permite actualizar el stock del catalogo
         """ 
         
         sap = SAPManager()
@@ -430,6 +430,30 @@ class Catalogo:
             mysql.closeDB()
             
             
+    def updateListasDePrecios(self):
+    
+        """
+            Este método permite actualizar los televentas del catalogo
+        """ 
+        
+        sap = SAPManager()
+        mysql = MySqlManager()       
+
+        try:
             
+            procesados = 0
+            sap.login()
+            listaPrecio = sap.getData('listaPrecios')
             
-            
+            for lp in listaPrecio['value']:
+                sql = f"CALL sp_listaPrecios_upgrade('{lp['ListNum']}','{lp['ListName']}')"
+                mysql.execute(sql)
+                procesados += 1
+                print(f"Lista de Precio procesada: {procesados}")
+        
+
+        
+        except BaseException as err:
+            print(f"Unexpected error: {err}, {type(err)}")
+            sap.logout()
+            mysql.closeDB()
