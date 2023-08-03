@@ -29,7 +29,7 @@ window.onload = () => {
     generarCarruselFotter();
     generarBotonMiCarrito();
     iniciarlizarComponenteMiCarrito();
-    esconderHamburguesa();
+    //esconderHamburguesa();
     setInterval(cerrarSession, 7200000);
 }
 
@@ -155,6 +155,7 @@ function generarCarrusel() {
  * @param {int} xidSubrubro Id. Subrubro seleccionado
  */
 function mostrar_articulos(xidRubro, xidSubrubro) {
+    document.getElementById("transparente").style = "display:none";
     sessionStorage.setItem("derweb_id_subrubro_seleccionado", xidSubrubro);
     let objAppContainer = document.getElementById("app-container");
     objAppContainer.classList.remove("container-miPerfil");

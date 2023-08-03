@@ -41,6 +41,7 @@
         
     </head>
     <body id="page-container">
+        <div class="transparente" id="transparente" style="display: none"></div>
         <div id="content-wrap">
             
         <header class="clientes-header app-header">

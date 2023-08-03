@@ -23,18 +23,27 @@ class ListaArticuloComponent {
         // Creo el evento click del botón
         document.getElementById("btnPushListaArticulo").addEventListener("click", () => {
             this.abrirCerrarListaArticulos("open");
-        })
+            document.getElementById("transparente").style = "display:block";
+        });
 
         // Agrego evento para el botón cerrar
         document.getElementById("btnCerrarListaArticulo").addEventListener("click", () => {
             this.abrirCerrarListaArticulos("close");
+            document.getElementById("transparente").style = "display:none";
         });
 
         document.getElementById("btnPushListaArticulo").addEventListener("keyup", (e)=>{
             if(e.keyCode === 27){
                 this.abrirCerrarListaArticulos("close");
+                document.getElementById("transparente").style = "display:none";
             }
-        })
+        });
+
+        // Agrego evento para el cerrar hacienco click afuera del contenedor rubros.
+        /*document.getElementById("transparente").addEventListener("click", () => {
+            this.abrirCerrarListaArticulos("close");
+            document.getElementById("transparente").style = "display:none";
+        });*/
     }
 
     /**
