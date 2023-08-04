@@ -194,7 +194,7 @@ class SucursalesModel extends Model {
     public function getEntidadSucursal($xsesion){
         $session = json_decode($xsesion,true);
         $id_sucursal = $session['id_sucursal'];
-        $sql = 'SELECT e.cliente_cardcode FROM SUCURSALES
+        $sql = 'SELECT e.cliente_cardcode FROM sucursales
                 INNER JOIN entidades e ON sucursales.id_entidad = e.id
                 WHERE sucursales.id = '.$id_sucursal;
         $rs = getRs($sql, true);
