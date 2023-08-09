@@ -423,7 +423,6 @@ class PedidosModel extends Model {
                     lpre.id = $id_precio_lista AND
                     ped.id_sucursal = $idSucursal AND
                     ped.id_tipoentidad = " . $this->idTipoEntidad . " ";
-        
         // if (sonIguales($tipoLogin, "C"))
         //     $sql .= "AND ped.id_sucursal = " . $idSucursal;
         $rs = getRs($sql);
