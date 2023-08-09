@@ -84,6 +84,16 @@ class ConfirmacionPedido {
         let obj3Label = document.createElement("label");
         obj3Label.innerHTML = "Transportes:";
 
+        // Genero el campo observaciones.
+
+        const objObserv = document.createElement("textarea");
+        objObserv.id = "observaciones-carrito";
+        objObserv.name = "observaciones-carrito";
+        objObserv.classList.add("form-control", "observaciones-carrito", "mb-3");
+        objObserv.setAttribute("row", "3");
+        const obj4Label = document.createElement("label");
+        obj4Label.textContent = "Observaciones";
+
         // this.__confirmaVendedor identifica si es vendedor o no. si es vendedor necesitamos seleccionar la sucursal.
         this.llenarBoxes(aSesion, objSelectSucursal, objSelectFormaEnvio, objSelectTransporte, obj3Label,this.__confirmaVendedor);
         
@@ -98,12 +108,13 @@ class ConfirmacionPedido {
         objDivFooter.appendChild(objSelectFormaEnvio);
         objDivFooter.appendChild(obj3Label);
         objDivFooter.appendChild(objSelectTransporte);
+        objDivFooter.appendChild(obj4Label);
+        objDivFooter.appendChild(objObserv);
         
         objBotonFinalizarPedido.id = "btn-finalizar-pedido";
         objBotonFinalizarPedido.name = "btn-finalizar-pedido";
         objBotonFinalizarPedido.innerHTML = "<span>Finalizar Pedido</span>";
-        objBotonFinalizarPedido.classList.add("btn");
-        objBotonFinalizarPedido.classList.add("btn-primary");
+        objBotonFinalizarPedido.classList.add("btn", "btn-primary", "mb-3");
 
         // Agrego la funcionalidad del evento finalizar pedido.
         objBotonFinalizarPedido.addEventListener("click", () => {
@@ -150,6 +161,8 @@ class ConfirmacionPedido {
         let idsucursal = document.getElementById("select-sucursales").value;
         let idformaenvio = document.getElementById("select-formasEnvios").value;
         let idtransporte = document.getElementById("select-transportes").value;
+        let observaciones = document.getElementById("observaciones-carrito").value;
+        console.log(observaciones)
         let url = "";
         let parametros = "";
 
@@ -167,7 +180,8 @@ class ConfirmacionPedido {
             "id_pedido": parseInt(aPedidoActual["id_pedido"]),
             "id_sucursal": parseInt(idsucursal),
             "id_formaenvio": parseInt(idformaenvio),
-            "id_transporte": parseInt(idtransporte)
+            "id_transporte": parseInt(idtransporte),
+            "observacion": observaciones
         };
 
         console.log(aParametrosConfirmacion);
@@ -231,15 +245,20 @@ class ConfirmacionPedido {
                 let xparametrosxUrl = "id_sucursales=" + xselec;
 
                 (new APIs()).call(this.__objApp.getUrlApi("app-forma-envio"), xparametrosxUrl, "GET", (xdatos) => {
+                    let array_mostrarTrans = [];
                     xdatos.forEach((xitem) => {
                         // Completo los option con el resultado de json q traigo con el fetch call.
                         let objOption = document.createElement("option");
                         objOption.innerHTML = xitem.descripcion;
                         objOption.id = "forma-envio_"+xitem.id;
-                        objOption.value = xitem.codigo;
+                        objOption.value = xitem.id;
                         xobjSelectFormaEnvio.appendChild(objOption);
+                        if(xitem.mostrar_transporte == 1) {
+                            array_mostrarTrans.push(xitem.id);
+                        }
                     });
-
+                    console.log(array_mostrarTrans);
+                    
                     // Me traigo la lista de transporte para pegar en el selector de transportes.
 
                     (new APIs()).call(this.__objApp.getUrlApi("app-transportes"), "", "GET", (xdatos) => {
@@ -258,7 +277,7 @@ class ConfirmacionPedido {
                     
                     //console.log(objMiCarrito);
                     //if (objMiCarrito !== null)
-                    this.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label/*this.obj3Label*/, xobjSelectTransporte/*this.objSelectTransporte*/); 
+                    this.displayTransporte(opcionElegidaDeEnvio, array_mostrarTrans, obj3Label, xobjSelectTransporte); 
                         //objMiCarrito.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte);
                     // 1RA variable es el codigo de la forma de envio q tiene el selector.
                     // El 6  es el codigo de forma de envio transporte.
@@ -267,7 +286,7 @@ class ConfirmacionPedido {
                     addEventListener("change",() => {  // Aca genero evento de cambio de opcion de select
                         let opcionElegidaDeEnvio = document.getElementById('select-formasEnvios').value;
                         //(new MiCarritoModalComponent()).displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte, true);
-                        this.displayTransporte(opcionElegidaDeEnvio, 6, obj3Label, xobjSelectTransporte, true);
+                        this.displayTransporte(opcionElegidaDeEnvio, array_mostrarTrans, obj3Label, xobjSelectTransporte, true);
                     });
                 });                                                                      
             });
@@ -342,22 +361,27 @@ class ConfirmacionPedido {
      * @param {*} change 
      */
 
-     displayTransporte(opcionElegidaDeEnvio, xcodigo, objLabelTransporte, objSelectTransporte, change = false) {
+     displayTransporte(opcionElegidaDeEnvio, xArrayMostrar, objLabelTransporte, objSelectTransporte, change = false) {
         
-        if(change) {
-            if(opcionElegidaDeEnvio != xcodigo){
-                objSelectTransporte.style.display = "none";
-                objLabelTransporte.style.display = "none";
+        for(const id of xArrayMostrar) {
+            if(change) {
+                if(opcionElegidaDeEnvio != id){
+                    objSelectTransporte.style.display = "none";
+                    objLabelTransporte.style.display = "none";
+                } else {
+                    objSelectTransporte.style.display = "block";
+                    objLabelTransporte.style.display = "inline-block";
+                    break;
+                } 
             } else {
-                objSelectTransporte.style.display = "block";
-                objLabelTransporte.style.display = "inline-block";
+                if(opcionElegidaDeEnvio != id){
+                    objSelectTransporte.style.display = "none";
+                    objLabelTransporte.style.display = "none";
+                }
+                break;
             } 
-        } else {
-            if(opcionElegidaDeEnvio != xcodigo){
-                objSelectTransporte.style.display = "none";
-                objLabelTransporte.style.display = "none";
-            }
-        }   
+        }
+          
     }
 
 }

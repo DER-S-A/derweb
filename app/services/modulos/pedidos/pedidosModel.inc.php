@@ -425,6 +425,7 @@ class PedidosModel extends Model {
                     ped.id_tipoentidad = " . $this->idTipoEntidad . " ";
         // if (sonIguales($tipoLogin, "C"))
         //     $sql .= "AND ped.id_sucursal = " . $idSucursal;
+
         $rs = getRs($sql);
         $indice = 0;
         while (!$rs->EOF()) {
@@ -596,6 +597,8 @@ class PedidosModel extends Model {
             $codigoTransporte = "NULL";
         }
 
+        $observacion = $aPedidoConfirmar["observacion"];
+        $observacion = str_replace("'", "''", $observacion);
         $sql = "UPDATE
                     pedidos
                 SET
@@ -605,7 +608,8 @@ class PedidosModel extends Model {
                     pedidos.id_formaenvio = " . intval($aPedidoConfirmar["id_formaenvio"]) . ",
                     pedidos.id_transporte = $id_transporte,
                     pedidos.codigo_transporte = $codigoTransporte, 
-                    pedidos.fecha_modificado = current_timestamp
+                    pedidos.fecha_modificado = current_timestamp,
+                    pedidos.observacion = '$observacion'
                 WHERE
                     pedidos.id = " . intval($aPedidoConfirmar["id_pedido"]) . " AND
                     pedidos.id_entidad = " . $this->idCliente;
@@ -665,7 +669,7 @@ class PedidosModel extends Model {
         */
 
         $aPedidoActual = $this->getPedidoActual($xsesion);
-
+        
         $aPedidoEnviar["CardCode"] = $objSucursal->getEntidadSucursal($xsesion); // Agrego el numero cliente
         $aPedidoEnviar["NumAtCard"] = 'DERWEB-'. $xid_pedido; // Agrego el numero de Pedido
         $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
