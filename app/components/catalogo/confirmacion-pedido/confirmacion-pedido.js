@@ -128,7 +128,6 @@ class ConfirmacionPedido {
             if (this.__cb_finalizar_pedido !== null)
                 this.__cb_finalizar_pedido();
 
-            console.log("cerrar pantallla")
 
         }, false);
 
@@ -162,7 +161,6 @@ class ConfirmacionPedido {
         let idformaenvio = document.getElementById("select-formasEnvios").value;
         let idtransporte = document.getElementById("select-transportes").value;
         let observaciones = document.getElementById("observaciones-carrito").value;
-        console.log(observaciones)
         let url = "";
         let parametros = "";
 
@@ -184,8 +182,6 @@ class ConfirmacionPedido {
             "observacion": observaciones
         };
 
-        console.log(aParametrosConfirmacion);
-
         // Armo los parámetros para pasarle al API.
         parametros = "?sesion=" + sessionStorage.getItem("derweb_sesion") 
             + "&pedido=" + JSON.stringify(aParametrosConfirmacion);
@@ -202,10 +198,17 @@ class ConfirmacionPedido {
             }
         }).then(xresponse => xresponse.json())
             .then(xdata => {
-                if (xdata["codigo"] !== "OK")
+                if (xdata["codigo"] !== "OK") 
                     alert(xdata["mensaje"]);
                 else
+                {    
+                    if((document.getElementById("observaciones-carrito") != null) 
+                            || (document.getElementById("observaciones-carrito") != undefined)) {
+                        document.getElementById("observaciones-carrito").value = ""; 
+                    }
+                       
                     alert(xdata["mensaje"]);
+                }
             });
 
             // Si viene del lado del cliente se cierra el modal de mi carrito.
