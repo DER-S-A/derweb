@@ -942,4 +942,30 @@ class PedidosModel extends Model {
         
         return true;
     }
+    
+    /**
+     * consultar
+     * Obtiene las cabecera de pedidos.
+     * @param  array $aParametros
+     * @return array
+     */
+    public function consultar($aParametros) {
+        $sql = "CALL sp_pedidos_consultar (xidEntidad, xfechaDD, xfechaHH)";
+        $this->setParameter($sql, "xidEntidad", intval($aParametros["id_entidad"]));
+        $this->setParameter($sql, "xfechaDD", $aParametros["fecha_desde"]);
+        $this->setParameter($sql, "xfechaHH", $aParametros["fecha_hasta"]);
+        return getRs($sql, true)->getAsArray();
+    }
+    
+    /**
+     * consultar_item_byid
+     * Obtiene los ítems de un pedido.
+     * @param  array $aParametros
+     * @return array
+     */
+    public function consultar_item_byid($aParametros) {
+        $sql = "CALL sp_consultar_items_byid (xid)";
+        $this->setParameter($sql, "xid", $aParametros["id_pedido"]);
+        return getRs($sql, true)->getAsArray();
+    }
 }
