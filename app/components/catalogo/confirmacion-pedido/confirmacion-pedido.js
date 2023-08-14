@@ -157,7 +157,9 @@ class ConfirmacionPedido {
     __confirmarPedido(EsCarritoCliente = false) {
         // Recupero los parámetros de envío
         let aPedidoActual = [];
-        let idsucursal = document.getElementById("select-sucursales").value;
+
+        const objCache = new CacheUtils("derweb");
+        let idsucursal = objCache.get("sesion").id_sucursal;
         let idformaenvio = document.getElementById("select-formasEnvios").value;
         let idtransporte = document.getElementById("select-transportes").value;
         let observaciones = document.getElementById("observaciones-carrito").value;
