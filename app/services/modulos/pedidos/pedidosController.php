@@ -239,6 +239,52 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+    
+    /**
+     * consultar
+     * Obtiene las cabeceras de los pedidos para el listado de mis pedidos.
+     * @return void
+     */
+    public function consultar() {
+        if ($this->useGetMethod()) {
+            try {
+                $responseData = [];
+                $aParametros = json_decode($this->getBodyParameter(), true);
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->consultar($aParametros));
+            } catch (Exception $e) {
+                $this->setErrorFromException($e);
+            }
+        }
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
+    
+    /**
+     * consultar_item_byid
+     * Obtiene los ítems de un pedido para "Mis Pedidos".
+     * @return void
+     */
+    public function consultar_item_byid() {
+        if ($this->useGetMethod()) {
+            try {
+                $responseData = [];
+                $aParametros = json_decode($this->getBodyParameter(), true);
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->consultar_item_byid($aParametros));
+            } catch (Exception $e) {
+                $this->setErrorFromException($e);
+            }
+        }
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 
 ?>
