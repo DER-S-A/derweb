@@ -404,7 +404,7 @@ class PedidosModel extends Model {
                     items.id, items.id_pedido, art.id AS id_articulo, items.cantidad,
                     foto.archivo, art.codigo, art.descripcion AS descripcion_articulo,
                     rub.descripcion AS descripcion_rubro, srb.descripcion AS descripcion_subrubro,
-                    precio.precio_lista, art.alicuota_iva,env.codigo AS codigo_envio
+                    precio.precio_lista, art.alicuota_iva,env.codigo AS codigo_envio, ped.observacion AS observ
                 FROM
                     pedidos_items items
                         INNER JOIN articulos art ON art.id = items.id_articulo
@@ -432,6 +432,7 @@ class PedidosModel extends Model {
             $id_pedido = $rs->getValueInt("id_pedido");
             //$codigoEnvio = $rs->getValue("codigo_envio");
             $aResponse["codigo_envio"] = $rs->getValue("codigo_envio");
+            $aResponse["observ"] = $rs->getValue("observ");
             $aResponse["items"][$indice]["id"] = $rs->getValueInt("id");
             $aResponse["items"][$indice]["id_articulo"] = $rs->getValueInt("id_articulo");
             $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
@@ -551,10 +552,6 @@ class PedidosModel extends Model {
         $aPedidoConfirmar = json_decode($xpedido, true);
         $aSesion = json_decode($xsesion,true);
         $aResponse = [];
-        // Transfiero el pedido a SAP.
-        $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, intval($aPedidoConfirmar["id_pedido"]));
-        if ($aResponse["result-sap"] == null)
-            $aResponse["codigo-result-sap"] = "API_SAP_ERROR";
 
         $sql = "SELECT
                     id
@@ -565,6 +562,7 @@ class PedidosModel extends Model {
         $rsEstado = getRs($sql);
         $idEstado = $rsEstado->getValueInt("id");
         $rsEstado->close();
+
         $sql = 'SELECT 
                     id, codigo_sucursal
                 FROM
@@ -597,12 +595,12 @@ class PedidosModel extends Model {
             $codigoTransporte = "NULL";
         }
 
+        
         $observacion = $aPedidoConfirmar["observacion"];
         $observacion = str_replace("'", "''", $observacion);
         $sql = "UPDATE
                     pedidos
                 SET
-                    pedidos.id_estado = $idEstado,
                     pedidos.id_sucursal = $idSucursal,
                     pedidos.codigo_sucursal = '$codigoSucursal',
                     pedidos.id_formaenvio = " . intval($aPedidoConfirmar["id_formaenvio"]) . ",
@@ -617,9 +615,29 @@ class PedidosModel extends Model {
         $bd = new BDObject();
         $bd->execQuery($sql);
         if ($bd->affectedRows > 0)
-            $ok = true;        
+            $ok = true;       
+        
         $bd->close();
 
+        $aPedidoActual = $this->getPedidoActual($xsesion);
+
+        // Transfiero el pedido a SAP.
+        $aResponse["result-sap"] = $this->enviarPedido_a_SAP($xsesion, intval($aPedidoConfirmar["id_pedido"]), $aPedidoActual);
+        if ($aResponse["result-sap"] == null)
+            $aResponse["codigo-result-sap"] = "API_SAP_ERROR";
+
+        $sql = "UPDATE
+                    pedidos
+                SET
+                    pedidos.id_estado = $idEstado
+                WHERE
+                    pedidos.id = " . intval($aPedidoConfirmar["id_pedido"]) . " AND
+                    pedidos.id_entidad = " . $this->idCliente;
+
+        $bd = new BDObject();
+        $bd->execQuery($sql);
+        $bd->close();
+        
         if (!$ok) {
             $aResponse["codigo"] = "BD_ERROR";
             $aResponse["mensaje"] = "No se confirmó el pedido";
@@ -637,12 +655,11 @@ class PedidosModel extends Model {
      * @param  mixed $xid_pedido
      * @return void
      */
-    private function enviarPedido_a_SAP($xsesion, $xid_pedido) {
+    private function enviarPedido_a_SAP($xsesion, $xid_pedido,$aPedidoActual) {
         $aBody = [];
         $aPedidoEnviar = [];
         $aItems = [];
         $objAPISap = new APISap(URL_ENVIAR_PEDIDO, "POST");
-        $aPedidoActual = [];
         $objSucursal = new SucursalesModel();
         $sucursalGet = [];
         $aDireccionEnvio = [];
@@ -668,12 +685,10 @@ class PedidosModel extends Model {
         $aPedidoEnviar["NumAtCard"] = "DERWEB-" . $xid_pedido;
         */
 
-        $aPedidoActual = $this->getPedidoActual($xsesion);
-        
         $aPedidoEnviar["CardCode"] = $objSucursal->getEntidadSucursal($xsesion); // Agrego el numero cliente
         $aPedidoEnviar["NumAtCard"] = 'DERWEB-'. $xid_pedido; // Agrego el numero de Pedido
         $aPedidoEnviar["ShipToCode"] = $objSucursal->getNombreSucursal($xsesion); // Agrego el Nombre de la direccion de entrega
-        $aPedidoEnviar["Comments"] = ""; // ! COMENTARIO PEDIDO, RODRI TIENE QUE AGREGAR EL FRONT PARA TOMAR LAS COSAS DE LA BASE DE DATOS
+        $aPedidoEnviar["Comments"] = $aPedidoActual["observ"]; // ! COMENTARIO PEDIDO, RODRI TIENE QUE AGREGAR EL FRONT PARA TOMAR LAS COSAS DE LA BASE DE DATOS
         $aPedidoEnviar["DocDate"] = date('Y-m-d', time()); // Agrego Fecha
         $aPedidoEnviar["DocDueDate"] = date('Y-m-d', time()); // Agrego Fecha
         $aPedidoEnviar["TaxDate"] = date('Y-m-d',time()); // Agrego Fecha
