@@ -18,11 +18,11 @@ class MenuComponent {
      */
     generarMenu() {
         this.__leerOpciones();
-        this.crearDivTrans();
+
         document.getElementById("btnPushMenu").addEventListener("click", () => {
         if (document.getElementById("menu-options").style.display === "none" 
                 || document.getElementById("menu-options").style.display === "") {
-            //this.crearDivTrans();
+            this.crearDivTrans();
             document.getElementById("transparente2").style = "display:block";
             document.getElementById("menu-options").style.display = "block";
         }
@@ -40,9 +40,6 @@ class MenuComponent {
         document.getElementById("transparente2").addEventListener("click", () => {
             document.getElementById("transparente2").style = "display:none";
             document.getElementById("menu-options").style.display = "none";
-        });
-        document.getElementById("menu-options").addEventListener("click", () => {
-            document.getElementById("transparente2").style = "display:none";
         })
     }
 

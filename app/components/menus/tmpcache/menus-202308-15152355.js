@@ -40,9 +40,6 @@ class MenuComponent {
         document.getElementById("transparente2").addEventListener("click", () => {
             document.getElementById("transparente2").style = "display:none";
             document.getElementById("menu-options").style.display = "none";
-        });
-        document.getElementById("menu-options").addEventListener("click", () => {
-            document.getElementById("transparente2").style = "display:none";
         })
     }
 
