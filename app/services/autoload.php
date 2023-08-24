@@ -59,4 +59,6 @@ include("modulos/entidades/margenesEspeciales-controller.php");
 include("modulos/rendiciones/avp-rendicionesModel.inc.php");
 include("modulos/rendiciones/avp-rendicionesController.php");
 include("modulos/rendiciones/avp-rendiciones-pdf.php");
+include("modulos/novedades/novedadesModel.inc.php");
+include("modulos/novedades/novedadesController.php");
 ?>
