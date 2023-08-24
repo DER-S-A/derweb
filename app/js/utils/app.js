@@ -64,7 +64,8 @@ const aTemplates = [
     {"rentabilidad"                             : "components/rentabilidad/template.html"},
     {"ficha-articulo"                           : "components/catalogo/ficha-articulo/template.html"},
     {"aviso-pago"                               : "components/aviso_pago/template.html"},
-    {"ipr-grid-articulos"                       : "components/catalogo/ingreso-pedidos-rapidos/grid-articulos-template.html"}
+    {"ipr-grid-articulos"                       : "components/catalogo/ingreso-pedidos-rapidos/grid-articulos-template.html"},
+    {"centroNoticias"                           : "components/centro_noticias/template.html"}
 ]
 
 class App {

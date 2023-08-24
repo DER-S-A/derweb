@@ -26,6 +26,7 @@
         <link href="<?php echo sc3CacheButer("components/catalogo/ficha-articulo/estilo-carrusel.css");?>" rel="stylesheet">
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/rentabilidad/style.css");?>">
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/rentabilidad/style-table.css");?>">
+        <link rel="stylesheet" href="<?php echo sc3CacheButer("components/centro_noticias/centroNoticias.css");?>">
 
         <title>DER WEB</title>
         <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -223,6 +224,8 @@
 
         <script src="<?php echo sc3CacheButer("components/catalogo/confirmacion-pedido/confirmacion-pedido.js");?>" type="text/javascript"></script>
 
+        <!-- Componente centro de noticias -->
+        <script src="<?php echo sc3CacheButer("components/centro_noticias/centroNoticias_cs.js");?>" type="text/javascript"></script>
         <!-- Componente botón mi carrito -->
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/mi-carrito.js");?>" type="text/javascript"></script>
