@@ -8,7 +8,7 @@
 define ("URL_LOGIN_ETL", "https://back.bindapp.net/v1/sys/svc/Login");
 
 // ! Enviar Pedido Viejo ->define ("URL_ENVIAR_PEDIDO", "https://181.119.112.208:5444/dev/api/ETL/GetAndProcessNews"); 
-define ("URL_ENVIAR_PEDIDO","https://back.bindapp.net/v1/mps/svc/ExecuteProcess/SQ2SAP");
+define ("URL_ENVIAR_PEDIDO","https://back.bindapp.net/v1/mps/svc/ExecuteProcess/SQ2DBX");
 
 
 // Establece la configuración de logueo al ETL.

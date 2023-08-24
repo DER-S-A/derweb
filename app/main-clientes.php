@@ -58,9 +58,9 @@
                 <div class=cont-buscador>
                 <a href="javascript:buscarPorFrase()"><i class="fa-solid fa-magnifying-glass"></i></a><input type="text" id="txtValorBuscado" name="txtValorBuscado" placeholder="Buscar" autocomplete="off">
                 </div>
-                <div class="cont-perfil me-3" id="menu-container">
+                <div class="cont-perfil" id="menu-container">
                     <div class="nombre-suc me-3" id="num-cliente">SIN NOMBRE</div>
-                    <div id="menu-container" class="menu-container">
+                    <div id="menu-container" class="menu-container me-3">
                         <nav id="top-menu" class="nav-menu">
                             <i class="fa-solid fa-user" id="btnPushMenu"></i> 
                             <div id="menu-options" class="menu_options"></div>

@@ -1,0 +1,70 @@
+/**
+ * Contiene el estilo para generar el menú haburguesa.
+*/
+
+/*.menu-container {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    padding: 5px;
+}*/
+
+.clientes-header .nav-menu {
+    position:relative;
+    float: left;
+    height: 30px;
+    vertical-align: middle;
+}
+
+#top-menu .menu-button {
+    margin-top: 1px;
+    background-color: #009ada;
+    color: #f5f5f5;
+    font-family: "futura";
+    font-weight: bold;
+}
+
+#top-menu .menu_options {
+    position: absolute;
+    float: right;
+    width: 300px;
+    background-color: #f5f5f5;
+    display: none;
+    max-height: 93vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    right: 0px;
+    opacity: .95;
+    border: 2px solid lightgray;
+    z-index: 200;
+    font-family: "futura";
+    font-weight: bold;
+}
+
+#top-menu .menu_options a {
+    display: inline-block;
+    vertical-align: middle;
+    height: 50px;
+    width: 100%;
+    color: #003d7c;
+    padding-left: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-decoration: none;
+    font-size: 12pt;
+}
+
+#top-menu .menu_options a:hover {
+    background-color: #d8d8d8;
+}
+
+.transparente2 {
+    background-color: #4346483d;
+    margin: 0 !important;
+    width: calc(100% + 1rem);
+    height: 150vh;
+    position: fixed;
+    z-index: 20;
+}
+
+/* Agregar responsive. */

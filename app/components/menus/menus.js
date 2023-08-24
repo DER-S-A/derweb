@@ -17,28 +17,42 @@ class MenuComponent {
      * Genera el menú hamburguesa principal.
      */
     generarMenu() {
-        //getTemplate("components/menus/menus.html", (xhtml) => {
-        //    this.menuContainer.innerHTML = xhtml;
-            this.__leerOpciones();
-
-            document.getElementById("btnPushMenu").addEventListener("click", () => {
-            if (document.getElementById("menu-options").style.display === "none" 
-                    || document.getElementById("menu-options").style.display === "") {
-                document.getElementById("menu-options").style.display = "block";
-                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fa-solid fa-chevron-up'></i>";
-            }
-            else {
+        this.__leerOpciones();
+        this.crearDivTrans();
+        document.getElementById("btnPushMenu").addEventListener("click", () => {
+        if (document.getElementById("menu-options").style.display === "none" 
+                || document.getElementById("menu-options").style.display === "") {
+            //this.crearDivTrans();
+            document.getElementById("transparente2").style = "display:block";
+            document.getElementById("menu-options").style.display = "block";
+        }
+        else {
+            document.getElementById("transparente2").style = "display:none";
+            document.getElementById("menu-options").style.display = "none";
+        }
+        });
+        document.getElementById("btnPushMenu").addEventListener("keyup", (e)=>{
+            if(e.keyCode === 27){
                 document.getElementById("menu-options").style.display = "none";
-                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fa-solid fa-chevron-down'></i>";
+                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fas fa-bars'></i>";
             }
-            });
-            document.getElementById("btnPushMenu").addEventListener("keyup", (e)=>{
-                if(e.keyCode === 27){
-                    document.getElementById("menu-options").style.display = "none";
-                    //document.getElementById("btnPushMenu").innerHTML = "<i id='botonMenu' class='fas fa-bars'></i>";
-                }
-            })
-        //});
+        });
+        document.getElementById("transparente2").addEventListener("click", () => {
+            document.getElementById("transparente2").style = "display:none";
+            document.getElementById("menu-options").style.display = "none";
+        });
+        document.getElementById("menu-options").addEventListener("click", () => {
+            document.getElementById("transparente2").style = "display:none";
+        })
+    }
+
+    crearDivTrans() {
+        const container = document.getElementById("menu-container");
+        const divTrans2 = document.createElement("div");
+        divTrans2.className = "transparente2";
+        divTrans2.id = "transparente2";
+        divTrans2.style.display = "none";
+        container.append(divTrans2);
     }
 
     /**
