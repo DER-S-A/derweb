@@ -41,6 +41,18 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
         sc3updateField($query, "imagen", "Imagen", 1, "", 1);
         sc3updateField($query, "publicado", "Publicado", 1, "0");
         sc3AgregarQueryAPerfil($query, "Root");
+
+        $campo = "es_oferta";
+        if (!sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla ADD $campo tinyint(3) NOT NULL DEFAULT 0";
+            self::ejecutarSQL($sql);
+        }
+
+        sc3generateFieldsInfo($tabla);
+        sc3updateField($query, $campo, "Es oferta", 1, "0");
+
+        sc3SetNombreQuery($query, "Centro de noticias");
+        sc3SetQueryFields($query, "id, descripcion, fecha, imagen, publicado, es_oferta");
     }
 
     
