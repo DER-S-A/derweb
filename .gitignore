@@ -28,3 +28,9 @@ app/components/catalogo/lista-articulos/tmpcache/
 /admin/app/administracion/avisos-pagos/tmpcache/
 app/components/rendiciones/tmpcache/
 app/components/utilities/tmpcache/
+app/components/buscador/tmpcache/
+app/components/aviso_pago/tmpcache/
+app/components/catalogo/mi-carrito/boton-mi-carrito/tmpcache/
+app/components/form/tmpcache/
+app/components/menus/tmpcache/
+app/components/menus/mi_perfil/tmpcache/
