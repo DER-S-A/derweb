@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-3">
     <ul class="nav nav-tabs tabCentroNoticias" id="tabCentroNoticias" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#novedades-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i class="fa-solid fa-circle-info"></i>NOVEDADES</button>
@@ -9,7 +9,32 @@
     </ul>
     <div class="tab-content-ctroNot" id="myTabContent">
         <div class="tab-pane fade show active" id="novedades-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-            
+            <div id="carousel-novedades" class="carousel slide">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carousel-novedades" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#carousel-novedades" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carousel-novedades" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="https://images.unsplash.com/photo-1517461480445-a4392351a417?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=971&q=80" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://cdn2.hubspot.net/hubfs/156214/blog/Que%20es%20un%20banner-1.jpg" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQve5UIvgSKBZQEVCpkDFkIna6BdkFOwttsJQ&usqp=CAU" class="d-block w-100" alt="...">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-novedades" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-novedades" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
         </div>
         <div class="tab-pane fade" id="ofertas-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">OFERTAS</div>
     </div>
