@@ -222,10 +222,17 @@ function getClientes() {
     // Llamo a la API que devuelve la lista de clientes del vendedor y 
     // lleno la grilla.
     aSesion = objCacheUtils.get("sesion");
-    url = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
+    filtro = "";
+    if (aSesion["tipo_login"] === 'V') {
+        url = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
+        filtro = "id_vendedor=" + aSesion["id_vendedor"];
+    }
+    else
+        url = (new App()).getUrlApi("app-entidades-getClientes");
+
     (new APIs()).call(
         url, 
-        "id_vendedor=" + aSesion["id_vendedor"], 
+        filtro, 
         "GET", 
         response => {
             response.forEach(element => {
