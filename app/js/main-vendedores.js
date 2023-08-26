@@ -220,7 +220,8 @@ function getClientes() {
     });
 
     // Llamo a la API que devuelve la lista de clientes del vendedor y 
-    // lleno la grilla.
+    // lleno la grilla. Para llamar a la API verifico quién entró si es un
+    // vendedor o un televenta.
     aSesion = objCacheUtils.get("sesion");
     filtro = "";
     if (aSesion["tipo_login"] === 'V') {
