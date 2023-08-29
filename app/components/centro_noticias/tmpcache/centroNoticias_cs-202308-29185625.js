@@ -11,8 +11,8 @@ class CtroNot extends ComponentManager {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "20%";
-                console.log(novedades);
                 this.__generarCarrusel(novedades)
+                console.log(novedades);
             });
         }
         catch {
@@ -30,7 +30,7 @@ class CtroNot extends ComponentManager {
     __generarCarrusel(novedades) {
         const carruselInner = document.querySelector("#carousel-novedades .carousel-inner");
         const carouselIndicators = document.querySelector("#carousel-novedades .carousel-indicators");
-        novedades.forEach((ima, i) => {
+        novedades.array.forEach((ima, i) => {
             let setAtri = ["type", "button", "data-bs-target", "#carousel-novedades", "data-bs-slide-to", i.toString(), "aria-label","Slide " + (i+1).toString()];
             const boton = this.crearElementDom("button", null, null, setAtri);
 
