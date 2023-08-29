@@ -12,10 +12,9 @@ class CtroNot extends ComponentManager {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "20%";
-                console.log(oferta);
-                this.__controlEventos(novedades, oferta);
+                console.log(novedades);
                 this.__generarCarruselNov(novedades);
-                //this.__generarCarruselOff(oferta);
+                this.__generarCarruselOff(oferta);
             });
         }
         catch {
@@ -25,7 +24,7 @@ class CtroNot extends ComponentManager {
     __getNovedades() {
         return new Promise((resolve, reject) => {
             const url = new App().getUrlApi("novedades");
-            new APIs().call(url, "filter=publicado=1 AND es_oferta=0", "GET", novedades => {
+            new APIs().call(url, "filter=publicado=1&es_oferta=0", "GET", novedades => {
                 resolve(novedades)
             }, false, error => reject(error))
         });
@@ -34,7 +33,7 @@ class CtroNot extends ComponentManager {
     __getOfertas() {
         return new Promise((resolve, reject) => {
             const url = new App().getUrlApi("novedades");
-            new APIs().call(url, "filter=publicado=1 AND es_oferta=1", "GET", ofertas => {
+            new APIs().call(url, "filter=publicado=1&es_oferta=1", "GET", ofertas => {
                 resolve(ofertas)
             }, false, error => reject(error))
         });
@@ -78,23 +77,6 @@ class CtroNot extends ComponentManager {
             }
             carouselIndicators.append(boton);
             carruselInner.append(carruselItem);
-        });
-    }
-
-    __controlEventos(novedades, oferta) {
-        document.getElementById("novedades-tab").addEventListener("click", () => {
-            const carruselInner = document.querySelector("#carousel-ofertas .carousel-inner");
-            const carouselIndicators = document.querySelector("#carousel-ofertas .carousel-indicators");
-            carruselInner.innerHTML = "";
-            carouselIndicators.innerHTML = "";
-            this.__generarCarruselNov(novedades);
-        });
-        document.getElementById("ofertas-tab").addEventListener("click", () => {
-            const carruselInner = document.querySelector("#carousel-novedades .carousel-inner");
-            const carouselIndicators = document.querySelector("#carousel-novedades .carousel-indicators");
-            carruselInner.innerHTML = "";
-            carouselIndicators.innerHTML = "";
-            this.__generarCarruselOff(oferta);
         });
     }
 }

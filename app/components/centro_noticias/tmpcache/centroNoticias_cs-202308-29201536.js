@@ -13,9 +13,9 @@ class CtroNot extends ComponentManager {
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "20%";
                 console.log(oferta);
-                this.__controlEventos(novedades, oferta);
+                //__controlEventos();
                 this.__generarCarruselNov(novedades);
-                //this.__generarCarruselOff(oferta);
+                this.__generarCarruselOff(oferta);
             });
         }
         catch {
@@ -81,20 +81,7 @@ class CtroNot extends ComponentManager {
         });
     }
 
-    __controlEventos(novedades, oferta) {
-        document.getElementById("novedades-tab").addEventListener("click", () => {
-            const carruselInner = document.querySelector("#carousel-ofertas .carousel-inner");
-            const carouselIndicators = document.querySelector("#carousel-ofertas .carousel-indicators");
-            carruselInner.innerHTML = "";
-            carouselIndicators.innerHTML = "";
-            this.__generarCarruselNov(novedades);
-        });
-        document.getElementById("ofertas-tab").addEventListener("click", () => {
-            const carruselInner = document.querySelector("#carousel-novedades .carousel-inner");
-            const carouselIndicators = document.querySelector("#carousel-novedades .carousel-indicators");
-            carruselInner.innerHTML = "";
-            carouselIndicators.innerHTML = "";
-            this.__generarCarruselOff(oferta);
-        });
+    __controlEventos() {
+        document.getElementById("")
     }
 }

@@ -14,7 +14,7 @@ class CtroNot extends ComponentManager {
                 main.style.marginTop = "20%";
                 console.log(oferta);
                 this.__controlEventos(novedades, oferta);
-                this.__generarCarruselNov(novedades);
+                //this.__generarCarruselNov(novedades);
                 //this.__generarCarruselOff(oferta);
             });
         }

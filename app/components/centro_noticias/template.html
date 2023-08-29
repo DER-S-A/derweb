@@ -1,31 +1,53 @@
 <div class="container mt-3">
-    <ul class="nav nav-tabs tabCentroNoticias" id="tabCentroNoticias" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#novedades-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i class="fa-solid fa-circle-info"></i>NOVEDADES</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#ofertas-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false"><i class="fa-solid fa-percent"></i>OFERTAS</button>
-        </li>
-    </ul>
-    <div class="tab-content-ctroNot" id="myTabContent">
-        <div class="tab-pane fade show active" id="novedades-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
-            <div id="carousel-novedades" class="carousel slide">
-                <div class="carousel-indicators">
-                  <!-- aqui va la botonera del carrusel -->
-                </div>
-                <div class="carousel-inner">
-                  <!-- aqui va el carrusel dinamico -->
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-novedades" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carousel-novedades" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
+  <ul class="nav nav-tabs tabCentroNoticias" id="tabCentroNoticias" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="novedades-tab" data-bs-toggle="tab" data-bs-target="#novedades-tab-pane"
+        type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><i
+          class="fa-solid fa-circle-info"></i>NOVEDADES</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="ofertas-tab" data-bs-toggle="tab" data-bs-target="#ofertas-tab-pane" type="button"
+        role="tab" aria-controls="profile-tab-pane" aria-selected="false"><i
+          class="fa-solid fa-percent"></i>OFERTAS</button>
+    </li>
+  </ul>
+  <div class="tab-content-ctroNot" id="myTabContent">
+    <div class="tab-pane fade show active" id="novedades-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+      tabindex="0">
+      <div id="carousel-novedades" class="carousel slide">
+        <div class="carousel-indicators">
+          <!-- aqui va la botonera del carrusel -->
         </div>
-        <div class="tab-pane fade" id="ofertas-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">OFERTAS</div>
+        <div class="carousel-inner">
+          <!-- aqui va el carrusel dinamico -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-novedades" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel-novedades" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
+    <div class="tab-pane fade" id="ofertas-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+      <div id="carousel-ofertas" class="carousel slide">
+        <div class="carousel-indicators">
+          <!-- aqui va la botonera del carrusel -->
+        </div>
+        <div class="carousel-inner">
+          <!-- aqui va el carrusel dinamico -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-ofertas" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel-ofertas" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
