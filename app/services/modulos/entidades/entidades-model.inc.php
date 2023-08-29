@@ -192,6 +192,35 @@ class EntidadesModel extends Model {
                     nombre;";
         return getRs($sql, true)->getAsArray();
     }
+    
+    /**
+     * getClientes
+     * Recupera todos los clientes para el caso de login de un televenta.
+     * @return void
+     */
+    public function getClientes() {
+        $aResponse = [];
+        $sql = "SELECT
+                    e.id,
+                    /*s.id AS 'id_sucursal',*/
+                    e.cliente_cardcode as 'codent',
+                    /*s.codigo_sucursal AS 'codsuc',*/
+                    e.usuario AS 'codusu',
+                    CONVERT(e.nombre USING ASCII) as 'nombre',
+                    e.nro_cuit AS 'cuit'
+                FROM
+                    entidades e
+                        INNER JOIN tipos_entidades t ON t.id = e.id_tipoentidad
+                        INNER JOIN sucursales s ON s.id_entidad = e.id
+                WHERE
+                    t.tipo_login = 'C' AND
+                    e.habilitado = 1
+                GROUP BY 
+                    e.id,cliente_cardcode,nombre,cuit
+                ORDER BY
+                    nombre;";
+        return getRs($sql, true)->getAsArray();
+    }
 
     /**
     * cambiarClave

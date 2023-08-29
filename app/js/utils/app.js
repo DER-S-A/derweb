@@ -23,6 +23,7 @@ const aAPIs = [
     {"app-entidades-cambiarClave"               : "services/entidades.php/cambiarPassword"},
     {"app-entidades-olvide_mi_contrasenia"      : "services/entidades.php/olvideMiContrasenia"},
     {"app-entidades-sucursales"                 : "services/sucursales.php/get"},
+    {"app-entidades-getClientes"                : "services/entidades.php/getClientes"},
     {"app-forma-envio"                          : "services/formas-envios.php/getMiCarrito"},
     {"app-transportes"                          : "services/transportes.php/get"},
     {"catalogo-marcas-get"                      : "services/marcas.php/get"},

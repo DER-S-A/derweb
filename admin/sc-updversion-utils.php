@@ -1182,4 +1182,23 @@ function sc3SetNombreQuery($xqueryName, $xNombre) {
 	$bd->execQuery($sql);
 	$bd->close();
 }
+
+/**
+ * sc3SetQueryFields
+ * Agrega los campos a mostrar en la grilla del ABM.
+ * @param  string $xqueryName
+ * @param  string $xfields
+ * @return void
+ */
+function sc3SetQueryFields($xqueryName, $xfields) {
+	$sql = "UPDATE 
+				sc_querys 
+			SET 
+				fields_ = '$xfields' 
+			WHERE 
+				queryname = '$xqueryName'";
+	$bd = new BDObject();
+	$bd->execQuery($sql);
+	$bd->close();
+}
 ?>

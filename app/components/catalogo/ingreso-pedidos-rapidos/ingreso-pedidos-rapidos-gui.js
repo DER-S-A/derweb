@@ -28,10 +28,20 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
      * Permite dibujar el formulario de ingreso de pedidos rápido.
      */
     generateComponent() {
-        let urlAPI = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
+        let urlAPI;
+        let idVendedor;
         let urlTemplate = (new App()).getUrlTemplate("ingreso-pedido-rapido");
         let aSesion = (new CacheUtils("derweb", false).get("sesion"));
-        let idVendedor = aSesion["id_vendedor"];
+
+        if (aSesion["tipo_login"] === "V") {
+            urlAPI = (new App()).getUrlApi("app-entidades-getClientesByVendedor");
+            idVendedor = aSesion["id_vendedor"];
+        }
+        else {
+            urlAPI = (new App()).getUrlApi("app-entidades-getClientes");
+            idVendedor = 0;
+        }
+
     
         this.getTemplate(urlTemplate, (htmlResponse) => {
             this.__inicializarGUI(htmlResponse, urlAPI, idVendedor);
@@ -48,10 +58,16 @@ class IngresoPedidosRapidoGUI extends ComponentManager {
         this.__idSelectorClientes = "selector-clientes";
         xhtmlResponse = this.setTemplateParameters(xhtmlResponse, "id-selector", this.__idSelectorClientes);
         // Recupero los clientes para el vendedor actual.
-        (new APIs()).call(xurlAPI, "id_vendedor=" + xidVendedor, "GET", response => {
-            // Creo la GUI.
-            this.__crearFormulario(xhtmlResponse, response);
-        });
+        if (xidVendedor !== 0)
+            (new APIs()).call(xurlAPI, "id_vendedor=" + xidVendedor, "GET", response => {
+                // Creo la GUI.
+                this.__crearFormulario(xhtmlResponse, response);
+            });
+        else
+            (new APIs()).call(xurlAPI, "", "GET", response => {
+                // Creo la GUI.
+                this.__crearFormulario(xhtmlResponse, response);
+            });
     }
 
     /**

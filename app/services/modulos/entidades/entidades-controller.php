@@ -217,6 +217,37 @@ class EntidadesController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
     }
+    
+    /**
+     * getClientes
+     * Devuelve todos los clientes que se encuetran cargado en la base para
+     * el caso de los televentas.
+     * @return void
+     */
+    public function getClientes() {
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $objModel = new EntidadesModel();
+                $aClientes = $objModel->getClientes();
+                $responseData = json_encode($aClientes, JSON_UNESCAPED_UNICODE);
+
+                // Valido en caso de que json_encode falle y capturo el motivo del fallo
+                if (!$responseData) {
+                    $aResponse["errorCode"] = json_last_error();
+                    $aResponse["errorMessage"] = json_last_error_msg();
+                    $responseData = json_encode($aResponse, JSON_UNESCAPED_UNICODE);
+                }
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());
+    }
 
     /**
     * cambiarPassword
