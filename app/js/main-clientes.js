@@ -380,7 +380,6 @@ function miPerfil() {
  * @param {int} xid Id. Articulo.
  * @param {object} panelesOpciones objeto que lleva el estado de los check de los paneles de opciones de precios.
  */
-
 function crearFicha(xid, oPrecios) {
     let panelesOpciones = {
         precioLista: document.querySelector("#opcion-lista-precio").checked,
@@ -391,3 +390,10 @@ function crearFicha(xid, oPrecios) {
     new FichaArticulo().generateComponent(xid, panelesOpciones, oPrecios);
 }
 
+/**
+ * Esta función permite abrir el centro de noticias.
+ */
+function abrirCtroNot() {
+    const oCtroNot = new CtroNot("#app-container");
+    oCtroNot.generateComponent();
+}

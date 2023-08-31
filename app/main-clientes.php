@@ -26,6 +26,7 @@
         <link href="<?php echo sc3CacheButer("components/catalogo/ficha-articulo/estilo-carrusel.css");?>" rel="stylesheet">
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/rentabilidad/style.css");?>">
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/rentabilidad/style-table.css");?>">
+        <link rel="stylesheet" href="<?php echo sc3CacheButer("components/centro_noticias/centroNoticias.css");?>">
 
         <title>DER WEB</title>
         <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -112,94 +113,6 @@
                 </div>
             </div>
         </header>
-
-
-
-
-        <!-- ! Header viejo comentado -->
-        <!-- <header class="clientes-header">
-                <div class="row app-header">
-                    <div class="col-md-1">
-                        <a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" class="app-header-logo" alt=""></a>
-                    </div>
-                    <div class="col-md-11">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="app-header-buscar">
-                                    <input type="text" id="txtValorBuscado" name="txtValorBuscado" class="app-input-buscar" placeholder="Buscar">
-                                    <a href="javascript:buscarPorFrase()"><i class="fa-solid fa-magnifying-glass"></i></a>
-                                </div>
-                            </div>
-
-                            <div class="col-md-10 buscador-mas-menu">
-                                <div id="barra_busqueda" class="app-home-barra-opciones">
-                                    <ul>
-                                        <li>
-                                            <label for="select_marca_repuesto">MARCA DE REPUESTO</label>
-                                            <select id="select_marca_repuesto" name="select_marca_repuesto">
-                                                <option>Seleccionar</option>
-                                            </select>
-                                        </li>
-
-                                        <li>
-                                            <label for="select_marca_vehiculo">MARCA DE VEHICULO</label>
-                                            <select id="select_marca_vehiculo" name="select_marca_vehiculo">
-                                                <option>Seleccionar</option>
-                                            </select>
-                                        </li>
-
-                                        <li>
-                                            <label for="select_repuesto">REPUESTO</label>
-                                            <select id="select_repuesto" name="select_repuesto">
-                                                <option>Seleccionar</option>
-                                            </select>
-                                        </li>
-
-                                        <li>
-                                            <label for="select_modelo">MODELO</label>
-                                            <select id="select_modelo" name="select_modelo">
-                                                <option>Seleccionar</option>
-                                            </select>
-                                        </li>
-
-                                        <li>
-                                            <label for="select_motor">MOTOR</label>
-                                            <select id="select_motor" name="select_motor">
-                                                <option>Seleccionar</option>
-                                            </select>
-                                        </li>
-
-                                        <li>
-                                            <label for="select_anio">AÑO</label>
-                                            <select id="select_anio" name="select_anio">
-                                                <option>Seleccionar</option>
-                                            </select>
-                                        </li>
-
-                                        <li style=" width: auto">
-                                            <button type="button" id="btnBuscar" name="btnBuscar" class="app-header-btnbuscar">
-                                                <i class="fa-solid fa-magnifying-glass"></i> 
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div id="menu-container" class="menu-container"></div>
-                                <div id="num-cliente" class="num-cliente"></div></li>
-                            </div>                                
-                        </div>
-                    </div>
-                </div>                    
-
-                 Acá armar el menú principal 
-                <div id="toolbar" class="toolbar-container">
-                    <ul>
-                        <li class="toolbar-col-1"><div id="menu-container" class="menu-container"></div></li>
-                        <li class="toolbar-col-2"><div id="lista-articulos-container" class="lista-articulos-container"></div></li>
-                         <li class="toolbar-col-3"><div id="num-cliente" class="num-cliente"></div></li> 
-                        <li class="toolbar-col-4"><div id="boton-mi-carrito-container" class="boton-mi-carrito-container"></div></li>
-                    </ul>
-                </div>
-            </header> -->
 
             <main class="container-fluid main-miperfil">
                 <section id="app-container">
@@ -311,6 +224,8 @@
 
         <script src="<?php echo sc3CacheButer("components/catalogo/confirmacion-pedido/confirmacion-pedido.js");?>" type="text/javascript"></script>
 
+        <!-- Componente centro de noticias -->
+        <script src="<?php echo sc3CacheButer("components/centro_noticias/centroNoticias_cs.js");?>" type="text/javascript"></script>
         <!-- Componente botón mi carrito -->
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/mi-carrito.js");?>" type="text/javascript"></script>
