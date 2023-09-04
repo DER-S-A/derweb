@@ -18,8 +18,8 @@ class CtroNot extends ComponentManager {
                 //this.__generarCarruselOff(oferta);
             });
         }
-        catch {
-
+        catch(error) {
+            console.error("Error en generateComponent:", error);
         }
     }
 

@@ -5,9 +5,9 @@ class MisPedidos extends ComponentManager {
     }
 
     async generateComponent() {
-        /*try {
-            const novedades =  await this.__getNovedades();
-            const oferta = await this.__getOfertas();
+        try {
+            const pedidos =  await this.__getPedidos();
+            /*const oferta = await this.__getOfertas();
             this.getTemplate(new App().getUrlTemplate("centroNoticias"), html => {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
@@ -16,11 +16,11 @@ class MisPedidos extends ComponentManager {
                 this.__controlEventos(novedades, oferta);
                 this.__generarCarruselNov(novedades);
                 //this.__generarCarruselOff(oferta);
-            });
+            });*/
         }
-        catch {
-
-        }*/
+        catch(error) {
+            console.error("Error en generateComponent:", error);
+        }
     }
 
     __getPedidos() {
