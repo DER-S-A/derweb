@@ -397,3 +397,12 @@ function abrirCtroNot() {
     const oCtroNot = new CtroNot("#app-container");
     oCtroNot.generateComponent();
 }
+
+/**
+ * Esta función permite abrir mis pedidos.
+ */
+function abrirMisPedidos() {
+    //const oCtroNot = new CtroNot("#app-container");
+    //oCtroNot.generateComponent();
+    alert("abrir")
+}

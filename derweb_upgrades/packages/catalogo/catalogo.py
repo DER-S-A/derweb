@@ -457,3 +457,4 @@ class Catalogo:
             print(f"Unexpected error: {err}, {type(err)}")
             sap.logout()
             mysql.closeDB()
+            

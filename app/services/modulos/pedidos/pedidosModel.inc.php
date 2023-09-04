@@ -964,8 +964,8 @@ class PedidosModel extends Model {
      * @return array
      */
     public function consultar($aParametros) {
-        $sql = "CALL sp_pedidos_consultar (xidEntidad, xfechaDD, xfechaHH)";
-        $this->setParameter($sql, "xidEntidad", intval($aParametros["id_entidad"]));
+        $sql = "CALL sp_pedidos_consultar (xidSucursal, xfechaDD, xfechaHH)";
+        $this->setParameter($sql, "xidSucursal", intval($aParametros["id_sucursal"]));
         $this->setParameter($sql, "xfechaDD", $aParametros["fecha_desde"]);
         $this->setParameter($sql, "xfechaHH", $aParametros["fecha_hasta"]);
         return getRs($sql, true)->getAsArray();
