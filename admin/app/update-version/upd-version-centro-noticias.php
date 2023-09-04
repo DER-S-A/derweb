@@ -53,6 +53,9 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
 
         sc3SetNombreQuery($query, "Centro de noticias");
         sc3SetQueryFields($query, "id, descripcion, fecha, imagen, publicado, es_oferta");
+        sc3addFilter($query, "Novedades", "es_oferta = 0");
+        sc3addFilter($query, "Ofertas", "es_oferta = 1");
+
     }
 
     
