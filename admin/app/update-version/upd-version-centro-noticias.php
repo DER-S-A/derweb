@@ -30,7 +30,7 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
                 fecha datetime not null default current_timestamp,
                 imagen varchar(255) not null,
                 publicado tinyint(3) not null default 0,
-                PRIMARY KEY (id))";
+                PRIMARY KEY (id))ENGINE=InnoDB";
             self::ejecutarSQL($sql);
             sc3agregarQuery($query, $tabla, "Novedades", "Panel", "descripcion", 1, 1, 1, "id");
             sc3generateFieldsInfo($tabla);
@@ -90,7 +90,7 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
                         id_novedad int not null,
                         id_articulo int not null,
                         habilitado tinyint(3) not null default 0,
-                        PRIMARY KEY (id))";
+                        PRIMARY KEY (id))ENGINE=InnoDB";
             self::ejecutarSQL($sql);
             sc3addFk($tabla, "id_novedad", $tabla_novedades);
             sc3addFk($tabla, "id_articulo", $tabla_articulos);
