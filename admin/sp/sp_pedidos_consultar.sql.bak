@@ -1,5 +1,5 @@
 CREATE PROCEDURE sp_pedidos_consultar (
-    xIdSucursal int,
+    xidEntidad int,
     xfechaDD DATE,
     xfechaHH DATE
 )
@@ -38,5 +38,5 @@ BEGIN
     WHERE
         CAST(p.fecha_modificado AS date) BETWEEN CAST(xfechaDD AS date) AND CAST(xfechaHH AS date) AND
         p.id_estado = 2 AND
-        p.id_sucursal = xIdSucursal;
+        p.id_entidad = xidEntidad;
 END
