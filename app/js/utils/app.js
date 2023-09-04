@@ -23,6 +23,7 @@ const aAPIs = [
     {"app-entidades-cambiarClave"               : "services/entidades.php/cambiarPassword"},
     {"app-entidades-olvide_mi_contrasenia"      : "services/entidades.php/olvideMiContrasenia"},
     {"app-entidades-sucursales"                 : "services/sucursales.php/get"},
+    {"app-entidades-getClientes"                : "services/entidades.php/getClientes"},
     {"app-forma-envio"                          : "services/formas-envios.php/getMiCarrito"},
     {"app-transportes"                          : "services/transportes.php/get"},
     {"catalogo-marcas-get"                      : "services/marcas.php/get"},
@@ -50,6 +51,7 @@ const aAPIs = [
     {"aviso-pago"                               : "services/avp-rendiciones.php/agregarAvisoPago"},
     {"rendiAbi"                                 : "services/avp-rendiciones.php/getRendicionAbiertaPorVendedor"},
     {"enviarRendi"                              : "services/avp-rendiciones.php/generarRendicion"},
+    {"novedades"                                : "services/novedades.php/get"},
     {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
     
 
@@ -64,7 +66,8 @@ const aTemplates = [
     {"rentabilidad"                             : "components/rentabilidad/template.html"},
     {"ficha-articulo"                           : "components/catalogo/ficha-articulo/template.html"},
     {"aviso-pago"                               : "components/aviso_pago/template.html"},
-    {"ipr-grid-articulos"                       : "components/catalogo/ingreso-pedidos-rapidos/grid-articulos-template.html"}
+    {"ipr-grid-articulos"                       : "components/catalogo/ingreso-pedidos-rapidos/grid-articulos-template.html"},
+    {"centroNoticias"                           : "components/centro_noticias/template.html"}
 ]
 
 class App {
