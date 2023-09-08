@@ -18,10 +18,14 @@ class CtroNot extends ComponentManager {
                 //this.__generarCarruselOff(oferta);
             });
         }
-        catch {
-
+        catch(error) {
+            console.error("Error en generateComponent:", error);
         }
     }
+
+    /**
+     * Trae la lista de centro de noticias filtrado por novedades, es una promesa que devuelve el resultado del CALL(fetch).
+     */
     __getNovedades() {
         return new Promise((resolve, reject) => {
             const url = new App().getUrlApi("novedades");
@@ -31,6 +35,9 @@ class CtroNot extends ComponentManager {
         });
     }
 
+    /**
+     * Trae la lista de centro de noticias filtrado por ofertas, es una promesa que devuelve el resultado del CALL(fetch).
+     */
     __getOfertas() {
         return new Promise((resolve, reject) => {
             const url = new App().getUrlApi("novedades");
@@ -81,6 +88,9 @@ class CtroNot extends ComponentManager {
         });
     }
 
+    /**
+     * Tengo todos los eventos que usa el componente.
+     */
     __controlEventos(novedades, oferta) {
         document.getElementById("novedades-tab").addEventListener("click", () => {
             const carruselInner = document.querySelector("#carousel-ofertas .carousel-inner");

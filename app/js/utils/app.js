@@ -52,6 +52,7 @@ const aAPIs = [
     {"rendiAbi"                                 : "services/avp-rendiciones.php/getRendicionAbiertaPorVendedor"},
     {"enviarRendi"                              : "services/avp-rendiciones.php/generarRendicion"},
     {"novedades"                                : "services/novedades.php/get"},
+    {"pedidos"                                  : "services/pedidos.php/consultar"},
     {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
     
 
