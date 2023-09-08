@@ -67,8 +67,17 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
         sc3updateField($query, $campo, "Mostrar en portada", 1, "0", 0, "Opciones");
         sc3addFilter($query, "Portada", "mostrar_portada = 1");
 
+        $campo = "es_novedad";
+        if (!sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla ADD $campo tinyint(3) NOT NULL DEFAULT 0";
+            self::ejecutarSQL($sql);
+            sc3generateFieldsInfo($tabla);
+        }
+
+        sc3updateField($query, $campo, "Es novedad", 1, "0", 0, "Opciones");
+
         // Modifico los campos que muestro en la grilla de ABMs.
-        sc3SetQueryFields($query, "id, descripcion, fecha, imagen, publicado, es_oferta, mostrar_portada");
+        sc3SetQueryFields($query, "id, descripcion, fecha, imagen, publicado, es_oferta, es_novedad, mostrar_portada");
     }
     
     /**
