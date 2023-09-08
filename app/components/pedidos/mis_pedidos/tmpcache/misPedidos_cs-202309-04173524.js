@@ -27,8 +27,8 @@ class MisPedidos extends ComponentManager {
         return new Promise((resolve, reject) => {
             const url = new App().getUrlApi("pedidos");
             const miSession = new CacheUtils('derweb').get('sesion');
-            const fechaDesde = '2023-08-13';
-            const fechaHasta = '2023-09-4';
+            const fechaDesde = '20230220';
+            const fechaHasta = '20230409';
             const argumento = {"id_sucursal":miSession.id_sucursal, "fecha_desde":fechaDesde, "fecha_hasta":fechaHasta}
             new APIs().call(url, argumento, "POST", pedidos => {
                 console.log(pedidos);
