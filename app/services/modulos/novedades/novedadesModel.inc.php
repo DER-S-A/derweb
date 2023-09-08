@@ -18,6 +18,22 @@ class NovedadesModel extends Model {
         $this->setWhere($sql, $xfilter);
         return $this->getQuery($sql);
     }
+
+    public function getGrupoArticulosByNovedad($xsesion, $xid) {
+        $objArticulosModel = new ArticulosModel();
+        // Armo un subquery para que me traiga solo los artículos a mostrar
+        // en la grilla de artículos.
+        $filtro = "art.id IN ( 
+                        SELECT 
+                            id_articulo 
+                        FROM 
+                            articulos_novedades 
+                        WHERE 
+                            id_novedad = $xid AND
+                            habilitado = 1)";
+        $aResponse = $objArticulosModel->get($xsesion, $filtro, 0);
+        return $aResponse;
+    }
 }
 
 ?>

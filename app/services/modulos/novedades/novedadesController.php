@@ -39,8 +39,34 @@ class NovedadesController extends APIController {
         $objModel = new NovedadesModel();
         return json_encode($objModel->get($xfilter));
     }
+    
+    /**
+     * getGrupoArticulosByNovedad
+     * Obtiene el grupo de artículos a partir del id de novedad seleccionado con
+     * el formato para el datagrid.
+     * @return void
+     */
+    public function getGrupoArticulosByNovedad() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $sesion = $this->getURIParameters("sesion");
+                $id_novedad = $this->getURIParameters("id_novedad");
+                $objNovedadesModel = new NovedadesModel();
+                $aResponse = $objNovedadesModel->getGrupoArticulosByNovedad($sesion, $id_novedad);
+                $responseData = json_encode($aResponse);
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
 
-    // TODO: Desarrollar métodos extras acá abajo.
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 
 ?>
