@@ -81,16 +81,20 @@ ul.semaforo {
 .rojo li:nth-of-type(3) {
     background: #cc0000;
 }
-    .gris li:nth-of-type(5) {
+
+.gris li:nth-of-type(5) {
     background: #0f0f0f;
 }
-    .verde li:nth-of-type(1) {
+
+.verde li:nth-of-type(1) {
     background: #1fb41f;
 }
-    .azul li:nth-of-type(4) {
+
+.azul li:nth-of-type(4) {
     background: #3366ff;
 }
-    .amarillo li:nth-of-type(2) {
+
+.amarillo li:nth-of-type(2) {
     background: rgb(238, 238, 4);
 }
 

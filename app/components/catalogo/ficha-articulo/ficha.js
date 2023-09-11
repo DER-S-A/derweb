@@ -15,9 +15,8 @@ class FichaArticulo extends ComponentManager {
         console.log(oPrecios.Precio_venta)
         let url = (new App()).getUrlApi("ficha-articulos");
         let id_cli = JSON.parse(sessionStorage.getItem("derweb_sesion")).id_cliente;
-        let parametro = "id_articulo=" + xid_art + "&id_cliente=" + id_cli;  
+        let parametro = "id_articulo=" + xid_art + "&id_cliente=" + id_cli; 
         (new APIs()).call(url, parametro, "GET", (xdatos) => {
-        console.log(url + parametro);
             this.getTemplate((new App()).getUrlTemplate("ficha-articulo"), html => {
                 let arrayConRubroYSub = this.extraerCodigoRubroYSub();
                 html = this.completarTemplate(xdatos,html, xid_art, arrayConRubroYSub, oPrecios);
@@ -34,19 +33,45 @@ class FichaArticulo extends ComponentManager {
                 let objOpcionLista = document.querySelector("#ficha-opcion-lista");
                 let objOpcionCosto = document.querySelector("#ficha-opcion-costo");
                 let objOpcionVenta = document.querySelector("#ficha-opcion-venta");
-                let objinput = document.querySelector("#txtcantidad_"+xid_art);
+                let objinput = document.querySelector("#txtcantidad_" + xid_art);
                 
-
                 this.mostrarPrecios(objPrecioLista, objPrecioCosto, objPrecioVenta, objOpcionLista, objOpcionCosto, objOpcionVenta);
                 this.pintarFotosArticulosCarrusel(objCarruselInner, xdatos.fotos, objCarruselIndicador);
                 this.cargarLogo(objContenedorImgLogo, xdatos);
                 this.pintarCodigosOriginales(objCodigosOriginales, xdatos);
                 this.pintarEquivalentes(xdatos.equivalencias, objContenedorCarruselEquiva);
                 this.agregarAlCarritoConEnter(objinput, xid_art);
-                
+                this.pintarSemaforo(xdatos);
             });
         });
+    }
 
+    pintarSemaforo(xdatos) {
+        let stock = parseFloat(xdatos["informacion"][0]["Stock"]);
+        let habilitado = parseInt(xdatos["informacion"][0]["habilitado"]);
+        let objSemaforo = document.getElementById("stock-ficha");
+        
+        if (habilitado === 1) {
+            // Si el artículo está habilitado aplico condiciones de stock
+            if (stock === 0) {
+                objSemaforo.classList.add("semaforo");
+                objSemaforo.classList.add("rojo");
+            }
+
+            if ((stock > 0) && (stock < 100)) {
+                objSemaforo.classList.add("semaforo");
+                objSemaforo.classList.add("amarillo");
+            }
+
+            if (stock > 100) {
+                objSemaforo.classList.add("semaforo");
+                objSemaforo.classList.add("verde");
+            }
+        } else {
+            // Paso por acá si el artículo está deshabilitado
+            objSemaforo.classList.add("semaforo");
+            objSemaforo.classList.add("gris");
+        }
     }
 
     completarTemplate(xdatos,html, xid_art, arrayConRubroYSub, oPrecios) {
@@ -189,6 +214,7 @@ class FichaArticulo extends ComponentManager {
         }
         
     }
+
     pintarFotosArticulosCarrusel(objCarruselInner, xdatos, objCarruselIndicador) {
         
         xdatos.forEach((foto,index)=>{
