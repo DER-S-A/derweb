@@ -69,7 +69,7 @@ class FichaArticulo extends ComponentManager {
                 objSemaforo.classList.add("amarillo");
             }
 
-            if (stock > 100) {
+            if (stock >= 100) {
                 objSemaforo.classList.add("semaforo");
                 objSemaforo.classList.add("verde");
             }
