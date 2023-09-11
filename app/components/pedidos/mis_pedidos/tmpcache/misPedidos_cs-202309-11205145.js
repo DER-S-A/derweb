@@ -6,12 +6,13 @@ class MisPedidos extends ComponentManager {
 
     async generateComponent() {
         try {
-            this.getTemplate(new App().getUrlTemplate("misPedidos"), html => {
+            this.getTemplate(new App().getUrlTemplate("misPedidos"), html => {console.log(html)
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "15%";
-                this.__controlEventos()
-                
+                const aFecha = this.__recuperarFechasFiltro()
+                const pedidos =  this.__getPedidos(aFecha[0], aFecha[1]);
+                console.log(pedidos);
                 //this.__controlEventos(novedades, oferta);
                 //this.__generarCarruselNov(novedades);
                 //this.__generarCarruselOff(oferta);
@@ -35,14 +36,15 @@ class MisPedidos extends ComponentManager {
         })
     }
 
-    __controlEventos() {
+    __recuperarFechasFiltro() {
         const buscar = document.getElementById('buscar_misPedidos');
-        buscar.addEventListener('click', async () => {
+        let aFechas = [];
+        buscar.addEventListener('click', () => {
             const fechaD = document.getElementById('desde').value;
             const fechaH = document.getElementById('hasta').value;
-            let aFecha = [fechaD, fechaH];
-            const pedidos =  await this.__getPedidos(aFecha[0], aFecha[1]);
-            console.log(pedidos);
+            aFechas.push(fechaD, fechaH);
         });
+        console.log(aFechas);
+        return aFechas; 
     }
 }

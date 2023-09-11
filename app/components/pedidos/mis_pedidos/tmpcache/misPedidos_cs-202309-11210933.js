@@ -37,11 +37,11 @@ class MisPedidos extends ComponentManager {
 
     __controlEventos() {
         const buscar = document.getElementById('buscar_misPedidos');
-        buscar.addEventListener('click', async () => {
+        buscar.addEventListener('click', () => {
             const fechaD = document.getElementById('desde').value;
             const fechaH = document.getElementById('hasta').value;
             let aFecha = [fechaD, fechaH];
-            const pedidos =  await this.__getPedidos(aFecha[0], aFecha[1]);
+            const pedidos =  this.__getPedidos(aFecha[0], aFecha[1]);
             console.log(pedidos);
         });
     }
