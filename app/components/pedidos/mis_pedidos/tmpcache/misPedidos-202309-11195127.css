@@ -1,0 +1,27 @@
+.misPedidos {
+    font-family: "futura";
+    color: rgb(0, 61, 124);
+}
+
+.misPedidos .formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
+
+.misPedidos .cabecera {
+    text-align: center;
+    font-weight: 600;
+}
+
+.misPedidos h1 {
+    margin-bottom: 0;
+    font-weight: 900;
+}
+
+.cuadrado {
+    border: 2px solid black;
+    height: 300px;
+}

@@ -1,0 +1,7 @@
+.misPedidos .formulario {
+    display: flex;
+}
+
+.misPedidos h1 {
+    margin-bottom: 0;
+}

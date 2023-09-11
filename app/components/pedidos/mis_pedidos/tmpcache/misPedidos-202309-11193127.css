@@ -1,0 +1,18 @@
+.misPedidos .formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.misPedidos .cabecera {
+    text-align: center;
+}
+
+.misPedidos h1 {
+    margin-bottom: 0;
+}
+
+.cuadrado {
+    border: 2px solid black;
+}

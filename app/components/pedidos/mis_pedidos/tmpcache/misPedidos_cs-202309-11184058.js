@@ -8,10 +8,10 @@ class MisPedidos extends ComponentManager {
         try {
             const pedidos =  await this.__getPedidos();
             console.log(pedidos);
-            this.getTemplate(new App().getUrlTemplate("misPedidos"), html => {console.log(html)
+            this.getTemplate(new App().getUrlTemplate("centroNoticias"), html => {console.log(html)
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
-                main.style.marginTop = "15%";
+                main.style.marginTop = "20%";
                 //this.__controlEventos(novedades, oferta);
                 //this.__generarCarruselNov(novedades);
                 //this.__generarCarruselOff(oferta);
