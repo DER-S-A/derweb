@@ -43,3 +43,32 @@
         objCatalogo.agregarArticuloEnCarrito(aSesion, xidarticulo, cantidad, acabecera);
     });
  }
+
+ /**
+  * Obtiene la cantidad de días cubiertos de stock
+  * @param {int} xidArticulo 
+  * @param {float} xExistencia 
+  * @param {Callback Function} xcallback 
+  */
+ function calcularCantDiasCubiertosStock(xidArticulo, xExistencia, xcallback) {
+    let urlAPI = (new App().getUrlApi("catalogo-stock-venta-maxima"));
+    let parametro = "id_articulo=" + xidArticulo;
+    console.log(parametro);
+    (new APIs().call(urlAPI, parametro, "GET", (xdatos) => {
+        let dias = 0;
+        let venta_maxima = xdatos["venta_maxima"] === undefined ? "0" : parseFloat(xdatos["venta_maxima"]);
+
+        if (xExistencia === 0) {
+            dias = 0;
+            xcallback(dias);
+        } else {            
+            if (venta_maxima === 0) {
+                dias = 999;
+            } else {
+                dias = (xExistencia * 30) / venta_maxima;
+            }
+        }
+
+        xcallback(dias);
+    }))
+ }

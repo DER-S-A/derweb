@@ -964,8 +964,8 @@ class PedidosModel extends Model {
      * @return array
      */
     public function consultar($aParametros) {
-        $sql = "CALL sp_pedidos_consultar (xidSucursal, xfechaDD, xfechaHH)";
-        $this->setParameter($sql, "xidSucursal", intval($aParametros["id_sucursal"]));
+        $sql = "CALL sp_pedidos_consultar (xIdSucursal, xfechaDD, xfechaHH)";
+        $this->setParameter($sql, "xIdSucursal", intval($aParametros["id_sucursal"]));
         $this->setParameter($sql, "xfechaDD", $aParametros["fecha_desde"]);
         $this->setParameter($sql, "xfechaHH", $aParametros["fecha_hasta"]);
         return getRs($sql, true)->getAsArray();
@@ -980,6 +980,27 @@ class PedidosModel extends Model {
     public function consultar_item_byid($aParametros) {
         $sql = "CALL sp_consultar_items_byid (xid)";
         $this->setParameter($sql, "xid", $aParametros["id_pedido"]);
+        return getRs($sql, true)->getAsArray();
+    }
+    
+    /**
+     * getVentaMaximaByArticulo
+     * Obtiene la venta máxima de los últimos 6 meses de un determinado artículo.
+     * @param  int $xidArticulo
+     * @return void
+     */
+    public function getVentaMaximaByArticulo($xidArticulo) {
+        $sql = "SELECT
+                    item.id_articulo,
+                    MAX(item.cantidad) AS 'venta_maxima'
+                FROM
+                    pedidos ped
+                        INNER JOIN pedidos_items item ON item.id_pedido = ped.id
+                WHERE
+                    ped.fecha_alta >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND
+                    item.id_articulo = $xidArticulo
+                GROUP BY
+                    item.id_articulo";
         return getRs($sql, true)->getAsArray();
     }
 }

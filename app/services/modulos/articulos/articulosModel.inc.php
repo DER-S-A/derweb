@@ -330,22 +330,25 @@ class ArticulosModel extends Model {
                     "art.descripcion, ' ') LIKE '%";
         }
     }
-    public function generarFichaArt($xid_articulo,$xid_cliente) {
+
+    public function generarFichaArt($xid_articulo, $xid_cliente) {
     
         $sql = "SELECT 
-                articulos.id AS ID_Articulo,
-                articulos.descripcion AS Descripcion,
-                articulos.existencia_stock AS Stock,
-                articulos.codigo AS Codigo,
-                articulos.informacion_general AS Informacion_general,
-                articulos.datos_tecnicos AS Datos_tecnicos,
-                articulos.diametro AS Diametro,
-                art_unidades_ventas.unidad_venta AS Unidades_de_venta,
-                marcas.linklogo AS Logo
-                FROM articulos
-                INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
-                INNER JOIN marcas ON marcas.id = articulos.id_marca
-                CROSS JOIN art_unidades_ventas ON art_unidades_ventas.id_articulo = articulos.id
+                    articulos.id AS ID_Articulo,
+                    articulos.descripcion AS Descripcion,
+                    articulos.existencia_stock AS Stock,
+                    articulos.codigo AS Codigo,
+                    articulos.informacion_general AS Informacion_general,
+                    articulos.datos_tecnicos AS Datos_tecnicos,
+                    articulos.diametro AS Diametro,
+                    art_unidades_ventas.unidad_venta AS Unidades_de_venta,
+                    marcas.linklogo AS Logo,
+                    articulos.habilitado
+                FROM 
+                    articulos
+                        INNER JOIN articulos_precios ON articulos_precios.id_articulo = articulos.id
+                        INNER JOIN marcas ON marcas.id = articulos.id_marca
+                        CROSS JOIN art_unidades_ventas ON art_unidades_ventas.id_articulo = articulos.id
                 WHERE articulos.id = $xid_articulo"
             ;
 
