@@ -63,7 +63,7 @@
             xcallback(dias);
         } else {            
             if (venta_maxima === 0) {
-                dias = 0;
+                dias = 999;
             } else {
                 dias = (xExistencia * 30) / venta_maxima;
             }
