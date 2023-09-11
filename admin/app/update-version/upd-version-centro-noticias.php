@@ -54,7 +54,7 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
         sc3generateFieldsInfo($tabla);
         sc3updateField($query, $campo, "Es oferta", 1, "0", 0, "Opciones");
 
-        sc3addFilter($query, "Novedades", "es_oferta = 0");
+        sc3addFilter($query, "Novedades", "es_novedad = 1");
         sc3addFilter($query, "Ofertas", "es_oferta = 1");
 
         $campo = "mostrar_portada";
