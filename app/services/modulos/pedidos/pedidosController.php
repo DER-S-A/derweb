@@ -285,6 +285,29 @@ class PedidosController extends APIController {
         else
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
+    
+    /**
+     * obtenerVentaMaximaUltimosSeisMesesByArt
+     * API que permite obtener la venta máxima de los últimos 6 meses por artículo
+     * @return void
+     */
+    public function getVentaMaximaByArticulo() {
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $responseData = [];
+                $idArticulo = $this->getURIParameters("id_articulo");
+                $objModel = new PedidosModel();
+                $responseData = json_encode($objModel->getVentaMaximaByArticulo($idArticulo));
+            } catch (Exception $e) {
+                $this->setErrorFromException($e);
+            }
+        }
+
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
+    }
 }
 
 ?>

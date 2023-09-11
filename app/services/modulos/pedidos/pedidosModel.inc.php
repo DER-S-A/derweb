@@ -982,4 +982,25 @@ class PedidosModel extends Model {
         $this->setParameter($sql, "xid", $aParametros["id_pedido"]);
         return getRs($sql, true)->getAsArray();
     }
+    
+    /**
+     * getVentaMaximaByArticulo
+     * Obtiene la venta máxima de los últimos 6 meses de un determinado artículo.
+     * @param  int $xidArticulo
+     * @return void
+     */
+    public function getVentaMaximaByArticulo($xidArticulo) {
+        $sql = "SELECT
+                    item.id_articulo,
+                    MAX(item.cantidad) AS 'venta_maxima'
+                FROM
+                    pedidos ped
+                        INNER JOIN pedidos_items item ON item.id_pedido = ped.id
+                WHERE
+                    ped.fecha_alta >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND
+                    item.id_articulo = $xidArticulo
+                GROUP BY
+                    item.id_articulo";
+        return getRs($sql, true)->getAsArray();
+    }
 }

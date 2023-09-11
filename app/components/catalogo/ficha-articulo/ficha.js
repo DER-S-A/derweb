@@ -48,36 +48,41 @@ class FichaArticulo extends ComponentManager {
 
     /**
      * Permite pintar los colores del semáforo en base a una condición.
+     * 
      * NOTA: El habilitado lo dejo pero cuando se busca si un artículo está deshabilitado directamente
      * no figura en la grilla, por ende, no se si tiene sentido el 5to circulo.
      * @param {array} xdatos 
      */
     pintarSemaforo(xdatos) {
         let stock = parseFloat(xdatos["informacion"][0]["Stock"]);
-        let habilitado = parseInt(xdatos["informacion"][0]["habilitado"]);
-        let objSemaforo = document.getElementById("stock-ficha");
-        
-        if (habilitado === 1) {
-            // Si el artículo está habilitado aplico condiciones de stock
-            if (stock === 0) {
-                objSemaforo.classList.add("semaforo");
-                objSemaforo.classList.add("rojo");
-            }
 
-            if ((stock > 0) && (stock < 100)) {
+        calcularCantDiasCubiertosStock(parseInt(xdatos["informacion"][0]["ID_Articulo"]), stock, (dias) => {
+            let habilitado = parseInt(xdatos["informacion"][0]["habilitado"]);
+            let objSemaforo = document.getElementById("stock-ficha");
+    
+            if (habilitado === 1) {
+                console.log("Dia = " + dias);
+                // Si el artículo está habilitado aplico condiciones de stock
+                if (dias === 0) {
+                    objSemaforo.classList.add("semaforo");
+                    objSemaforo.classList.add("rojo");
+                }
+    
+                if ((dias > 0) && (dias <= 2)) {
+                    objSemaforo.classList.add("semaforo");
+                    objSemaforo.classList.add("amarillo");
+                }
+    
+                if (dias >= 3) {
+                    objSemaforo.classList.add("semaforo");
+                    objSemaforo.classList.add("verde");
+                }
+            } else {
+                // Paso por acá si el artículo está deshabilitado
                 objSemaforo.classList.add("semaforo");
-                objSemaforo.classList.add("amarillo");
+                objSemaforo.classList.add("gris");
             }
-
-            if (stock >= 100) {
-                objSemaforo.classList.add("semaforo");
-                objSemaforo.classList.add("verde");
-            }
-        } else {
-            // Paso por acá si el artículo está deshabilitado
-            objSemaforo.classList.add("semaforo");
-            objSemaforo.classList.add("gris");
-        }
+        });
     }
 
     completarTemplate(xdatos,html, xid_art, arrayConRubroYSub, oPrecios) {

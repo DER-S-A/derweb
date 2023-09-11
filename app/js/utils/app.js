@@ -41,6 +41,7 @@ const aAPIs = [
     {"catalogo-pedidos-confirmarPedido"         : "services/pedidos.php/confirmarPedido"},
     {"catalogo-pedidos-getPendientesByVendedor" : "services/pedidos.php/getPedidosPendientesByVendedor"},
     {"catalogo-pedidos-modificar-items"         : "services/pedidos.php/modificarItem"},
+    {"catalogo-stock-venta-maxima"              : "services/pedidos.php/getVentaMaximaByArticulo"},
     {"ficha-articulos"                          : "services/articulos.php/getFicha"},
     {"rentabilidad"                             : "services/sucursales.php/editarRentabilidad"},
     {"boxesFiltrados"                           : "services/articulos.php/filtrarBoxes"},
