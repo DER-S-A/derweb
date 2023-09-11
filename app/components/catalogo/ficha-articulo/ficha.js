@@ -46,6 +46,12 @@ class FichaArticulo extends ComponentManager {
         });
     }
 
+    /**
+     * Permite pintar los colores del semáforo en base a una condición.
+     * NOTA: El habilitado lo dejo pero cuando se busca si un artículo está deshabilitado directamente
+     * no figura en la grilla, por ende, no se si tiene sentido el 5to circulo.
+     * @param {array} xdatos 
+     */
     pintarSemaforo(xdatos) {
         let stock = parseFloat(xdatos["informacion"][0]["Stock"]);
         let habilitado = parseInt(xdatos["informacion"][0]["habilitado"]);
