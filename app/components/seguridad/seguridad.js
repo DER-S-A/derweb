@@ -97,10 +97,9 @@ class Seguridad {
                 if (aResultado.result == "OK") {
                     aResultado["id_sucursal"] = parseInt(document.getElementById("cboSucursales").value);
                     sessionStorage.setItem("derweb_sesion", JSON.stringify(aResultado));
-                    console.log(aResultado)
-                    /*form.action = this.sendToMainPage(aResultado["tipo_login"]);
+                    form.action = this.sendToMainPage(aResultado["tipo_login"]);
                     form.method = "POST";
-                    form.submit();*/
+                    form.submit();
                 }
                 else {
                     alert(aResultado.mensaje);

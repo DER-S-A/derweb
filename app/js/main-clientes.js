@@ -45,6 +45,8 @@ function mostrarNumCliente() {
         xdatos.forEach((xitem) => {
             if(storage.id_sucursal==xitem.id){
                 objDivNumCli.innerHTML = "<a href='javascript:miPerfil()'><span>" + xitem.nombre + "</span></a>";
+                storage["nombre_suc"] = xitem.nombre;
+                sessionStorage.setItem("derweb_sesion", JSON.stringify(storage));
             }
         });
     }); 
