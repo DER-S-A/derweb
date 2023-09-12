@@ -7,6 +7,11 @@ class MisPedidos extends ComponentManager {
     generateComponent() {
         try {
             this.getTemplate(new App().getUrlTemplate("misPedidos"), async html => {
+                const objCache = new CacheUtils("derweb");
+                const razonSocial = objCache.get("sesion").nombre;
+                const nombreSuc = objCache.get("sesion").nombre_suc;
+                html = this.setTemplateParameters(html, "razonSocial", razonSocial);
+                html = this.setTemplateParameters(html, "nombreSuc", nombreSuc);
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "15%";
