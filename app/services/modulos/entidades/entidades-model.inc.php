@@ -36,7 +36,8 @@ class EntidadesModel extends Model {
                     usuario, 
                     clave,
                     id_tipoentidad,
-                    tipo_login
+                    tipo_login,
+                    nombre
                 FROM 
                     entidades
                         INNER JOIN tipos_entidades ON tipos_entidades.id = entidades.id_tipoentidad
@@ -61,6 +62,7 @@ class EntidadesModel extends Model {
                 $aResult["codigo"] = $aDatos[0]["cliente_cardcode"];
                 $aResult["id_tipoentidad"] = intval($aDatos[0]["id_tipoentidad"]);
                 $aResult["tipo_login"] = $aDatos[0]["tipo_login"];
+                $aResult["nombre"] = $aDatos[0]["nombre"];
 
             } else {
                 $aResult["result"] = "ERR_CLAVE";
