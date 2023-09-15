@@ -78,7 +78,7 @@ class MenuComponent {
 
             objLink.addEventListener("click", () => {
                 objMenuOptions.setAttribute("style", "display: none");
-                document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
+                //document.getElementById("btnPushMenu").innerHTML = "<i id='botonHambur' class='fas fa-bars'></i>";
             });
         });
     }

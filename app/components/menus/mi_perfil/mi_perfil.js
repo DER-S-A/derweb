@@ -26,7 +26,9 @@ class MiPerfil extends ComponentManager {
     * Creo los nodos.
     */
 
-    let objContenedor = document.getElementById(this.idAppContainer);
+    let objContenedorWarp = document.getElementById(this.idAppContainer);
+    let objContenedor = document.createElement("div");
+    objContenedor.id = this.classMiPerfil;
     let objH1 = document.createElement("h1");
     let objDiv2 = document.createElement("div");
     let objImg = new Image();
@@ -61,6 +63,7 @@ class MiPerfil extends ComponentManager {
     objContenedor.appendChild(objDiv3);
     objDiv3.appendChild(objUl);
     objDiv3.appendChild(objButton);
+    objContenedorWarp.append(objContenedor);
 
     
 
