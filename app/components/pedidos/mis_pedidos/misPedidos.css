@@ -1,10 +1,12 @@
 .misPedidos {
     font-family: "futura";
     color: rgb(0, 61, 124);
+    min-height: 60vh;
 }
 
 .misPedidos .formulario {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     font-weight: 600;
@@ -24,4 +26,12 @@
 .cuadrado {
     border: 2px solid black;
     height: 300px;
+}
+
+/* responsive 580px */
+
+@media (max-width: 575px) {
+    .misPedidos .formulario {
+        flex-direction: column;
+    }
 }
