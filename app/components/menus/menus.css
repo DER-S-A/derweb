@@ -68,3 +68,11 @@
 }
 
 /* Agregar responsive. */
+
+/* responsive 580px */
+
+@media (max-width: 575px) {
+    #top-menu .menu_options {
+        right: -114px;
+    }
+}
