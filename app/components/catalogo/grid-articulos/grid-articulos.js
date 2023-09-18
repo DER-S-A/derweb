@@ -295,8 +295,8 @@ class CatalogoGridComponent extends ComponentManager {
 
         calcularCantDiasCubiertosStock(xidarticulo, stock_disponible, (dias) => {
             if (parseInt(dias) === 0) {
-                objInputCantidad.setAttribute("ReadOnly", "ReadOnly");
                 objInputCantidad.style.backgroundColor = "red";
+                objInputCantidad.style.color = "white";
                 objBotonCarrito.style.backgroundColor = "red";
             }
 
