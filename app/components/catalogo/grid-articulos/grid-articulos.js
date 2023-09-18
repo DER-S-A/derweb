@@ -136,12 +136,12 @@ class CatalogoGridComponent extends ComponentManager {
 
             objRowLista.classList.add("row-lista");
 
-            
+            console.log(xelement);
             objItemCol1.appendChild(this.__crearColumnaFoto());
             const oPrecios = {Precio_lista: xelement["prlista"], Precio_costo: xelement["cped"], Precio_venta: xelement["vped"]};
             objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"], oPrecios));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
-            objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"]));
+            objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"], xelement["stkd"]));
 
             objItemRow.appendChild(objItemCol1);
             objItemRow.appendChild(objItemCol2);
@@ -275,7 +275,8 @@ class CatalogoGridComponent extends ComponentManager {
      * Arma la columna de carrito de compras para hacer el pedido.
      * @returns {DOMElement}
      */
-    __crearColumnaPedido(xidarticulo) {
+    __crearColumnaPedido(xidarticulo, stock_disponible) {
+        var habilitarIngresoPedido = false;
         var objPedidoContainter = document.createElement("div");
         var objContainerCarrito = document.createElement("div");
         var objInputCantidad = document.createElement("input");
@@ -291,6 +292,24 @@ class CatalogoGridComponent extends ComponentManager {
         
         objBotonCarrito.innerHTML = "&nbsp&nbsp;<i class=\"fa-solid fa-cart-plus\"></i>&nbsp&nbsp;";
         objBotonCarrito.href = "javascript:agregarAlCarrito(" + xidarticulo + ");";
+
+        calcularCantDiasCubiertosStock(xidarticulo, stock_disponible, (dias) => {
+            if (parseInt(dias) === 0) {
+                objInputCantidad.setAttribute("ReadOnly", "ReadOnly");
+                objInputCantidad.style.backgroundColor = "red";
+                objBotonCarrito.style.backgroundColor = "red";
+            }
+
+            if ((parseInt(dias) > 0) && (parseInt(dias) <= 2)) {
+                objInputCantidad.style.backgroundColor = "yellow";
+                objBotonCarrito.style.backgroundColor = "yellow";
+            }
+
+            if (parseInt(dias) >= 3) {
+                objInputCantidad.style.backgroundColor = "lightgreen";
+                objBotonCarrito.style.backgroundColor = "lightgreen";
+            }
+        })
 
         objContainerCarrito.appendChild(objInputCantidad);
         objContainerCarrito.appendChild(objBotonCarrito);
