@@ -12,7 +12,7 @@ class CtroNot extends ComponentManager {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "20%";
-                console.log(oferta);
+                console.log(novedades);
                 this.__controlEventos(novedades, oferta);
                 this.__generarCarruselNov(novedades);
                 //this.__generarCarruselOff(oferta);
@@ -55,7 +55,11 @@ class CtroNot extends ComponentManager {
 
             const url = "../admin/ufiles/" + ima.imagen;
             let carruselItem = this.crearElementDom("div", "carousel-item");
-            carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen novedades">`
+            if(ima.url == "") {
+                carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen novedades">`
+            } else {
+                carruselItem.innerHTML = `<a href=${ima.url} target="_blank"><img src=${url} class="d-block w-100" alt="imagen novedades"></a>`
+            }
 
             if(i == 0) {
                 boton.className = "active";
@@ -76,7 +80,12 @@ class CtroNot extends ComponentManager {
 
             const url = "../admin/ufiles/" + ima.imagen;
             let carruselItem = this.crearElementDom("div", "carousel-item");
-            carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen ofertas">`
+            if(ima.url == "") {
+                carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen ofertas">`
+            } else {
+                carruselItem.innerHTML = `<a href=${ima.url} target="_blank"><img src=${url} class="d-block w-100" alt="imagen ofertas"></a>`
+            }
+            
 
             if(i == 0) {
                 boton.className = "active";
