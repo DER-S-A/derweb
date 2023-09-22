@@ -272,7 +272,7 @@ class ArticulosModel extends Model {
                     art.descripcion,
                     art.codigo,
                     pre.precio_lista,
-                    art.existencia_stock,
+                    art.existencia_stock AS 'existencia',
                     art.alicuota_iva
                 FROM
                     articulos art
