@@ -19,7 +19,7 @@ class CatalogoGridComponent extends ComponentManager {
      *              }
      * @param {array} xparametros Array JSON con los parámetros de búsqueda.
      */
-    constructor (xidgrid, xparametros, xbuscarPorFrase) {
+    constructor (xidgrid, xparametros, xbuscarPorFrase, xIdGrupoArt = "") {
         super();
         this._aParametros = xparametros;
         this._claveSessionStorage = "derweb_articulos";
@@ -29,6 +29,7 @@ class CatalogoGridComponent extends ComponentManager {
         this._objGridContainer.classList.add("container","grid-container");
         this._aDatos = [];
         this.__realizarBusquedaPorFrase = xbuscarPorFrase;
+        this.__idGrupoArticulo = xIdGrupoArt;
 
         this.__getData();
     }
@@ -88,6 +89,10 @@ class CatalogoGridComponent extends ComponentManager {
      */
     __getData() {
         var pagina = 0;
+        if(this.__idGrupoArticulo != "") {
+            this.__grupoArt(pagina, this._claveSessionStorage);
+            return;
+        }
         if (!this.__realizarBusquedaPorFrase)
             this.__getArticulosByRubroAndSubrubro(pagina, this._claveSessionStorage)
         else
@@ -100,7 +105,7 @@ class CatalogoGridComponent extends ComponentManager {
      * @param {int} xpagina Número de página a recuperar
      * @param {string} xclaveSessionStorage Clave de almacenamiento para sessionStorage.
      */
-    __getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {
+    __getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {console.log("200")
         var url = this._aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
             + "&parametros=" + JSON.stringify(this._aParametros) + "&pagina=" + xpagina;
@@ -337,7 +342,7 @@ class CatalogoGridComponent extends ComponentManager {
             + "&frase=" + this._aParametros["values"]["frase"] + "&pagina=" + xpagina;
         fetch (url_con_parametros)
             .then(xresponse => xresponse.json())
-            .then(xdata  => {
+            .then(xdata  => {console.log(xdata)
                 if (xdata["values"].length !== 0) {
                     sessionStorage.setItem(xclaveSessionStorage + "_" + xpagina, JSON.stringify(xdata));
                     xpagina += 40;
@@ -345,5 +350,19 @@ class CatalogoGridComponent extends ComponentManager {
                     this.__crearListaArticulos(xpagina - 40);
                 }
             });        
+    }
+    __grupoArt(xpagina, xclaveSessionStorage) {
+        const url = new App().getUrlApi("artGrupo");
+            const objCacheUtils = new CacheUtils("derweb");
+            const aSession = objCacheUtils.get("sesion");
+            const parametro = "sesion=" + JSON.stringify(aSession) + "&id_novedad=" + this.__idGrupoArticulo;
+            new APIs().call(url, parametro, "GET", articulos => {
+                if(articulos["values"].length !==0) {
+                    sessionStorage.setItem(xclaveSessionStorage + "_" + xpagina, JSON.stringify(articulos));
+                    xpagina += 40;
+                    //this.__grupoArt(xpagina, xclaveSessionStorage);
+                    this.__crearListaArticulos(xpagina - 40);
+                }
+            });
     }
 }

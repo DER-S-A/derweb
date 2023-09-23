@@ -12,10 +12,8 @@ class CtroNot extends ComponentManager {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "20%";
-                console.log(novedades);
                 this.__controlEventos(novedades, oferta);
                 this.__generarCarruselNov(novedades);
-                //this.__generarCarruselOff(oferta);
             });
         }
         catch(error) {
@@ -46,19 +44,39 @@ class CtroNot extends ComponentManager {
             }, false, error => reject(error))
         });
     }
+
+    __getArtAsoc(id_centroNoticias) {
+        return new Promise((resolve, reject) => {
+            const url = new App().getUrlApi("artGrupo");
+            const objCacheUtils = new CacheUtils("derweb");
+            const aSession = objCacheUtils.get("sesion");
+            const parametro = "sesion=" + JSON.stringify(aSession) + "&id_novedad=" + id_centroNoticias;
+            new APIs().call(url, parametro, "GET", articulos => {
+                resolve(articulos);
+            }, false, error => reject(error));
+        })
+    }
+
     __generarCarruselNov(novedades) {
         const carruselInner = document.querySelector("#carousel-novedades .carousel-inner");
         const carouselIndicators = document.querySelector("#carousel-novedades .carousel-indicators");
-        novedades.forEach((ima, i) => {
+        novedades.forEach(async (ima, i) => {
+            let id_novedad = 0;
+            const articulos = await this.__getArtAsoc(ima.id);
             let setAtri = ["type", "button", "data-bs-target", "#carousel-novedades", "data-bs-slide-to", i.toString(), "aria-label","Slide " + (i+1).toString()];
             const boton = this.crearElementDom("button", null, null, setAtri);
 
             const url = "../admin/ufiles/" + ima.imagen;
             let carruselItem = this.crearElementDom("div", "carousel-item");
-            if(ima.url == "") {
-                carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen novedades">`
+            if(articulos.cantreg > 0) {
+                id_novedad = ima.id
+                carruselItem.innerHTML = `<a id="armarListaArt_${id_novedad}" style="cursor:pointer"><img src=${url} class="d-block w-100" alt="imagen ofertas"></a>`
             } else {
-                carruselItem.innerHTML = `<a href=${ima.url} target="_blank"><img src=${url} class="d-block w-100" alt="imagen novedades"></a>`
+                if(ima.url == "") {
+                    carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen novedades">`
+                } else {
+                    carruselItem.innerHTML = `<a href=${ima.url} target="_blank"><img src=${url} class="d-block w-100" alt="imagen novedades"></a>`
+                }
             }
 
             if(i == 0) {
@@ -68,24 +86,31 @@ class CtroNot extends ComponentManager {
             }
             carouselIndicators.append(boton);
             carruselInner.append(carruselItem);
+            if(id_novedad > 0) this.__armarListaArt(id_novedad);
         });
     }
 
     __generarCarruselOff(ofertas) {
         const carruselInner = document.querySelector("#carousel-ofertas .carousel-inner");
         const carouselIndicators = document.querySelector("#carousel-ofertas .carousel-indicators");
-        ofertas.forEach((ima, i) => {
+        ofertas.forEach(async (ima, i) => {
+            let id_novedad = 0;
+            const articulos = await this.__getArtAsoc(ima.id);
             let setAtri = ["type", "button", "data-bs-target", "#carousel-ofertas", "data-bs-slide-to", i.toString(), "aria-label","Slide " + (i+1).toString()];
             const boton = this.crearElementDom("button", null, null, setAtri);
 
             const url = "../admin/ufiles/" + ima.imagen;
             let carruselItem = this.crearElementDom("div", "carousel-item");
-            if(ima.url == "") {
-                carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen ofertas">`
+            if(articulos.cantreg > 0) {
+                id_novedad = ima.id
+                carruselItem.innerHTML = `<a id="armarListaArt_${id_novedad}" style="cursor:pointer"><img src=${url} class="d-block w-100" alt="imagen ofertas"></a>`
             } else {
-                carruselItem.innerHTML = `<a href=${ima.url} target="_blank"><img src=${url} class="d-block w-100" alt="imagen ofertas"></a>`
+                if(ima.url == "") {
+                    carruselItem.innerHTML = `<img src=${url} class="d-block w-100" alt="imagen ofertas">`
+                } else {
+                    carruselItem.innerHTML = `<a href=${ima.url} target="_blank"><img src=${url} class="d-block w-100" alt="imagen ofertas"></a>`
+                }
             }
-            
 
             if(i == 0) {
                 boton.className = "active";
@@ -94,7 +119,17 @@ class CtroNot extends ComponentManager {
             }
             carouselIndicators.append(boton);
             carruselInner.append(carruselItem);
+            if(id_novedad > 0) this.__armarListaArt(id_novedad);
         });
+    }
+
+    __armarListaArt(id_novedad) {
+        document.getElementById(`armarListaArt_${id_novedad}`).addEventListener("click", ()=> {
+            const objGUI = new CatalogoGUIComponent("app-container");
+            objGUI.generateComponent();
+            const objGrilla = new CatalogoGridComponent("grilla-articulos", [], "", id_novedad);
+            objGrilla.generateComponent("app-container");
+        })
     }
 
     /**

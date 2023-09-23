@@ -54,6 +54,7 @@ const aAPIs = [
     {"enviarRendi"                              : "services/avp-rendiciones.php/generarRendicion"},
     {"novedades"                                : "services/novedades.php/get"},
     {"pedidos"                                  : "services/pedidos.php/consultar"},
+    {"artGrupo"                                 : "services/novedades.php/getGrupoArticulosByNovedad"},
     {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
     
 
