@@ -4,6 +4,10 @@
     padding: 5%;
 }
 
+#carousel-novedades .carousel-inner img {
+    max-height: 30rem;
+}
+
 @media (max-width: 1024px) {
     .app-header {
         position: static;

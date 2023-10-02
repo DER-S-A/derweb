@@ -11,7 +11,7 @@ class CtroNot extends ComponentManager {
             this.getTemplate(new App().getUrlTemplate("centroNoticias"), html => {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
-                main.style.marginTop = "20%";
+                main.style.marginTop = "15%";
                 this.__controlEventos(novedades, oferta);
                 this.__generarCarruselNov(novedades);
             });
