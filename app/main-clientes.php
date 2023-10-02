@@ -52,7 +52,6 @@
                     <div class="logo"><a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" alt=""></a></div>
                     <div id="lista-articulos-container">
                         <button class="lista_articulos ms-3" id="btnPushListaArticulo" name="btnPushListaArticulo">
-                            
                             <span class="mx-1" >ARTíCULOS</span>
                         </button>
                     </div> 
@@ -61,7 +60,7 @@
                 <a href="javascript:buscarPorFrase()"><i class="fa-solid fa-magnifying-glass"></i></a><input type="text" id="txtValorBuscado" name="txtValorBuscado" placeholder="Buscar" autocomplete="off">
                 </div>
                 <div class="cont-perfil" id="menu-container">
-                    <div class="nombre-suc me-3" id="num-cliente">SIN NOMBRE</div>
+                    <div class="nombre-suc me-4" id="num-cliente">SIN NOMBRE</div>
                     <div id="menu-container" class="menu-container me-3">
                         <nav id="top-menu" class="nav-menu">
                             <i class="fa-solid fa-user" id="btnPushMenu"></i> 
