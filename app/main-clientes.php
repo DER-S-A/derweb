@@ -52,7 +52,7 @@
                     <div class="logo"><a href="main-clientes.php"><img src="assets/imagenes/logo_app.png" alt=""></a></div>
                     <div id="lista-articulos-container">
                         <button class="lista_articulos ms-3" id="btnPushListaArticulo" name="btnPushListaArticulo">
-                            <i class="fa-solid fa-bars mx-1"></i>
+                            
                             <span class="mx-1" >ARTíCULOS</span>
                         </button>
                     </div> 
