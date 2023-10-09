@@ -215,34 +215,61 @@ function generarCarruselFotter() {
         .then(data => {
             objCarruselFooter.generateComponent(data);
 
-                new Glider(document.querySelector('.carousel__lista'), {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    draggable: true,  //ESTO HACE Q EL CARRUSEL SEA ARRASTRABLE
-                    dots: '.carousel__indicadores',
-                    arrows: {
-                        prev: '.carousel__anterior',
-                        next: '.carousel__siguiente'
-                    },
-                    responsive: [
-                        {
-                            // screens greater than >= 775px
-                            breakpoint: 450,
-                            settings: {
-                            // Set to `auto` and provide item width to adjust to viewport
-                            slidesToShow: 2,
-                            slidesToScroll: 2
-                            }
-                        },{
-                            // screens greater than >= 1024px
-                            breakpoint: 800,
-                            settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 4
-                            }
+            new Glider(document.querySelector('.carousel__lista'), {
+                slidesToShow: 5,
+                slidesToScroll: 1,
+                draggable: true,  //ESTO HACE Q EL CARRUSEL SEA ARRASTRABLE
+                dots: '.carousel__indicadores',
+                arrows: {
+                    prev: '.carousel__anterior',
+                    next: '.carousel__siguiente'
+                },
+                responsive: [
+                    {
+                        // screens greater than >= 775px
+                        breakpoint: 1080,
+                        settings: {
+                        // Set to `auto` and provide item width to adjust to viewport
+                        slidesToShow: 5,
+                        slidesToScroll: 1
                         }
-                    ]
-                });
+                    },
+                    {
+                        // screens greater than >= 775px
+                        breakpoint: 800,
+                        settings: {
+                        // Set to `auto` and provide item width to adjust to viewport
+                        slidesToShow: 4,
+                        slidesToScroll: 1
+                        }
+                    },
+                    {
+                        // screens greater than >= 775px
+                        breakpoint: 480,
+                        settings: {
+                        // Set to `auto` and provide item width to adjust to viewport
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                        }
+                    },
+                    {
+                        // screens greater than >= 775px
+                        breakpoint: 400,
+                        settings: {
+                        // Set to `auto` and provide item width to adjust to viewport
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                        }
+                    },{
+                        // screens greater than >= 1024px
+                        breakpoint: 200,
+                        settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
         });
 }
 

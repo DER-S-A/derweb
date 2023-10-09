@@ -5,9 +5,15 @@
 
 
 .contenedor {
-	max-width: 1000px;
+	/*max-width: 1000px;
 	width: 90%;
-	margin: auto;
+	margin: auto;*/
+	display: flex;
+	justify-content: center;
+}
+
+.carousel-footer {
+	width: 90%;
 }
 
 /* --- --- CONTENEDOR PRINCIPAL --- --- */
@@ -104,9 +110,6 @@
 }
 
 @media screen and (max-width: 800px) {
-	body {
-		/*padding: 40px 0;*/
-	}
 
 	.contenido-principal {
 		flex-direction: column;

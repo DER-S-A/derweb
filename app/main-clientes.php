@@ -128,7 +128,7 @@
                             </div>
                         </div>
                         <div id="carrusel-footer" class="contenedor">
-                            <div class="carousel">
+                            <div class="carousel-footer">
                                 <div class="carousel__contenedor" id="carrusel-container-footer"></div>
                                 <div role="tablist" class="carousel__indicadores"></div>
                             </div>
