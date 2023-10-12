@@ -42,7 +42,8 @@ class MiCarritoModalComponent extends ComponentManager {
         this.__generarDivModal();
         this.__generarHeader();
         this.__objDivModal.appendChild(objContainer); 
-        this.generarAnchorVaciarCarrito();      
+        this.generarAnchorVaciarCarrito();
+        this.generarSubtotal();      
         //this.__generarFooter();  //ACA USAS LA FORMA ESTATICA
         let objConfirmarPedido = new ConfirmacionPedido("app-entidades-getSucursalesByEntidad");
         objConfirmarPedido.setIdModal(this.__idModal);
@@ -213,6 +214,25 @@ class MiCarritoModalComponent extends ComponentManager {
         objAnchor.innerHTML = "   VACIAR CARRITO";
         objDivAnchor.appendChild(objAnchor);
         this.__objDivModal.appendChild(objDivAnchor);
+    }
+    generarSubtotal() {
+        var strSesion = sessionStorage.getItem("derweb_sesion");
+        var url = this.__objApp.getUrlApi("catalogo-pedidos-getPedidoActual");
+
+        url = url + "?sesion=" + strSesion;
+        /*fetch(url)
+        .then(xresponse => xresponse.json())
+        .then(xdata => {
+            const xitem = xdata["items"];
+            if ((xitem !== undefined) && (xitem.length != 0)) {
+                this.__crearListaItems(xdata.id_pedido, xdata["items"]);
+                this.__total = xdata["total_pedido"];
+            }
+        });*/
+        const objSpan = this.crearElementDom("span", "subtotal-micarrito mb-3");
+        const objDivSpan = this.crearElementDom("div", "subtotalMicarrito", "subtotalMicarrito");
+        objSpan.innerText = "Subtotal _ _ _ _ $ 10.000";
+        this.__objDivModal.appendChild(objDivSpan).appendChild(objSpan);
     }
 }
 

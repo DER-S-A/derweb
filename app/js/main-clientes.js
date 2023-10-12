@@ -327,6 +327,9 @@ function abrir_mi_carrito() {
     objGrillaMiCarrito.setEliminarFunctionName("eliminar_item_mi_carrito");
     objGrillaMiCarrito.generateComponent();
     objMiCarrito.open();
+    const aMiCarrito = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
+    const objSpan = document.querySelector("#mi-carrito #subtotalMicarrito span");
+    objSpan.textContent = "Subtotal _ _ _ _ $ " + aMiCarrito.total_pedido; 
 }
 
 let objTxtValorBuscado = document.getElementById("txtValorBuscado");

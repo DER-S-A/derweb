@@ -88,6 +88,13 @@
     margin: 3% auto;
 }
 
+.subtotalMicarrito {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 .swal-modal {
     z-index: 1000;
 }
