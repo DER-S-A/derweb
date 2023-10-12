@@ -158,47 +158,11 @@
 
                     <div class="ubicacion">
                         <img class="img-footer" src="assets/imagenes/pin.png" alt="ubicacion">
-                        <p>Colectora Este Panamericana 27887</p>
+                        <a href="https://maps.app.goo.gl/NxamwCHTR4JFNRKC7" target="_blank"><p>Colectora Este Panamericana 27887</p></a>
                     </div>
-
-                
 
                 </div>
             </footer>
-            
-            
-            <!-- <footer class="app-footer">
-                <div class="app-footer-container container-fluid">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <ul class="app-social-bar">
-                                <li>
-                                    <a href="https://www.facebook.com/derdistribuciones/"><i class="fa-brands fa-facebook"></i></a>
-                                </li>
-
-                                <li>
-                                    <a href="https://www.instagram.com/der.distribuciones/"><i class="fa-brands fa-instagram"></i></a>
-                                </li>
-
-                                <li>
-                                    <a href="https://www.youtube.com/user/derdistribuciones/"><i class="fa-brands fa-youtube"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 contenedor-info">
-                            <p class="app-footer-info">
-                                <small class="home-texto-footer"><span class="home-titulo-footer">Atención al cliente</span>
-                                    <strong>LUN-VIE</strong> 08h/19h - <strong>SAB</strong> 08h/12h
-                                    <i class="fa-solid fa-phone"></i> (+5411) 4846 7500
-                                </small>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </footer>     -->
-
-
         </div>
 
         <script src="<?php echo sc3CacheButer("components/utilities/component-manager.js");?>" type="text/javascript"></script>

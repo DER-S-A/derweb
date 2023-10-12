@@ -54,6 +54,10 @@
     color: white;
 }
 
+.redes a i {
+    font-size: 200%;
+}
+
 .atclientes h2{
     color: #1081e0;
     font-size: 17px;
@@ -79,6 +83,14 @@
     font-size: 15px; 
 }
 
+.ubicacion a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.ubicacion a:hover {
+    color: #068bf8;
+}
 
 @media screen and (max-width:979px){
     .elementos{
@@ -164,62 +176,3 @@
    }
     
 }
-
-/*
-.app-footer-container .row {
-    align-items: center;
-    justify-content: center;
-}
-
-.app-footer .app-social-bar {
-    list-style-type: none;
-    margin-top: 5px;
-    text-align: end;
-}
-
-.app-footer .app-social-bar li {
-    display: inline-block;
-    padding: 3px;
-    text-align: center;
-}
-
-.app-footer .app-social-bar li img {
-    width: 30px;
-}
-
-.app-footer .app-social-bar a {
-    color: white;
-    font-size: 2em;
-}
-
-.contenedor-info {
-    height: 30%;
-}
-
-.app-footer-info {
-    list-style-type: none;
-}
-
-.app-footer-info li {
-    display: inline-block;
-    padding: 0px;
-    text-align: center;
-}
-
-.home-texto-footer {
-    margin-top: -10px;
-}
-
-@media screen and (max-width: 580px) {
-    .app-footer-info {
-        text-align: center;
-    }
-
-    .app-footer {
-        position: relative!important;
-    }
-
-    .app-footer-container {
-        text-align: center;
-    }
-}*/
