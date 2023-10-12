@@ -186,7 +186,8 @@ class EntidadesModel extends Model {
                         INNER JOIN sucursales s ON s.id_entidad = e.id
                 WHERE
                     t.tipo_login = 'C' AND
-                    e.habilitado = 1
+                    e.habilitado = 1 AND
+                    s.id_vendedor = $xidVendedor
                 GROUP BY 
                     e.id,cliente_cardcode,nombre,cuit
                 ORDER BY

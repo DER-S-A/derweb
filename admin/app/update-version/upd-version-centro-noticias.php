@@ -12,6 +12,7 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
     public static function actualizar() {
         self::instalarTablaNovedades();
         self::instalarNovedadesArticulos();
+        self::instalarOperacionGenerarArticulos();
     }
     
     /**
@@ -126,5 +127,25 @@ class UpdateVersionCentroNoticias extends UpdateVersion {
 
         sc3SetQueryFields($query, "id, id_novedad, id_articulo, habilitado");
     }
+    
+    /**
+     * instalarOperacionGenerarArticulos
+     * Proceso para generar el grupo de artículos en centro de noticias
+     * @return void
+     */
+    private static function instalarOperacionGenerarArticulos() {
+        $opid = sc3AgregarOperacion(
+            "Generar artículos", 
+            "der-cnoticias-generar-articulos.php", 
+            "ico/index.ico", 
+            "Permite generar los artículos en el centro de noticias seleccionado.", 
+            "novedades", 
+            "", 
+            0, 
+            "Root", 
+            "", 
+            0, 
+            "qnovedades");
+    }    
 }
 ?>
