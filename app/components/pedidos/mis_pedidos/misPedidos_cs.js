@@ -55,7 +55,7 @@ class MisPedidos extends ComponentManager {
     __generarTabla(pedidos) {
         let dataTabla;
         // Verifica si no existe una instancia de DataTable en la tabla
-        if (!$.fn.DataTable.isDataTable('#contenedor-tabla-misPedidos')) {
+        if (!$.fn.DataTable.isDataTable('#contenedor-tabla-misPedidos')) {console.log("entro")
             // Si no existe, la instancio
             dataTabla = $("#contenedor-tabla-misPedidos").DataTable({
                 searching: true,
@@ -63,7 +63,7 @@ class MisPedidos extends ComponentManager {
                 responsive: true,
                 scrollY: 260
             });
-        }
+        } else dataTabla = $("#contenedor-tabla-misPedidos").DataTable();
         dataTabla.clear();
         const aParaTabla = this.__procesarDatosParaTabla(pedidos);
         aParaTabla.forEach(element => {
