@@ -55,7 +55,7 @@ class MisPedidos extends ComponentManager {
     __generarTabla(pedidos) {
         let dataTabla;
         // Verifica si no existe una instancia de DataTable en la tabla
-        if (!$.fn.DataTable.isDataTable('#contenedor-tabla-misPedidos')) {console.log("entro")
+        if (!$.fn.DataTable.isDataTable('#contenedor-tabla-misPedidos')) {
             // Si no existe, la instancio
             dataTabla = $("#contenedor-tabla-misPedidos").DataTable({
                 searching: true,
