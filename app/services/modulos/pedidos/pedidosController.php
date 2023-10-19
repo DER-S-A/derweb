@@ -269,7 +269,7 @@ class PedidosController extends APIController {
      * @return void
      */
     public function consultar_item_byid() {
-        if ($this->useGetMethod() || $this->usePostMethod()) {
+        if ($this->usePostMethod()) {
             try {
                 $responseData = [];
                 $aParametros = json_decode($this->getBodyParameter(), true);
