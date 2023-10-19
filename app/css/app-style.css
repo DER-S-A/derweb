@@ -165,3 +165,16 @@ body {
         justify-content: space-between;
     }
 }
+
+@media screen and (min-width: 1360px) {
+    .app-container {
+        min-height: 600px;
+        margin-bottom: 4%;
+    }
+    #tab-login_content {
+        margin-top: 2%;
+    }
+    #frmLogin label {
+        font-size: 1.3rem;
+    }
+}
