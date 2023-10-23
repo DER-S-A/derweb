@@ -1,0 +1,87 @@
+/* CSS uiverse.io*/
+
+.inputContainer {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .customInput {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #007bff;
+    outline: none;
+    transition: border-color 0.3s ease;
+    color: #007bff;
+  }
+  
+  .customInput:focus,
+  .customInput:not(:placeholder-shown) {
+    border-color: #0056b3;
+  }
+  
+  .inputLabel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    padding: 5px;
+    font-size: 16px;
+    color: #007bff;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .customInput:focus + .inputLabel,
+  .customInput:not(:placeholder-shown) + .inputLabel {
+    transform: translateY(-100%) translateX(-5px) scale(0.8);
+  }
+  
+  .inputUnderline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #007bff;
+  }
+
+  /*FIN*/
+
+
+.misPedidos_detalle {
+    font-family: "futura";
+    color: rgb(0, 61, 124);
+    min-height: 60vh;
+}
+
+.misPedidos_detalle .cabecera {
+    text-align: center;
+    font-weight: 600;
+}
+
+.misPedidos_detalle h1 {
+    margin-bottom: 0;
+    font-weight: 900;
+}
+
+.misPedidos_detalle .contenedor-totalPedido {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 1rem;
+}
+
+.misPedidos_detalle .contenedor-totalPedido label{
+    font-size: 1rem;
+}
+
+
+
+/* responsive 580px */
+
+@media (max-width: 575px) {
+    .misPedidos .formulario {
+        flex-direction: column;
+    }
+}

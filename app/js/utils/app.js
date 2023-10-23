@@ -55,6 +55,7 @@ const aAPIs = [
     {"novedades"                                : "services/novedades.php/get"},
     {"pedidos"                                  : "services/pedidos.php/consultar"},
     {"artGrupo"                                 : "services/novedades.php/getGrupoArticulosByNovedad"},
+    {"pedidos_detalle"                          : "services/pedidos.php/consultar_item_byid"},
     {"pedido-sap"                               : "services/pedidos.php/enviarPedido_a_SAP"}
     
 
@@ -71,7 +72,8 @@ const aTemplates = [
     {"aviso-pago"                               : "components/aviso_pago/template.html"},
     {"ipr-grid-articulos"                       : "components/catalogo/ingreso-pedidos-rapidos/grid-articulos-template.html"},
     {"centroNoticias"                           : "components/centro_noticias/template.html"},
-    {"misPedidos"                               : "components/pedidos/mis_pedidos/template.html"}
+    {"misPedidos"                               : "components/pedidos/mis_pedidos/template.html"},
+    {"misPedidos_detalle"                       : "components/pedidos/detalle_mis_pedidos/template.html"}
 ]
 
 class App {

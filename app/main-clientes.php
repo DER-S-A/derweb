@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/rentabilidad/style-table.css");?>">
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/centro_noticias/centroNoticias.css");?>">
         <link rel="stylesheet" href="<?php echo sc3CacheButer("components/pedidos/mis_pedidos/misPedidos.css");?>">
+        <link rel="stylesheet" href="<?php echo sc3CacheButer("components/pedidos/detalle_mis_pedidos/detalle_misPedidos.css");?>">
 
         <title>DER WEB</title>
         <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript"></script>
@@ -192,6 +193,7 @@
         <script src="<?php echo sc3CacheButer("components/centro_noticias/centroNoticias_cs.js");?>" type="text/javascript"></script>
         <!-- Componente mis pedidos -->
         <script src="<?php echo sc3CacheButer("components/pedidos/mis_pedidos/misPedidos_cs.js");?>" type="text/javascript"></script>
+        <script src="<?php echo sc3CacheButer("components/pedidos/detalle_mis_Pedidos/detalle_misPedidos_cs.js");?>" type="text/javascript"></script>
         <!-- Componente botón mi carrito -->
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/boton-mi-carrito/boton-mi-carrito.js");?>" type="text/javascript"></script>
         <script src="<?php echo sc3CacheButer("components/catalogo/mi-carrito/mi-carrito.js");?>" type="text/javascript"></script>

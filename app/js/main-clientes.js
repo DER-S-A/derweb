@@ -418,3 +418,11 @@ function abrirMisPedidos() {
     const oMisPedidos = new MisPedidos("#app-container");
     oMisPedidos.generateComponent();
 }
+
+/**
+ * Esta función permite abrir detalle de mi pedido.
+ */
+function detallePedido(id_pedido) {
+    const oDetallePedido = new Detalle_MisPedidos("#app-container", id_pedido);
+    oDetallePedido.generateComponent();
+}
