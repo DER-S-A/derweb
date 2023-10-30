@@ -21,7 +21,7 @@ class Detalle_MisPedidos extends ComponentManager {
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "15%";
-                const pedidoDet = await this.__getPedido();
+                const pedidoDet = this.__getPedido();
                 console.log(pedidoDet)
                 this.__generarTabla(pedidoDet);
             });
@@ -56,7 +56,9 @@ class Detalle_MisPedidos extends ComponentManager {
         dataTabla.clear();
         //const aParaTabla = this.__procesarDatosParaTabla(pedidos);
         pedidoDet.forEach(element => {
-            const data = [element.codigo, element.descripcion, element.cantidad, element.costo_unitario, element.importe_iva, element.total];
+            const jsonPed = JSON.stringify(element);
+            const detalleLink = `<a href="javascript:detallePedido('${encodeURIComponent(jsonPed)}')">VER DETALLES</a>`;
+            const data = [element.id_pedido, element.fecha_alta, element.estado, detalleLink];
             dataTabla.row.add(data);
         });
         dataTabla.draw();

@@ -1,5 +1,5 @@
 class Detalle_MisPedidos extends ComponentManager {
-    constructor(idContainer) {
+    constructor() {
         super();
         this.nodoContainer = document.querySelector(idContainer);
         this.objCache = new CacheUtils("derweb");
@@ -13,20 +13,17 @@ class Detalle_MisPedidos extends ComponentManager {
         try {
             this.getTemplate(this.objApp.getUrlTemplate("misPedidos_detalle"), async html => {
                 this.objCache = new CacheUtils("derweb");
-                const razonSocial = this.objCache.get("sesion").nombre;
-                const nombreSuc = this.objCache.get("sesion").nombre_suc;
+                const razonSocial = objCache.get("sesion").nombre;
+                const nombreSuc = objCache.get("sesion").nombre_suc;
                 html = this.setTemplateParameters(html, "razonSocial", razonSocial);
                 html = this.setTemplateParameters(html, "nombreSuc", nombreSuc);
                 html = this.setTemplateParameters(html, "total", this.totalPedido);
                 this.nodoContainer.innerHTML = html;
                 const main = document.querySelector(".main-miperfil");
                 main.style.marginTop = "15%";
-                const pedidoDet = await this.__getPedido();
-                console.log(pedidoDet)
-                this.__generarTabla(pedidoDet);
             });
         } catch (error) {
-            console.error("Error en generateComponent:", error);
+            
         }
 
     }
@@ -36,29 +33,9 @@ class Detalle_MisPedidos extends ComponentManager {
             const url = this.objApp.getUrlApi("pedidos_detalle");
             const argumento = { "id_pedido": this.id_pedido }
             new APIs().call(url, argumento, "POST", pedidos => {
+                console.log(pedidos)
                 resolve(pedidos);
             }, true, error => reject(error))
         })
-    }
-
-    __generarTabla(pedidoDet) {
-        let dataTabla;
-        // Verifica si no existe una instancia de DataTable en la tabla
-        if (!$.fn.DataTable.isDataTable('#contenedor-tabla-misPedidos_detalle')) {
-            // Si no existe, la instancio
-            dataTabla = $("#contenedor-tabla-misPedidos_detalle").DataTable({
-                searching: true,
-                paging: true,
-                responsive: true,
-                scrollY: 260
-            });
-        } else dataTabla = $("#contenedor-tabla-misPedidos_detalle").DataTable();
-        dataTabla.clear();
-        //const aParaTabla = this.__procesarDatosParaTabla(pedidos);
-        pedidoDet.forEach(element => {
-            const data = [element.codigo, element.descripcion, element.cantidad, element.costo_unitario, element.importe_iva, element.total];
-            dataTabla.row.add(data);
-        });
-        dataTabla.draw();
     }
 }

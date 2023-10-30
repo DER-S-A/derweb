@@ -422,7 +422,9 @@ function abrirMisPedidos() {
 /**
  * Esta función permite abrir detalle de mi pedido.
  */
-function detallePedido(id_pedido) {
-    const oDetallePedido = new Detalle_MisPedidos("#app-container", id_pedido);
+function detallePedido(jsonPed) {
+    const miPedidoDet = decodeURIComponent(jsonPed);
+    sessionStorage.setItem("derweb_detalleMiPed", miPedidoDet);
+    const oDetallePedido = new Detalle_MisPedidos("#app-container");
     oDetallePedido.generateComponent();
 }

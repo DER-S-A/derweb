@@ -65,16 +65,17 @@ class MisPedidos extends ComponentManager {
             });
         } else dataTabla = $("#contenedor-tabla-misPedidos").DataTable();
         dataTabla.clear();
-        const aParaTabla = this.__procesarDatosParaTabla(pedidos);
-        aParaTabla.forEach(element => {
-            const detalleLink = `<a href="javascript:detallePedido(${element.id_pedido})">VER DETALLES</a>`;
-            const data = [element.id_pedido, element.fechaAlta, element.estado, detalleLink];
+        //const aParaTabla = this.__procesarDatosParaTabla(pedidos);
+        pedidos.forEach(element => {
+            const jsonPed = JSON.stringify(element);
+            const detalleLink = `<a href="javascript:detallePedido('${encodeURIComponent(jsonPed)}')">VER DETALLES</a>`;
+            const data = [element.id_pedido, element.fecha_alta, element.estado, detalleLink];
             dataTabla.row.add(data);
         });
         dataTabla.draw();
     }
 
-    __procesarDatosParaTabla(pedidos) {
+    /*__procesarDatosParaTabla(pedidos) {
         return pedidos = pedidos.map(pedido => {
             return {
                 id_pedido: pedido.id_pedido,
@@ -83,5 +84,5 @@ class MisPedidos extends ComponentManager {
             }
         });
 
-    }
+    }*/
 }

@@ -56,6 +56,8 @@ class Detalle_MisPedidos extends ComponentManager {
         dataTabla.clear();
         //const aParaTabla = this.__procesarDatosParaTabla(pedidos);
         pedidoDet.forEach(element => {
+            const jsonPed = JSON.stringify(element);
+            const detalleLink = `<a href="javascript:detallePedido('${encodeURIComponent(jsonPed)}')">VER DETALLES</a>`;
             const data = [element.codigo, element.descripcion, element.cantidad, element.costo_unitario, element.importe_iva, element.total];
             dataTabla.row.add(data);
         });
