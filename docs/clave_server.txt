@@ -30,3 +30,17 @@ usuario
 root
 
 uBVOHihb1YUN
+
+-----------------------------------------------------------------------------------------------------------------------------
+https://181.119.123.148:50000/b1s/v1/Login
+
+{
+    "CompanyDB": "ZARTESTDER",
+    "Password": "1234",
+    "UserName": "manager"
+} 
+https://181.119.123.148:50000/b1s/v1/sml.svc/ONESL_SL_Documentos_B1SLQuery
+
+Header : Prefer -> odata.maxpagesize=0 (esto lo hago para que muestre todos los registros. Si le pones 20 muestra de a 20 paginas y compagina )
+
+En cookies en principio va: B1SESSION=c2a8f274-7a59-11ee-8000-0050569e0da7;ROUTEID=.node4
