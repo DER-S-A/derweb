@@ -36,4 +36,6 @@ app/components/menus/tmpcache/
 app/components/menus/mi_perfil/tmpcache/
 app/components/centro_noticias/tmpcache/
 app/components/pedidos/mis_pedidos/tmpcache/
-
+app/components/pedidos/detalle_mis_pedidos/tmpcache/
+admin/app/administracion/avisos-pagos/tmpcache/
+derweb_upgrades/config.json
