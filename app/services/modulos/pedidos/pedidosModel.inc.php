@@ -40,6 +40,11 @@ class PedidosModel extends Model {
         $objBD = new BDObject();
         $this->aPedido = json_decode($xjsonData, true);
         $aResult = [];
+        if(!$this->verificarStock()) {
+            $aResult["codigo"] = "OK";
+            $aResult["mensaje"] = "El artículo que intenta agregar no tiene stock.";
+            return $aResult;
+        }
         $this->getClienteActual($xsesion);
 
         $this->calcularTotalPedido();
@@ -90,6 +95,19 @@ class PedidosModel extends Model {
         }
 
         return $aResult;
+    }
+
+    /**
+     * verificarStock
+     * permite verificar si hay stock del producto que se desea agregar en el carrito.
+     */
+    private function verificarStock() {
+        $art = $this->aPedido["item"]["id_articulo"];
+        $cantidad = $this->aPedido["item"]["cantidad"];
+        $sql = "SELECT existencia_stock FROM articulos WHERE id = $art";
+        $existencia = getRs($sql)->getValueInt("existencia_stock");
+        if($existencia < $cantidad) return false;
+        return true;
     }
     
     /**

@@ -40,14 +40,11 @@ class CarritoGridComponent extends ComponentManager {
         url = url + "?sesion=" + strSesion;
         fetch(url)
             .then(xresponse => xresponse.json())
-            .then(xdata => {
+            .then(xdata => {console.log('pasa 1')
                 if ((xdata["items"] !== undefined) && (xdata["items"].length != 0)) {
                     this.__grabarEnCache(xdata);
                     this.__crearListaItems(xdata.id_pedido, xdata["items"]);
                     this.__total = xdata["total_pedido"];
-                    const aMiCarrito = JSON.parse(localStorage.getItem("derweb-mi-carrito"));
-                    const objSpan = document.querySelector("#mi-carrito #subtotalMicarrito span");
-                    objSpan.textContent = "Subtotal _ _ _ _ $ " + aMiCarrito.total_pedido;
                 }
             });
     }

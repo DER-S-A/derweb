@@ -174,7 +174,13 @@ class MiCarritoModalComponent extends ComponentManager {
         
         (new APIs()).call(xUrl, xparametros, "PUT", (xdatos) => {
             xdatos = JSON.parse(xdatos);
-            xdatos.codigo == 'OK' ? swal(xdatos.codigo, xdatos.mensaje, 'success') : swal(xdatos.codigo, xdatos.mensaje, 'error');
+            if(xdatos.codigo == 'OK') {
+                swal(xdatos.codigo, xdatos.mensaje, 'success')
+                localStorage.removeItem('derweb-mi-carrito');
+                const objSpan = document.querySelector("#mi-carrito #subtotalMicarrito span");
+                objSpan.textContent = "Subtotal _ _ _ _ $ 0"
+            } else swal(xdatos.codigo, xdatos.mensaje, 'error');
+            //xdatos.codigo == 'OK' ? swal(xdatos.codigo, xdatos.mensaje, 'success') : swal(xdatos.codigo, xdatos.mensaje, 'error');
         });
     } 
 
@@ -231,7 +237,7 @@ class MiCarritoModalComponent extends ComponentManager {
         });*/
         const objSpan = this.crearElementDom("span", "subtotal-micarrito mb-3");
         const objDivSpan = this.crearElementDom("div", "subtotalMicarrito", "subtotalMicarrito");
-        objSpan.innerText = "Subtotal _ _ _ _ $ 10.000";
+        objSpan.innerText = "Subtotal _ _ _ _ $ 00.000";
         this.__objDivModal.appendChild(objDivSpan).appendChild(objSpan);
     }
 }
