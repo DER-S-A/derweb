@@ -137,7 +137,7 @@ class CatalogoGridComponent extends ComponentManager {
             var objItemCol1 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
             var objItemCol2 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
             var objItemCol3 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
-            var objItemCol4 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
+            var objItemCol4 = this.__addBoostralColumn(["col-md-2", "col-sm-2", "cont-semaforo-lista"]);
 
             objRowLista.classList.add("row-lista");
 
@@ -146,6 +146,7 @@ class CatalogoGridComponent extends ComponentManager {
             const oPrecios = {Precio_lista: xelement["prlista"], Precio_costo: xelement["cped"], Precio_venta: xelement["vped"]};
             objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"], oPrecios));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
+            objItemCol4.appendChild(this.__crearSemaforo());
             objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"], xelement["stkd"]));
 
             objItemRow.appendChild(objItemCol1);
@@ -321,6 +322,18 @@ class CatalogoGridComponent extends ComponentManager {
         objPedidoContainter.appendChild(objContainerCarrito);
 
         return objPedidoContainter;
+    }
+
+    __crearSemaforo() {
+        const objSemaforoContenedor = document.createElement("ul");
+        objSemaforoContenedor.className ="semaforo";
+        objSemaforoContenedor.innerHTML = `
+            <li title="Dispoible"></li>
+            <li title="Consulte"></li>
+            <li title="Sin stock"></li>
+            <li title="Por pedido"></li>
+            <li title="Inhabilitado"></li>`;
+            return objSemaforoContenedor;
     }
 
     /**

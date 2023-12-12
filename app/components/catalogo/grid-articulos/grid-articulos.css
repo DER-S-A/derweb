@@ -99,6 +99,11 @@
     text-decoration: none;
 }
 
+.cont-semaforo-lista {
+    display: flex;
+    flex-direction: column;
+}
+
 @media screen and (max-width: 580px) {
     .grid-container {
         width: auto;
