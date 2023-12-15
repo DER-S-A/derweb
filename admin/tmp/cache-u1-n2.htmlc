@@ -155,7 +155,7 @@
 		function dardebaja(xrecid) {
 			if (confirm("Esta seguro que desea borrar este dato ?")) {
 				pleaseWait2();
-				document.location.href = "sc-delitem.php?query=qscmodulos&mid=0&registrovalor=0" + "&registrovalor=" + xrecid
+				document.location.href = "sc-delitem.php?query=entidades&registrovalor=0" + "&registrovalor=" + xrecid
 			}
 		}
 
@@ -185,7 +185,7 @@
 		}
 	</script>
 
-	<title>Generar operaciones</title>
+	<title>Entidades</title>
 
 </head>
 
@@ -193,9 +193,9 @@
 
 	<div class="historial-horizontal"></div>
 	<header class="w3-container headerTitulo">
-		<table class="tabla_stack" align="left"><tr><td class="td_stack"><a href="hole.php?fstack=1"><i class="fa fa-desktop fa-lg"></i></a></td><td class="td_stack" width="5"><img id="" src="images/separador.gif" class="" border="0" alt="" title="" width="" ></td><td class=" w3-hide-small "><a href="/projects/der-projects/derweb/admin/sc-selitems.php?query=qscmodulos&fstack=1&todesktop=1&fmerge=1" id="" class=""  ><img id="" src="images/table.png" class="" border="0" alt="Generar operaciones" title="Generar operaciones" width="" > </a></td><td class="td_stack" width="5"><img id="" src="images/separador.gif" class="" border="0" alt="" title="" width="" ></td><td class="td_stack"><img id="" src="images/table.png" class="" border="0" alt="Generar operaciones (Mantenimiento)" title="Generar operaciones (Mantenimiento)" width="" > Generar operaciones (Mantenimiento)</td></tr></table><a id="linkcerrar" class="w3-button w3-text-white w3-right boton-fa-sup" href="hole.php?anterior=1&stackname=" title="ESC">
+		<table class="tabla_stack" align="left"><tr><td class="td_stack"><a href="hole.php?fstack=1"><i class="fa fa-desktop fa-lg"></i></a></td><td class="td_stack" width="5"><img id="" src="images/separador.gif" class="" border="0" alt="" title="" width="" ></td><td class=" w3-hide-small "><a href="/projects/der-projects/derweb/admin/sc-selitems.php?query=entidades&fstack=1&todesktop=1&fmerge=1" id="" class=""  ><img id="" src="images/table.png" class="" border="0" alt="Entidades" title="Entidades" width="" > </a></td><td class="td_stack" width="5"><img id="" src="images/separador.gif" class="" border="0" alt="" title="" width="" ></td><td class="td_stack"><img id="" src="images/table.png" class="" border="0" alt="Entidades (PAGGI BERNARDINO GUILLERMO)" title="Entidades (PAGGI BERNARDINO GUILLERMO)" width="" > Entidades (PAGGI BERNARDINO GUILLERMO)</td></tr></table><a id="linkcerrar" class="w3-button w3-text-white w3-right boton-fa-sup" href="hole.php?anterior=1&stackname=" title="ESC">
 				<i class="fa fa-times fa-lg"></i>
-			</a><a href="sc-viewitem.php?query=qscmodulos&registrovalor=NAV&navlast=6&navseq=1" id="linksiguiente" class="w3-right w3-text-white w3-button boton-fa-sup"  ><i class="fa fa-arrow-right fa-lg"></i></a><a class="w3-button w3-text-white w3-right boton-fa-sup" title="Imprimir" href="sc-printitempdf.php?query=qscmodulos&sql=_sql67&mid=6" target="_blank">
+			</a><a href="sc-viewitem.php?query=entidades&registrovalor=NAV&navlast=122339&navseq=1" id="linksiguiente" class="w3-right w3-text-white w3-button boton-fa-sup"  ><i class="fa fa-arrow-right fa-lg"></i></a><a href="sc-viewitem.php?query=entidades&registrovalor=NAV&navlast=122339&navseq=-1" id="linkatras" class="w3-right w3-text-white w3-button boton-fa-sup"  ><i class="fa fa-arrow-left fa-lg"></i></a><a class="w3-button w3-text-white w3-right boton-fa-sup" title="Imprimir" href="sc-printitempdf.php?query=entidades&sql=_sql56&mid=122339" target="_blank">
 				<i class="fa fa-print fa-lg " ></i>
 			</a>	</header>
 
@@ -210,8 +210,8 @@
 				<td>
 
 					<div class="solapainterior">
-<div class="tabber" id="ecbfc">
-<div class="tabbertab"><h2>Generar operaciones</h2>
+<div class="tabber" id="af7d3">
+<div class="tabbertab"><h2>Entidades</h2>
 
 					<table width="100%" border="0" cellspacing="1" cellpadding="0">
 						<tr>
@@ -233,27 +233,43 @@
 <a onclick="sc3expand2('drDatos','mrDatos', 'Datos');" id="mrDatos" style="cursor: pointer">Datos <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drDatos" >
 				<div class="expandingtableinner ">
 
-						<div><div class="informacion" ><div class="info-etiqueta">M&oacute;dulo:</div>
- <div class="info-dato ">6</div></div><div class="informacion" ><div class="info-etiqueta">Nombre de operaci&oacute;n:</div>
- <div class="info-dato ">Mantenimiento</div></div><div class="informacion" ><div class="info-etiqueta">Nombre script a generar:</div>
- <div class="info-dato ">der-mantenimiento.php</div></div></div></div></div></div>
+						<div><div class="informacion" ><div class="info-etiqueta">Entidad:</div>
+ <div class="info-dato ">122339</div></div><div class="informacion" ><div class="info-etiqueta">Tipo Entidad:</div>
+ <div class="info-dato "><a href="sc-viewitem.php?query=tipos_entidades&registrovalor=1&stackname=" id="" class=""  >Cliente</a></div></div><div class="informacion" ><div class="info-etiqueta">C&oacute;d. Cliente:</div>
+ <div class="info-dato ">C20026545987</div></div><div class="informacion" ><div class="info-etiqueta">CUIT:</div>
+ <div class="info-dato ">20026545987</div></div><div class="informacion" ><div class="info-etiqueta">Nombre:</div>
+ <div class="info-dato ">PAGGI BERNARDINO GUILLERMO</div></div><div class="informacion" ><div class="info-etiqueta">Direccion:</div>
+ <div class="info-dato ">No</div></div><div class="informacion" ><div class="info-etiqueta">Email:</div>
+ <div class="info-dato "><a href="mailto:VERONICA-CAPURRO@HOTMAIL.COM" id="" class=""  >VERONICA-CAPURRO@HOTMAIL.COM</a></div></div><div class="informacion" ><div class="info-etiqueta">Telefono:</div>
+ <div class="info-dato ">2264498135</div></div><div class="informacion" ><div class="info-etiqueta">Usuario:</div>
+ <div class="info-dato ">C20026545987</div></div><div class="informacion" ><div class="info-etiqueta">Habilitado:</div>
+ <div class="info-dato "><span class="booleano si">Si</span></div></div><div class="informacion" ><div class="info-etiqueta">Codigo_vendedor:</div>
+ <div class="info-dato ">8</div></div></div></div></div></div>
 
 <!-- FIN HtmlDivDatos -->
 <!-- INICIO HtmlDivDatos -->
-<div class="div-flotante" id="divParametrosoperacion" >
+<div class="div-flotante" id="divAuditoria" >
 <div width="99%" class="expandingtable"><div class="expandingcell">
-<a onclick="sc3expand2('drParametrosoperacion','mrParametrosoperacion', 'Parámetros operación');" id="mrParametrosoperacion" style="cursor: pointer">Parámetros operación <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drParametrosoperacion" >
+<a onclick="sc3expand2('drAuditoria','mrAuditoria', 'Auditoría');" id="mrAuditoria" style="cursor: pointer">Auditoría <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drAuditoria" >
 				<div class="expandingtableinner ">
 
-						<div><div class="informacion" ><div class="info-etiqueta">Men&uacute;:</div>
- <div class="info-dato "><span style='padding: 3px 8px; border-radius: 3px;background-color: #252525;color: #ffffff'><a href="sc-viewitem.php?query=sb_menuconsola&registrovalor=58&stackname=" id="" class=""  >Desarrollador</a></span></div></div><div class="informacion" ><div class="info-etiqueta">Grupal:</div>
- <div class="info-dato "><span class="booleano no">No</span></div></div><div class="informacion" ><div class="info-etiqueta">Perfil:</div>
- <div class="info-dato "><a href="sc-viewitem.php?query=qperfiles&registrovalor=3&stackname=" id="" class=""  >Root</a></div></div><div class="informacion" ><div class="info-etiqueta">Target:</div>
- <div class="info-dato "></div></div><div class="informacion" ><div class="info-etiqueta">Emergente:</div>
- <div class="info-dato "><span class="booleano no">No</span></div></div><div class="informacion" ><div class="info-etiqueta">Ayuda:</div>
- <div class="info-dato ">Permite realizar el mantenimiento del sistema para liberear espacio en disco.</div></div><div class="informacion" ><div class="info-etiqueta">Query:</div>
- <div class="info-dato "></div></div><div class="informacion" ><div class="info-etiqueta">Icono:</div>
- <div class="info-dato ">ico/toolsc3.ico</div></div></div></div></div></div>
+						<div><div class="informacion" ><div class="info-etiqueta">Fecha alta:</div>
+ <div class="info-dato "><div title="Martes (hace 4 meses)">1/8/2023 10:38:07</div></div></div><div class="informacion" ><div class="info-etiqueta">Fecha modificado:</div>
+ <div class="info-dato "></div></div></div></div></div></div>
+
+<!-- FIN HtmlDivDatos -->
+<!-- INICIO HtmlDivDatos -->
+<div class="div-flotante" id="divDatoscomerciales" >
+<div width="99%" class="expandingtable"><div class="expandingcell">
+<a onclick="sc3expand2('drDatoscomerciales','mrDatoscomerciales', 'Datos comerciales');" id="mrDatoscomerciales" style="cursor: pointer">Datos comerciales <i class="fa fa-angle-double-up fa-lg"></i></a></div></div><div  id="drDatoscomerciales" >
+				<div class="expandingtableinner ">
+
+						<div><div class="informacion" ><div class="info-etiqueta">Descuento 1:</div>
+ <div class="info-dato ">45.00</div></div><div class="informacion" ><div class="info-etiqueta">Descuento 2:</div>
+ <div class="info-dato ">40.00</div></div><div class="informacion" ><div class="info-etiqueta">Rentabilidad 1:</div>
+ <div class="info-dato ">0.00</div></div><div class="informacion" ><div class="info-etiqueta">Rentabilidad 2:</div>
+ <div class="info-dato ">0.00</div></div><div class="informacion" ><div class="info-etiqueta">Lista de Precio:</div>
+ <div class="info-dato "><a href="sc-viewitem.php?query=listas_precios&registrovalor=34&stackname=" id="" class=""  >Lista de precios Venta</a></div></div></div></div></div></div>
 
 <!-- FIN HtmlDivDatos -->
 											</div>
@@ -273,30 +289,37 @@
 								<div class="link-menu">
 		<table class="menuEditar"><tr>
 			 <td>
-<td width="25%" align="center"><a href="sc-edititem.php?query=qscmodulos&mid=0&registrovalor=6" class="boton" id="linkeditar" title="Editar [F2]">
+<td width="25%" align="center"><a href="sc-edititem.php?query=entidades&registrovalor=122339" class="boton" id="linkeditar" title="Editar [F2]">
 						<i class="fa fa-pencil-square-o fa-2x " ></i>
 						<br><span class="w3-tiny">Editar</span>
 					</a></td>
-<td width="25%" align="center"><a  class="boton"  title="Copiar" href="sc-edititem.php?query=qscmodulos&stackname=&registrovalor=6&insert=1">
-				<i class="fa fa-copy fa-2x " ></i>
+<td width="25%" align="center"><a  class="boton"  title="Copiar" href="sc-edititem.php?query=entidades&stackname=&registrovalor=122339&insert=1">
+				<i class="fa fa-copy fa-2x naranja" ></i>
 				<br><span class="w3-tiny">Copiar</span>
 			</a></td>
-<td width="25%" align="center"><a class="boton" href="javascript:dardebaja(6)" id="linkborrar" title="Borrar este registro [Supr]">
-				<i class="fa fa-trash-o fa-2x " ></i>
+<td width="25%" align="center"><a class="boton" href="javascript:dardebaja(122339)" id="linkborrar" title="Borrar este registro [Supr]">
+				<i class="fa fa-trash-o fa-2x naranja" ></i>
 				<br><span class="w3-tiny">Borrar</span>
 		    </a></td>
-<td width="25%" align="center"><a class="boton"  title="Editar notas o color [F4]"  id="linknotas" href="sc-extrainfo2.php?mquery=qscmodulos&mid=6&stackname=">
+<td width="25%" align="center"><a class="boton"  title="Editar notas o color [F4]"  id="linknotas" href="sc-extrainfo2.php?mquery=entidades&mid=122339&stackname=">
 				<i class="fa fa-sticky-note fa-2x " ></i>
 				<br><span class="w3-tiny">Nota</span>
 			</a></td></tr>
 		</table><div><button id='0' class="sc3-accordion menu-derecho  active" style="" onclick="javascript: accordionToggle(this, 'mcea9b1');  return false; "><i title="" id="" class="fa  fa fa-bolt fa-2x fa-fw iconoMenu fa-2x  fa-fw"></i> Operaciones <span id="mcea9b1" class="sc3-accordion-flecha"> <i class="fa fa-angle-double-up fa-lg"></i></span> </button>
 <div class="sc3-accordion-panel-abierta"><div class="menu-item">
-<a href="sc-mod-generar-codigo.php?mquery=qscmodulos&mid=6&opid=886" class=" td_toolbar_flat" id="op10"  title="Permite generar el c&oacute;digo de un m&oacute;dulo [10]" ><img id="" src="images/gear.gif" class="" border="0" alt="Permite generar el código de un módulo" title="Permite generar el código de un módulo" width="" > Generar c&oacute;digo</a></div>
-</div></div><div><button id='0' class="sc3-accordion menu-derecho " style="" onclick="javascript: accordionToggle(this, 'm8c42df');  return false; "><i title="" id="" class="fa  fa fa-cog fa-2x fa-fw iconoMenu fa-2x  fa-fw"></i> Mas herramientas <span id="m8c42df" class="sc3-accordion-flecha"><i class="fa fa-angle-double-down fa-lg"></i></span> </button>
-<div class="sc3-accordion-panel"><div class="menu-item"><a href="sc-infoquery.php?mquery=qscmodulos&mid=6" title='Info Nautilus' target=\'infonautilus\' class="td_toolbar_flat"><img src='./images/scinfo.gif' border=0> Info Nautilus</a></div>
-<div class="menu-item"><a href="sc-viewitem.php?query=sc_querysall&registrovalor=743&stackname=sc3_config" title='Configurar tabla' target=\configurartabla\' class="td_toolbar_flat"><img src='./images/scinfo.gif' border=0> Config tabla</a></div>
+<a href="der-establecer-clave.php?mquery=entidades&mid=122339&opid=894" class=" td_toolbar_flat" id="op10"  title="Permite establecer una clave a una entidad. [10]" ><img id="" src="ico/lock_edit.ico" class="" border="0" alt="Permite establecer una clave a una entidad." title="Permite establecer una clave a una entidad." width="" > Establecer clave</a></div>
+</div></div><div><button id='0' class="sc3-accordion menu-derecho " style="" onclick="javascript: accordionToggle(this, 'm87a8f1');  return false; "><i title="" id="" class="fa  fa fa-sitemap fa-2x fa-fw iconoMenu fa-2x  fa-fw"></i> Detalles <span id="m87a8f1" class="sc3-accordion-flecha"><i class="fa fa-angle-double-down fa-lg"></i></span> </button>
+<div class="sc3-accordion-panel"><div class="menu-item">
+<a href="sc-selitems.php?query=qavpmovimientos&stackname=&mquery=entidades&mid=122339" class=" td_toolbar_flat" id=""  title="Avisos de pagos de PAGGI BERNARDINO GUILLERMO " ><img id="" src="images/table.png" class="" border="0" alt="Avisos de pagos de PAGGI BERNARDINO GUILLERMO" title="Avisos de pagos de PAGGI BERNARDINO GUILLERMO" width="" > Avisos de pagos</a></div>
 <div class="menu-item">
-<a href="sc-log-item.php?query=qscmodulos&mid=0&registrovalor=6" title='Auditar los cambios realizados' class="td_toolbar_flat"><img src='./images/scauditar.gif' border=0> Auditar</a></div>
+<a href="sc-selitems.php?query=qavprendiciones&stackname=&mquery=entidades&mid=122339" class=" td_toolbar_flat" id=""  title="Rendiciones de PAGGI BERNARDINO GUILLERMO " ><img id="" src="images/table.png" class="" border="0" alt="Rendiciones de PAGGI BERNARDINO GUILLERMO" title="Rendiciones de PAGGI BERNARDINO GUILLERMO" width="" > Rendiciones</a></div>
+<div class="menu-item">
+<a href="sc-selitems.php?query=sucursales&stackname=&mquery=entidades&mid=122339" class=" td_toolbar_flat" id=""  title="sucursales de PAGGI BERNARDINO GUILLERMO " ><img id="" src="images/table.png" class="" border="0" alt="sucursales de PAGGI BERNARDINO GUILLERMO" title="sucursales de PAGGI BERNARDINO GUILLERMO" width="" > sucursales</a></div>
+</div></div><div><button id='0' class="sc3-accordion menu-derecho " style="" onclick="javascript: accordionToggle(this, 'm8c42df');  return false; "><i title="" id="" class="fa  fa fa-cog fa-2x fa-fw iconoMenu fa-2x  fa-fw"></i> Mas herramientas <span id="m8c42df" class="sc3-accordion-flecha"><i class="fa fa-angle-double-down fa-lg"></i></span> </button>
+<div class="sc3-accordion-panel"><div class="menu-item"><a href="sc-infoquery.php?mquery=entidades&mid=122339" title='Info Nautilus' target=\'infonautilus\' class="td_toolbar_flat"><img src='./images/scinfo.gif' border=0> Info Nautilus</a></div>
+<div class="menu-item"><a href="sc-viewitem.php?query=sc_querysall&registrovalor=727&stackname=sc3_config" title='Configurar tabla' target=\configurartabla\' class="td_toolbar_flat"><img src='./images/scinfo.gif' border=0> Config tabla</a></div>
+<div class="menu-item">
+<a href="sc-log-item.php?query=entidades&registrovalor=122339" title='Auditar los cambios realizados' class="td_toolbar_flat"><img src='./images/scauditar.gif' border=0> Auditar</a></div>
 </div></div></div>							</td>
 
 						</tr>
@@ -305,9 +328,9 @@
 					
 </div>
 
-<div class="tabbertab"><h2><img border="0" src="images/table.png" /> Inputs Form</h2>
+<div class="tabbertab"><h2><img border="0" src="images/table.png" /> sucursales (4)</h2>
 							<iframe width="100%" height="500" src="
-		sc-showgrid.php?query=qscmodformsinputs&mquery=qscmodulos&mid=6&mfield=id_modulo" frameborder="0" id="qscmodformsinputs"></iframe>
+		sc-showgrid.php?query=sucursales&mquery=entidades&mid=122339&mfield=id_entidad" frameborder="0" id="sucursales"></iframe>
 					
 </div>
 
@@ -326,7 +349,7 @@
 	*/
 		tabberAutomatic(tabberOptions);
 
-		var cantGrupos = 3;
+		var cantGrupos = 4;
 	</script>
 
 	
@@ -335,8 +358,8 @@
 
 <script type="text/javascript">
 
-var t = 0.17;
-var hrMin = ' (01)';
+var t = 0.61;
+var hrMin = ' (14)';
 hrMin = '';
 
 divPer = document.getElementById("divperformance");
