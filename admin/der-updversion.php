@@ -17,6 +17,9 @@ require("app/update-version/upd-version-ofertas.php");
 require("app/update-version/upd-version-rentabilidades.php");
 require("app/update-version/upd-version-avisos-pagos.php");
 require("app/update-version/upd-version-centro-noticias.php");
+require("app/update-version/upd-version-temporales.php");
+require("app/update-version/upd-version-mantenimiento.php");
+require("app/update-version/upd-version-ctacte.php");
 
 // DERWEB Core
 agregarOperGenerarEndPoint();
@@ -47,6 +50,9 @@ UpdateVersionOfertas::actualizar();
 UpdateVersionRentabilidades::actualizar();
 UpdateAvisosDePagos::actualizar();
 UpdateVersionCentroNoticias::actualizar();
+UpdateVersionAgregarTablasTemporales::actualizar();
+UpdateVersionMantenimiento::actualizar();
+UpdateVersionCuentasCorrientes::actualzar();
 
 // Actualización de SPs.
 ejecutarSps("sp/");
