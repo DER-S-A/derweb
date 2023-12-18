@@ -358,8 +358,8 @@
 
 <script type="text/javascript">
 
-var t = 0.61;
-var hrMin = ' (14)';
+var t = 0.83;
+var hrMin = ' (09)';
 hrMin = '';
 
 divPer = document.getElementById("divperformance");
