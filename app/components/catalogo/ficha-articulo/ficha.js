@@ -16,7 +16,7 @@ class FichaArticulo extends ComponentManager {
         let url = (new App()).getUrlApi("ficha-articulos");
         let id_cli = JSON.parse(sessionStorage.getItem("derweb_sesion")).id_cliente;
         let parametro = "id_articulo=" + xid_art + "&id_cliente=" + id_cli; 
-        (new APIs()).call(url, parametro, "GET", (xdatos) => {
+        (new APIs()).call(url, parametro, "GET", (xdatos) => {console.log(xdatos)
             this.getTemplate((new App()).getUrlTemplate("ficha-articulo"), html => {
                 let arrayConRubroYSub = this.extraerCodigoRubroYSub();
                 html = this.completarTemplate(xdatos,html, xid_art, arrayConRubroYSub, oPrecios);
@@ -62,6 +62,7 @@ class FichaArticulo extends ComponentManager {
     
             if (habilitado === 1) {
                 console.log("Dia = " + dias);
+                console.log(parseInt(xdatos["informacion"][0]["ID_Articulo"]))
                 // Si el artículo está habilitado aplico condiciones de stock
                 if (dias === 0) {
                     objSemaforo.classList.add("semaforo");

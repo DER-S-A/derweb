@@ -105,14 +105,14 @@ class CatalogoGridComponent extends ComponentManager {
      * @param {int} xpagina Número de página a recuperar
      * @param {string} xclaveSessionStorage Clave de almacenamiento para sessionStorage.
      */
-    __getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {console.log("200")
+    __getArticulosByRubroAndSubrubro(xpagina, xclaveSessionStorage) {
         var url = this._aParametros["api_url"];
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
             + "&parametros=" + JSON.stringify(this._aParametros) + "&pagina=" + xpagina;
 
         fetch (url_con_parametros)
             .then(xresponse => xresponse.json())
-            .then(xdata  => {
+            .then(xdata  => {console.log(xdata)
                 if (xdata["values"].length !== 0) {
                     sessionStorage.setItem(xclaveSessionStorage + "_" + xpagina, JSON.stringify(xdata));
                     xpagina += 40;
@@ -141,12 +141,12 @@ class CatalogoGridComponent extends ComponentManager {
 
             objRowLista.classList.add("row-lista");
 
-            console.log(xelement);
+            
             objItemCol1.appendChild(this.__crearColumnaFoto());
             const oPrecios = {Precio_lista: xelement["prlista"], Precio_costo: xelement["cped"], Precio_venta: xelement["vped"]};
             objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"], oPrecios));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
-            objItemCol4.appendChild(this.__crearSemaforo());
+            objItemCol4.appendChild(this.__crearSemaforo(xelement["id"], xelement["stkd"]));
             objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"], xelement["stkd"]));
 
             objItemRow.appendChild(objItemCol1);
@@ -299,23 +299,27 @@ class CatalogoGridComponent extends ComponentManager {
         objBotonCarrito.innerHTML = "&nbsp&nbsp;<i class=\"fa-solid fa-cart-plus\"></i>&nbsp&nbsp;";
         objBotonCarrito.href = "javascript:agregarAlCarrito(" + xidarticulo + ");";
 
-        calcularCantDiasCubiertosStock(xidarticulo, stock_disponible, (dias) => {
-            if (parseInt(dias) === 0) {
+        /*calcularCantDiasCubiertosStock(xidarticulo, stock_disponible, (dias) => {console.log(stock_disponible)
+            let semaforo = document.querySelector('.semaforo');
+            if (parseInt(dias) === 0) {console.log(document.querySelector('.semaforo'))
                 objInputCantidad.style.backgroundColor = "red";
                 objInputCantidad.style.color = "white";
                 objBotonCarrito.style.backgroundColor = "red";
+                semaforo.classList.add('rojo');
             }
 
             if ((parseInt(dias) > 0) && (parseInt(dias) <= 2)) {
                 objInputCantidad.style.backgroundColor = "yellow";
                 objBotonCarrito.style.backgroundColor = "yellow";
+                semaforo.classList.add('amarillo');
             }
 
             if (parseInt(dias) >= 3) {
                 objInputCantidad.style.backgroundColor = "lightgreen";
                 objBotonCarrito.style.backgroundColor = "lightgreen";
+                semaforo.classList.add('verde');
             }
-        })
+        })*/
 
         objContainerCarrito.appendChild(objInputCantidad);
         objContainerCarrito.appendChild(objBotonCarrito);
@@ -324,7 +328,7 @@ class CatalogoGridComponent extends ComponentManager {
         return objPedidoContainter;
     }
 
-    __crearSemaforo() {
+    __crearSemaforo(xidarticulo, stock_disponible) {
         const objSemaforoContenedor = document.createElement("ul");
         objSemaforoContenedor.className ="semaforo";
         objSemaforoContenedor.innerHTML = `
@@ -333,6 +337,28 @@ class CatalogoGridComponent extends ComponentManager {
             <li title="Sin stock"></li>
             <li title="Por pedido"></li>
             <li title="Inhabilitado"></li>`;
+
+            calcularCantDiasCubiertosStock(xidarticulo, stock_disponible, (dias) => {console.log(stock_disponible)
+                if (parseInt(dias) === 0) {console.log(objSemaforoContenedor.querySelector('.semaforo'))
+                    /*objInputCantidad.style.backgroundColor = "red";
+                    objInputCantidad.style.color = "white";
+                    objBotonCarrito.style.backgroundColor = "red";*/
+                    objSemaforoContenedor.classList.add('rojo');
+                }
+    
+                if ((parseInt(dias) > 0) && (parseInt(dias) <= 2)) {
+                    /*objInputCantidad.style.backgroundColor = "yellow";
+                    objBotonCarrito.style.backgroundColor = "yellow";*/
+                    objSemaforoContenedor.classList.add('amarillo');
+                }
+    
+                if (parseInt(dias) >= 3) {
+                    /*objInputCantidad.style.backgroundColor = "lightgreen";
+                    objBotonCarrito.style.backgroundColor = "lightgreen";*/
+                    objSemaforoContenedor.classList.add('verde');
+                }
+            })
+
             return objSemaforoContenedor;
     }
 

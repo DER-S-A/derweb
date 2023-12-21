@@ -197,7 +197,7 @@ class ArticulosModel extends Model {
             $aArticulosResponse[$index]["cpre"] = calcular_costo("PRE", doubleval($rsArticulos->getValue('precio_lista')), $xdescuento_p1, $xdescuento_p2);
             $aArticulosResponse[$index]["vped"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cped"]), $xrentabilidad);
             $aArticulosResponse[$index]["vpre"] = calcular_precio_venta(doubleval($aArticulosResponse[$index]["cpre"]), $xrentabilidad);
-            $aArticulosResponse[$index]["stkd"] = doubleval($rsArticulos->getValue("existencia"));
+            $aArticulosResponse[$index]["stkd"] = doubleval($rsArticulos->getValue("existencia_stock"));
     
             $aArticulosResponse[$index]["imgs"] = $this->getImagenesByArt($rsArticulos->getValueInt('id_articulo'));
             $aArticulosResponse[$index]["co"] = $this->getCodigosOriginales($rsArticulos->getValueInt('id_articulo'));
