@@ -123,5 +123,20 @@ class UpdateVersionEntidades extends UpdateVersion {
             0, 
             "entidades");
     }
+    
+    /**
+     * modificarCamposEntidades
+     * Este método permite modificar los tamaños de los campos
+     * de la catabla entidades.
+     * @return void
+     */
+    public static function modificarCamposEntidades() {
+        $tabla = "entidades";
+        $campo = "telefono";
+        if (sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla MODIFY COLUMN $campo varchar(60)";
+            self::ejecutarSQL($sql);
+        }
+    }
 }
 ?>
