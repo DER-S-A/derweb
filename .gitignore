@@ -4,7 +4,6 @@
 /admin/css/tmpcache/
 /admin/ufiles/
 
-/admin/config.php
 /admin/ufiles
 /admin/errores/
 
@@ -52,3 +51,4 @@ derweb_upgrades/.vscode
 /app/terceros/lfw-modal-bs/tmpcache/
 /app/terceros/sweet-alert/tmpcache/
 admin/app/administracion/avisos-pagos/tmpcache/
+admin/config.php

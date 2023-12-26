@@ -254,7 +254,7 @@
 				<div class="expandingtableinner ">
 
 						<div><div class="informacion" ><div class="info-etiqueta">Fecha alta:</div>
- <div class="info-dato "><div title="Martes (hace 4 meses)">1/8/2023 10:38:07</div></div></div><div class="informacion" ><div class="info-etiqueta">Fecha modificado:</div>
+ <div class="info-dato "><div title="Martes (hace 5 meses)">1/8/2023 10:38:07</div></div></div><div class="informacion" ><div class="info-etiqueta">Fecha modificado:</div>
  <div class="info-dato "></div></div></div></div></div></div>
 
 <!-- FIN HtmlDivDatos -->
@@ -358,8 +358,8 @@
 
 <script type="text/javascript">
 
-var t = 0.83;
-var hrMin = ' (09)';
+var t = 1.19;
+var hrMin = ' (33)';
 hrMin = '';
 
 divPer = document.getElementById("divperformance");
