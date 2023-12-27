@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_articulos_upgrade`(xrubro_cod int,
+CREATE PROCEDURE `sp_articulos_upgrade`(xrubro_cod int,
 xsubrubro_cod int,
 xmarca_cod int,
 xcodigo varchar(20),
@@ -7,7 +7,8 @@ xdescripcion varchar(100),
 xalicuota_iva decimal(20, 2),
 xexistencia_stock decimal(20, 2),
 xstock_minimo decimal(20, 2),
-xhabilitado varchar(2))
+xhabilitado varchar(2),
+xUpdateTime datetime)
 BEGIN
   DECLARE vMensaje text;
   DECLARE vCantReg int;
@@ -21,7 +22,7 @@ BEGIN
     GET DIAGNOSTICS CONDITION 1 vMensaje = MESSAGE_TEXT;
     INSERT INTO log_sp (nombre_sp,
     mensaje_error)
-      VALUES ('articulos_upgrade', vMensaje, message_text);
+      VALUES ('articulos_upgrade', vMensaje, vMensaje);
   END;
   START TRANSACTION;
 
@@ -50,28 +51,24 @@ BEGIN
     WHERE articulos.codigo = xcodigo;
 
     IF vCantReg = 0 THEN
+	
+		/*Leonardo: Modifico el INSERT INTO por el parámetro que falta para hacerlo
+			funcionar. */
+		INSERT INTO articulos (
+			id_rubro, id_subrubro, id_marca, codigo, codigo_original,
+			descripcion, alicuota_iva, existencia_stock, stock_minimo,
+			fecha_alta, habilitado, fecha_modificado)
+		VALUES (
+			vIdRubro, vIdSubrubro, vIdMarca, xcodigo, xcodigo_original, 
+			xdescripcion, xalicuota_iva, xexistencia_stock, xstock_minimo, 
+			xUpdateTime, xhabilitado, xUpdateTime
+		);
 
-      INSERT INTO articulos (id_rubro,
-      id_subrubro,
-      id_marca,
-      codigo,
-      codigo_original,
-      descripcion,
-      alicuota_iva,
-      existencia_stock,
-      stock_minimo,
-      fecha_alta,
-      habilitado,
-      fecha_modificado)
-        VALUES (vIdRubro, vIdSubrubro, vIdMarca, xcodigo, xcodigo_original, xdescripcion, xalicuota_iva, xexistencia_stock, xstock_minimo, current_timestamp, xhabilitado,now());
-
-
-
-      SET vIdArticulo = (SELECT
-          @@identity);
-      UPDATE articulos
-      SET articulos.equivalencia = vIdArticulo
-      WHERE articulos.id = vIdArticulo;
+		SET vIdArticulo = (SELECT
+		  @@identity);
+		UPDATE articulos
+		SET articulos.equivalencia = vIdArticulo
+		WHERE articulos.id = vIdArticulo;
     ELSE
 
 
@@ -92,7 +89,7 @@ BEGIN
           articulos.existencia_stock = xexistencia_stock,
           articulos.stock_minimo = xstock_minimo,
           articulos.es_nuevo = 0,
-          articulos.fecha_modificado = current_timestamp
+          articulos.fecha_modificado = xUpdateTime
       WHERE articulos.id = vIdArticulo;
     END IF;
 
