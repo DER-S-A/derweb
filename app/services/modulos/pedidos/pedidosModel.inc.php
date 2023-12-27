@@ -713,6 +713,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["SalesPersonCode"] = $objSucursal->getVendedorSucursal($xsesion); // Agrego vendedor asociado
         $aPedidoEnviar["TransportationCode"] = $aPedidoActual["codigo_envio"]; // Agrego el codigo de la forma de envio
         $aPedidoEnviar["DocCurrency"] = 'ARS'; // Agrego Tipo Moneda
+        $aPedidoEnviar["Project"] = 'ADMIN01'; // No se q es
         $aPedidoEnviar["SistemaOrigenNumero"] = $xid_pedido;
         $aPedidoEnviar["SistemaOrigen"] = "1";
 
@@ -722,7 +723,9 @@ class PedidosModel extends Model {
             $aItems[$i]["ItemCode"] = $aPedidoActual["items"][$i]["codigo"]; // Codigo Articulo
             $aItems[$i]["Quantity"] = doubleval($aPedidoActual["items"][$i]["cantidad"]); // Cantidad Articulo
             $aItems[$i]["UnitPrice"] = doubleval($aPedidoActual["items"][$i]["precio_lista"]); // Precio Articulo
-            $aItems[$i]["ShipDate"] = date('Y-m-m',time()); //FECHA ACTUAL
+            $aItems[$i]["WarehouseCode"] = "001"; // No se q es
+            $aItems[$i]["ShipDate"] = date('Y-m-d',time()); //FECHA ACTUAL
+            $aItems[$i]["ProjectCode"] = "ADMIN01"; //No se que es.
 
         }
             $aPedidoEnviar["DocumentLines"] = $aItems; // Hago JSON la parte de Items y lo coloco con todo el pedido
