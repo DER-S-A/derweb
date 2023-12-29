@@ -714,7 +714,7 @@ class PedidosModel extends Model {
         $aPedidoEnviar["TransportationCode"] = $aPedidoActual["codigo_envio"]; // Agrego el codigo de la forma de envio
         $aPedidoEnviar["DocCurrency"] = 'ARS'; // Agrego Tipo Moneda
         $aPedidoEnviar["Project"] = 'ADMIN01'; // No se q es
-        $aPedidoEnviar["SistemaOrigenNumero"] = $xid_pedido;
+        $aPedidoEnviar["SistemaOrigenNumero"] = strval($xid_pedido);
         $aPedidoEnviar["SistemaOrigen"] = "1";
 
 
