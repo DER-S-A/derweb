@@ -1,14 +1,15 @@
-CREATE PROCEDURE sp_sucursales_upgrade (xSucursalCode varchar(65),
-xSucursalName varchar(50),
-xCardCode varchar(15),
-xTipoCode varchar(15),
-xCalle varchar(100),
-xCiudad varchar(100),
-xEstadoCode varchar(10),
-xZipCode varchar(20),
-xGln int,
-xCardCodeDER int,
-xCreateDate varchar(20))
+CREATE PROCEDURE sp_sucursales_upgrade (
+  xSucursalCode varchar(100),
+  xSucursalName varchar(50),
+  xCardCode varchar(15),
+  xTipoCode varchar(15),
+  xCalle varchar(100),
+  xCiudad varchar(100),
+  xEstadoCode varchar(10),
+  xZipCode varchar(20),
+  xGln int,
+  xCardCodeDER int,
+  xCreateDate varchar(20))
 BEGIN
 
     DECLARE vIdFormaEnvio int;
@@ -28,7 +29,7 @@ BEGIN
       ROLLBACK;
       GET DIAGNOSTICS CONDITION 1 vMensaje = MESSAGE_TEXT;
       INSERT INTO log_sp (nombre_sp, mensaje_error)
-        VALUES ('sucursales_upgrade', vMensaje);
+        VALUES ('sucursales_upgrade', CONCAT(vMensaje, " | Código Sucursal: ", xSucursalCode));
     END;
     START TRANSACTION;
 
