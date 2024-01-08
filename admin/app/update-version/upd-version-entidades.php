@@ -53,6 +53,21 @@ class UpdateVersionEntidades extends UpdateVersion {
             sc3generateFieldsInfo($tabla);
             sc3updateField("sucursales", $campo, "Nombre", 1);
         }
+
+        $campo = "codigo_sucursal";
+        if (sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla MODIFY $campo varchar(100)";
+            self::ejecutarSQL($sql);
+            /*$sql = "CREATE INDEX idx_$campo ON $tabla ($campo)";
+            self::ejecutarSQL($sql);*/
+        }
+
+        $campo = "telefono";
+        if (sc3existeCampo($tabla, $campo)) {
+            $sql = "ALTER TABLE $tabla MODIFY $campo varchar(100)";
+            self::ejecutarSQL($sql);
+        }
+
     }
     
     /**
