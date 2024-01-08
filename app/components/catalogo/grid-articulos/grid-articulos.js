@@ -377,6 +377,7 @@ class CatalogoGridComponent extends ComponentManager {
      */
     __buscarPorFrase(xpagina, xclaveSessionStorage) {
         var url = this._aParametros["api_url"];
+        console.log(url)
         var url_con_parametros = url + "?sesion=" + sessionStorage.getItem("derweb_sesion")
             + "&frase=" + this._aParametros["values"]["frase"] + "&pagina=" + xpagina;
         fetch (url_con_parametros)

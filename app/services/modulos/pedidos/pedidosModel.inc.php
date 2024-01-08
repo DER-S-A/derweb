@@ -441,6 +441,7 @@ class PedidosModel extends Model {
                     lpre.id = $id_precio_lista AND
                     ped.id_sucursal = $idSucursal AND
                     ped.id_tipoentidad = " . $this->idTipoEntidad . " ";
+                    
         // if (sonIguales($tipoLogin, "C"))
         //     $sql .= "AND ped.id_sucursal = " . $idSucursal;
 
@@ -456,7 +457,7 @@ class PedidosModel extends Model {
             $aResponse["items"][$indice]["cantidad"] = $rs->getValueFloat("cantidad");
             $aResponse["items"][$indice]["archivo"] = $rs->getValue("archivo");
             $aResponse["items"][$indice]["codigo"] = $rs->getValue("codigo");
-            $aResponse["items"][$indice]["descripcion"] = $rs->getValue("descripcion_articulo");
+            $aResponse["items"][$indice]["descripcion"] = utf8_encode($rs->getValue("descripcion_articulo"));
             $aResponse["items"][$indice]["rubro"] = $rs->getValue("descripcion_rubro");
             $aResponse["items"][$indice]["subrubro"] = $rs->getValue("descripcion_subrubro");
             $aResponse["items"][$indice]["precio_lista"] = $rs->getValueFloat("precio_lista");
@@ -477,7 +478,7 @@ class PedidosModel extends Model {
         $aResponse["total_con_iva"] = $totalPedidoConIVA;
         //$aResponse["codigo_envio"] = $codigoEnvio;
         $rs->close();
-
+       
         return $aResponse;
     }
 
