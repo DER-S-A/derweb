@@ -41,6 +41,7 @@
         }
         
         objCatalogo.agregarArticuloEnCarrito(aSesion, xidarticulo, cantidad, acabecera);
+        document.getElementById('txtcantidad_' + xidarticulo).value = '';
     });
  }
 
