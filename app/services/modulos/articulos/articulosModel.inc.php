@@ -467,6 +467,20 @@ class ArticulosModel extends Model {
         return $result;
     }
 
+
+      /**
+     * generarUnidadesMedidaVenta
+     * Genera el array con las medidas de unidades de ventas del articulo
+     * 
+     */
+
+     public function generarUnidadesMedidaVenta($articulo) {
+        $sql = "SELECT unidad_venta FROM art_unidades_ventas where id_articulo = $articulo";
+        $result = getRs($sql, true)->getAsArray();
+        return $result;
+    }
+
+
 }
 
 ?>
