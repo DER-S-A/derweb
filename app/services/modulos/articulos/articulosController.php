@@ -161,6 +161,35 @@ class ArticulosController extends APIController {
             $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());        
     }
 	
+
+    /**
+     * getUnidadesMedidaVenta
+     * trae y dibuja las unidades de ventas ejecutando la funcion de generarUnidadesMedidaVenta
+     */
+
+
+     public function getUnidadesMedidaVenta() {
+        // Valido que la llamada venga por método GET o POST.
+        if ($this->useGetMethod() || $this->usePostMethod()) {
+            try {
+                $xid_art = $this->getURIParameters("id_articulo");
+                $objModel = new ArticulosModel();
+                $responseData = json_encode($objModel->generarUnidadesMedidaVenta($xid_art));
+                //$responseData = json_encode($objModel->getByFrase($sesion, $frase, $pagina));
+            } catch (Exception $ex) {
+                $this->setErrorFromException($ex);
+            }
+        } else
+            $this->setErrorMetodoNoSoportado();
+
+        // Envío la salida
+        if ($this->isOK())
+            $this->sendOutput($responseData, $this->getSendOutputHeaderArrayOKResult());
+        else
+            $this->sendOutput($this->getOutputJSONError(), $this->getSendOutputHeaderArrayError());          
+    }
+
+
 }
 
 ?>
