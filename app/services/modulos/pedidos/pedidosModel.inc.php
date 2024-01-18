@@ -45,6 +45,11 @@ class PedidosModel extends Model {
             $aResult["mensaje"] = "El artículo que intenta agregar no tiene stock.";
             return $aResult;
         }
+        if(!$this->verificarUniVenta($this->aPedido["item"]["cantidad"])) {
+            $aResult["codigo"] = "OK";
+            $aResult["mensaje"] = "La cantidad ingresada no es múltiplo de una unidad de compra.";
+            return $aResult;
+        }
         $this->getClienteActual($xsesion);
 
         $this->calcularTotalPedido();
@@ -95,6 +100,22 @@ class PedidosModel extends Model {
         }
 
         return $aResult;
+    }
+
+    /**
+     * verificarUniVenta
+     * permite verificar si la cantidad ingresada al agregaralcarrito es múltiplo de la unidadventa.
+     */
+    private function verificarUniVenta($cantidad) {
+        $idArt = $this->aPedido["item"]["id_articulo"];
+        $sql = "SELECT unidad_venta FROM art_unidades_ventas WHERE id_articulo = $idArt";
+        $arrAsoc_uniVenta = getRs($sql, true)->getAsArray();
+        foreach ($arrAsoc_uniVenta as $unidad) {
+            $unidadVenta = $unidad['unidad_venta'];
+            if($cantidad % $unidadVenta == 0) return true;
+        }
+        
+        return false;
     }
 
     /**

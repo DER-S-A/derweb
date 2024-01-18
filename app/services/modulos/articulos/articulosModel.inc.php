@@ -202,7 +202,7 @@ class ArticulosModel extends Model {
             $aArticulosResponse[$index]["imgs"] = $this->getImagenesByArt($rsArticulos->getValueInt('id_articulo'));
             $aArticulosResponse[$index]["co"] = $this->getCodigosOriginales($rsArticulos->getValueInt('id_articulo'));
             $aArticulosResponse[$index]["apl"] = []; // Por ahora dejo en un array vacío, se completará en la segunda etapa.
-            $aArticulosResponse[$index]["unidventa"] = $this->generarUnidadesMedidaVenta($rsArticulos->getValueInt('id')); // Por ahora dejo en un array vacío, se completará en la segunda etapa.
+            $aArticulosResponse[$index]["unidventa"] = $this->getUnidadesMedidaVenta($rsArticulos->getValueInt('id')); // Por ahora dejo en un array vacío, se completará en la segunda etapa.
 
             $index++;
             $rsArticulos->next();
@@ -475,7 +475,7 @@ class ArticulosModel extends Model {
      * 
      */
 
-     public function generarUnidadesMedidaVenta($articulo) {
+     public function getUnidadesMedidaVenta($articulo) {
         $sql = "SELECT unidad_venta FROM art_unidades_ventas where id_articulo = $articulo ORDER BY unidad_venta";
         $res = getRs($sql, true)->getAsArray();
         $result = [];
