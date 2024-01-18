@@ -32,6 +32,7 @@ const aAPIs = [
     {"catalogo-subrubros-getByRubro"            : "services/subrubros.php/getSubrubrosPorRubro"},
     {"catalogo-articulos-getByRubroAndSubrubro" : "services/articulos.php/getByRubroAndSubrubro"},
     {"catalogo-articulos-getByFranse"           : "services/articulos.php/getByFrase"},
+    {"catalogo-articulos-getUnidadesVentas"     : "services/articulos.php/getUnidadesMedidaVenta"},
     {"catalogo-articulos_destacados-get"        : "services/articulos-destacados.php/get"},
     {"catalogo-articulos-get"                   : "services/articulos.php/get"},
     {"catalogo-pedidos-getPedidoActual"         : "services/pedidos.php/getPedidoActual"},

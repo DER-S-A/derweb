@@ -136,7 +136,8 @@ class CatalogoGridComponent extends ComponentManager {
             var objItemRow = this.__addBootstrapRow();
             var objItemCol1 = this.__addBoostralColumn(["col-md-2", "col-sm-2"]);
             var objItemCol2 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
-            var objItemCol3 = this.__addBoostralColumn(["col-md-4", "col-sm-6"]);
+            var objItemCol3 = this.__addBoostralColumn(["col-md-2", "col-sm-6"]);
+            var objItemCol5 = this.__addBoostralColumn(["col-md-2", "col-sm-6"]);
             var objItemCol4 = this.__addBoostralColumn(["col-md-2", "col-sm-2", "cont-semaforo-lista"]);
 
             objRowLista.classList.add("row-lista");
@@ -146,12 +147,14 @@ class CatalogoGridComponent extends ComponentManager {
             const oPrecios = {Precio_lista: xelement["prlista"], Precio_costo: xelement["cped"], Precio_venta: xelement["vped"]};
             objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"], oPrecios));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
+            objItemCol5.appendChild(this.__crearColumnaUniVenta(xelement["unidventa"]));
             objItemCol4.appendChild(this.__crearSemaforo(xelement["id"], xelement["stkd"]));
             objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"], xelement["stkd"]));
 
             objItemRow.appendChild(objItemCol1);
             objItemRow.appendChild(objItemCol2);
             objItemRow.appendChild(objItemCol3);
+            objItemRow.appendChild(objItemCol5);
             objItemRow.appendChild(objItemCol4);
             objColLista.appendChild(objItemRow);
             objRowLista.appendChild(objColLista);
@@ -360,6 +363,19 @@ class CatalogoGridComponent extends ComponentManager {
             })
 
             return objSemaforoContenedor;
+    }
+
+    __crearColumnaUniVenta(arrUniVentas) {
+        const objDiv = this.crearElementDom('div', 'contenedor-uniVenta');
+        const objH6 = document.createElement('h6');
+        const objSpan = document.createElement('span');
+        objDiv.style.textAlign = 'center';
+        objH6.textContent = 'Unidades de compra';
+        objDiv.append(objH6);
+        let strUniVenta = arrUniVentas.join(' - ');
+        objSpan.textContent = strUniVenta;
+        objDiv.append(objSpan);
+        return objDiv;
     }
 
     /**
