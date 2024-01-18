@@ -11,11 +11,15 @@
  * Permite agregar al carrito un articulo.
  * @param {int} xidarticulo Id. del artículo a insertar
  */
- function agregarAlCarrito(xidarticulo) {
+function agregarAlCarrito(xidarticulo) {
     let cantidad = document.getElementById("txtcantidad_" + xidarticulo).value;
     let aSesion = JSON.parse(sessionStorage.getItem("derweb_sesion"));
     let objCatalogo = new Catalogo();
 
+    if(!validarUniVenta(cantidad, xidarticulo)) {
+        alert("La cantidad ingresada no es múltiplo de una unidad de compra");
+        return;
+    }
     if (cantidad == "" || cantidad<1) {
         alert("Cantidad vacia o valor incorrecto");
         return;
@@ -43,7 +47,7 @@
         objCatalogo.agregarArticuloEnCarrito(aSesion, xidarticulo, cantidad, acabecera);
         document.getElementById('txtcantidad_' + xidarticulo).value = '';
     });
- }
+}
 
  /**
   * Obtiene la cantidad de días cubiertos de stock
@@ -51,7 +55,7 @@
   * @param {float} xExistencia 
   * @param {Callback Function} xcallback 
   */
- function calcularCantDiasCubiertosStock(xidArticulo, xExistencia, xcallback) {
+function calcularCantDiasCubiertosStock(xidArticulo, xExistencia, xcallback) {
     let urlAPI = (new App().getUrlApi("catalogo-stock-venta-maxima"));
     let parametro = "id_articulo=" + xidArticulo;
     
@@ -70,4 +74,14 @@
         }
         xcallback(dias);
     }))
- }
+}
+
+function validarUniVenta(cantidad, xidarticulo) {
+    const strUniVenta = document.getElementById("txtUniVenta_" + xidarticulo).textContent;
+    let arrUniVenta = strUniVenta.split('-');
+    arrUniVenta = arrUniVenta.map(row => parseInt(row));
+    for (const unidad of arrUniVenta) {
+        if(cantidad % unidad == 0) return true; 
+    }
+    return false;
+}

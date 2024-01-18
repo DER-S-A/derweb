@@ -147,7 +147,7 @@ class CatalogoGridComponent extends ComponentManager {
             const oPrecios = {Precio_lista: xelement["prlista"], Precio_costo: xelement["cped"], Precio_venta: xelement["vped"]};
             objItemCol2.appendChild(this.__crearColumnaDescripcion(xelement["desc"], xelement["codigo"], xelement["id"], oPrecios));
             objItemCol3.appendChild(this.__crearColumnaPrecios(xelement["prlista"], xelement["cped"], xelement["vped"]));
-            objItemCol5.appendChild(this.__crearColumnaUniVenta(xelement["unidventa"]));
+            objItemCol5.appendChild(this.__crearColumnaUniVenta(xelement["id"], xelement["unidventa"]));
             objItemCol4.appendChild(this.__crearSemaforo(xelement["id"], xelement["stkd"]));
             objItemCol4.appendChild(this.__crearColumnaPedido(xelement["id"], xelement["stkd"]));
 
@@ -365,10 +365,11 @@ class CatalogoGridComponent extends ComponentManager {
             return objSemaforoContenedor;
     }
 
-    __crearColumnaUniVenta(arrUniVentas) {
+    __crearColumnaUniVenta(xidarticulo, arrUniVentas) {
         const objDiv = this.crearElementDom('div', 'contenedor-uniVenta');
         const objH6 = document.createElement('h6');
         const objSpan = document.createElement('span');
+        objSpan.id = 'txtUniVenta_' + xidarticulo;
         objDiv.style.textAlign = 'center';
         objH6.textContent = 'Unidades de compra';
         objDiv.append(objH6);

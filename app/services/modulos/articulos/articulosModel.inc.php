@@ -476,7 +476,7 @@ class ArticulosModel extends Model {
      */
 
      public function generarUnidadesMedidaVenta($articulo) {
-        $sql = "SELECT unidad_venta FROM art_unidades_ventas where id_articulo = $articulo";
+        $sql = "SELECT unidad_venta FROM art_unidades_ventas where id_articulo = $articulo ORDER BY unidad_venta";
         $res = getRs($sql, true)->getAsArray();
         $result = [];
         foreach ($res as $row) {
@@ -484,7 +484,6 @@ class ArticulosModel extends Model {
                 $result[] = intval($value);
             }
         }
-       // var_dump($res);
         return $result;
     }
 
