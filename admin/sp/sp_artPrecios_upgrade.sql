@@ -16,7 +16,7 @@ BEGIN
         @text = MESSAGE_TEXT;
       SET @message = CONCAT('Error ', @errno, ': ', @text);
       INSERT INTO log_sp (nombre_sp, mensaje_error)
-        VALUES ('artPrecios_upgrade', @message);
+        VALUES ('artPrecios_upgrade', CONCAT('Artículo: ', ItemCode, ' - ', @message));
     END;
 
     START TRANSACTION;
@@ -29,65 +29,70 @@ BEGIN
     WHERE 
       codigo = ItemCode;
 
-    SELECT
-      id 
-    INTO 
-      @vIdPriceList
-    FROM 
-      listas_precios
-    WHERE 
-      price_list = PriceList;
+    /* Si el id de artículo no es nulo entonces hago que procese, sino ROLLBACK y listo. */
+    IF vIdArticulo IS NOT NULL THEN
+      SELECT
+        id 
+      INTO 
+        @vIdPriceList
+      FROM 
+        listas_precios
+      WHERE 
+        price_list = PriceList;
 
-    SELECT
-      COUNT(*) 
-    INTO 
-      vCantReg
-    FROM 
-      articulos_precios
-    WHERE 
-      id_articulo = vIdArticulo;
-
-    IF vCantReg = 0 THEN
-      INSERT INTO articulos_precios (id_listaprecio, id_articulo, precio_lista, precio_anterior)
-        VALUES (@vIdPriceList, vIdArticulo, Price, 0);
-    ELSE
       SELECT
         COUNT(*) 
       INTO 
-        vCantRegPrecios
+        vCantReg
       FROM 
         articulos_precios
       WHERE 
-        id_articulo = vIdArticulo AND
-        id_listaprecio = @vIdPriceList;
+        id_articulo = vIdArticulo;
 
-      IF vCantRegPrecios = 0 THEN
-
+      IF vCantReg = 0 THEN
         INSERT INTO articulos_precios (id_listaprecio, id_articulo, precio_lista, precio_anterior)
           VALUES (@vIdPriceList, vIdArticulo, Price, 0);
-
-      ELSEIF vCantRegPrecios = 1 THEN
-
+      ELSE
         SELECT
-          precio_lista 
+          COUNT(*) 
         INTO 
-          @vPrecioAnterior
+          vCantRegPrecios
         FROM 
           articulos_precios
         WHERE 
-          id_articulo = vIdArticulo
-        AND 
+          id_articulo = vIdArticulo AND
           id_listaprecio = @vIdPriceList;
 
-        IF @vPrecioAnterior != Price THEN
-          UPDATE articulos_precios
-          SET precio_anterior = @vPrecioAnterior,
-              precio_lista = Price
-          WHERE id_articulo = vIdArticulo
-          AND id_listaprecio = @vIdPriceList;
-        END IF;
+        IF vCantRegPrecios = 0 THEN
 
+          INSERT INTO articulos_precios (id_listaprecio, id_articulo, precio_lista, precio_anterior)
+            VALUES (@vIdPriceList, vIdArticulo, Price, 0);
+
+        ELSEIF vCantRegPrecios = 1 THEN
+
+          SELECT
+            precio_lista 
+          INTO 
+            @vPrecioAnterior
+          FROM 
+            articulos_precios
+          WHERE 
+            id_articulo = vIdArticulo
+          AND 
+            id_listaprecio = @vIdPriceList;
+
+          IF @vPrecioAnterior != Price THEN
+            UPDATE articulos_precios
+            SET precio_anterior = @vPrecioAnterior,
+                precio_lista = Price
+            WHERE id_articulo = vIdArticulo
+            AND id_listaprecio = @vIdPriceList;
+          END IF;
+
+        END IF;
       END IF;
+      COMMIT;
+    ELSE
+      ROLLBACK;
     END IF;
-    COMMIT;
 END
