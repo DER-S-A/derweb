@@ -102,9 +102,9 @@
             self::ejecutarSQL($sql);
         }
 
-        
-
-        //Agrego los indices para el getByFrase
-
+        // Amplio el código de sucursal
+        $campo = "codigo_sucursal";
+        $sql = "ALTER TABLE $tabla MODIFY COLUMN $campo varchar(100)";
+        self::ejecutarSQL($sql);
     }
 }
