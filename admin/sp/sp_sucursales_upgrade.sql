@@ -29,7 +29,7 @@ BEGIN
       ROLLBACK;
       GET DIAGNOSTICS CONDITION 1 vMensaje = MESSAGE_TEXT;
       INSERT INTO log_sp (nombre_sp, mensaje_error)
-        VALUES ('sucursales_upgrade', CONCAT(vMensaje, " | Código Sucursal: ", xSucursalCode));
+        VALUES ('sucursales_upgrade', CONCAT(IFNULL(vMensaje, ''), " | Código Sucursal: ", xSucursalCode));
     END;
     START TRANSACTION;
 
