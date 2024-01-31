@@ -88,7 +88,7 @@ BEGIN
 
     SELECT
       COUNT(*) INTO vCantReg
-    FROM Sucursales
+    FROM sucursales
     WHERE id_entidad = vIdEntidad;
 
     IF vCantReg = 0 THEN
@@ -139,13 +139,13 @@ BEGIN
         /* Paso por acá cuando el cliente tiene sucursales cargadas para actualizar datos */
         SELECT
           COUNT(*) INTO vCantSuc
-        FROM Sucursales
+        FROM sucursales
         WHERE id_entidad = vIdEntidad
         AND codigo_sucursal = xSucursalCode;
 
         IF vCantSuc = 1 THEN
 
-          UPDATE Sucursales
+          UPDATE sucursales
           SET id_formaenvio = vIdFormaEnvio,
               id_provincia = vIdProvincia,
               id_vendedor = vIdVendedor,
@@ -164,7 +164,7 @@ BEGIN
             AND codigo_sucursal = xSucursalCode;
       ELSE
           /* Pasa por acá cuando ya la entidad tiene una sucursal cargada y se le agregan nuevas */
-          INSERT INTO Sucursales (id_formaenvio,
+          INSERT INTO sucursales (id_formaenvio,
               id_entidad,
               id_provincia,
               id_vendedor,
