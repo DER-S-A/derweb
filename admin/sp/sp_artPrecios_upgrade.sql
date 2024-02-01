@@ -47,29 +47,13 @@ BEGIN
       FROM 
         articulos_precios
       WHERE 
-        id_articulo = vIdArticulo;
+        id_articulo = vIdArticulo AND
+        id_listaprecio = @vIdPriceList;
 
       IF vCantReg = 0 THEN
         INSERT INTO articulos_precios (id_listaprecio, id_articulo, precio_lista, precio_anterior)
           VALUES (@vIdPriceList, vIdArticulo, Price, 0);
       ELSE
-        SELECT
-          COUNT(*) 
-        INTO 
-          vCantRegPrecios
-        FROM 
-          articulos_precios
-        WHERE 
-          id_articulo = vIdArticulo AND
-          id_listaprecio = @vIdPriceList;
-
-        IF vCantRegPrecios = 0 THEN
-
-          INSERT INTO articulos_precios (id_listaprecio, id_articulo, precio_lista, precio_anterior)
-            VALUES (@vIdPriceList, vIdArticulo, Price, 0);
-
-        ELSEIF vCantRegPrecios = 1 THEN
-
           SELECT
             precio_lista 
           INTO 
@@ -77,8 +61,7 @@ BEGIN
           FROM 
             articulos_precios
           WHERE 
-            id_articulo = vIdArticulo
-          AND 
+            id_articulo = vIdArticulo AND 
             id_listaprecio = @vIdPriceList;
 
           IF @vPrecioAnterior != Price THEN
@@ -88,11 +71,10 @@ BEGIN
             WHERE id_articulo = vIdArticulo
             AND id_listaprecio = @vIdPriceList;
           END IF;
-
-        END IF;
       END IF;
       COMMIT;
     ELSE
+      /* Si el id artículo viene en null entonces hago Rollback */
       ROLLBACK;
     END IF;
 END
