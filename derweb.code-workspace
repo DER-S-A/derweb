@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../derweb_upgrades"
 		}
 	],
 	"settings": {}
