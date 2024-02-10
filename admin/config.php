@@ -1,7 +1,8 @@
 <?php
 $SITIO = "DERWEB - Administrador";
 
-$BD_SERVER = "localhost";
+/** Configuración de base de datos. */
+$BD_SERVER = "192.168.1.110";
 $BD_USER = "root";
 $BD_PASSWORD = "l4ld81";
 $BD_DATABASE = "db_derweb";
