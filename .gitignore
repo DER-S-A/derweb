@@ -53,3 +53,4 @@ derweb_upgrades/.vscode
 admin/app/administracion/avisos-pagos/tmpcache/
 admin/config.php
 admin/config.php
+app/components/catalogo/vendedores/pedidos-pendientes/tmpcache/
