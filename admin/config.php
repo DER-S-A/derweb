@@ -2,9 +2,9 @@
 $SITIO = "DERWEB - Administrador";
 
 /** Configuración de base de datos. */
-$BD_SERVER = "192.168.1.110";
+$BD_SERVER = "localhost";
 $BD_USER = "root";
-$BD_PASSWORD = "l4ld81";
+$BD_PASSWORD = "";
 $BD_DATABASE = "db_derweb";
 
 $FTP_SERVER = "localhost";

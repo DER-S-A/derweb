@@ -35,6 +35,7 @@ BEGIN
       nro_cuit,
       nombre,
       direccion,
+      email,
       telefono,
       usuario,
       clave,
@@ -43,7 +44,7 @@ BEGIN
       descuento_2,
       fecha_alta,
       fecha_modificado)
-        VALUES (2, xClienteCardCode, xCuit, xNombre, xDireccion, xTelefono, cliente_cardcode, 'derweb', @idListaPrecio, 0, 0, NOW(), NOW());
+        VALUES (xTipoEntidad, xClienteCardCode, xCuit, xNombre, xDireccion, xEmail, xTelefono, cliente_cardcode, 'derweb', @idListaPrecio, 0, 0, NOW(), NOW());
     ELSE
       SELECT
         id INTO vIdEncontrado
@@ -51,7 +52,8 @@ BEGIN
       WHERE cliente_cardcode = xClienteCardCode;
 
       UPDATE entidades
-      SET entidades.nro_cuit = xCuit,
+      SET entidades.id_tipoentidad = xTipoEntidad,
+          entidades.nro_cuit = xCuit,
           entidades.nombre = xNombre,
           entidades.direccion = xDireccion,
           entidades.email = xEmail,
