@@ -8,7 +8,7 @@ CREATE PROCEDURE sp_sucursales_upgrade (
   xEstadoCode varchar(10),
   xZipCode varchar(20),
   xGln int,
-  xCardCodeDER int,
+  xCardCodeDER text,
   xCreateDate varchar(20))
 BEGIN
 
@@ -60,6 +60,12 @@ BEGIN
       FROM entidades
       WHERE codigo_vendedor = vIdVendedor AND
             cliente_cardcode = xCardCode);
+
+    /* Acomodo la consulta porque completaba mal los vendedores */
+    SET vIdVendedor = (SELECT
+        id
+      FROM entidades
+      WHERE cliente_cardcode = xCardCodeDER);
 
     SET vIdTransporte = (SELECT
         id
